@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomTheme {
   static const MaterialColor redBlackSwatch = MaterialColor(
@@ -15,5 +16,20 @@ class CustomTheme {
       800: Color(0xff170907),//90%
       900: Color(0xff000000),//100%
     },
+  );
+
+  static final theme = ThemeData(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    primarySwatch: CustomTheme.redBlackSwatch,
+    textTheme: const TextTheme(
+      bodyText1: TextStyle(color: Colors.white),
+      bodyText2: TextStyle(color: Colors.white),
+      headline1: TextStyle(color: Colors.white),
+      headline2: TextStyle(color: Colors.white),
+      headline3: TextStyle(color: Colors.white),
+      headline4: TextStyle(color: Colors.white),
+    ).apply(
+        bodyColor: Colors.white,
+    )
   );
 }
