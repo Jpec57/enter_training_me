@@ -9,25 +9,38 @@ class ExerciseViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: InkWell(
+          onTap: (){
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            height: 20,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.black
+            ),
+            child: const Icon(Icons.close,),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       backgroundColor: Colors.black,
       body: Column(
         children: [
           Expanded(
               flex: 4,
-              child: InkWell(
-                onTap: (){
-                  Navigator.of(context).pop();
-                },
-                child: CachedNetworkImage(
-                  imageUrl:
-                  "https://www.muscleandfitness.com/wp-content/uploads/2018/06/pullup-1-1109.jpg?quality=86&strip=all",
-                  progressIndicatorBuilder:
-                      (context, url, downloadProgress) =>
-                      CircularProgressIndicator(
-                          value: downloadProgress.progress),
-                  errorWidget: (context, url, error) =>
-                  const Icon(Icons.error),
-                ),
+              child: CachedNetworkImage(
+                imageUrl:
+                "https://www.muscleandfitness.com/wp-content/uploads/2018/06/pullup-1-1109.jpg?quality=86&strip=all",
+                progressIndicatorBuilder:
+                    (context, url, downloadProgress) =>
+                    CircularProgressIndicator(
+                        value: downloadProgress.progress),
+                errorWidget: (context, url, error) =>
+                const Icon(Icons.error),
               )
           ),
           const Expanded(

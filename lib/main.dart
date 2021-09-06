@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // HomePage.routeName: (context) => const HomePage(),
         ExerciseListPage.routeName: (context) => const ExerciseListPage()
       },
-      home: const ExerciseListPage(),
+      home: const HomePage(),
     );
   }
 }
