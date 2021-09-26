@@ -19,11 +19,12 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text("Workout list", style: TextStyle(color: Colors.white)),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
+                // width: MediaQuery.of(context).size.width,
                 height: 200,
                 // child: ListView.builder(
                 //   shrinkWrap: true,
@@ -37,9 +38,7 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
                 //   );
                 // }),
               ),
-              Container(
-                  // color: Colors.green,
-                  child: CountdownTimer(totalDuration: 60,)),
+              const CountdownTimer(totalDuration: 5, size: 100),
             ],
           ),
         ),

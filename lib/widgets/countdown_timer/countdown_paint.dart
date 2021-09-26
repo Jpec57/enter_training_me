@@ -18,7 +18,7 @@ class CountdownPainter extends CustomPainter {
     this.totalSeconds = 180,
     this.radius = 100.0,
     this.divisionStrokeWidth = 1,
-    this.fontSizeRatio = 1.0,
+    this.fontSizeRatio = 0.9,
     this.divisionPadding = 2,
     this.progressStrokeWidth = 10.0,
     this.divisionStrokeColor = Colors.white70,
@@ -61,7 +61,8 @@ class CountdownPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
     ;
     final progressAngle = 2 * pi * (elapsedSeconds / totalSeconds);
-    canvas.drawArc(rect, -pi / 2 + 0.05, progressAngle, false, innerCirclePaint);
+    double offset = 0;
+    canvas.drawArc(rect, -pi / 2 + offset, progressAngle, false, innerCirclePaint);
   }
 
   @override
