@@ -26,7 +26,8 @@ class _CountdownTimerState extends State<CountdownTimer> {
       width: widget.size,
       height: widget.size,
       child: CustomPaint(
-        painter: CountdownPainter(radius: widget.size / 2,
+        painter: CountdownPainter(
+            radius: widget.size / 2,
             elapsedSeconds: elapsedTime,
             totalSeconds: widget.totalDuration
         ),

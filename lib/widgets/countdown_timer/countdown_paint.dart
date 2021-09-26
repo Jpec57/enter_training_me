@@ -5,17 +5,23 @@ class CountdownPainter extends CustomPainter {
   final double radius;
   final int elapsedSeconds;
   final int totalSeconds;
-  final double kCountdownStrokeWidth;
+  final double kCountdownDivisionStrokeWidth;
+  final double kDivisionPadding;
   final Color kCountdownDivisionStrokeColor;
   final Color kCountdownProgressStrokeColor;
   final double kCountdownProgressStrokeWidth;
+  // final double kCountdownDivisionStrokeLength;
 
-  CountdownPainter({this.elapsedSeconds = 23, this.totalSeconds = 60, this.radius = 100.0,
-    this.kCountdownStrokeWidth = 2.0,
+  CountdownPainter({
+    this.elapsedSeconds = 23,
+    this.totalSeconds = 180,
+    this.radius = 100.0,
+    this.kCountdownDivisionStrokeWidth = 0.5,
+    this.kDivisionPadding = 2,
     this.kCountdownProgressStrokeWidth = 10.0,
-    this.kCountdownDivisionStrokeColor = Colors.black87,
+    this.kCountdownDivisionStrokeColor = Colors.white70,
     this.kCountdownProgressStrokeColor = Colors.green,
-  });
+  }) : assert(kCountdownProgressStrokeWidth - kDivisionPadding * 2 >= 0);
 
   Offset _angleToPoint(double radius, double angle) {
     return Offset(
@@ -25,16 +31,19 @@ class CountdownPainter extends CustomPainter {
   }
 
   void _drawDivisions(Canvas canvas, Size size, double radius) {
-    final paint = Paint()..color = kCountdownDivisionStrokeColor;
+    final paint = Paint()
+      ..color = kCountdownDivisionStrokeColor
+      ..strokeWidth = 2
+    ;
 
     final divisionDegrees = 360.0 / totalSeconds;
-
     for (var i = 0; i < totalSeconds; i++) {
-      final offsetAngle = _angleToPoint(radius, divisionDegrees * i - 90.0);
+      final innerOffsetAngle = _angleToPoint(radius - kCountdownProgressStrokeWidth + kDivisionPadding, divisionDegrees * i - 90.0);
+      final outerOffsetAngle = _angleToPoint(radius - kDivisionPadding, divisionDegrees * i - 90.0);
 
       canvas.save();
       canvas.translate(size.width / 2, size.height / 2);
-      canvas.drawCircle(offsetAngle, 2, paint);
+      canvas.drawLine(innerOffsetAngle, outerOffsetAngle, paint);
       canvas.restore();
     }
   }
@@ -47,12 +56,12 @@ class CountdownPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
     ;
     final progressAngle = 2 * pi * (elapsedSeconds / totalSeconds);
-    canvas.drawArc(rect, -pi / 2, progressAngle, false, innerCirclePaint);
+    canvas.drawArc(rect, -pi / 2 + 0.05, progressAngle, false, innerCirclePaint);
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    final radiusWithoutStrokeWith = radius - kCountdownStrokeWidth;
+    final radiusWithoutStrokeWith = radius - kCountdownProgressStrokeWidth / 2;
     final offsetCenter = Offset(
       size.width / 2,
       size.height / 2,
@@ -61,8 +70,7 @@ class CountdownPainter extends CustomPainter {
         radius: radiusWithoutStrokeWith
     );
 
-    _drawDivisions(canvas, size, radiusWithoutStrokeWith);
-
+    _drawDivisions(canvas, size, radius);
     _drawProgress(canvas, rect);
   }
 
