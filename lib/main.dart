@@ -1,15 +1,22 @@
 import 'package:ctraining/pages/exercise_list/exercise_list_page.dart';
-import 'package:ctraining/pages/exercise_view/exercise_view_page.dart';
-import 'package:ctraining/pages/home/home_page.dart';
 import 'package:ctraining/custom_theme.dart';
+import 'package:ctraining/main_routing.dart';
+import 'package:ctraining/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import 'pages/exercise_list/exercise_view_page_arguments.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // final UserRepository _userRepository = new UserRepository();
   runApp(const MyApp());
+  // runApp(MultiRepositoryProvider(
+  //     providers: const [],
+  //     child: MultiBlocProvider(
+  //         providers: const [],
+  //     child: const MyApp()))
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,21 +24,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'CTraining',
-      theme: CustomTheme.theme,
-      onGenerateRoute: (settings){
-        if (settings.name == ExerciseViewPage.routeName){
-          var args = settings.arguments as ExerciseViewPageArguments;
-          return MaterialPageRoute(builder: (context)=> const ExerciseViewPage());
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+          currentFocus.focusedChild?.unfocus();
         }
-
       },
-      routes: {
-        // HomePage.routeName: (context) => const HomePage(),
-        ExerciseListPage.routeName: (context) => const ExerciseListPage()
-      },
-      home: const HomePage(),
+      child: GetMaterialApp(
+        title: 'CTraining',
+        theme: CustomTheme.theme,
+        onGenerateRoute: (settings) =>
+            MainRouting.onGenerateRoutes(settings),
+        routes: MainRouting.routes(context),
+        // home: const HomePage(),
+      ),
     );
   }
 }

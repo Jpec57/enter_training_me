@@ -3,75 +3,75 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = "/";
+  static const kHeaderPercentSize = 0.35;
+  static const kHeaderOverlappingSize = 30;
+  static const kHeaderContainerSize = 150;
 
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var topContainerHeight = height * 0.35;
+    var topContainerHeight = height * kHeaderPercentSize;
     return Scaffold(
       backgroundColor: Colors.grey,
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
-              height: height * 0.35 + 30,
-              child: Container(
-                // color: Colors.black,
-                child: Stack(
-                  children: [
-                    SizedBox(
-                        height: topContainerHeight,
+              height: height * kHeaderPercentSize + kHeaderOverlappingSize,
+              child: Stack(
+                children: [
+                  SizedBox(
+                      height: topContainerHeight,
+                      child: Container(
+                        color: Colors.grey,
+                      )
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: SizedBox(
+                        height: kHeaderOverlappingSize.toDouble(),
+                        width: MediaQuery.of(context).size.width,
                         child: Container(
-                          color: Colors.grey,
-                        )
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      child: SizedBox(
-                          height: 30,
-                          width: MediaQuery.of(context).size.width,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))
-                            ),
-                          )
-                      ),
-                    ),
-                    Positioned(
-                        top: height * 0.35 - 150,
-                        child: SizedBox(
-                          height: 180,
-                          width: MediaQuery.of(context).size.width,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 10,
-                            itemBuilder: (BuildContext context, int index) {
-                            return const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: TrainingProposalContainer(),
-                            );
-                          },
-
+                          decoration: const BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))
                           ),
                         )
                     ),
-                  ]
-                ),
+                  ),
+                  Positioned(
+                      top: height * kHeaderPercentSize - kHeaderContainerSize,
+                      child: SizedBox(
+                        height: (kHeaderContainerSize + kHeaderOverlappingSize).toDouble(),
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 10,
+                          itemBuilder: (BuildContext context, int index) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: TrainingProposalContainer(),
+                          );
+                        },
+
+                        ),
+                      )
+                  ),
+                ]
               ),
             ),
             Container(
               color: Colors.black,
               child: ListView.builder(
                 shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 50,
                   itemBuilder: (context, i){
                 return ListTile(
-                  title: Text("Toto is here $i", style: TextStyle(color:Colors.white),),
+                  title: Text("Toto is here $i", style: const TextStyle(color:Colors.white),),
                 );
               }),
             )
