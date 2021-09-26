@@ -3,68 +3,79 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = "/";
-  static const kHeaderPercentSize = 0.35;
-  static const kHeaderOverlappingSize = 30;
-  static const kHeaderContainerSize = 150;
+  static const kHeaderPercentSize = 0.40;
+  static const kHeaderOverlappingSize = 0.05;
+  static const kHeaderContainerSize = 0.2;
+  static const bottomBackgroundContainerColor = Colors.black;
+  static const topBackgroundContainerColor = Colors.grey;
 
   const HomePage({Key? key}) : super(key: key);
+
+  Widget _renderListView(){
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: 10,
+      itemBuilder: (BuildContext context, int index) {
+        return const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: TrainingProposalContainer(),
+        );
+      },
+    );
+  }
+
+
+  List<Widget> _renderBackground(BuildContext context, double height){
+    return [
+      SizedBox(
+          height: height * kHeaderPercentSize,
+          child: Container(
+            color: Colors.grey,
+          )
+      ),
+      Positioned(
+        bottom: 0,
+        child: SizedBox(
+            height: height * kHeaderOverlappingSize.toDouble(),
+            width: MediaQuery.of(context).size.width,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: bottomBackgroundContainerColor,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))
+              ),
+            )
+        ),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var topContainerHeight = height * kHeaderPercentSize;
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: topBackgroundContainerColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
-              height: height * kHeaderPercentSize + kHeaderOverlappingSize,
+              height: height * (kHeaderPercentSize + kHeaderOverlappingSize),
               child: Stack(
                 children: [
-                  SizedBox(
-                      height: topContainerHeight,
-                      child: Container(
-                        color: Colors.grey,
-                      )
-                  ),
+                  ..._renderBackground(context, height),
                   Positioned(
-                    bottom: 0,
-                    child: SizedBox(
-                        height: kHeaderOverlappingSize.toDouble(),
-                        width: MediaQuery.of(context).size.width,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))
-                          ),
-                        )
-                    ),
-                  ),
-                  Positioned(
-                      top: height * kHeaderPercentSize - kHeaderContainerSize,
+                      top: height * (kHeaderPercentSize - kHeaderContainerSize),
                       child: SizedBox(
-                        height: (kHeaderContainerSize + kHeaderOverlappingSize).toDouble(),
+                        height: height * (kHeaderContainerSize + kHeaderOverlappingSize).toDouble(),
                         width: MediaQuery.of(context).size.width,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10,
-                          itemBuilder: (BuildContext context, int index) {
-                          return const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: TrainingProposalContainer(),
-                          );
-                        },
-
-                        ),
+                        child: _renderListView(),
                       )
                   ),
                 ]
               ),
             ),
             Container(
-              color: Colors.black,
+              color: bottomBackgroundContainerColor,
               child: ListView.builder(
                 shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -99,7 +110,7 @@ class TrainingProposalContainer extends StatelessWidget {
       height: 180,
       width: 180,
       padding: const EdgeInsets.all(24),
-      child: Text("Coucou", style: TextStyle(color: Colors.black)),
+      child: const Text("Coucou", style: TextStyle(color: Colors.black)),
     );
   }
 }
