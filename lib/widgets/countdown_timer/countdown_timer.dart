@@ -22,14 +22,17 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      // color: Colors.red,
       width: widget.size,
       height: widget.size,
       child: CustomPaint(
         painter: CountdownPainter(
-            radius: widget.size / 2,
+            // radius: widget.size / 2,
+            radius: 100,
             elapsedSeconds: elapsedTime,
-            totalSeconds: widget.totalDuration
+            totalSeconds: widget.totalDuration,
+          progressStrokeColor: Colors.black,
+          divisionStrokeColor: Colors.white
         ),
       ),
     );

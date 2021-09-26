@@ -38,7 +38,7 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
                 // }),
               ),
               Container(
-                  color: Colors.green,
+                  // color: Colors.green,
                   child: CountdownTimer(totalDuration: 60,)),
             ],
           ),
