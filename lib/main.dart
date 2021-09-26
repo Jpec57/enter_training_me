@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (settings) =>
             MainRouting.onGenerateRoutes(settings),
         routes: MainRouting.routes(context),
-        // home: const HomePage(),
+        home: MainRouting.home,
       ),
     );
   }

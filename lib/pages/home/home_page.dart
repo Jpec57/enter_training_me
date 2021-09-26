@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  static const routeName = "/";
+  static const routeName = "/home";
   static const kHeaderPercentSize = 0.40;
   static const kHeaderOverlappingSize = 0.05;
   static const kHeaderContainerSize = 0.2;

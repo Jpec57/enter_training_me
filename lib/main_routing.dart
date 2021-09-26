@@ -2,9 +2,13 @@ import 'package:ctraining/pages/exercise_list/exercise_list_page.dart';
 import 'package:ctraining/pages/exercise_list/exercise_view_page_arguments.dart';
 import 'package:ctraining/pages/exercise_view/exercise_view_page.dart';
 import 'package:ctraining/pages/home/home_page.dart';
+import 'package:ctraining/pages/workout_list/workout_list_page.dart';
 import 'package:flutter/material.dart';
 
 class MainRouting {
+
+  static const home = WorkoutListPage();
+
   static onGenerateRoutes(settings) {
     if (settings.name == ExerciseViewPage.routeName){
       var args = settings.arguments as ExerciseViewPageArguments;
@@ -15,7 +19,8 @@ class MainRouting {
   }
 
   static routes(BuildContext context) => {
-    HomePage.routeName: (context) => const HomePage(),
+    // HomePage.routeName: (context) => const HomePage(),
+    WorkoutListPage.routeName: (context) => const WorkoutListPage(),
     ExerciseListPage.routeName: (context) => const ExerciseListPage()
   };
 }
