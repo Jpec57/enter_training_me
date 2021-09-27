@@ -1,0 +1,32 @@
+import 'dart:math';
+
+import 'package:ctraining/custom_theme.dart';
+import 'package:ctraining/widgets/countdown_timer/countdown_timer.dart';
+import 'package:flutter/material.dart';
+
+class InWorkoutRestView extends StatefulWidget {
+  const InWorkoutRestView({Key? key}) : super(key: key);
+
+  @override
+  _InWorkoutRestViewState createState() => _InWorkoutRestViewState();
+}
+
+class _InWorkoutRestViewState extends State<InWorkoutRestView> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: Center(
+            child: CountdownTimer(
+              totalDuration: 60,
+              progressStrokeColor: CustomTheme.middleGreen,
+              size: min(MediaQuery.of(context).size.height * 0.5, MediaQuery.of(context).size.width * 0.8),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

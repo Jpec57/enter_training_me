@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:ctraining/widgets/countdown_timer/countdown_paint.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CountdownTimer extends StatefulWidget {
   final double size;
   final int totalDuration;
-  const CountdownTimer({Key? key, required this.totalDuration, this.size = 200.0}) : super(key: key);
+  final Color? progressStrokeColor;
+  final Color? divisionStrokeColor;
+  const CountdownTimer({Key? key, required this.totalDuration, this.size = 200.0, this.progressStrokeColor, this.divisionStrokeColor}) : super(key: key);
 
   @override
   _CountdownTimerState createState() => _CountdownTimerState();
@@ -16,6 +19,7 @@ class _CountdownTimerState extends State<CountdownTimer>
 
   late Timer _timer;
   int _elapsedTime = 0;
+  late int _realTotalDuration;
 
   @override
   void dispose() {
@@ -26,10 +30,11 @@ class _CountdownTimerState extends State<CountdownTimer>
   @override
   void initState() {
     super.initState();
+    _realTotalDuration = widget.totalDuration;
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {
         _elapsedTime = timer.tick;
-        if (timer.tick >= widget.totalDuration) timer.cancel();
+        if (timer.tick >= _realTotalDuration) timer.cancel();
       });
     });
   }
@@ -43,9 +48,9 @@ class _CountdownTimerState extends State<CountdownTimer>
         painter: CountdownPainter(
             radius: widget.size / 2,
             elapsedSeconds: _elapsedTime,
-            totalSeconds: widget.totalDuration,
-          progressStrokeColor: Colors.black,
-          divisionStrokeColor: Colors.white
+            totalSeconds: _realTotalDuration,
+            progressStrokeColor: widget.progressStrokeColor ?? Colors.black,
+            divisionStrokeColor: widget.divisionStrokeColor ?? Colors.white
         ),
       ),
     );

@@ -87,7 +87,7 @@ class CountdownPainter extends CustomPainter {
   void _drawCountdownText(Canvas canvas, size) {
     TextSpan span = TextSpan(
         style: TextStyle(
-            color: Colors.black, fontSize: fontSizeRatio * (radius / 2), fontWeight: FontWeight.w700),
+            color: progressStrokeColor, fontSize: fontSizeRatio * (radius / 2), fontWeight: FontWeight.w700),
         text: Utils.convertToTime(totalSeconds - elapsedSeconds));
     TextPainter tp = TextPainter(
         text: span,
