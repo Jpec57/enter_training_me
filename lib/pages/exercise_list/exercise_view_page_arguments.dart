@@ -1,7 +1,7 @@
 import 'package:ctraining/models/models.dart';
 
 class ExerciseViewPageArguments {
-  final Exercise exercise;
+  final ReferenceExercise exercise;
 
   ExerciseViewPageArguments({required this.exercise});
 }

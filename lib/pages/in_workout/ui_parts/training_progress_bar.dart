@@ -15,6 +15,11 @@ class TrainingProgressBar extends StatelessWidget {
       onTap: onPressed,
       child: Row(
         children: [
+          //TODO Workout duration
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: Text("00:02:13", style: TextStyle(color:Colors.white),),
+          ),
           Flexible(
             child: Container(
               height: 10,
