@@ -1,11 +1,14 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_exercise_view.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_rest_view.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/current_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
+import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class InWorkoutPage extends StatelessWidget {
   static const routeName = "/workout/in";
@@ -68,7 +71,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>  with TickerProviderS
                 child: Row(
                   children: [
                     IconButton(onPressed: (){
-
+                      Get.toNamed(HomePage.routeName);
                     }, icon: Icon(Icons.exit_to_app, color: Colors.white,)),
                     Flexible(child: TrainingProgressBar()),
                   ],

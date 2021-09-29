@@ -1,5 +1,7 @@
+import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = "/home";
@@ -54,6 +56,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
+      appBar: AppBar(
+
+      ),
+      drawer: const Drawer(),
       backgroundColor: topBackgroundContainerColor,
       body: SingleChildScrollView(
         child: Column(
@@ -101,16 +107,21 @@ class TrainingProposalContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          color: Colors.white,
-        border: Border.all(color: Colors.black87, width: 1)
+    return InkWell(
+      onTap: (){
+        Get.toNamed(InWorkoutPage.routeName);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: Colors.white,
+          border: Border.all(color: Colors.black87, width: 1)
+        ),
+        height: 180,
+        width: 180,
+        padding: const EdgeInsets.all(24),
+        child: const Text("Coucou", style: TextStyle(color: Colors.black)),
       ),
-      height: 180,
-      width: 180,
-      padding: const EdgeInsets.all(24),
-      child: const Text("Coucou", style: TextStyle(color: Colors.black)),
     );
   }
 }

@@ -48,7 +48,6 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
                   );
                 }),
               ),
-              const CountdownTimer(totalDuration: 5, size: 100),
             ],
           ),
         ),
