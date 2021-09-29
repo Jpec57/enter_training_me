@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:ctraining/custom_theme.dart';
-import 'package:ctraining/widgets/countdown_timer/countdown_timer.dart';
+import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
 
 class InWorkoutRestView extends StatefulWidget {

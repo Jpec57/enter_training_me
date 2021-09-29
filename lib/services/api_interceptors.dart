@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ctraining/storage_constants.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

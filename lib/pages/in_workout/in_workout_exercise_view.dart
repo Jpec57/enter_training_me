@@ -1,6 +1,6 @@
-import 'package:ctraining/custom_theme.dart';
-import 'package:ctraining/pages/in_workout/ui_parts/current_exercise_details.dart';
-import 'package:ctraining/pages/in_workout/ui_parts/training_progress_bar.dart';
+import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/current_exercise_details.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class InWorkoutExerciseView extends StatefulWidget {

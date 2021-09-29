@@ -1,6 +1,6 @@
-import 'package:ctraining/models/execution_style.dart';
-import 'package:ctraining/models/exercise_set.dart';
-import 'package:ctraining/models/models.dart';
+import 'package:enter_training_me/models/execution_style.dart';
+import 'package:enter_training_me/models/exercise_set.dart';
+import 'package:enter_training_me/models/models.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'realised_exercise.g.dart';

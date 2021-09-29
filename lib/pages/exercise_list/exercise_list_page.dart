@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ctraining/models/models.dart';
-import 'package:ctraining/pages/exercise_list/exercise_hero.dart';
-import 'package:ctraining/pages/exercise_list/exercise_view_page_arguments.dart';
-import 'package:ctraining/pages/exercise_view/exercise_view_page.dart';
+import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/exercise_list/exercise_hero.dart';
+import 'package:enter_training_me/pages/exercise_list/exercise_view_page_arguments.dart';
+import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,5 +1,5 @@
-import 'package:ctraining/services/api_interceptors.dart';
-import 'package:ctraining/services/interfaces/http_service.dart';
+import 'package:enter_training_me/services/api_interceptors.dart';
+import 'package:enter_training_me/services/interfaces/http_service.dart';
 import 'package:dio/dio.dart';
 
 

@@ -1,4 +1,4 @@
-import 'package:ctraining/custom_theme.dart';
+import 'package:enter_training_me/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class DoneButton extends StatefulWidget {

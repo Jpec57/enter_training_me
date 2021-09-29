@@ -1,4 +1,4 @@
-import 'package:ctraining/models/models.dart';
+import 'package:enter_training_me/models/models.dart';
 
 class ExerciseViewPageArguments {
   final ReferenceExercise exercise;

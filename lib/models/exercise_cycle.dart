@@ -1,4 +1,4 @@
-import 'package:ctraining/models/realised_exercise.dart';
+import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'exercise_cycle.g.dart';

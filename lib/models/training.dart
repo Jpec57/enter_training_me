@@ -1,5 +1,5 @@
-import 'package:ctraining/models/exercise_cycle.dart';
-import 'package:ctraining/models/user.dart';
+import 'package:enter_training_me/models/exercise_cycle.dart';
+import 'package:enter_training_me/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'training.g.dart';

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:ctraining/widgets/countdown_timer/countdown_paint.dart';
+import 'package:enter_training_me/widgets/countdown_timer/countdown_paint.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

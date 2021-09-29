@@ -1,5 +1,5 @@
-import 'package:ctraining/pages/in_workout/in_workout_page.dart';
-import 'package:ctraining/widgets/countdown_timer/countdown_timer.dart';
+import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
+import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,7 +1,7 @@
-import 'package:ctraining/pages/exercise_list/exercise_list_page.dart';
-import 'package:ctraining/custom_theme.dart';
-import 'package:ctraining/main_routing.dart';
-import 'package:ctraining/pages/home/home_page.dart';
+import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
+import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/main_routing.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         }
       },
       child: GetMaterialApp(
-        title: 'CTraining',
+        title: 'enter_training_me',
         theme: CustomTheme.theme,
         onGenerateRoute: (settings) =>
             MainRouting.onGenerateRoutes(settings),

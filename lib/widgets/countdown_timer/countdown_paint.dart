@@ -1,4 +1,4 @@
-import 'package:ctraining/utils/utils.dart';
+import 'package:enter_training_me/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 

@@ -1,5 +1,5 @@
-import 'package:ctraining/services/interfaces/api_service.dart';
-import 'package:ctraining/services/interfaces/irepository.dart';
+import 'package:enter_training_me/services/interfaces/api_service.dart';
+import 'package:enter_training_me/services/interfaces/irepository.dart';
 
 class TrainingRepository extends ApiService implements IRepository {
   @override

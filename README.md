@@ -1,4 +1,4 @@
-# ctraining
+# enter_training_me
 
 The last fitness project, I swear
 
