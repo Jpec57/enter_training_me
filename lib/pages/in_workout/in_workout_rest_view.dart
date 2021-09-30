@@ -20,8 +20,10 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
         Expanded(
           child: Center(
             child: CountdownTimer(
-              elapsedTime: 0,
               totalDuration: 60,
+              onEndCallback: (){
+
+              },
               progressStrokeColor: CustomTheme.middleGreen,
               size: min(MediaQuery.of(context).size.height * 0.5, MediaQuery.of(context).size.width * 0.8),
             ),

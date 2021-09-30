@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/drawer.dart';
+import 'package:enter_training_me/pages/quick_countdown/countdown_set_bat.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
@@ -18,32 +20,17 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
   final maxSetCount = 7;
   final List<int> availableDurations = [25, 60, 90, 120, 180, 300];
   late TabController _tabController;
-  bool _isCountingDown = false;
   late Timer _totalTimeTimer;
-
+  int _currentSet = 6;
   int _countdownValue = 0;
   int _totalTime = 0;
-  int _elapsedTime = 0;
-  int currentSet = 6;
+
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(() {
-      _isCountingDown = _tabController.index == 1;
-      if (_isCountingDown == false){
-        _elapsedTime = 0;
-      }
-    });
-
     _totalTimeTimer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (_isCountingDown){
-        _elapsedTime += 1;
-        if (_countdownValue - _elapsedTime <= 0){
-          _tabController.index = 0;
-        }
-      }
       setState(() {
         _totalTime = timer.tick;
       });
@@ -52,7 +39,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
 
   Widget _renderSetItem(int index) {
     Color bgColor = Colors.black;
-    if (index == currentSet) {
+    if (index == _currentSet) {
       bgColor = CustomTheme.middleGreen;
     }
     return Expanded(
@@ -61,7 +48,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
         child: InkWell(
           onTap: () {
             setState(() {
-              currentSet = index;
+              _currentSet = index;
             });
           },
           child: Container(
@@ -89,9 +76,10 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
     return setItems;
   }
 
+
   void _selectTimer(int optionDuration) {
-    if (currentSet > 0) {
-      currentSet -= 1;
+    if (_currentSet > 0) {
+      _currentSet -= 1;
     }
     setState(() {
       _countdownValue = optionDuration;
@@ -133,15 +121,17 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 40,
+        title: Text(Utils.convertToTime(_totalTime), style: const TextStyle(fontWeight: FontWeight.bold),),
+      ),
+      drawer: const MyDrawer(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(Utils.convertToTime(_totalTime), style: TextStyle(fontWeight: FontWeight.bold),),
-            ),
             Row(
               children: _renderSetItems(),
             ),
@@ -155,13 +145,35 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
                     children: availableDurations
                         .map((duration) => _renderTimerOption(duration))
                         .toList()),
-                CountdownTimer(
-                  totalDuration: _countdownValue,
-                  elapsedTime: _elapsedTime,
-                  progressStrokeColor: CustomTheme.middleGreen,
-                  size: min(MediaQuery.of(context).size.height * 0.5,
-                      MediaQuery.of(context).size.width * 0.8),
-                )
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CountdownTimer(
+                        totalDuration: _countdownValue,
+                        onEndCallback: (){
+                          _tabController.index = 0;
+                        },
+                        progressStrokeColor: CustomTheme.middleGreen,
+                        size: min(MediaQuery.of(context).size.height * 0.5,
+                            MediaQuery.of(context).size.width * 0.8),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: CustomTheme.middleGreen
+                          ),
+                          child: IconButton(icon: const Icon(Icons.stop, color: CustomTheme.darkGrey,), onPressed: (){
+                            _tabController.index = 0;
+                          },),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+
               ]),
             )
           ],

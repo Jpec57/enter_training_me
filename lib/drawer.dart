@@ -1,4 +1,5 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,17 @@ class MyDrawer extends StatelessWidget {
           //     Get.toNamed(ProfilePage.routeName);
           //   },
           // ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text(
+              'Home',
+              style:
+              TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ),
+            onTap: () {
+              Get.toNamed(HomePage.routeName);
+            },
+          ),
           ListTile(
             leading: Icon(Icons.timer_sharp),
             title: Text(

@@ -42,6 +42,7 @@ class CustomTheme {
   static final theme = ThemeData(
     fontFamily: GoogleFonts.roboto().fontFamily,
     primarySwatch: CustomTheme.greenSwatch,
+    appBarTheme: const AppBarTheme(backgroundColor: CustomTheme.darkGrey),
     backgroundColor: Colors.black,
     textTheme: TextTheme(
       bodyText1: TextStyle(color: Colors.white),

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = "/home";
-  final kHeaderPercentSize = 0.40;
+  final kHeaderPercentSize = 0.25;
   final kHeaderOverlappingSize = 0.05;
   final kHeaderContainerSize = 0.2;
   static const bottomBackgroundContainerColor = Colors.black;
