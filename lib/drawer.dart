@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
-
   const MyDrawer({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +14,10 @@ class MyDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Drawer Header', style: TextStyle(color: Colors.white),),
+            child: Text(
+              'Drawer Header',
+              style: TextStyle(color: Colors.white),
+            ),
             decoration: BoxDecoration(
               color: CustomTheme.middleGreen,
             ),
@@ -29,14 +31,18 @@ class MyDrawer extends StatelessWidget {
           // ),
           ListTile(
             leading: Icon(Icons.timer_sharp),
-            title: Text('Quick Countdown'),
+            title: Text(
+              'Quick Countdown',
+              style:
+                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ),
             onTap: () {
               Get.toNamed(QuickCountdownPage.routeName);
             },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: Text('Log out'),
+            title: Text('Log out', style: TextStyle(color: Colors.black)),
             onTap: () {
               // BlocProvider.of<AuthBloc>(context).add(LoggedOut());
               // Get.toNamed(ProfilePage.routeName);
