@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class MainRouting {
 
-  static const home = HomePage();
+  static const home = QuickCountdownPage();
+  // static const home = HomePage();
 
   static onGenerateRoutes(settings) {
     if (settings.name == ExerciseViewPage.routeName){

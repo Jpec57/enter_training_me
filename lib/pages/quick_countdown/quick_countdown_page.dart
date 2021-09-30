@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class QuickCountdownPage extends StatefulWidget {
   static const routeName = "/quick-countdown";
@@ -16,13 +15,40 @@ class QuickCountdownPage extends StatefulWidget {
 
 class _QuickCountdownPageState extends State<QuickCountdownPage>
     with SingleTickerProviderStateMixin {
+  final maxSetCount = 7;
+  final List<int> availableDurations = [25, 60, 90, 120, 180, 300];
+  late TabController _tabController;
+  bool _isCountingDown = false;
+  late Timer _totalTimeTimer;
+
   int _countdownValue = 0;
   int _totalTime = 0;
-  late Timer _totalTimeTimer;
+  int _elapsedTime = 0;
   int currentSet = 6;
-  final List<int> availableDurations = [25, 60, 90, 120, 180];
-  final maxSetCount = 7;
-  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      _isCountingDown = _tabController.index == 1;
+      if (_isCountingDown == false){
+        _elapsedTime = 0;
+      }
+    });
+
+    _totalTimeTimer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_isCountingDown){
+        _elapsedTime += 1;
+        if (_countdownValue - _elapsedTime <= 0){
+          _tabController.index = 0;
+        }
+      }
+      setState(() {
+        _totalTime = timer.tick;
+      });
+    });
+  }
 
   Widget _renderSetItem(int index) {
     Color bgColor = Colors.black;
@@ -95,17 +121,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    // _totalTimeTimer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-    //   setState(() {
-    //     _totalTime = timer.tick;
-    //     if (timer.tick >= 0) timer.cancel();
-    //   });
-    // });
-  }
+
 
   @override
   void dispose() {
@@ -120,12 +136,19 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(Utils.convertToTime(_totalTime), style: TextStyle(fontWeight: FontWeight.bold),),
+            ),
             Row(
               children: _renderSetItems(),
             ),
             Expanded(
-              child: TabBarView(controller: _tabController, children: [
+              child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                  controller: _tabController, children: [
                 GridView.count(
                     shrinkWrap: true,
                     crossAxisCount: 2,
@@ -134,6 +157,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
                         .toList()),
                 CountdownTimer(
                   totalDuration: _countdownValue,
+                  elapsedTime: _elapsedTime,
                   progressStrokeColor: CustomTheme.middleGreen,
                   size: min(MediaQuery.of(context).size.height * 0.5,
                       MediaQuery.of(context).size.width * 0.8),
