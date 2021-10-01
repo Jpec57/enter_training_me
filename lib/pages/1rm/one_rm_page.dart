@@ -2,6 +2,7 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 
 class OneRMPage extends StatefulWidget {
   static const routeName = "/1rm";
@@ -153,8 +154,14 @@ class _OneRMPageState extends State<OneRMPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 32.0),
-                child: Text(
-                    "Your 1RM is probably ${_calculateOneRM().toStringAsFixed(1)} kg"),
+                child: RichText(
+                  text: TextSpan(text: "Your 1RM is probably ", children: [
+                    TextSpan(
+                        text: "${_calculateOneRM().toStringAsFixed(1)} kg",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
+                  ]),
+                ),
               ),
               Expanded(
                 child: Padding(
