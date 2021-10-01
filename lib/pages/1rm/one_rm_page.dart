@@ -1,5 +1,6 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class OneRMPage extends StatefulWidget {
   static const routeName = "/1rm";
@@ -10,8 +11,8 @@ class OneRMPage extends StatefulWidget {
 }
 
 class _OneRMPageState extends State<OneRMPage> {
+  double maxWeight = 100;
   late TextEditingController _textEditingController;
-  final percents = [100, 105, 110, 110, 115, 120, 120, 125, 125, 130];
   final List<double> matchingPercents = [
     1,
     0.97,
@@ -38,7 +39,43 @@ class _OneRMPageState extends State<OneRMPage> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
+    _textEditingController.addListener(() {
+      setState(() {
+        maxWeight = double.parse(_textEditingController.text);
+      });
+    });
     super.initState();
+  }
+
+  List<Widget> _renderGridChildren() {
+    List<Widget> children = [
+      Text("Reps",
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          )),
+      Text("Percent",
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          )),
+      Text("Weight",
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          )),
+    ];
+    for (int i = 0; i < matchingPercents.length; i++) {
+      int reps = i + 1;
+      double percent = matchingPercents[i];
+      double weight = percent * maxWeight;
+      children.addAll([
+        Text(reps.toString(), style: const TextStyle()),
+        Text((percent * 100).toInt().toString()),
+        Text(weight.toString() + " kg"),
+      ]);
+    }
+    return children;
   }
 
   @override
@@ -46,22 +83,41 @@ class _OneRMPageState extends State<OneRMPage> {
     return Scaffold(
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
-        child: Column(
-          children: [
-            TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(hintText: "100"),
-            ),
-            Expanded(
-              child: GridView.count(
-                  crossAxisCount: 2,
-                  children: matchingPercents.asMap().entries.map((e) {
-                    int reps = e.key;
-                    double percent = e.value;
-                    return Container();
-                  }).toList()),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Flexible(
+                    child: TextField(
+                      controller: _textEditingController,
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "100",
+                          hintStyle: TextStyle(color: Colors.white60)),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 32.0),
+                child: Text("Your 1RM is probably $maxWeight kg"),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: GridView.count(
+                      shrinkWrap: true,
+                      // childAspectRatio: null,
+                      crossAxisCount: 3,
+                      children: _renderGridChildren()),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
