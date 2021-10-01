@@ -112,6 +112,11 @@ class _OneRMPageState extends State<OneRMPage> {
                         keyboardType: TextInputType.number,
                         style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 16),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                             hintText: "100",
@@ -205,11 +210,19 @@ class _OneRMPageState extends State<OneRMPage> {
                         ),
                       ),
                       Expanded(
-                        child: SingleChildScrollView(
+                          child: ListWheelScrollView(
+                              // onSelectedItemChanged: (int index) {
+                              //   print("Selected item is $index");
+                              // },
+                              itemExtent: 40.0,
+                              children: _renderGridChildren())
+                          /*
+                        SingleChildScrollView(
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: _renderGridChildren())),
-                      ),
+                                children: _renderGridChildren()))
+                        */
+                          ),
                     ],
                   ),
                 ),
