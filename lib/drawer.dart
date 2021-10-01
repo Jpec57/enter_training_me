@@ -1,4 +1,5 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +36,13 @@ class MyDrawer extends StatelessWidget {
             title: const Text(
               'Home',
               style:
-              TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
             ),
             onTap: () {
               Get.toNamed(HomePage.routeName);
             },
           ),
+
           ListTile(
             leading: Icon(Icons.timer_sharp),
             title: Text(
@@ -50,6 +52,17 @@ class MyDrawer extends StatelessWidget {
             ),
             onTap: () {
               Get.toNamed(QuickCountdownPage.routeName);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.timer_sharp),
+            title: Text(
+              '1RM Calculator',
+              style:
+                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ),
+            onTap: () {
+              Get.toNamed(OneRMPage.routeName);
             },
           ),
           ListTile(

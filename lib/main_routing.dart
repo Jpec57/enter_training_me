@@ -1,3 +1,4 @@
+import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_view_page_arguments.dart';
 import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
@@ -24,6 +25,7 @@ class MainRouting {
   static routes(BuildContext context) => {
     HomePage.routeName: (context) => const HomePage(),
     QuickCountdownPage.routeName: (context) => const QuickCountdownPage(),
+    OneRMPage.routeName: (context) => const OneRMPage(),
     InWorkoutPage.routeName: (context) => const InWorkoutPage(),
     WorkoutListPage.routeName: (context) => const WorkoutListPage(),
     ExerciseListPage.routeName: (context) => const ExerciseListPage()
