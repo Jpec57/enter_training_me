@@ -8,27 +8,42 @@ class CountdownTimer extends StatefulWidget {
   final Color? progressStrokeColor;
   final Color? divisionStrokeColor;
   final Function onEndCallback;
-  const CountdownTimer({Key? key, required this.totalDuration, this.size = 200.0, this.progressStrokeColor, this.divisionStrokeColor, required this.onEndCallback}) : super(key: key);
+  const CountdownTimer(
+      {Key? key,
+      required this.totalDuration,
+      this.size = 200.0,
+      this.progressStrokeColor,
+      this.divisionStrokeColor,
+      required this.onEndCallback})
+      : super(key: key);
 
   @override
   State<CountdownTimer> createState() => _CountdownTimerState();
 }
 
-class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProviderStateMixin {
-  late Timer _timer;
+class _CountdownTimerState extends State<CountdownTimer>
+    with TickerProviderStateMixin {
+  Timer? _timer;
   int _elapsedTime = 0;
 
-  void resetTimer(){
-    _elapsedTime = 0;
-    _timer.cancel();
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
-  void initTimer(){
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer){
+  void resetTimer() {
+    _elapsedTime = 0;
+    _timer?.cancel();
+  }
+
+  void initTimer() {
+      _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _elapsedTime += 1;
       });
-      if (_elapsedTime == widget.totalDuration){
+      if (_elapsedTime == widget.totalDuration) {
         timer.cancel();
         widget.onEndCallback();
       }
@@ -40,6 +55,7 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
     initTimer();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -51,11 +67,8 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
             elapsedSeconds: _elapsedTime,
             totalSeconds: widget.totalDuration,
             progressStrokeColor: widget.progressStrokeColor ?? Colors.black,
-            divisionStrokeColor: widget.divisionStrokeColor ?? Colors.white
-        ),
+            divisionStrokeColor: widget.divisionStrokeColor ?? Colors.white),
       ),
     );
   }
 }
-
-

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/drawer.dart';
-import 'package:enter_training_me/pages/quick_countdown/countdown_set_bat.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
   int _countdownValue = 0;
   int _totalTime = 0;
 
-
   @override
   void initState() {
     super.initState();
@@ -36,6 +34,109 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
       });
     });
   }
+
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _totalTimeTimer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 40,
+        title: Text(
+          Utils.convertToTime(_totalTime),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      drawer: const MyDrawer(),
+      backgroundColor: CustomTheme.darkGrey,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              children: _renderSetItems(),
+            ),
+            Expanded(
+              child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _tabController,
+                  children: [
+                    Column(
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: [
+                              _renderTimerOption(availableDurations[0]),
+                              _renderTimerOption(availableDurations[1]),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              _renderTimerOption(availableDurations[2]),
+                              _renderTimerOption(availableDurations[3]),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              _renderTimerOption(availableDurations[4]),
+                              _renderTimerOption(availableDurations[5]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CountdownTimer(
+                            totalDuration: _countdownValue,
+                            onEndCallback: () {
+                              _tabController.index = 0;
+                            },
+                            progressStrokeColor: CustomTheme.middleGreen,
+                            size: min(MediaQuery.of(context).size.height * 0.5,
+                                MediaQuery.of(context).size.width * 0.8),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: CustomTheme.middleGreen),
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.stop,
+                                  color: CustomTheme.darkGrey,
+                                ),
+                                onPressed: () {
+                                  _tabController.index = 0;
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ]),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
 
   Widget _renderSetItem(int index) {
     Color bgColor = Colors.black;
@@ -76,7 +177,6 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
     return setItems;
   }
 
-
   void _selectTimer(int optionDuration) {
     if (_currentSet > 0) {
       _currentSet -= 1;
@@ -88,95 +188,24 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
   }
 
   Widget _renderTimerOption(int optionDuration) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () => _selectTimer(optionDuration),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.white),
-            color: CustomTheme.middleGreen,
-          ),
-          child: Center(
-            child: Text(
-              optionDuration.toString(),
-              style: const TextStyle(fontSize: 50),
+    return Flexible(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () => _selectTimer(optionDuration),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(color: Colors.white),
+              color: CustomTheme.middleGreen,
+            ),
+            child: Center(
+              child: Text(
+                optionDuration.toString(),
+                style: const TextStyle(fontSize: 50),
+              ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    _totalTimeTimer.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        toolbarHeight: 40,
-        title: Text(Utils.convertToTime(_totalTime), style: const TextStyle(fontWeight: FontWeight.bold),),
-      ),
-      drawer: const MyDrawer(),
-      backgroundColor: CustomTheme.darkGrey,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: _renderSetItems(),
-            ),
-            Expanded(
-              child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                  controller: _tabController, children: [
-                GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 2,
-                    children: availableDurations
-                        .map((duration) => _renderTimerOption(duration))
-                        .toList()),
-                Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CountdownTimer(
-                        totalDuration: _countdownValue,
-                        onEndCallback: (){
-                          _tabController.index = 0;
-                        },
-                        progressStrokeColor: CustomTheme.middleGreen,
-                        size: min(MediaQuery.of(context).size.height * 0.5,
-                            MediaQuery.of(context).size.width * 0.8),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: CustomTheme.middleGreen
-                          ),
-                          child: IconButton(icon: const Icon(Icons.stop, color: CustomTheme.darkGrey,), onPressed: (){
-                            _tabController.index = 0;
-                          },),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-
-              ]),
-            )
-          ],
         ),
       ),
     );
