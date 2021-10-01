@@ -80,8 +80,8 @@ class _OneRMPageState extends State<OneRMPage> {
           ],
         ),
       ));
-      children.add(Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      children.add(const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: Divider(
           height: 1,
           color: Colors.white60,
@@ -94,7 +94,9 @@ class _OneRMPageState extends State<OneRMPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+          // title: Text("1RM Calculator"),
+          ),
       drawer: const MyDrawer(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
@@ -114,8 +116,8 @@ class _OneRMPageState extends State<OneRMPage> {
                         decoration: const InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 16),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
                             ),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
@@ -163,7 +165,7 @@ class _OneRMPageState extends State<OneRMPage> {
                   text: TextSpan(text: "Your 1RM is probably ", children: [
                     TextSpan(
                         text: "${_calculateOneRM().toStringAsFixed(1)} kg",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18)),
                   ]),
                 ),
@@ -176,13 +178,13 @@ class _OneRMPageState extends State<OneRMPage> {
                     children: [
                       Container(
                         color: Colors.red,
-                        padding: EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 8),
                         child: Row(
                           children: const [
                             Expanded(
                               child: Center(
                                 child: Text("Reps",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     )),
@@ -191,7 +193,7 @@ class _OneRMPageState extends State<OneRMPage> {
                             Expanded(
                               child: Center(
                                 child: Text("Percent",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     )),
@@ -200,7 +202,7 @@ class _OneRMPageState extends State<OneRMPage> {
                             Expanded(
                               child: Center(
                                 child: Text("Weight",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     )),
