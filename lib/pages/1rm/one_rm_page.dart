@@ -49,31 +49,68 @@ class _OneRMPageState extends State<OneRMPage> {
 
   List<Widget> _renderGridChildren() {
     List<Widget> children = [
-      Text("Reps",
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          )),
-      Text("Percent",
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          )),
-      Text("Weight",
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          )),
+      Container(
+        color: Colors.red,
+        child: Row(
+          children: const [
+            Expanded(
+              child: Center(
+                child: Text("Reps",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Text("Percent",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Text("Weight",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+            ),
+          ],
+        ),
+      )
     ];
     for (int i = 0; i < matchingPercents.length; i++) {
       int reps = i + 1;
       double percent = matchingPercents[i];
       double weight = percent * maxWeight;
-      children.addAll([
-        Text(reps.toString(), style: const TextStyle()),
-        Text((percent * 100).toInt().toString()),
-        Text(weight.toString() + " kg"),
-      ]);
+      children.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: [
+            Expanded(
+                child: Center(
+                    child: Text(reps.toString(), style: const TextStyle()))),
+            Expanded(
+              child: Center(child: Text((percent * 100).toInt().toString())),
+            ),
+            Expanded(
+              child: Center(child: Text(weight.toString() + " kg")),
+            ),
+          ],
+        ),
+      ));
+      children.add(Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Divider(
+          height: 1,
+          color: Colors.white60,
+        ),
+      ));
     }
     return children;
   }
@@ -109,11 +146,10 @@ class _OneRMPageState extends State<OneRMPage> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: GridView.count(
-                      shrinkWrap: true,
-                      // childAspectRatio: null,
-                      crossAxisCount: 3,
-                      children: _renderGridChildren()),
+                  child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: _renderGridChildren())),
                 ),
               ),
             ],
