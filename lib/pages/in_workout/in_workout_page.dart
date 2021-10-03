@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_exercise_view.dart';
@@ -17,14 +18,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class InWorkoutPage extends StatelessWidget {
+  final Training referenceTraining;
+
   static const routeName = "/workout/in";
 
-  const InWorkoutPage({Key? key}) : super(key: key);
+  const InWorkoutPage({Key? key, required this.referenceTraining}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => InWorkoutBloc(),
+      create: (BuildContext context) => InWorkoutBloc(referenceTraining),
       child: const InWorkoutScreen(),
     );
   }

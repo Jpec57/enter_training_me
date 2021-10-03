@@ -10,7 +10,7 @@ class UpdatedProgressEvent extends InWorkoutEvent {
   List<Object?> get props => [];
 }
 
-class UpdatedExerciseEvent extends InWorkoutEvent {
+class ExerciseDoneEvent extends InWorkoutEvent {
   
   @override
   List<Object?> get props => [];

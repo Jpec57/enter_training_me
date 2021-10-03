@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/drawer.dart';
 import 'package:enter_training_me/utils/utils.dart';
@@ -15,7 +16,7 @@ class QuickCountdownPage extends StatefulWidget {
 }
 
 class _QuickCountdownPageState extends State<QuickCountdownPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final maxSetCount = 7;
   final List<int> availableDurations = [25, 60, 90, 120, 180, 300];
   late TabController _tabController;
@@ -35,13 +36,20 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
     });
   }
 
-
   @override
   void dispose() {
     _tabController.dispose();
     _totalTimeTimer.cancel();
     super.dispose();
   }
+
+  // Future<AudioPlayer> playLocalAsset({bool isEnd = false}) async {
+  //   AudioCache cache = AudioCache();
+  //   if (isEnd) {
+  //     return await cache.play("sounds/beep_end.mp3");
+  //   }
+  //   return await cache.play("sounds/beep_start.mp3");
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +110,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
                         children: [
                           CountdownTimer(
                             totalDuration: _countdownValue,
+                            isIncludingStop: true,
                             onEndCallback: () {
                               _tabController.index = 0;
                             },
@@ -109,23 +118,6 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
                             size: min(MediaQuery.of(context).size.height * 0.5,
                                 MediaQuery.of(context).size.width * 0.8),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: CustomTheme.middleGreen),
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.stop,
-                                  color: CustomTheme.darkGrey,
-                                ),
-                                onPressed: () {
-                                  _tabController.index = 0;
-                                },
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),
@@ -136,7 +128,6 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
       ),
     );
   }
-
 
   Widget _renderSetItem(int index) {
     Color bgColor = Colors.black;
@@ -197,7 +188,8 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               border: Border.all(color: Colors.white),
-              color: CustomTheme.middleGreen,
+              color: CustomTheme.darkGrey,
+              // color: CustomTheme.middleGreen,
             ),
             child: Center(
               child: Text(

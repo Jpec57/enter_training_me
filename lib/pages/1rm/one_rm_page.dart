@@ -53,7 +53,6 @@ class _OneRMPageState extends State<OneRMPage> {
     });
 
     _listWheelScrollController = FixedExtentScrollController();
-    print(matchingPercents.length ~/ 2);
     _listWheelScrollController.animateToItem((matchingPercents.length ~/ 2),
         duration: const Duration(milliseconds: 500), curve: Curves.linear);
     super.initState();
@@ -101,8 +100,55 @@ class _OneRMPageState extends State<OneRMPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          // title: Text("1RM Calculator"),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          title: TextField(
+            controller: _textEditingController,
+            keyboardType: TextInputType.number,
+            style: const TextStyle(color: Colors.white),
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white)),
+                hintText: "100",
+                hintStyle: TextStyle(color: Colors.white60)),
           ),
+          actions: [
+            Theme(
+              data: Theme.of(context).copyWith(
+                canvasColor: CustomTheme.darkGrey,
+              ),
+              child: DropdownButton<int>(
+                value: _selectedRepNumber,
+                icon: const Icon(Icons.arrow_downward),
+                elevation: 16,
+                style: const TextStyle(color: Colors.white),
+                underline: Container(
+                  height: 2,
+                  color: Colors.white,
+                ),
+                onChanged: (int? newValue) {
+                  setState(() {
+                    _selectedRepNumber = newValue!;
+                  });
+                },
+                items: <int>[
+                  ...List.generate(
+                      matchingPercents.length, (index) => index + 1)
+                ].map<DropdownMenuItem<int>>((int value) {
+                  return DropdownMenuItem<int>(
+                    value: value,
+                    child: Text(
+                      "${value}RM",
+                    ),
+                  );
+                }).toList(),
+              ),
+            )
+          ]),
       drawer: const MyDrawer(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
@@ -110,61 +156,6 @@ class _OneRMPageState extends State<OneRMPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: TextField(
-                        controller: _textEditingController,
-                        keyboardType: TextInputType.number,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 16),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            hintText: "100",
-                            hintStyle: TextStyle(color: Colors.white60)),
-                      ),
-                    ),
-                  ),
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                      canvasColor: CustomTheme.darkGrey,
-                    ),
-                    child: DropdownButton<int>(
-                      value: _selectedRepNumber,
-                      icon: const Icon(Icons.arrow_downward),
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.white),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.white,
-                      ),
-                      onChanged: (int? newValue) {
-                        setState(() {
-                          _selectedRepNumber = newValue!;
-                        });
-                      },
-                      items: <int>[
-                        ...List.generate(
-                            matchingPercents.length, (index) => index + 1)
-                      ].map<DropdownMenuItem<int>>((int value) {
-                        return DropdownMenuItem<int>(
-                          value: value,
-                          child: Text(
-                            "${value}RM",
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  )
-                ],
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 32.0),
                 child: RichText(
@@ -223,18 +214,9 @@ class _OneRMPageState extends State<OneRMPage> {
                               onSelectedItemChanged: (int index) {
                                 // print("Selected item is $index");
                               },
-                              magnification: 1.2,
-                              useMagnifier: true,
                               physics: const FixedExtentScrollPhysics(),
                               itemExtent: 75.0,
                               children: _renderGridChildren()))
-
-                      // Expanded(
-                      //   child: SingleChildScrollView(
-                      //       child: Column(
-                      //           crossAxisAlignment: CrossAxisAlignment.stretch,
-                      //           children: _renderGridChildren())),
-                      // ),
                     ],
                   ),
                 ),

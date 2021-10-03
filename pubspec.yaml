@@ -22,6 +22,8 @@ dependencies:
   equatable: ^2.0.3
   dio: ^4.0.0
   flutter_secure_storage: ^4.2.1
+  carousel_slider: ^4.0.0
+  audioplayers: ^0.20.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -38,6 +40,7 @@ flutter:
   assets:
     - assets/
     - assets/exercises/
+    - assets/sounds/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

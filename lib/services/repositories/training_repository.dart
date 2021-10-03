@@ -1,34 +1,67 @@
+import 'package:dio/dio.dart';
+import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
+import 'package:flutter/material.dart';
 
 class TrainingRepository extends ApiService implements IRepository {
+  static const GET_ALL = "/trainings/";
+  // static const GET_ALL = "/api/trainings/";
+  static const GET = "/api/trainings/{id}";
+
   @override
-  get(int id) {
+  Future<Training> get(int id) async {
+    Response response =
+        await getDio().get(GET.replaceFirst("{id}", id.toString()));
+    dynamic data = response.data;
+    return Training.fromJson(data);
+  }
+
+  @override
+  Future<List<Training>> getAll() async {
+    debugPrint("Fetching training list...");
+    Response response = await getDio().get(GET_ALL);
+    print(response);
+    List<dynamic> data = response.data;
+    print("HERE DATA");
+    print(data);
+    print("Start--------------------------------");
+
+    try {
+      data.map((e) {
+        print(e);
+        var training = Training.fromJson(e);
+        return Training.fromJson(e);
+      }).toList();
+    } on Exception catch (e) {
+      print(e);
+    }
+
+    print("TOTO--------------------------------");
+    return data.map((e) => Training.fromJson(e)).toList();
+  }
+
+  @override
+  Future<bool> delete(int id) {
+    // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  List getAll() {
+  Future patch(Map<String, dynamic> data) {
+    // TODO: implement patch
     throw UnimplementedError();
   }
 
   @override
-  patch(Map<String, dynamic> data) {
+  Future post(Map<String, dynamic> data) {
+    // TODO: implement post
     throw UnimplementedError();
   }
 
   @override
-  post(Map<String, dynamic> data) {
-    throw UnimplementedError();
-  }
-
-  @override
-  put(data) {
-    throw UnimplementedError();
-  }
-
-  @override
-  bool delete(int id) {
+  Future put(data) {
+    // TODO: implement put
     throw UnimplementedError();
   }
 }

@@ -1,10 +1,12 @@
 part of 'in_workout_bloc.dart';
 
-abstract class InWorkoutState extends Equatable {
-  const InWorkoutState();
-}
+class InWorkoutState extends Equatable {
+  final Training referenceTraining;
+  final Training? realisedTraining;
 
-class InWorkoutInitial extends InWorkoutState {
+  const InWorkoutState(
+      {required this.referenceTraining, this.realisedTraining});
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [referenceTraining, realisedTraining];
 }

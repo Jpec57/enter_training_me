@@ -9,8 +9,8 @@ abstract class HttpService {
 
   Dio getDio() {
     if (dio == null) {
-      dio = Dio(this.options);
-      if (interceptor != null){
+      dio = Dio(options);
+      if (interceptor != null) {
         dio!.interceptors.add(interceptor!);
       }
     }
