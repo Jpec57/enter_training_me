@@ -15,6 +15,7 @@ class OneRMPage extends StatefulWidget {
 class _OneRMPageState extends State<OneRMPage> {
   double givenWeight = 100;
   int _selectedRepNumber = 1;
+  late FixedExtentScrollController _listWheelScrollController;
 
   late TextEditingController _textEditingController;
   final List<double> matchingPercents = [
@@ -50,6 +51,11 @@ class _OneRMPageState extends State<OneRMPage> {
         });
       }
     });
+
+    _listWheelScrollController = FixedExtentScrollController();
+    print(matchingPercents.length ~/ 2);
+    _listWheelScrollController.animateToItem((matchingPercents.length ~/ 2),
+        duration: const Duration(milliseconds: 500), curve: Curves.linear);
     super.initState();
   }
 
@@ -213,18 +219,22 @@ class _OneRMPageState extends State<OneRMPage> {
                       ),
                       Expanded(
                           child: ListWheelScrollView(
-                              // onSelectedItemChanged: (int index) {
-                              //   print("Selected item is $index");
-                              // },
-                              itemExtent: 40.0,
-                              children: _renderGridChildren())
-                          /*
-                        SingleChildScrollView(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: _renderGridChildren()))
-                        */
-                          ),
+                              controller: _listWheelScrollController,
+                              onSelectedItemChanged: (int index) {
+                                // print("Selected item is $index");
+                              },
+                              magnification: 1.2,
+                              useMagnifier: true,
+                              physics: const FixedExtentScrollPhysics(),
+                              itemExtent: 75.0,
+                              children: _renderGridChildren()))
+
+                      // Expanded(
+                      //   child: SingleChildScrollView(
+                      //       child: Column(
+                      //           crossAxisAlignment: CrossAxisAlignment.stretch,
+                      //           children: _renderGridChildren())),
+                      // ),
                     ],
                   ),
                 ),

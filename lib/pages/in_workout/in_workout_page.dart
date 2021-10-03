@@ -6,6 +6,8 @@ import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_exercise_view.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_rest_view.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/current_exercise_details.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/next_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/utils/utils.dart';
@@ -60,8 +62,6 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
     _tabController.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,10 +100,23 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               ],
             ),
           ),
+          AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: MediaQuery.of(context).size.height *
+                  ((_tabController.index == 0) ? 0.4 : 0.25),
+              child: ExerciseContainer(
+                child: (_tabController.index == 0)
+                    ? const CurrentExerciseDetail()
+                    : const NextExerciseDetail(),
+              )),
           Expanded(
-              child: TabBarView(controller: _tabController, children: const [
-            InWorkoutExerciseView(),
-            InWorkoutRestView()
+              child: TabBarView(controller: _tabController, children: [
+            const InWorkoutExerciseView(),
+            InWorkoutRestView(
+              onTimerEndCallback: () {
+                toggleView();
+              },
+            )
           ])),
           _renderDoneButton(context),
         ],
@@ -112,7 +125,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
   }
 
   void toggleView() {
-    _tabController.index = (_tabController.index == 0) ? 1 : 0;
+    _tabController.animateTo((_tabController.index == 0) ? 1 : 0);
   }
 
   Widget _renderDoneButton(BuildContext context) {

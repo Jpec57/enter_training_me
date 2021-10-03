@@ -1,11 +1,14 @@
 import 'dart:math';
 
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/current_exercise_details.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
 
 class InWorkoutRestView extends StatefulWidget {
-  const InWorkoutRestView({Key? key}) : super(key: key);
+  final VoidCallback onTimerEndCallback;
+  const InWorkoutRestView({Key? key, required this.onTimerEndCallback})
+      : super(key: key);
 
   @override
   _InWorkoutRestViewState createState() => _InWorkoutRestViewState();
@@ -17,16 +20,34 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: Center(
-            child: CountdownTimer(
-              totalDuration: 60,
-              onEndCallback: (){
-
-              },
-              progressStrokeColor: CustomTheme.middleGreen,
-              size: min(MediaQuery.of(context).size.height * 0.5, MediaQuery.of(context).size.width * 0.8),
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: LayoutBuilder(builder: (context, constraints) {
+            double maxSize =
+                min(constraints.constrainHeight(), constraints.maxWidth);
+            // print(constraints.constrainHeight());
+            // print(constraints.maxWidth);
+            // print(maxSize);
+            return Center(
+              child: CountdownTimer(
+                totalDuration: 60,
+                onEndCallback: widget.onTimerEndCallback,
+                progressStrokeColor: CustomTheme.middleGreen,
+                size: 200,
+              ),
+            );
+          }),
+        ),
+        // IconButton(onPressed: onPressed, icon: icon)
+        Container(
+          decoration: const BoxDecoration(
+              shape: BoxShape.circle, color: CustomTheme.middleGreen),
+          child: IconButton(
+            icon: const Icon(
+              Icons.stop,
+              color: CustomTheme.darkGrey,
             ),
+            onPressed: widget.onTimerEndCallback,
           ),
         ),
       ],

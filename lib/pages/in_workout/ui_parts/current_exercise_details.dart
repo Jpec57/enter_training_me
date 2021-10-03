@@ -1,4 +1,5 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,84 +25,56 @@ Maecenas nec odio et ante tincidunt tempus. Suspendisse feugiat. Suspendisse feu
 Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Curabitur blandit mollis lacus. Suspendisse nisl elit, rhoncus eget, elementum ac, condimentum eget, diam. Fusce convallis metus id felis luctus adipiscing. Nam adipiscing.
           """;
 
-  Widget _renderExerciseImage(){
+  Widget _renderExerciseImage() {
     return Image.asset("assets/exercises/pull_up.png");
   }
 
-  Widget _renderExerciseDescription(){
+  Widget _renderExerciseDescription() {
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(description)
-        ],
+        children: [Text(description)],
       ),
-    );
-  }
-  
-  Widget _renderExerciseInfo(){
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(child: Text("Pull Up", style: Theme.of(context).textTheme.headline2,)),
-            Text("1/3 sets", style: TextStyle(fontSize: 16),),
-            // Text("1/3 sets", style: Theme.of(context).textTheme.headline4),
-          ],
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("10", style: Theme.of(context).textTheme.headline1),
-            Text("@50kgs", style: Theme.of(context).textTheme.headline4),
-          ],
-        ),
-      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        color: CustomTheme.middleGreen
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(icon: const Icon(Icons.arrow_circle_down_sharp),
-                  onPressed: (){
-
-                },),
-                IconButton(icon: const Icon(Icons.arrow_circle_up_sharp),
-                  onPressed: (){
-                },),
-              ],
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: (){
-                  setState(() {
-                    _isShowingDescription = !_isShowingDescription;
-                  });
-                },
-                child: _isShowingDescription ? _renderExerciseDescription() : _renderExerciseImage(),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_circle_down_sharp),
+                onPressed: () {},
               ),
+              Flexible(
+                  child: Text(
+                "Pull Up",
+                style: Theme.of(context).textTheme.headline2,
+              )),
+              IconButton(
+                icon: const Icon(Icons.arrow_circle_up_sharp),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _isShowingDescription = !_isShowingDescription;
+                });
+              },
+              child: _isShowingDescription
+                  ? _renderExerciseDescription()
+                  : _renderExerciseImage(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _renderExerciseInfo(),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
