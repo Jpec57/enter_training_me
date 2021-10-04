@@ -11,8 +11,25 @@ class Training {
   final List<ExerciseCycle> cycles;
   final int restBetweenCycles;
 
-  const Training({required this.name, required this.cycles, this.author, required this.restBetweenCycles});
+  const Training(
+      {required this.name,
+      required this.cycles,
+      this.author,
+      required this.restBetweenCycles});
 
-  factory Training.fromJson(Map<String, dynamic> json) => _$TrainingFromJson(json);
+  factory Training.fromJson(Map<String, dynamic> json) =>
+      _$TrainingFromJson(json);
   Map<String, dynamic> toJson() => _$TrainingToJson(this);
+
+  factory Training.clone(Training ref) {
+    return Training(
+        name: ref.name,
+        author: ref.author,
+        restBetweenCycles: ref.restBetweenCycles,
+        cycles: ref.cycles);
+  }
+  @override
+  String toString() {
+    return "Training $name [$cycles]";
+  }
 }

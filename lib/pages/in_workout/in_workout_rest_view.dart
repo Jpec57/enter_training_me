@@ -25,30 +25,16 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
           child: LayoutBuilder(builder: (context, constraints) {
             double maxSize =
                 min(constraints.constrainHeight(), constraints.maxWidth);
-            // print(constraints.constrainHeight());
-            // print(constraints.maxWidth);
-            // print(maxSize);
             return Center(
               child: CountdownTimer(
                 totalDuration: 60,
+                isIncludingStop: true,
                 onEndCallback: widget.onTimerEndCallback,
                 progressStrokeColor: CustomTheme.middleGreen,
                 size: 200,
               ),
             );
           }),
-        ),
-        // IconButton(onPressed: onPressed, icon: icon)
-        Container(
-          decoration: const BoxDecoration(
-              shape: BoxShape.circle, color: CustomTheme.middleGreen),
-          child: IconButton(
-            icon: const Icon(
-              Icons.stop,
-              color: CustomTheme.darkGrey,
-            ),
-            onPressed: widget.onTimerEndCallback,
-          ),
         ),
       ],
     );

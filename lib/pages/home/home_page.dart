@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/sockets/src/sockets_io.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -45,9 +46,12 @@ class _HomePageState extends State<HomePage> {
                 (BuildContext context, AsyncSnapshot<List<Training>> snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    print("error");
+                    print(snapshot.error.toString());
+                    return Text(snapshot.error.toString());
+                  }
                   if (snapshot.data == null) {
-                    print("SNAP DATA");
-                    print(snapshot.data);
                     return const Text("Empty");
                   }
                   return CarouselSlider(
@@ -57,7 +61,9 @@ class _HomePageState extends State<HomePage> {
                       enlargeCenterPage: true,
                     ),
                     items: snapshot.data!.map((training) {
-                      return const TrainingContainer();
+                      return TrainingContainer(
+                        referenceTraining: training,
+                      );
                     }).toList(),
                   );
                 case ConnectionState.waiting:

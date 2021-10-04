@@ -43,14 +43,6 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
     super.dispose();
   }
 
-  // Future<AudioPlayer> playLocalAsset({bool isEnd = false}) async {
-  //   AudioCache cache = AudioCache();
-  //   if (isEnd) {
-  //     return await cache.play("sounds/beep_end.mp3");
-  //   }
-  //   return await cache.play("sounds/beep_start.mp3");
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

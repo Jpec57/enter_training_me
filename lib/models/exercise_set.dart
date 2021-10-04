@@ -9,8 +9,20 @@ class ExerciseSet {
   final double? weightPercent;
   final double? weight;
 
-  const ExerciseSet({required this.reps, this.weightPercent, required this.weight});
+  const ExerciseSet(
+      {required this.reps, this.weightPercent, required this.weight});
 
-  factory ExerciseSet.fromJson(Map<String, dynamic> json) => _$ExerciseSetFromJson(json);
+  factory ExerciseSet.fromJson(Map<String, dynamic> json) =>
+      _$ExerciseSetFromJson(json);
   Map<String, dynamic> toJson() => _$ExerciseSetToJson(this);
+
+  ExerciseSet copyWith({
+    int? reps,
+    double? weightPercent,
+    double? weight,
+  }) =>
+      ExerciseSet(
+          reps: reps ?? this.reps,
+          weight: weight ?? this.weight,
+          weightPercent: weightPercent ?? this.weightPercent);
 }

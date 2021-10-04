@@ -18,19 +18,12 @@ class MyDrawer extends StatelessWidget {
         children: <Widget>[
           const DrawerHeader(
             child: Text(
-              'Drawer Header',
+              'EnterTrainingMe',
               style: TextStyle(color: Colors.white),
             ),
             decoration: BoxDecoration(
               color: CustomTheme.middleGreen,
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
-            onTap: () {
-              Get.toNamed(ProfilePage.routeName);
-            },
           ),
           ListTile(
             leading: const Icon(Icons.home),
@@ -41,6 +34,17 @@ class MyDrawer extends StatelessWidget {
             ),
             onTap: () {
               Get.toNamed(HomePage.routeName);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text(
+              'Profile',
+              style:
+                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ),
+            onTap: () {
+              Get.toNamed(ProfilePage.routeName);
             },
           ),
           ListTile(

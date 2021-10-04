@@ -4,14 +4,22 @@ abstract class InWorkoutEvent extends Equatable {
   const InWorkoutEvent();
 }
 
-class UpdatedProgressEvent extends InWorkoutEvent {
+class RestDoneEvent extends InWorkoutEvent {
+  final int doneReps;
 
+  const RestDoneEvent({required this.doneReps});
+  // final int restTimeTaken;
+
+  @override
+  List<Object?> get props => [doneReps];
+}
+
+class ExerciseDoneEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [];
 }
 
-class ExerciseDoneEvent extends InWorkoutEvent {
-  
+class TrainingEndedEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [];
 }

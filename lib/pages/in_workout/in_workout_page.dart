@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
@@ -10,7 +9,6 @@ import 'package:enter_training_me/pages/in_workout/ui_parts/current_exercise_det
 import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/next_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
-import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +20,15 @@ class InWorkoutPage extends StatelessWidget {
 
   static const routeName = "/workout/in";
 
-  const InWorkoutPage({Key? key, required this.referenceTraining}) : super(key: key);
+  const InWorkoutPage({Key? key, required this.referenceTraining})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(referenceTraining);
     return BlocProvider(
-      create: (BuildContext context) => InWorkoutBloc(referenceTraining),
+      create: (BuildContext context) =>
+          InWorkoutBloc(referenceTraining, Training.clone(referenceTraining)),
       child: const InWorkoutScreen(),
     );
   }
@@ -109,16 +110,29 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                   ((_tabController.index == 0) ? 0.4 : 0.25),
               child: ExerciseContainer(
                 child: (_tabController.index == 0)
-                    ? const CurrentExerciseDetail()
-                    : const NextExerciseDetail(),
+                    ? BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                        buildWhen: (prev, next) =>
+                            prev.currentExoIndex != next.currentExoIndex,
+                        builder: (context, state) {
+                          return CurrentExerciseDetail(
+                              referenceExercise: state.currentRefExo);
+                        },
+                      )
+                    : BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                        buildWhen: (prev, next) =>
+                            prev.currentExoIndex != next.currentExoIndex ||
+                            prev.currentSetIndex != next.currentSetIndex,
+                        builder: (context, state) {
+                          return NextExerciseDetail(
+                              nextExercise: state.nextExo);
+                        },
+                      ),
               )),
           Expanded(
               child: TabBarView(controller: _tabController, children: [
             const InWorkoutExerciseView(),
             InWorkoutRestView(
-              onTimerEndCallback: () {
-                toggleView();
-              },
+              onTimerEndCallback: onExerciseSetEnd,
             )
           ])),
           _renderDoneButton(context),
@@ -127,15 +141,14 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
     );
   }
 
-  void toggleView() {
+  void onExerciseSetEnd() {
+    BlocProvider.of<InWorkoutBloc>(context).add(ExerciseDoneEvent());
     _tabController.animateTo((_tabController.index == 0) ? 1 : 0);
   }
 
   Widget _renderDoneButton(BuildContext context) {
     return InkWell(
-        onTap: () {
-          toggleView();
-        },
+        onTap: onExerciseSetEnd,
         child: Container(
             width: MediaQuery.of(context).size.width,
             color: CustomTheme.darkGrey,

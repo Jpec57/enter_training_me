@@ -7,18 +7,35 @@ part 'realised_exercise.g.dart';
 
 @JsonSerializable()
 class RealisedExercise {
+  final int? id;
+  //TODO
   final List<ExerciseSet> sets;
+  //TODO
   final ReferenceExercise exerciseReference;
   final int restBetweenSet;
+  //TODO
   final ExecutionStyle? executionStyle;
 
-  const RealisedExercise({required this.exerciseReference,
+  const RealisedExercise({
+    this.id,
+    required this.exerciseReference,
     required this.sets,
     required this.restBetweenSet,
     this.executionStyle,
-
   });
 
-  factory RealisedExercise.fromJson(Map<String, dynamic> json) => _$RealisedExerciseFromJson(json);
+  factory RealisedExercise.fromJson(Map<String, dynamic> json) =>
+      _$RealisedExerciseFromJson(json);
   Map<String, dynamic> toJson() => _$RealisedExerciseToJson(this);
+
+  RealisedExercise copyWith({List<ExerciseSet>? sets}) => RealisedExercise(
+      exerciseReference: exerciseReference,
+      executionStyle: executionStyle,
+      restBetweenSet: restBetweenSet,
+      sets: sets ?? this.sets);
+
+      @override
+      String toString() {
+        return "$exerciseReference (sets $sets)";
+      }
 }

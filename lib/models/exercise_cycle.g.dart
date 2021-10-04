@@ -8,6 +8,7 @@ part of 'exercise_cycle.dart';
 
 ExerciseCycle _$ExerciseCycleFromJson(Map<String, dynamic> json) =>
     ExerciseCycle(
+      // exercises: [],
       exercises: (json['exercises'] as List<dynamic>)
           .map((e) => RealisedExercise.fromJson(e as Map<String, dynamic>))
           .toList(),

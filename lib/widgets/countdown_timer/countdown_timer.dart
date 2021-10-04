@@ -104,17 +104,21 @@ class _CountdownTimerState extends State<CountdownTimer>
                     left: 0,
                     right: 0,
                     child: Container(
-                      height: 50,
-                      width: 50,
+                      height: widget.size / 8,
+                      width: widget.size / 8,
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: CustomTheme.middleGreen),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.stop,
-                          color: CustomTheme.darkGrey,
+                      child: Center(
+                        child: IconButton(
+                          color: Colors.red,
+                          icon: Icon(
+                            Icons.stop,
+                            color: CustomTheme.darkGrey,
+                            size: widget.size / 10,
+                          ),
+                          onPressed: widget.onEndCallback,
                         ),
-                        onPressed: widget.onEndCallback,
                       ),
                     ),
                   )

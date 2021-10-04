@@ -1,17 +1,23 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
+import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TrainingContainer extends StatelessWidget {
+  final Training referenceTraining;
   const TrainingContainer({
     Key? key,
+    required this.referenceTraining,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(onTap: () {
-      Get.toNamed(InWorkoutPage.routeName);
+      Get.toNamed(InWorkoutPage.routeName,
+          arguments:
+              InWorkoutPageArguments(referenceTraining: referenceTraining));
     }, child: Builder(builder: (BuildContext context) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -35,8 +41,9 @@ class TrainingContainer extends StatelessWidget {
                           bottomRight: Radius.circular(10),
                           bottomLeft: Radius.circular(10)),
                       color: CustomTheme.greenSwatch.shade700),
-                  child: const Center(
-                    child: Text("Training 2", style: TextStyle(fontSize: 30)),
+                  child: Center(
+                    child: Text(referenceTraining.name,
+                        style: const TextStyle(fontSize: 30)),
                   ),
                 )),
           ],

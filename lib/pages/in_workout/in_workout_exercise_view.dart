@@ -1,7 +1,7 @@
-import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/pages/in_workout/ui_parts/current_exercise_details.dart';
-import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
+import 'package:enter_training_me/models/execution_style.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InWorkoutExerciseView extends StatefulWidget {
   const InWorkoutExerciseView({Key? key}) : super(key: key);
@@ -12,43 +12,59 @@ class InWorkoutExerciseView extends StatefulWidget {
 
 class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
   Widget _renderExerciseInfo() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
+    return BlocBuilder<InWorkoutBloc, InWorkoutState>(
+      buildWhen: (prev, next) =>
+          prev.currentSetIndex != next.currentSetIndex ||
+          prev.currentExoIndex != next.currentExoIndex ||
+          prev.currentCycleIndex != next.currentCycleIndex,
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("10", style: Theme.of(context).textTheme.headline1),
-            Text("@50kgs", style: Theme.of(context).textTheme.headline4),
-          ],
-        ),
-        Column(
-          children: [
-            Row(
+            Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  "Regular Execution Style",
-                  style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
-                ),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.info),
-                    color: Colors.white),
+                Text(state.currentSet.reps.toString(),
+                    style: Theme.of(context).textTheme.headline1),
+                state.currentSet.weight != null
+                    ? Text("@${state.currentSet.weight}kg",
+                        style: Theme.of(context).textTheme.headline4)
+                    : Container(),
               ],
             ),
-            const Text(
-              "1 / 3 sets",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      state.currentExo.executionStyle != null
+                          ? state.currentExo.executionStyle!.name
+                          : "Regular Execution Style",
+                      style: const TextStyle(
+                          fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.info),
+                        color: Colors.white),
+                  ],
+                ),
+                Text(
+                  "${state.currentSetIndex + 1} / ${state.currentExo.sets.length} sets",
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ],
+            )
           ],
-        )
-      ],
+        );
+      },
     );
   }
 
-  Widget _renderExecutionStyleInfo() {
-    return Text("Do it well but do it quick");
+  Widget _renderExecutionStyleInfo(ExecutionStyle execStyle) {
+    return Text(execStyle.description.toString());
   }
 
   @override

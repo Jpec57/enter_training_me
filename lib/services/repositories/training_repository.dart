@@ -21,23 +21,17 @@ class TrainingRepository extends ApiService implements IRepository {
   Future<List<Training>> getAll() async {
     debugPrint("Fetching training list...");
     Response response = await getDio().get(GET_ALL);
-    print(response);
     List<dynamic> data = response.data;
-    print("HERE DATA");
-    print(data);
-    print("Start--------------------------------");
+    // try {
+    //   data.map((e) {
+    //     print(e);
+    //     var training = Training.fromJson(e);
+    //     return Training.fromJson(e);
+    //   }).toList();
+    // } on Exception catch (e) {
+    //   print(e);
+    // }
 
-    try {
-      data.map((e) {
-        print(e);
-        var training = Training.fromJson(e);
-        return Training.fromJson(e);
-      }).toList();
-    } on Exception catch (e) {
-      print(e);
-    }
-
-    print("TOTO--------------------------------");
     return data.map((e) => Training.fromJson(e)).toList();
   }
 
