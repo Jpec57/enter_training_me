@@ -16,13 +16,19 @@ void main() {
   final AuthenticationRepository _authRepository = AuthenticationRepository();
   final UserRepository _userRepository = UserRepository();
   final TrainingRepository _trainingRepository = TrainingRepository();
-  
-  runApp(MultiRepositoryProvider(providers: [
-    RepositoryProvider.value(value: _trainingRepository),
-    RepositoryProvider.value(value: _userRepository),
-    RepositoryProvider.value(value: _authRepository)
-  ], child: const MyApp()));
-  // child: MultiBlocProvider(providers: const [], child: const MyApp())));
+
+  runApp(MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: _trainingRepository),
+        RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _authRepository)
+      ],
+      child: MultiBlocProvider(providers: [
+        BlocProvider.value(
+            value: AuthenticationBloc(
+                authenticationRepository: _authRepository,
+                userRepository: _userRepository)),
+      ], child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {
@@ -51,10 +57,10 @@ class MyApp extends StatelessWidget {
                   print("authenticated");
                   Get.offNamedUntil(HomePage.routeName, (route) => false);
                   break;
-                case AuthenticationStatus.unauthenticated:
-                  print("unauthenticated");
-                  Get.offNamedUntil(LoginPage.routeName, (route) => false);
-                  break;
+                // case AuthenticationStatus.unauthenticated:
+                //   print("unauthenticated");
+                //   Get.offNamedUntil(LoginPage.routeName, (route) => false);
+                //   break;
                 default:
                   break;
               }

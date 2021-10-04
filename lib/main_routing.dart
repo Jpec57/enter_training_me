@@ -5,6 +5,7 @@ import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
+import 'package:enter_training_me/pages/login/login_page.dart';
 import 'package:enter_training_me/pages/profile/profile_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
@@ -33,6 +34,7 @@ class MainRouting {
   static routes(BuildContext context) => {
         HomePage.routeName: (context) => const HomePage(),
         ProfilePage.routeName: (context) => const ProfilePage(),
+        LoginPage.routeName: (context) => const LoginPage(),
         QuickCountdownPage.routeName: (context) => const QuickCountdownPage(),
         OneRMPage.routeName: (context) => const OneRMPage(),
         WorkoutListPage.routeName: (context) => const WorkoutListPage(),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_repository.dart';
 import 'package:enter_training_me/pages/login/login_page.dart';
@@ -9,9 +11,7 @@ import 'package:get/get.dart' as get_lib;
 class AuthenticationRepository extends ApiService
     implements IAuthenticationRepositoryInterface {
   @override
-  void dispose() {
-    // super.dispose();
-  }
+  final controller = StreamController<AuthenticationStatus>();
 
   @override
   Future<String?> getUserToken() {
@@ -53,6 +53,11 @@ class AuthenticationRepository extends ApiService
   }
 
   @override
-  // TODO: implement status
-  Stream<AuthenticationStatus> get status => throw UnimplementedError();
+  void dispose() => controller.close();
+
+  @override
+  Stream<AuthenticationStatus> get status async* {
+    yield AuthenticationStatus.unknown;
+    yield* controller.stream;
+  }
 }
