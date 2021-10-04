@@ -1,9 +1,10 @@
+import 'package:enter_training_me/authentication/interfaces/iauthentication_user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable()
-class User {
+class User implements IAuthUserInterface {
   final int id;
   final String username;
 

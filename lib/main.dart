@@ -1,7 +1,9 @@
+import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/main_routing.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
+import 'package:enter_training_me/pages/login/login_page.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
@@ -14,6 +16,7 @@ void main() {
   final AuthenticationRepository _authRepository = AuthenticationRepository();
   final UserRepository _userRepository = UserRepository();
   final TrainingRepository _trainingRepository = TrainingRepository();
+  
   runApp(MultiRepositoryProvider(providers: [
     RepositoryProvider.value(value: _trainingRepository),
     RepositoryProvider.value(value: _userRepository),
@@ -40,6 +43,25 @@ class MyApp extends StatelessWidget {
         theme: CustomTheme.theme,
         onGenerateRoute: (settings) => MainRouting.onGenerateRoutes(settings),
         routes: MainRouting.routes(context),
+        builder: (BuildContext context, child) {
+          return BlocListener<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+              switch (state.status) {
+                case AuthenticationStatus.authenticated:
+                  print("authenticated");
+                  Get.offNamedUntil(HomePage.routeName, (route) => false);
+                  break;
+                case AuthenticationStatus.unauthenticated:
+                  print("unauthenticated");
+                  Get.offNamedUntil(LoginPage.routeName, (route) => false);
+                  break;
+                default:
+                  break;
+              }
+            },
+            child: child,
+          );
+        },
         home: MainRouting.home,
       ),
     );

@@ -1,1 +1,3 @@
-abstract class IAuthUserInterface {}
+abstract class IAuthUserInterface {
+  
+}

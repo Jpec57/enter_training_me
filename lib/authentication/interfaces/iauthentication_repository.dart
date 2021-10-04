@@ -6,7 +6,6 @@ abstract class IAuthenticationRepositoryInterface {
   final _controller = StreamController<AuthenticationStatus>();
 
   Stream<AuthenticationStatus> get status async* {
-    // await Future<void>.delayed(const Duration(seconds: 1));
     yield AuthenticationStatus.unknown;
     yield* _controller.stream;
   }
