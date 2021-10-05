@@ -7,15 +7,41 @@ class InWorkoutState extends Equatable {
   final int currentExoIndex;
   final int currentSetIndex;
   final bool isEnd;
+  final int elapsedTime;
 
   const InWorkoutState({
     required this.referenceTraining,
     required this.realisedTraining,
     this.isEnd = false,
+    this.elapsedTime = 0,
     this.currentCycleIndex = 0,
     this.currentExoIndex = 0,
     this.currentSetIndex = 0,
   });
+
+  double get progress {
+    int totalDoneSets = 0;
+    int totalSets = 0;
+    int setPerCycle = 0;
+    List<RealisedExercise> exos = referenceTraining.cycles[0].exercises;
+    for (var exo in exos) {
+      setPerCycle += exo.sets.length;
+    }
+    totalSets = referenceTraining.cycles.length * setPerCycle;
+    //Total set END
+
+    int totalCurrentCycleDoneSets = 0;
+    for (int i = 0; i < currentExoIndex; i++) {
+      totalCurrentCycleDoneSets += exos[i].sets.length;
+    }
+    totalCurrentCycleDoneSets += currentSetIndex;
+
+    totalDoneSets =
+        (currentCycleIndex * setPerCycle) + totalCurrentCycleDoneSets;
+    return totalDoneSets.toDouble() / totalSets;
+  }
+
+  bool get isEndOfWorkout => nextExoIndex == null;
 
   ExerciseCycle get currentCycle => referenceTraining.cycles[currentCycleIndex];
 
@@ -81,19 +107,22 @@ class InWorkoutState extends Equatable {
         currentCycleIndex,
         currentExoIndex,
         currentSetIndex,
-        isEnd
+        isEnd,
+        elapsedTime
       ];
 
   InWorkoutState copyWith(
           {Training? referenceTraining,
           Training? realisedTraining,
           int? currentCycleIndex,
+          int? elapsedTime,
           int? currentExoIndex,
           int? currentSetIndex,
           bool? isEnd}) =>
       InWorkoutState(
         isEnd: isEnd ?? this.isEnd,
         referenceTraining: referenceTraining ?? this.referenceTraining,
+        elapsedTime: elapsedTime ?? this.elapsedTime,
         realisedTraining: realisedTraining ?? this.realisedTraining,
         currentCycleIndex: currentCycleIndex ?? this.currentCycleIndex,
         currentExoIndex: currentExoIndex ?? this.currentExoIndex,

@@ -33,29 +33,41 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                     : Container(),
               ],
             ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      state.currentExo.executionStyle != null
-                          ? state.currentExo.executionStyle!.name
-                          : "Regular Execution Style",
-                      style: const TextStyle(
-                          fontSize: 18, fontStyle: FontStyle.italic),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          state.currentExo.executionStyle != null
+                              ? state.currentExo.executionStyle!.name
+                              : "Regular Execution Style",
+                          style: const TextStyle(
+                              fontSize: 18, fontStyle: FontStyle.italic),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.info),
+                          color: Colors.white),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Center(
+                      child: Text(
+                        "${state.currentSetIndex + 1} / ${state.currentExo.sets.length} sets",
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.info),
-                        color: Colors.white),
-                  ],
-                ),
-                Text(
-                  "${state.currentSetIndex + 1} / ${state.currentExo.sets.length} sets",
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ],
+                  ),
+                ],
+              ),
             )
           ],
         );

@@ -23,3 +23,8 @@ class TrainingEndedEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [];
 }
+
+class TimerTickEvent extends InWorkoutEvent {
+  @override
+  List<Object?> get props => [];
+}

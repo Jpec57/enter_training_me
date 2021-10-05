@@ -26,7 +26,6 @@ class InWorkoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(referenceTraining);
     return BlocProvider(
       create: (BuildContext context) =>
           InWorkoutBloc(referenceTraining, Training.clone(referenceTraining)),
@@ -46,7 +45,6 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
   Timer? _totalTimeTimer;
-  int _totalTime = 0;
 
   @override
   void initState() {
@@ -54,9 +52,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
     _tabController = TabController(length: 2, vsync: this);
     _totalTimeTimer?.cancel();
     _totalTimeTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _totalTime += 1;
-      });
+      BlocProvider.of<InWorkoutBloc>(context).add(TimerTickEvent());
     });
   }
 
@@ -103,9 +99,15 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                         )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Text(
-                        Utils.convertToTime(_totalTime),
-                        style: const TextStyle(color: Colors.white),
+                      child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                        buildWhen: (prev, next) =>
+                            prev.elapsedTime != next.elapsedTime,
+                        builder: (context, state) {
+                          return Text(
+                            Utils.convertToTime(state.elapsedTime),
+                            style: const TextStyle(color: Colors.white),
+                          );
+                        },
                       ),
                     ),
                     Flexible(
@@ -114,7 +116,9 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                           prev.currentSetIndex != next.currentExoIndex ||
                           prev.currentSetIndex != next.currentSetIndex,
                       builder: (context, state) {
-                        return TrainingProgressBar();
+                        return TrainingProgressBar(
+                          progress: state.progress,
+                        );
                       },
                     )),
                   ],
@@ -160,13 +164,14 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
   }
 
   void onExerciseSetEnd() {
-    if (_tabController.index == 1) {
+    if (_tabController.index == 0) {
       BlocProvider.of<InWorkoutBloc>(context).add(ExerciseDoneEvent());
     } else {
       BlocProvider.of<InWorkoutBloc>(context)
           .add(const RestDoneEvent(doneReps: 10));
     }
     _tabController.animateTo((_tabController.index == 0) ? 1 : 0);
+    setState(() {});
   }
 
   Widget _renderDoneButton(BuildContext context) {

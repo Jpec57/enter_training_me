@@ -21,10 +21,17 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       yield _mapExerciseDoneEventToState(event);
     } else if (event is RestDoneEvent) {
       yield _mapRestDoneEventToState(event);
+    } else if (event is TimerTickEvent) {
+      yield _mapTimerTickEventToState(event);
     }
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
+    if (state.isEndOfWorkout){
+      return state.copyWith(
+        isEnd: true
+      );
+    }
     return state;
   }
 
@@ -46,14 +53,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
     doneCycles[state.currentCycleIndex] = doneCycle;
 
-    print("Done set => $doneCurrentSet");
-
-    print("NEXT SET INDEX ${state.nextSetIndex}");
-    print("NEXT EXO INDEX ${state.nextExoIndex}");
-    //END
     return state.copyWith(
-        // currentCycleIndex: state.nextCycleIndex,
-        isEnd: state.nextExoIndex == null,
+        isEnd: state.isEndOfWorkout,
         currentSetIndex: state.nextSetIndex,
         currentExoIndex: state.nextExoIndex,
         realisedTraining: doneTraining.copyWith(cycles: doneCycles));
@@ -62,5 +63,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
     //Erase all sets above the current one
     return state;
+  }
+
+  InWorkoutState _mapTimerTickEventToState(TimerTickEvent event) {
+    return state.copyWith(elapsedTime: (state.elapsedTime + 1));
   }
 }

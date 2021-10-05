@@ -26,7 +26,10 @@ class _NextExerciseDetailState extends State<NextExerciseDetail> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("${nextSetIndex + 1}/${nextExo.sets.length}"),
+            child: Text(
+              "${nextSetIndex + 1} / ${nextExo.sets.length} sets",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
