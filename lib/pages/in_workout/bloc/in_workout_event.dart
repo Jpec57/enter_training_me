@@ -28,3 +28,30 @@ class TimerTickEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ChangeViewEvent extends InWorkoutEvent {
+
+  @override
+  List<Object?> get props => [];
+}
+
+class RemovedRepEvent extends InWorkoutEvent {
+  
+  @override
+  List<Object?> get props => [];
+}
+
+class AddedRepEvent extends InWorkoutEvent {
+  
+  @override
+  List<Object?> get props => [];
+}
+
+class ChangedWeightEvent extends InWorkoutEvent {
+  final double weight;
+
+  const ChangedWeightEvent(this.weight);
+  
+  @override
+  List<Object?> get props => [weight];
+}

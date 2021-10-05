@@ -23,25 +23,25 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       yield _mapRestDoneEventToState(event);
     } else if (event is TimerTickEvent) {
       yield _mapTimerTickEventToState(event);
+    } else if (event is AddedRepEvent) {
+      yield _mapAddedRepEventToState(event);
+    } else if (event is RemovedRepEvent) {
+      yield _mapRemoveRepEventToState(event);
+    } else if (event is ChangedWeightEvent) {
+      yield _mapChangedWeightEventToState(event);
     }
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
-    if (state.isEndOfWorkout){
-      return state.copyWith(
-        isEnd: true
-      );
-    }
-    return state;
+
+    return state.copyWith(
+      reallyDoneReps: state.currentSet.reps
+    );
   }
 
-  void updateReallyDoneReps(int doneReps) {}
+  List<ExerciseCycle> updateSet({int? doneReps}) {
+    ExerciseSet doneCurrentSet = state.currentSet.copyWith(reps: doneReps);
 
-  InWorkoutState _mapRestDoneEventToState(RestDoneEvent event) {
-    Training doneTraining = state.realisedTraining;
-
-    ExerciseSet doneCurrentSet =
-        state.currentSet.copyWith(reps: event.doneReps);
     List<ExerciseSet> doneSets = [...state.currentExo.sets];
     doneSets[state.currentSetIndex] = doneCurrentSet;
 
@@ -52,12 +52,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     ExerciseCycle doneCycle = state.currentCycle.copyWith(exercises: doneExos);
     List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
     doneCycles[state.currentCycleIndex] = doneCycle;
+    return doneCycles;
+  }
 
+  InWorkoutState _mapRestDoneEventToState(RestDoneEvent event) {
+    List<ExerciseCycle> doneCycles = updateSet(doneReps: event.doneReps);
     return state.copyWith(
         isEnd: state.isEndOfWorkout,
         currentSetIndex: state.nextSetIndex,
         currentExoIndex: state.nextExoIndex,
-        realisedTraining: doneTraining.copyWith(cycles: doneCycles));
+        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
   }
 
   InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
@@ -67,5 +71,20 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   InWorkoutState _mapTimerTickEventToState(TimerTickEvent event) {
     return state.copyWith(elapsedTime: (state.elapsedTime + 1));
+  }
+
+  InWorkoutState _mapAddedRepEventToState(AddedRepEvent event) {
+    return state.copyWith(reallyDoneReps: state.reallyDoneReps + 1);
+  }
+
+  InWorkoutState _mapRemoveRepEventToState(RemovedRepEvent event) {
+    if (state.reallyDoneReps == 0) {
+      return state;
+    }
+    return state.copyWith(reallyDoneReps: state.reallyDoneReps - 1);
+  }
+
+  InWorkoutState _mapChangedWeightEventToState(ChangedWeightEvent event) {
+    return state;
   }
 }

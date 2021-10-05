@@ -1,5 +1,7 @@
 part of 'in_workout_bloc.dart';
 
+enum InWorkoutView { inExercise, inRest, end }
+
 class InWorkoutState extends Equatable {
   final Training referenceTraining;
   final Training realisedTraining;
@@ -8,16 +10,20 @@ class InWorkoutState extends Equatable {
   final int currentSetIndex;
   final bool isEnd;
   final int elapsedTime;
+  final InWorkoutView currentView;
 
-  const InWorkoutState({
-    required this.referenceTraining,
-    required this.realisedTraining,
-    this.isEnd = false,
-    this.elapsedTime = 0,
-    this.currentCycleIndex = 0,
-    this.currentExoIndex = 0,
-    this.currentSetIndex = 0,
-  });
+  final int reallyDoneReps;
+
+  const InWorkoutState(
+      {required this.referenceTraining,
+      required this.realisedTraining,
+      this.isEnd = false,
+      this.elapsedTime = 0,
+      this.currentCycleIndex = 0,
+      this.currentExoIndex = 0,
+      this.currentView = InWorkoutView.inExercise,
+      this.currentSetIndex = 0,
+      this.reallyDoneReps = 0});
 
   double get progress {
     int totalDoneSets = 0;
@@ -108,7 +114,9 @@ class InWorkoutState extends Equatable {
         currentExoIndex,
         currentSetIndex,
         isEnd,
-        elapsedTime
+        elapsedTime,
+        currentView,
+        reallyDoneReps
       ];
 
   InWorkoutState copyWith(
@@ -118,14 +126,18 @@ class InWorkoutState extends Equatable {
           int? elapsedTime,
           int? currentExoIndex,
           int? currentSetIndex,
+          int? reallyDoneReps,
+          double? reallyUsedWeight,
+          InWorkoutView? currentView,
           bool? isEnd}) =>
       InWorkoutState(
-        isEnd: isEnd ?? this.isEnd,
-        referenceTraining: referenceTraining ?? this.referenceTraining,
-        elapsedTime: elapsedTime ?? this.elapsedTime,
-        realisedTraining: realisedTraining ?? this.realisedTraining,
-        currentCycleIndex: currentCycleIndex ?? this.currentCycleIndex,
-        currentExoIndex: currentExoIndex ?? this.currentExoIndex,
-        currentSetIndex: currentSetIndex ?? this.currentSetIndex,
-      );
+          isEnd: isEnd ?? this.isEnd,
+          referenceTraining: referenceTraining ?? this.referenceTraining,
+          elapsedTime: elapsedTime ?? this.elapsedTime,
+          currentView: currentView ?? this.currentView,
+          realisedTraining: realisedTraining ?? this.realisedTraining,
+          currentCycleIndex: currentCycleIndex ?? this.currentCycleIndex,
+          currentExoIndex: currentExoIndex ?? this.currentExoIndex,
+          currentSetIndex: currentSetIndex ?? this.currentSetIndex,
+          reallyDoneReps: reallyDoneReps ?? this.reallyDoneReps);
 }
