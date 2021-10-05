@@ -59,7 +59,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.timer_sharp),
+            leading: Icon(Icons.calculate),
             title: Text(
               '1RM Calculator',
               style:

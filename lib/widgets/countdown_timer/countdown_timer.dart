@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_paint.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +8,7 @@ class CountdownTimer extends StatefulWidget {
   final int totalDuration;
   final Color? progressStrokeColor;
   final Color? divisionStrokeColor;
+  final Color? backgroundColor;
   final VoidCallback onEndCallback;
   final bool isIncludingStop;
   final List<int> bipSeconds;
@@ -17,6 +17,7 @@ class CountdownTimer extends StatefulWidget {
       required this.totalDuration,
       this.size = 200.0,
       this.progressStrokeColor,
+      this.backgroundColor = Colors.white,
       this.divisionStrokeColor,
       this.isIncludingStop = false,
       this.bipSeconds = const [10, 3, 2, 1],
@@ -100,29 +101,26 @@ class _CountdownTimerState extends State<CountdownTimer>
             ),
             widget.isIncludingStop
                 ? Positioned(
-                    bottom: widget.size / 4 - 25,
+                    bottom: widget.size / 4 - widget.size / 20,
                     left: 0,
                     right: 0,
-                    child: Container(
-                      height: widget.size / 8,
-                      width: widget.size / 8,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: CustomTheme.middleGreen),
-                      child: Center(
-                        child: IconButton(
-                          color: Colors.red,
-                          icon: Icon(
-                            Icons.stop,
-                            color: CustomTheme.darkGrey,
-                            size: widget.size / 10,
-                          ),
-                          onPressed: widget.onEndCallback,
+                    child: InkWell(
+                      onTap: widget.onEndCallback,
+                      child: Container(
+                        padding: EdgeInsets.all(widget.size / 30),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: widget.progressStrokeColor),
+                        child: Center(
+                          child: Container(
+                              height: widget.size / 20,
+                              width: widget.size / 20,
+                              color: widget.backgroundColor),
                         ),
                       ),
                     ),
                   )
-                : Container()
+                : Container(),
           ],
         ));
   }

@@ -101,6 +101,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CountdownTimer(
+                            backgroundColor: CustomTheme.darkGrey,
                             totalDuration: _countdownValue,
                             isIncludingStop: true,
                             onEndCallback: () {
@@ -181,7 +182,6 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
               borderRadius: BorderRadius.circular(15),
               border: Border.all(color: Colors.white),
               color: CustomTheme.darkGrey,
-              // color: CustomTheme.middleGreen,
             ),
             child: Center(
               child: Text(

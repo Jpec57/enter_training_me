@@ -28,6 +28,7 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
               return Center(
                 child: CountdownTimer(
                   totalDuration: 60,
+                  backgroundColor: CustomTheme.darkGrey,
                   isIncludingStop: true,
                   onEndCallback: widget.onTimerEndCallback,
                   progressStrokeColor: CustomTheme.middleGreen,
