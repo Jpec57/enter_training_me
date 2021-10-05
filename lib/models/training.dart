@@ -32,4 +32,16 @@ class Training {
   String toString() {
     return "Training $name [$cycles]";
   }
+
+  Training copyWith({
+    List<ExerciseCycle>? cycles,
+    int? restBetweenCycles,
+    User? author,
+    String? name,
+  }) =>
+      Training(
+          restBetweenCycles: restBetweenCycles ?? this.restBetweenCycles,
+          cycles: cycles ?? this.cycles,
+          name: name ?? this.name,
+          author: author ?? this.author);
 }

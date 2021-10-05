@@ -22,4 +22,9 @@ class ExerciseCycle {
   String toString() {
     return "ExerciseCycle($numberOfLoops with $restBetweenLoop) [$exercises]";
   }
+
+  ExerciseCycle copyWith({List<RealisedExercise>? exercises}) => ExerciseCycle(
+      exercises: exercises ?? this.exercises,
+      numberOfLoops: numberOfLoops,
+      restBetweenLoop: restBetweenLoop);
 }

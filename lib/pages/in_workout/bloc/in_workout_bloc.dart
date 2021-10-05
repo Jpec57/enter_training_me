@@ -28,17 +28,35 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return state;
   }
 
+  void updateReallyDoneReps(int doneReps) {}
+
   InWorkoutState _mapRestDoneEventToState(RestDoneEvent event) {
     Training doneTraining = state.realisedTraining;
-    ExerciseSet doneCurrentSet = doneTraining.cycles[state.currentCycleIndex]
-        .exercises[state.currentExoIndex].sets[state.currentSetIndex]
-        .copyWith(reps: event.doneReps);
 
-    // doneTraining.cycles[state.currentCycleIndex].exercises[state.currentExoIndex].sets = [];
+    ExerciseSet doneCurrentSet =
+        state.currentSet.copyWith(reps: event.doneReps);
+    List<ExerciseSet> doneSets = [...state.currentExo.sets];
+    doneSets[state.currentSetIndex] = doneCurrentSet;
 
-    // doneTraining.cycles[state.currentCycleIndex].exercises[state.currentExoIndex].sets[state.currentSetIndex].reps = event.doneReps;
+    RealisedExercise doneExo = state.currentExo.copyWith(sets: doneSets);
+    List<RealisedExercise> doneExos = [...state.currentCycle.exercises];
+    doneExos[state.currentExoIndex] = doneExo;
 
-    return state;
+    ExerciseCycle doneCycle = state.currentCycle.copyWith(exercises: doneExos);
+    List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
+    doneCycles[state.currentCycleIndex] = doneCycle;
+
+    print("Done set => $doneCurrentSet");
+
+    print("NEXT SET INDEX ${state.nextSetIndex}");
+    print("NEXT EXO INDEX ${state.nextExoIndex}");
+    //END
+    return state.copyWith(
+        // currentCycleIndex: state.nextCycleIndex,
+        isEnd: state.nextExoIndex == null,
+        currentSetIndex: state.nextSetIndex,
+        currentExoIndex: state.nextExoIndex,
+        realisedTraining: doneTraining.copyWith(cycles: doneCycles));
   }
 
   InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {

@@ -9,6 +9,7 @@ import 'package:enter_training_me/pages/in_workout/ui_parts/current_exercise_det
 import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/next_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/workout_end_view.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
@@ -68,81 +69,103 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
-            child: Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Get.dialog(ConfirmDialog(
-                        title: "Quit training",
-                        message:
-                            "Would you like to quit the current training ?",
-                        confirmCallback: () {
-                          Get.toNamed(HomePage.routeName);
+    return BlocBuilder<InWorkoutBloc, InWorkoutState>(
+      buildWhen: (prev, next) => prev.isEnd != next.isEnd,
+      builder: (context, state) {
+        if (state.isEnd) {
+          return const WorkoutEndView();
+        }
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: SafeArea(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Get.dialog(ConfirmDialog(
+                            title: "Quit training",
+                            message:
+                                "Would you like to quit the current training ?",
+                            confirmCallback: () {
+                              Get.toNamed(HomePage.routeName);
+                            },
+                          ));
                         },
-                      ));
-                    },
-                    icon: const Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Text(
-                    Utils.convertToTime(_totalTime),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-                const Flexible(child: TrainingProgressBar()),
-              ],
-            ),
-          ),
-          AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: MediaQuery.of(context).size.height *
-                  ((_tabController.index == 0) ? 0.4 : 0.25),
-              child: ExerciseContainer(
-                child: (_tabController.index == 0)
-                    ? BlocBuilder<InWorkoutBloc, InWorkoutState>(
-                        buildWhen: (prev, next) =>
-                            prev.currentExoIndex != next.currentExoIndex,
-                        builder: (context, state) {
-                          return CurrentExerciseDetail(
-                              referenceExercise: state.currentRefExo);
-                        },
-                      )
-                    : BlocBuilder<InWorkoutBloc, InWorkoutState>(
-                        buildWhen: (prev, next) =>
-                            prev.currentExoIndex != next.currentExoIndex ||
-                            prev.currentSetIndex != next.currentSetIndex,
-                        builder: (context, state) {
-                          return NextExerciseDetail(
-                              nextExercise: state.nextExo);
-                        },
+                        icon: const Icon(
+                          Icons.exit_to_app,
+                          color: Colors.white,
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Text(
+                        Utils.convertToTime(_totalTime),
+                        style: const TextStyle(color: Colors.white),
                       ),
-              )),
-          Expanded(
-              child: TabBarView(controller: _tabController, children: [
-            const InWorkoutExerciseView(),
-            InWorkoutRestView(
-              onTimerEndCallback: onExerciseSetEnd,
-            )
-          ])),
-          _renderDoneButton(context),
-        ],
-      )),
+                    ),
+                    Flexible(
+                        child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                      buildWhen: (prev, next) =>
+                          prev.currentSetIndex != next.currentExoIndex ||
+                          prev.currentSetIndex != next.currentSetIndex,
+                      builder: (context, state) {
+                        return TrainingProgressBar();
+                      },
+                    )),
+                  ],
+                ),
+              ),
+              AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: MediaQuery.of(context).size.height *
+                      ((_tabController.index == 0) ? 0.4 : 0.25),
+                  child: ExerciseContainer(
+                    child: (_tabController.index == 0)
+                        ? BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                            buildWhen: (prev, next) =>
+                                prev.currentExoIndex != next.currentExoIndex,
+                            builder: (context, state) {
+                              return CurrentExerciseDetail(
+                                  referenceExercise: state.currentRefExo);
+                            },
+                          )
+                        : BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                            buildWhen: (prev, next) =>
+                                prev.currentExoIndex != next.currentExoIndex ||
+                                prev.currentSetIndex != next.currentSetIndex,
+                            builder: (context, state) {
+                              return NextExerciseDetail(
+                                  nextExercise: state.nextExo);
+                            },
+                          ),
+                  )),
+              Expanded(
+                  child: TabBarView(controller: _tabController, children: [
+                const InWorkoutExerciseView(),
+                InWorkoutRestView(
+                  onTimerEndCallback: onExerciseSetEnd,
+                )
+              ])),
+              _renderDoneButton(context),
+            ],
+          )),
+        );
+      },
     );
   }
 
   void onExerciseSetEnd() {
-    BlocProvider.of<InWorkoutBloc>(context).add(ExerciseDoneEvent());
+    if (_tabController.index == 1) {
+      BlocProvider.of<InWorkoutBloc>(context).add(ExerciseDoneEvent());
+    } else {
+      BlocProvider.of<InWorkoutBloc>(context)
+          .add(const RestDoneEvent(doneReps: 10));
+    }
     _tabController.animateTo((_tabController.index == 0) ? 1 : 0);
   }
 

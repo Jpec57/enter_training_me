@@ -6,10 +6,12 @@ class InWorkoutState extends Equatable {
   final int currentCycleIndex;
   final int currentExoIndex;
   final int currentSetIndex;
+  final bool isEnd;
 
   const InWorkoutState({
     required this.referenceTraining,
     required this.realisedTraining,
+    this.isEnd = false,
     this.currentCycleIndex = 0,
     this.currentExoIndex = 0,
     this.currentSetIndex = 0,
@@ -78,17 +80,19 @@ class InWorkoutState extends Equatable {
         realisedTraining,
         currentCycleIndex,
         currentExoIndex,
-        currentSetIndex
+        currentSetIndex,
+        isEnd
       ];
 
-  InWorkoutState copyWith({
-    Training? referenceTraining,
-    Training? realisedTraining,
-    int? currentCycleIndex,
-    int? currentExoIndex,
-    int? currentSetIndex,
-  }) =>
+  InWorkoutState copyWith(
+          {Training? referenceTraining,
+          Training? realisedTraining,
+          int? currentCycleIndex,
+          int? currentExoIndex,
+          int? currentSetIndex,
+          bool? isEnd}) =>
       InWorkoutState(
+        isEnd: isEnd ?? this.isEnd,
         referenceTraining: referenceTraining ?? this.referenceTraining,
         realisedTraining: realisedTraining ?? this.realisedTraining,
         currentCycleIndex: currentCycleIndex ?? this.currentCycleIndex,
