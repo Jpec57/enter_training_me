@@ -18,20 +18,37 @@ class WorkoutEndView extends StatefulWidget {
 }
 
 class _WorkoutEndViewState extends State<WorkoutEndView> {
-  Widget _renderExerciseSetRow(ExerciseSet set) {
-    // Icon(Icons.arrow_drop_down, color: Colors.red),
+  Widget _renderExerciseSetRow(ExerciseSet expectedSet, ExerciseSet set) {
+    int differenceReps = set.reps - expectedSet.reps;
 
     return Card(
       color: CustomTheme.green,
       child: ListTile(
-        title: Text("${set.reps}@${set.weight}kgs",
-            style: TextStyle(fontSize: 14)),
-        trailing: Icon(Icons.arrow_drop_up, color: Colors.green),
+        leading: Text(
+          "${set.reps}",
+          style: TextStyle(fontSize: 20, color: Colors.black),
+        ),
+        title: Text("${set.weight}kgs", style: const TextStyle(fontSize: 14)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("$differenceReps",
+                style: TextStyle(
+                  color: differenceReps >= 0 ? Colors.green : Colors.red,
+                )),
+            Icon(
+                differenceReps >= 0
+                    ? Icons.arrow_drop_up
+                    : Icons.arrow_drop_down,
+                color: differenceReps >= 0 ? Colors.green : Colors.red),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _renderExerciseCard(RealisedExercise realisedExercise) {
+  Widget _renderExerciseCard(RealisedExercise expectedRealisedExercise,
+      RealisedExercise realisedExercise) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
@@ -39,7 +56,6 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
             color: CustomTheme.middleGreen,
             borderRadius: BorderRadius.circular(10)),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(realisedExercise.exerciseReference.name,
                 style: Theme.of(context).textTheme.headline2),
@@ -47,7 +63,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
               "assets/exercises/pull_up.png",
               height: 100,
             ),
-            Padding(
+            const Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Divider(color: Colors.white70, height: 1),
             ),
@@ -66,8 +82,10 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                       shrinkWrap: true,
                       itemCount: realisedExercise.sets.length,
                       itemBuilder: (context, index) {
+                        ExerciseSet expectedSet =
+                            expectedRealisedExercise.sets[index];
                         ExerciseSet set = realisedExercise.sets[index];
-                        return _renderExerciseSetRow(set);
+                        return _renderExerciseSetRow(expectedSet, set);
                       }),
                 ],
               ),
@@ -78,20 +96,28 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
     );
   }
 
-  Widget _renderCycleExercises(ExerciseCycle cycle) {
+  Widget _renderCycleExercises(ExerciseCycle refCycle, ExerciseCycle cycle) {
+    List<Widget> exerciceContainers = [];
+    for (var i = 0; i < cycle.exercises.length; i++) {
+      exerciceContainers
+          .add(_renderExerciseCard(refCycle.exercises[i], cycle.exercises[i]));
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: cycle.exercises.map((exo) => _renderExerciseCard(exo)).toList(),
+      children: exerciceContainers,
     );
   }
 
   Widget _renderTrainingContent(Training referenceTraining, Training training) {
+    List<Widget> cycleContainers = [];
+    for (var i = 0; i < training.cycles.length; i++) {
+      cycleContainers.add(_renderCycleExercises(
+          referenceTraining.cycles[i], training.cycles[i]));
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Column(
-          children: training.cycles
-              .map((cycle) => _renderCycleExercises(cycle))
-              .toList()),
+      child: Column(children: cycleContainers),
     );
   }
 
@@ -109,11 +135,12 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
     return RichText(
       text: TextSpan(
           text: metric,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           children: [
             TextSpan(
               text: unit,
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
+              style:
+                  const TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
             )
           ]),
     );
@@ -136,21 +163,25 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                          padding: const EdgeInsets.only(
+                              top: 8.0, left: 8, right: 8),
                           child: Text(
                             state.realisedTraining.name,
                             style: Theme.of(context).textTheme.headline3,
                           ),
                         ),
                         _renderSectionDivider(),
-                        Wrap(
-                          spacing: 24,
-                          children: [
-                            _renderShortMetric(
-                                "${state.elapsedTime ~/ 60}", " min"),
-                            _renderShortMetric("420", " points"),
-                            Icon(Icons.share, color: Colors.white),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Wrap(
+                            spacing: 24,
+                            children: [
+                              _renderShortMetric(
+                                  "${state.elapsedTime ~/ 60}", " min"),
+                              _renderShortMetric("420", " points"),
+                              const Icon(Icons.share, color: Colors.white),
+                            ],
+                          ),
                         ),
                         _renderSectionDivider(),
                         _renderTrainingContent(
@@ -164,7 +195,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                   onPressed: () {
                     Get.offNamedUntil(HomePage.routeName, (route) => false);
                   },
-                  child: Text("End of workout"),
+                  child: const Text("End of workout"),
                   // style: ButtonStyle(backgroundColor: CustomTheme.middleGreen)
                 ),
               ],

@@ -17,6 +17,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wakelock/wakelock.dart';
 
 class InWorkoutPage extends StatelessWidget {
   final Training referenceTraining;
@@ -51,6 +52,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
   @override
   void initState() {
     super.initState();
+    Wakelock.enable();
     _tabController = TabController(length: 2, vsync: this);
     _totalTimeTimer?.cancel();
     _totalTimeTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -123,7 +125,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
               child: Text("How many reps have you done ?",
-                  style: GoogleFonts.bebasNeue()),
+                  style: Theme.of(context).textTheme.headline4),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

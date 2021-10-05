@@ -6,6 +6,7 @@ import 'package:enter_training_me/drawer.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:wakelock/wakelock.dart';
 
 class QuickCountdownPage extends StatefulWidget {
   static const routeName = "/quick-countdown";
@@ -28,6 +29,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
   @override
   void initState() {
     super.initState();
+    Wakelock.enable();
     _tabController = TabController(length: 2, vsync: this);
     _totalTimeTimer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {
