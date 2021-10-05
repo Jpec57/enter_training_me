@@ -32,7 +32,7 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                     child: InkWell(
                       onTap: () {
                         BlocProvider.of<InWorkoutBloc>(context)
-                            .add(RestDoneEvent(doneReps: state.reallyDoneReps));
+                            .add(RestDoneEvent());
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

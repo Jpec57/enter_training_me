@@ -25,4 +25,9 @@ class ExerciseSet {
           reps: reps ?? this.reps,
           weight: weight ?? this.weight,
           weightPercent: weightPercent ?? this.weightPercent);
+
+  @override
+  String toString() {
+    return "Set of $reps reps @${weight}kgs";
+  }
 }

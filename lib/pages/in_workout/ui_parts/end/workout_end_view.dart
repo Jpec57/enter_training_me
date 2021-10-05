@@ -24,7 +24,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
     return Card(
       color: CustomTheme.green,
       child: ListTile(
-        title: Text("${set.reps}@${set.weight}kgs"),
+        title: Text("${set.reps}@${set.weight}kgs",
+            style: TextStyle(fontSize: 14)),
         trailing: Icon(Icons.arrow_drop_up, color: Colors.green),
       ),
     );
@@ -57,7 +58,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text("Sets", style: TextStyle()),
+                    child: Text("Sets",
+                        style: Theme.of(context).textTheme.headline4),
                   ),
                   ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -67,9 +69,6 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                         ExerciseSet set = realisedExercise.sets[index];
                         return _renderExerciseSetRow(set);
                       }),
-                  // ...realisedExercise.sets
-                  //     .map((set) => _renderExerciseSetRow(set))
-                  //     .toList()
                 ],
               ),
             ),

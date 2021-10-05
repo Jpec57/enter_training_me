@@ -100,8 +100,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
     if (_tabController.index == 0) {
       BlocProvider.of<InWorkoutBloc>(context).add(ExerciseDoneEvent());
     } else {
-      BlocProvider.of<InWorkoutBloc>(context)
-          .add(const RestDoneEvent(doneReps: 10));
+      BlocProvider.of<InWorkoutBloc>(context).add(const RestDoneEvent());
     }
     _tabController.animateTo((_tabController.index == 0) ? 1 : 0);
     setState(() {});

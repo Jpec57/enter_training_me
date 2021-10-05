@@ -5,13 +5,13 @@ abstract class InWorkoutEvent extends Equatable {
 }
 
 class RestDoneEvent extends InWorkoutEvent {
-  final int doneReps;
 
-  const RestDoneEvent({required this.doneReps});
+
+  const RestDoneEvent();
   // final int restTimeTaken;
 
   @override
-  List<Object?> get props => [doneReps];
+  List<Object?> get props => [];
 }
 
 class ExerciseDoneEvent extends InWorkoutEvent {

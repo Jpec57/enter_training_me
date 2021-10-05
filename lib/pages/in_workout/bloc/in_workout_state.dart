@@ -49,7 +49,7 @@ class InWorkoutState extends Equatable {
 
   bool get isEndOfWorkout => nextExoIndex == null;
 
-  ExerciseCycle get currentCycle => referenceTraining.cycles[currentCycleIndex];
+  ExerciseCycle get currentCycle => realisedTraining.cycles[currentCycleIndex];
 
   RealisedExercise get currentExo => currentCycle.exercises[currentExoIndex];
 
