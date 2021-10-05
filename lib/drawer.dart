@@ -10,74 +10,80 @@ import 'package:get/get.dart';
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
+  static const listItemStyle =
+      TextStyle(color: Colors.black87, fontStyle: FontStyle.italic);
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          const DrawerHeader(
-            child: Text(
-              'EnterTrainingMe',
-              style: TextStyle(color: Colors.white),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.65,
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Container(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  'EnterTrainingMe',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+              decoration: const BoxDecoration(
+                color: CustomTheme.middleGreen,
+              ),
             ),
-            decoration: BoxDecoration(
-              color: CustomTheme.middleGreen,
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text(
+                'Home',
+                style: listItemStyle,
+              ),
+              onTap: () {
+                Get.toNamed(HomePage.routeName);
+              },
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text(
-              'Home',
-              style:
-                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text(
+                'Profile',
+                style: listItemStyle,
+              ),
+              onTap: () {
+                Get.toNamed(ProfilePage.routeName);
+              },
             ),
-            onTap: () {
-              Get.toNamed(HomePage.routeName);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text(
-              'Profile',
-              style:
-                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ListTile(
+              leading: const Icon(Icons.timer_sharp),
+              title: const Text(
+                'Quick Countdown',
+                style: listItemStyle,
+              ),
+              onTap: () {
+                Get.toNamed(QuickCountdownPage.routeName);
+              },
             ),
-            onTap: () {
-              Get.toNamed(ProfilePage.routeName);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.timer_sharp),
-            title: Text(
-              'Quick Countdown',
-              style:
-                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ListTile(
+              leading: const Icon(Icons.calculate),
+              title: const Text(
+                '1RM Calculator',
+                style: listItemStyle,
+              ),
+              onTap: () {
+                Get.toNamed(OneRMPage.routeName);
+              },
             ),
-            onTap: () {
-              Get.toNamed(QuickCountdownPage.routeName);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.calculate),
-            title: Text(
-              '1RM Calculator',
-              style:
-                  TextStyle(color: Colors.black87, fontStyle: FontStyle.italic),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app),
+              title:
+                  const Text('Log out', style: TextStyle(color: Colors.black)),
+              onTap: () {
+                // BlocProvider.of<AuthBloc>(context).add(LoggedOut());
+                // Get.toNamed(ProfilePage.routeName);
+              },
             ),
-            onTap: () {
-              Get.toNamed(OneRMPage.routeName);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Log out', style: TextStyle(color: Colors.black)),
-            onTap: () {
-              // BlocProvider.of<AuthBloc>(context).add(LoggedOut());
-              // Get.toNamed(ProfilePage.routeName);
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

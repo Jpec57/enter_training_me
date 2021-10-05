@@ -33,10 +33,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
-
-    return state.copyWith(
-      reallyDoneReps: state.currentSet.reps
-    );
+    return state.copyWith(reallyDoneReps: state.currentSet.reps);
   }
 
   List<ExerciseCycle> updateSet({int? doneReps}) {
@@ -65,7 +62,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
-    //Erase all sets above the current one
+    //Erase all sets above the current one and save training with query
     return state;
   }
 

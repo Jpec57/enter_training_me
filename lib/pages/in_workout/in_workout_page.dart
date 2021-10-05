@@ -112,6 +112,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
       return Container(
         decoration: const BoxDecoration(
             color: CustomTheme.middleGreen,
+            // color: CustomTheme.green,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
@@ -173,7 +174,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             child: Center(
                 child: Text(
               "Done".toUpperCase(),
-              style: const TextStyle(fontSize: 30),
+              style: Theme.of(context).textTheme.headline3,
             ))));
   }
 

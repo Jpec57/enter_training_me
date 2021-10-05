@@ -23,10 +23,8 @@ class CountdownPainter extends CustomPainter {
     this.progressStrokeWidth = 10.0,
     this.divisionStrokeColor = Colors.white70,
     this.progressStrokeColor = Colors.green,
-  }) : assert(
-  progressStrokeWidth - divisionPadding * 2 >= 0 &&
-  fontSizeRatio <= 1.0
-  );
+  }) : assert(progressStrokeWidth - divisionPadding * 2 >= 0 &&
+            fontSizeRatio <= 1.0);
 
   Offset _angleToPoint(double radius, double angle) {
     return Offset(
@@ -38,13 +36,15 @@ class CountdownPainter extends CustomPainter {
   void _drawDivisions(Canvas canvas, Size size, double radius) {
     final paint = Paint()
       ..color = divisionStrokeColor
-      ..strokeWidth = divisionStrokeWidth
-    ;
+      ..strokeWidth = divisionStrokeWidth;
 
     final divisionDegrees = 360.0 / totalSeconds;
     for (var i = 0; i < totalSeconds; i++) {
-      final innerOffsetAngle = _angleToPoint(radius - progressStrokeWidth + divisionPadding, divisionDegrees * i - 90.0);
-      final outerOffsetAngle = _angleToPoint(radius - divisionPadding, divisionDegrees * i - 90.0);
+      final innerOffsetAngle = _angleToPoint(
+          radius - progressStrokeWidth + divisionPadding,
+          divisionDegrees * i - 90.0);
+      final outerOffsetAngle =
+          _angleToPoint(radius - divisionPadding, divisionDegrees * i - 90.0);
 
       canvas.save();
       canvas.translate(size.width / 2, size.height / 2);
@@ -58,11 +58,11 @@ class CountdownPainter extends CustomPainter {
       ..color = progressStrokeColor
       ..strokeWidth = progressStrokeWidth
       ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-    ;
+      ..strokeCap = StrokeCap.round;
     final progressAngle = 2 * pi * (elapsedSeconds / totalSeconds);
     double offset = 0;
-    canvas.drawArc(rect, -pi / 2 + offset, progressAngle, false, innerCirclePaint);
+    canvas.drawArc(
+        rect, -pi / 2 + offset, progressAngle, false, innerCirclePaint);
   }
 
   @override
@@ -72,13 +72,13 @@ class CountdownPainter extends CustomPainter {
       size.width / 2,
       size.height / 2,
     );
-    final rect = Rect.fromCircle(center: offsetCenter,
-        radius: radiusWithoutStrokeWith
-    );
+    final rect =
+        Rect.fromCircle(center: offsetCenter, radius: radiusWithoutStrokeWith);
 
     _drawDivisions(canvas, size, radius);
     _drawProgress(canvas, rect);
     _drawCountdownText(canvas, size);
+    // _drawCountdownSkipText(canvas, size);
   }
 
   @override
@@ -87,13 +87,34 @@ class CountdownPainter extends CustomPainter {
   void _drawCountdownText(Canvas canvas, size) {
     TextSpan span = TextSpan(
         style: TextStyle(
-            color: progressStrokeColor, fontSize: fontSizeRatio * (radius / 2), fontWeight: FontWeight.w700),
+            color: progressStrokeColor,
+            fontSize: fontSizeRatio * (radius / 2),
+            fontWeight: FontWeight.w700),
         text: Utils.convertToTime(totalSeconds - elapsedSeconds));
     TextPainter tp = TextPainter(
         text: span,
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);
     tp.layout();
-    tp.paint(canvas, Offset(size.width / 2 - tp.width / 2, size.height / 2- tp.height / 2));
+    tp.paint(canvas,
+        Offset(size.width / 2 - tp.width / 2, size.height / 2 - tp.height / 2));
+  }
+
+  void _drawCountdownSkipText(Canvas canvas, size) {
+    TextSpan span = TextSpan(
+        style: TextStyle(
+            color: progressStrokeColor,
+            fontSize: fontSizeRatio * (radius / 4),
+            fontWeight: FontWeight.w700),
+        text: "SKIP");
+    TextPainter tp = TextPainter(
+        text: span,
+        textAlign: TextAlign.left,
+        textDirection: TextDirection.ltr);
+    tp.layout();
+    tp.paint(
+        canvas,
+        Offset(size.width / 2 - tp.width / 2,
+            3 * size.height / 4 - tp.height / 2));
   }
 }
