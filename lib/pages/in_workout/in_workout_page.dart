@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:wakelock/wakelock.dart';
 
 class InWorkoutPage extends StatelessWidget {
@@ -219,7 +218,8 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                   title: "Quit training",
                   message: "Would you like to quit the current training ?",
                   confirmCallback: () {
-                    Get.toNamed(HomePage.routeName);
+                    BlocProvider.of<InWorkoutBloc>(context)
+                        .add(TrainingEndedEvent());
                   },
                 ));
               },

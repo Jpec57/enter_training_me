@@ -8,7 +8,7 @@ class TrainingRepository extends ApiService implements IRepository {
   static const GET_ALL = "/trainings/";
   // static const GET_ALL = "/api/trainings/";
   static const GET = "/api/trainings/{id}";
-  static const postUser = "/api/trainings/";
+  static const postUser = "/api/trainings";
 
   @override
   Future<Training> get(int id) async {
@@ -47,8 +47,10 @@ class TrainingRepository extends ApiService implements IRepository {
   @override
   Future postUserTraining(Map<String, dynamic> data) async {
     debugPrint("Posting user training...");
+    data["name"] = data["name"] + " " + DateTime.now().toIso8601String();
     Response response = await getDio().post(postUser, data: data);
     dynamic responseData = response.data;
+    debugPrint(responseData);
     return Training.fromJson(responseData);
   }
 

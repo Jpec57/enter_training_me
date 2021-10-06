@@ -72,7 +72,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.offNamedUntil(HomePage.routeName, (route) => false);
+                    BlocProvider.of<InWorkoutBloc>(context)
+                        .add(TrainingEndedEvent());
                   },
                   child: const Text("End of workout"),
                   // style: ButtonStyle(backgroundColor: CustomTheme.middleGreen)

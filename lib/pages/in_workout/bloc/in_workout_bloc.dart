@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 
 part 'in_workout_event.dart';
 part 'in_workout_state.dart';
@@ -70,7 +72,10 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
     //Erase all sets above the current one and save training with query
+    
     trainingRepository.postUserTraining(state.realisedTraining.toJson());
+    Get.offNamedUntil(HomePage.routeName, (route) => false);
+
     return state;
   }
 
