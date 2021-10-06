@@ -8,6 +8,7 @@ class TrainingRepository extends ApiService implements IRepository {
   static const GET_ALL = "/trainings/";
   // static const GET_ALL = "/api/trainings/";
   static const GET = "/api/trainings/{id}";
+  static const postUser = "/api/trainings/";
 
   @override
   Future<Training> get(int id) async {
@@ -22,16 +23,6 @@ class TrainingRepository extends ApiService implements IRepository {
     debugPrint("Fetching training list...");
     Response response = await getDio().get(GET_ALL);
     List<dynamic> data = response.data;
-    // try {
-    //   data.map((e) {
-    //     print(e);
-    //     var training = Training.fromJson(e);
-    //     return Training.fromJson(e);
-    //   }).toList();
-    // } on Exception catch (e) {
-    //   print(e);
-    // }
-
     return data.map((e) => Training.fromJson(e)).toList();
   }
 
@@ -51,6 +42,14 @@ class TrainingRepository extends ApiService implements IRepository {
   Future post(Map<String, dynamic> data) {
     // TODO: implement post
     throw UnimplementedError();
+  }
+
+  @override
+  Future postUserTraining(Map<String, dynamic> data) async {
+    debugPrint("Posting user training...");
+    Response response = await getDio().post(postUser, data: data);
+    dynamic responseData = response.data;
+    return Training.fromJson(responseData);
   }
 
   @override

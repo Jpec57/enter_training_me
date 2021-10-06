@@ -1,3 +1,5 @@
+import 'package:enter_training_me/models/models.dart';
+
 class Utils {
   static String convertToTime(int elapsedTime) {
     if (elapsedTime >= 60 * 60) {
@@ -12,5 +14,9 @@ class Utils {
     }
     int seconds = elapsedTime;
     return "00:${seconds.toString().padLeft(2, '0')}";
+  }
+
+  static int estimateWorkoutTime(Training training) {
+    return 60 * 60;
   }
 }

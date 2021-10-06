@@ -2,6 +2,8 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
+import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
+import 'package:enter_training_me/pages/workout_show/workout_show_page_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,9 +17,12 @@ class TrainingContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(onTap: () {
-      Get.toNamed(InWorkoutPage.routeName,
+      Get.toNamed(WorkoutShowPage.routeName,
           arguments:
-              InWorkoutPageArguments(referenceTraining: referenceTraining));
+              WorkoutShowPageArguments(referenceTraining: referenceTraining));
+      // Get.toNamed(InWorkoutPage.routeName,
+      //     arguments:
+      //         InWorkoutPageArguments(referenceTraining: referenceTraining));
     }, child: Builder(builder: (BuildContext context) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
