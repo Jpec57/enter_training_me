@@ -125,44 +125,47 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
           children: [
             Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
               child: Text("How many reps have you done ?",
                   style: Theme.of(context).textTheme.headline4),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      BlocProvider.of<InWorkoutBloc>(context)
-                          .add(RemovedRepEvent());
-                    },
-                    icon: const Icon(Icons.remove_circle)),
-                Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: CustomTheme.darkGrey,
-                    ),
-                    child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
-                      buildWhen: (prev, next) =>
-                          prev.reallyDoneReps != next.reallyDoneReps,
-                      builder: (context, state) {
-                        return Text(state.reallyDoneReps.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ));
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        BlocProvider.of<InWorkoutBloc>(context)
+                            .add(RemovedRepEvent());
                       },
-                    )),
-                IconButton(
-                    onPressed: () {
-                      BlocProvider.of<InWorkoutBloc>(context)
-                          .add(AddedRepEvent());
-                    },
-                    icon: const Icon(Icons.add_circle))
-              ],
+                      icon: const Icon(Icons.remove_circle)),
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: CustomTheme.darkGrey,
+                      ),
+                      child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                        buildWhen: (prev, next) =>
+                            prev.reallyDoneReps != next.reallyDoneReps,
+                        builder: (context, state) {
+                          return Text(state.reallyDoneReps.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ));
+                        },
+                      )),
+                  IconButton(
+                      onPressed: () {
+                        BlocProvider.of<InWorkoutBloc>(context)
+                            .add(AddedRepEvent());
+                      },
+                      icon: const Icon(Icons.add_circle))
+                ],
+              ),
             ),
           ],
         ),

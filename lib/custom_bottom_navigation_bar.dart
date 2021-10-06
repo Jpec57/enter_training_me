@@ -12,7 +12,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
   static Widget getCenteredFloatingButton() {
     return FloatingActionButton(
         backgroundColor: CustomTheme.middleGreen,
-        onPressed: MainRouting.homeNavigationElement.onPressed,
+        onPressed: () {
+          Get.toNamed(MainRouting.homeNavigationElement.routeName);
+        },
         tooltip: MainRouting.homeNavigationElement.title,
         child: Icon(
           MainRouting.homeNavigationElement.iconData,

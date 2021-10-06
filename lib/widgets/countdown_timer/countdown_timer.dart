@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_paint.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 class CountdownTimer extends StatefulWidget {
   final double size;
@@ -54,7 +55,7 @@ class _CountdownTimerState extends State<CountdownTimer>
 
   void initTimer() {
     resetTimer();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       setState(() {
         _elapsedTime += 1;
       });
@@ -64,6 +65,10 @@ class _CountdownTimerState extends State<CountdownTimer>
       }
       if (_elapsedTime == widget.totalDuration) {
         playLocalAsset(isEnd: true);
+        bool? hasVibrator = await Vibration.hasVibrator();
+        if (hasVibrator != null && hasVibrator) {
+          Vibration.vibrate();
+        }
         timer.cancel();
         widget.onEndCallback();
       }

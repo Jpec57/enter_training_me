@@ -19,6 +19,7 @@ class WorkoutExerciseCard extends StatelessWidget {
       child: Column(
         children: [
           Text(realisedExercise.exerciseReference.name,
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline2),
           Image.asset(
             "assets/exercises/pull_up.png",
