@@ -18,6 +18,7 @@ class WorkoutTrainingContent extends StatelessWidget {
       child: WorkoutExerciseCard(
         expectedRealisedExercise: expectedRealisedExercise,
         realisedExercise: realisedExercise,
+        referenceExercise: expectedRealisedExercise?.exerciseReference,
       ),
     );
   }

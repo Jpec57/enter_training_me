@@ -19,6 +19,13 @@ class WorkoutShowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: Text(
+          referenceTraining.name,
+          style: Theme.of(context).textTheme.headline3,
+        ),
+      ),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: SizedBox(
@@ -31,14 +38,6 @@ class WorkoutShowPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8.0, left: 8, right: 8),
-                      child: Text(
-                        referenceTraining.name,
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    ),
                     const SectionDivider(),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -49,6 +48,7 @@ class WorkoutShowPage extends StatelessWidget {
                               metric:
                                   "${Utils.estimateWorkoutTime(referenceTraining) ~/ 60}",
                               unit: " min"),
+                          const WorkoutMetric(metric: "EXPERT", unit: ""),
                         ],
                       ),
                     ),

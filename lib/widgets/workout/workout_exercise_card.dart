@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 
 class WorkoutExerciseCard extends StatelessWidget {
   final RealisedExercise realisedExercise;
+  final ReferenceExercise? referenceExercise;
   final RealisedExercise? expectedRealisedExercise;
   const WorkoutExerciseCard(
-      {Key? key, required this.realisedExercise, this.expectedRealisedExercise})
+      {Key? key,
+      required this.realisedExercise,
+      required this.referenceExercise,
+      this.expectedRealisedExercise})
       : super(key: key);
 
   @override
@@ -36,8 +40,17 @@ class WorkoutExerciseCard extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text("Sets",
-                      style: Theme.of(context).textTheme.headline4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Sets",
+                          style: Theme.of(context).textTheme.headline4),
+                      realisedExercise.executionStyle != null
+                          ? Text(realisedExercise.executionStyle!.name,
+                              style: Theme.of(context).textTheme.headline4)
+                          : Container(),
+                    ],
+                  ),
                 ),
                 ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),

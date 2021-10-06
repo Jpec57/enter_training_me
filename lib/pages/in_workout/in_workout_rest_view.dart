@@ -28,23 +28,20 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
             builder: (context, state) {
               if (state.isEndOfWorkout) {
                 return Center(
-                  child: Container(
-                    child: InkWell(
-                      onTap: () {
-                        BlocProvider.of<InWorkoutBloc>(context)
-                            .add(RestDoneEvent());
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("End of workout"),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Icon(Icons.flag, color: Colors.white),
-                          )
-                        ],
-                      ),
+                  child: InkWell(
+                    onTap: () {
+                      BlocProvider.of<InWorkoutBloc>(context)
+                          .add(const RestDoneEvent());
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text("End of workout"),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Icon(Icons.flag, color: Colors.white),
+                        )
+                      ],
                     ),
                   ),
                 );
@@ -56,7 +53,7 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                       min(constraints.constrainHeight(), constraints.maxWidth);
                   return Center(
                     child: CountdownTimer(
-                      totalDuration: 60,
+                      totalDuration: state.currentExo.restBetweenSet,
                       backgroundColor: CustomTheme.darkGrey,
                       isIncludingStop: true,
                       onEndCallback: widget.onTimerEndCallback,
