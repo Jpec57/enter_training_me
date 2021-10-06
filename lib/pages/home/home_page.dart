@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/drawer.dart';
 import 'package:enter_training_me/models/models.dart';
@@ -36,7 +37,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(elevation: 0, backgroundColor: Colors.transparent),
       extendBody: true,
-      drawer: const MyDrawer(),
+      // drawer: const MyDrawer(),
+      floatingActionButton:
+          CustomBottomNavigationBar.getCenteredFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const CustomBottomNavigationBar(),
       backgroundColor: CustomTheme.darkGrey,
       body: Column(
         children: [

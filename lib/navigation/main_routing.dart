@@ -1,3 +1,4 @@
+import 'package:enter_training_me/navigation/navigation_element.dart';
 import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_view_page_arguments.dart';
@@ -11,12 +12,38 @@ import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dar
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'pages/workout_show/workout_show_page_arguments.dart';
+import '../pages/workout_show/workout_show_page_arguments.dart';
 
 class MainRouting {
   // static const home = OneRMPage();
   static const home = HomePage();
+
+  static const homeNavigationElement = NavigationElement(
+    title: "Home",
+    iconData: Icons.home,
+    routeName: HomePage.routeName,
+  );
+
+  static const mainNavigationElements = [
+    NavigationElement(
+        title: "Profile",
+        iconData: Icons.person,
+        routeName: ProfilePage.routeName),
+    NavigationElement(
+        title: "Other",
+        iconData: Icons.question_answer,
+        routeName: HomePage.routeName),
+    NavigationElement(
+        title: "1RM Calculator",
+        iconData: Icons.calculate,
+        routeName: OneRMPage.routeName),
+    NavigationElement(
+        title: "Profile",
+        iconData: Icons.timer,
+        routeName: QuickCountdownPage.routeName),
+  ];
 
   static onGenerateRoutes(settings) {
     if (settings.name == ExerciseViewPage.routeName) {

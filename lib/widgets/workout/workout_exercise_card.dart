@@ -46,7 +46,6 @@ class WorkoutExerciseCard extends StatelessWidget {
                       ExerciseSet? expectedSet =
                           expectedRealisedExercise?.sets[index];
                       ExerciseSet set = realisedExercise.sets[index];
-                      // return Text("toto");
                       return WorkoutExerciseSetTile(
                           expectedSet: expectedSet, set: set);
                     }),

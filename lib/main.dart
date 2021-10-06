@@ -1,7 +1,7 @@
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/main_routing.dart';
+import 'package:enter_training_me/navigation/main_routing.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/login/login_page.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';

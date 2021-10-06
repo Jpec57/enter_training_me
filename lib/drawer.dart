@@ -1,4 +1,6 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/navigation/main_routing.dart';
+import 'package:enter_training_me/navigation/navigation_element.dart';
 import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/profile/profile_page.dart';
@@ -12,6 +14,19 @@ class MyDrawer extends StatelessWidget {
 
   static const listItemStyle =
       TextStyle(color: Colors.black87, fontStyle: FontStyle.italic);
+
+  Widget _renderNavigatorElement(NavigationElement element) {
+    return ListTile(
+      leading: Icon(element.iconData),
+      title: Text(
+        element.title,
+        style: listItemStyle,
+      ),
+      onTap: () {
+        Get.toNamed(element.routeName);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,55 +48,10 @@ class MyDrawer extends StatelessWidget {
                 color: CustomTheme.middleGreen,
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text(
-                'Home',
-                style: listItemStyle,
-              ),
-              onTap: () {
-                Get.toNamed(HomePage.routeName);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text(
-                'Profile',
-                style: listItemStyle,
-              ),
-              onTap: () {
-                Get.toNamed(ProfilePage.routeName);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.timer_sharp),
-              title: const Text(
-                'Quick Countdown',
-                style: listItemStyle,
-              ),
-              onTap: () {
-                Get.toNamed(QuickCountdownPage.routeName);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.calculate),
-              title: const Text(
-                '1RM Calculator',
-                style: listItemStyle,
-              ),
-              onTap: () {
-                Get.toNamed(OneRMPage.routeName);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title:
-                  const Text('Log out', style: TextStyle(color: Colors.black)),
-              onTap: () {
-                // BlocProvider.of<AuthBloc>(context).add(LoggedOut());
-                // Get.toNamed(ProfilePage.routeName);
-              },
-            ),
+            _renderNavigatorElement(MainRouting.homeNavigationElement),
+            ...MainRouting.mainNavigationElements
+                .map((element) => _renderNavigatorElement(element))
+                .toList(),
           ],
         ),
       ),
