@@ -5,6 +5,7 @@ part 'exercise_cycle.g.dart';
 
 @JsonSerializable()
 class ExerciseCycle {
+  final int? id;
   final List<RealisedExercise> exercises;
   final int restBetweenLoop;
   final int numberOfLoops;
@@ -12,7 +13,8 @@ class ExerciseCycle {
   const ExerciseCycle(
       {required this.exercises,
       required this.numberOfLoops,
-      required this.restBetweenLoop});
+      required this.restBetweenLoop,
+      this.id});
 
   factory ExerciseCycle.fromJson(Map<String, dynamic> json) =>
       _$ExerciseCycleFromJson(json);

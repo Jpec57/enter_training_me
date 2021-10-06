@@ -48,7 +48,7 @@ class TrainingContainer extends StatelessWidget {
                       color: CustomTheme.greenSwatch.shade700),
                   child: Center(
                     child: Text(referenceTraining.name,
-                        style: Theme.of(context).textTheme.headline3),
+                        style: Theme.of(context).textTheme.headline4),
                   ),
                 )),
           ],

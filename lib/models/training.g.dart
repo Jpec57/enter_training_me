@@ -14,10 +14,12 @@ Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
       author: json['author'] == null
           ? null
           : User.fromJson(json['author'] as Map<String, dynamic>),
+      id: json['id'] as int?,
       restBetweenCycles: json['restBetweenCycles'] as int,
     );
 
 Map<String, dynamic> _$TrainingToJson(Training instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'author': instance.author,
       'cycles': instance.cycles,

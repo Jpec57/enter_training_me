@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'in_workout_event.dart';
 part 'in_workout_state.dart';
 
 class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
-  InWorkoutBloc(Training referenceTraining, Training realisedTraining)
+  final TrainingRepository trainingRepository;
+
+  InWorkoutBloc(this.trainingRepository, Training referenceTraining,
+      Training realisedTraining)
       : super(InWorkoutState(
             referenceTraining: referenceTraining,
             realisedTraining: realisedTraining));
@@ -29,6 +33,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       yield _mapRemoveRepEventToState(event);
     } else if (event is ChangedWeightEvent) {
       yield _mapChangedWeightEventToState(event);
+    } else if (event is TrainingEndedEvent) {
+      yield _mapTrainingEndedEventToState(event);
     }
   }
 
@@ -64,6 +70,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
     //Erase all sets above the current one and save training with query
+    trainingRepository.postUserTraining(state.realisedTraining.toJson());
     return state;
   }
 

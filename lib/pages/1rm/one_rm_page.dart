@@ -1,3 +1,4 @@
+import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/drawer.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,12 @@ class _OneRMPageState extends State<OneRMPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton:
+          CustomBottomNavigationBar.getCenteredFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const CustomBottomNavigationBar(),
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           elevation: 0,
           backgroundColor: Colors.transparent,
           title: TextField(
@@ -149,7 +155,7 @@ class _OneRMPageState extends State<OneRMPage> {
               ),
             )
           ]),
-      drawer: const MyDrawer(),
+      // drawer: const MyDrawer(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Padding(

@@ -53,7 +53,7 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
                     return ExerciseHero(index: index, onTap: (){
-                      Get.toNamed(ExerciseViewPage.routeName, arguments: ExerciseViewPageArguments(exercise: const ReferenceExercise(reference: "C1", name: "Pull ups", description: "")));
+                      Get.toNamed(ExerciseViewPage.routeName, arguments: ExerciseViewPageArguments(exercise: const ReferenceExercise(id: 1, reference: "C1", name: "Pull ups", description: "")));
                     },);
                   }),
             )

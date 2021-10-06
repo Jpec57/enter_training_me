@@ -10,6 +10,7 @@ import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.d
 import 'package:enter_training_me/pages/in_workout/ui_parts/rest/next_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/end/workout_end_view.dart';
+import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,10 @@ class InWorkoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) =>
-          InWorkoutBloc(referenceTraining, Training.clone(referenceTraining)),
+      create: (BuildContext context) => InWorkoutBloc(
+          RepositoryProvider.of<TrainingRepository>(context),
+          referenceTraining,
+          Training.clone(referenceTraining)),
       child: const InWorkoutScreen(),
     );
   }

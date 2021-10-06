@@ -6,6 +6,7 @@ part 'training.g.dart';
 
 @JsonSerializable()
 class Training {
+  final int? id;
   final String name;
   final User? author;
   final List<ExerciseCycle> cycles;
@@ -15,6 +16,7 @@ class Training {
       {required this.name,
       required this.cycles,
       this.author,
+      this.id,
       required this.restBetweenCycles});
 
   factory Training.fromJson(Map<String, dynamic> json) =>

@@ -7,12 +7,18 @@ part 'exercise_format.g.dart';
 
 @JsonSerializable()
 class ExerciseFormat {
+  final int id;
   final List<ExerciseSet> predefinedSets;
   final int predefinedRest;
   final ExecutionStyle executionStyle;
 
-  const ExerciseFormat({required this.predefinedSets, required this.predefinedRest, required this.executionStyle});
+  const ExerciseFormat(
+      {required this.id,
+      required this.predefinedSets,
+      required this.predefinedRest,
+      required this.executionStyle});
 
-  factory ExerciseFormat.fromJson(Map<String, dynamic> json) => _$ExerciseFormatFromJson(json);
+  factory ExerciseFormat.fromJson(Map<String, dynamic> json) =>
+      _$ExerciseFormatFromJson(json);
   Map<String, dynamic> toJson() => _$ExerciseFormatToJson(this);
 }

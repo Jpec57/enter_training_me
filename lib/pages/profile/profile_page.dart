@@ -1,3 +1,4 @@
+import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      floatingActionButton:
+          CustomBottomNavigationBar.getCenteredFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const CustomBottomNavigationBar(),
       backgroundColor: CustomTheme.darkGrey,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

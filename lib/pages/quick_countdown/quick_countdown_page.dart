@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/drawer.dart';
 import 'package:enter_training_me/utils/utils.dart';
@@ -48,6 +49,10 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton:
+          CustomBottomNavigationBar.getCenteredFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const CustomBottomNavigationBar(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -57,7 +62,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      drawer: const MyDrawer(),
+      // drawer: const MyDrawer(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Column(

@@ -4,12 +4,18 @@ part 'reference_exercise.g.dart';
 
 @JsonSerializable()
 class ReferenceExercise {
+  final int id;
   final String name;
   final String reference;
   final String? description;
 
-  const ReferenceExercise({required this.name, required this.reference,  this.description});
+  const ReferenceExercise(
+      {required this.id,
+      required this.name,
+      required this.reference,
+      this.description});
 
-  factory ReferenceExercise.fromJson(Map<String, dynamic> json) => _$ReferenceExerciseFromJson(json);
+  factory ReferenceExercise.fromJson(Map<String, dynamic> json) =>
+      _$ReferenceExerciseFromJson(json);
   Map<String, dynamic> toJson() => _$ReferenceExerciseToJson(this);
 }

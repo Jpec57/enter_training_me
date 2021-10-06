@@ -8,6 +8,7 @@ part of 'exercise_format.dart';
 
 ExerciseFormat _$ExerciseFormatFromJson(Map<String, dynamic> json) =>
     ExerciseFormat(
+      id: json['id'] as int,
       predefinedSets: (json['predefinedSets'] as List<dynamic>)
           .map((e) => ExerciseSet.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -18,6 +19,7 @@ ExerciseFormat _$ExerciseFormatFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ExerciseFormatToJson(ExerciseFormat instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'predefinedSets': instance.predefinedSets,
       'predefinedRest': instance.predefinedRest,
       'executionStyle': instance.executionStyle,

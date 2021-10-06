@@ -6,6 +6,7 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/training_container.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/widgets/texts/headline3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,52 +36,64 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(elevation: 0, backgroundColor: Colors.transparent),
-      extendBody: true,
-      // drawer: const MyDrawer(),
+      // appBar: AppBar(elevation: 0, backgroundColor: Colors.transparent),
+      // extendBody: true,
       floatingActionButton:
           CustomBottomNavigationBar.getCenteredFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(),
       backgroundColor: CustomTheme.darkGrey,
-      body: Column(
-        children: [
-          FutureBuilder(
-            future: _trainingFuture,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Training>> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    print("error");
-                    print(snapshot.error.toString());
-                    return Text(snapshot.error.toString());
-                  }
-                  if (snapshot.data == null) {
-                    return const Text("Empty");
-                  }
-                  return CarouselSlider(
-                    options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
-                    ),
-                    items: snapshot.data!.map((training) {
-                      return TrainingContainer(
-                        referenceTraining: training,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, top: 16),
+                child: Headline3(title: "Workouts"),
+              ),
+              FutureBuilder(
+                future: _trainingFuture,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Training>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      if (snapshot.hasError) {
+                        print("error");
+                        print(snapshot.error.toString());
+                        return Text(snapshot.error.toString());
+                      }
+                      if (snapshot.data == null) {
+                        return const Text("Empty");
+                      }
+                      return CarouselSlider(
+                        options: CarouselOptions(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          aspectRatio: 2.0,
+                          enlargeCenterPage: true,
+                        ),
+                        items: snapshot.data!.map((training) {
+                          return TrainingContainer(
+                            referenceTraining: training,
+                          );
+                        }).toList(),
                       );
-                    }).toList(),
-                  );
-                case ConnectionState.waiting:
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                default:
-                  return const Center(child: Text("Error"));
-              }
-            },
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      return const Center(child: Text("Error"));
+                  }
+                },
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, top: 32),
+                child: Headline3(title: "Feed"),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
