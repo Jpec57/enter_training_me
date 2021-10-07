@@ -11,12 +11,14 @@ class Training {
   final User? author;
   final List<ExerciseCycle> cycles;
   final int restBetweenCycles;
+  final int? estimatedTimeInSeconds;
 
   const Training(
       {required this.name,
       required this.cycles,
       this.author,
       this.id,
+      this.estimatedTimeInSeconds,
       required this.restBetweenCycles});
 
   factory Training.fromJson(Map<String, dynamic> json) =>
