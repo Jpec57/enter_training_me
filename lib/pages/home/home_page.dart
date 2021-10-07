@@ -87,8 +87,17 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(onTap: () {}, child: Text("More...")),
+                  ],
+                ),
+              ),
               const Padding(
-                padding: EdgeInsets.only(left: 16.0, top: 32),
+                padding: EdgeInsets.only(left: 16.0, top: 16),
                 child: Headline3(title: "Feed"),
               ),
             ],
