@@ -43,7 +43,7 @@ class LoginPageContent extends StatelessWidget {
                 ),
               ),
               TextFormField(
-                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
                 decoration: InputDecoration(
                   hintText: "Password",
                 ),

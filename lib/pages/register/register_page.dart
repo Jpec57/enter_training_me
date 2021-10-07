@@ -49,9 +49,15 @@ class RegisterPageContent extends StatelessWidget {
                 ),
               ),
               TextFormField(
-                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
                 decoration: InputDecoration(
                   hintText: "Password",
+                ),
+              ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: "Confirm password",
                 ),
               ),
               TextButton(
