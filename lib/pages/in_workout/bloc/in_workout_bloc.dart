@@ -5,6 +5,7 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 
 part 'in_workout_event.dart';
@@ -19,11 +20,36 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
             referenceTraining: referenceTraining,
             realisedTraining: realisedTraining));
 
+  Future _speak(FlutterTts flutterTts, String text) async {
+    var result = await flutterTts.speak(text);
+    // if (result == 1) setState(() => ttsState = TtsState.playing);
+  }
+
+  Future _stop(FlutterTts flutterTts) async {
+    var result = await flutterTts.stop();
+    // if (result == 1) setState(() => ttsState = TtsState.stopped);
+  }
+
   @override
   Stream<InWorkoutState> mapEventToState(
     InWorkoutEvent event,
   ) async* {
     if (event is ExerciseDoneEvent) {
+      FlutterTts flutterTts = FlutterTts();
+      await flutterTts.setLanguage("en-US");
+
+      await flutterTts.setSpeechRate(0.6);
+
+      await flutterTts.setVolume(1.0);
+
+      await flutterTts.setPitch(1.0);
+
+      await flutterTts.isLanguageAvailable("en-US");
+      String? nextExoName = state.nextExo?.exerciseReference.name;
+      if (nextExoName != null) {
+        _speak(flutterTts, "Next exercise: " + nextExoName);
+      }
+
       yield _mapExerciseDoneEventToState(event);
     } else if (event is RestDoneEvent) {
       yield _mapRestDoneEventToState(event);
