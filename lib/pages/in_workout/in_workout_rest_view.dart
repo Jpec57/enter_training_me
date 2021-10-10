@@ -35,9 +35,9 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text("End of workout"),
-                        const Padding(
+                      children: const [
+                        Text("End of workout"),
+                        Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Icon(Icons.flag, color: Colors.white),
                         )

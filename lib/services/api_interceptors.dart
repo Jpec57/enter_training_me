@@ -34,8 +34,8 @@ class ApiInterceptors extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     Response? res = err.response;
-        debugPrint("OnError");
-        debugPrint(err.response.toString());
+    debugPrint("OnError");
+    debugPrint(err.response.toString());
     if (res != null) {
       if (res.statusCode == 401) {
         handleUnauthorized();

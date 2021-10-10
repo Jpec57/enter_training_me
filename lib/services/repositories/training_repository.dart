@@ -7,7 +7,8 @@ import 'dart:convert';
 
 class TrainingRepository extends ApiService implements IRepository {
   static const GET_ALL = "/trainings/";
-  // static const GET_ALL = "/api/trainings/";
+  static const getOfficialUri = "/trainings/official";
+  static const getByReferenceUri = "/trainings/reference/{id}";
   static const GET = "/api/trainings/{id}";
   static const postUser = "/api/trainings";
 
@@ -23,6 +24,23 @@ class TrainingRepository extends ApiService implements IRepository {
   Future<List<Training>> getAll() async {
     debugPrint("Fetching training list...");
     Response response = await getDio().get(GET_ALL);
+    List<dynamic> data = response.data;
+    return data.map((e) => Training.fromJson(e)).toList();
+  }
+
+  @override
+  Future<List<Training>> getByReference(int id) async {
+    debugPrint("Fetching by ref $id list...");
+    Response response = await getDio()
+        .get(getByReferenceUri.replaceFirst("{id}", id.toString()));
+    List<dynamic> data = response.data;
+    return data.map((e) => Training.fromJson(e)).toList();
+  }
+
+  @override
+  Future<List<Training>> getOfficial() async {
+    debugPrint("Fetching official training list...");
+    Response response = await getDio().get(getOfficialUri);
     print(response.data);
     List<dynamic> data = response.data;
     return data.map((e) => Training.fromJson(e)).toList();
@@ -50,9 +68,9 @@ class TrainingRepository extends ApiService implements IRepository {
   Future postUserTraining(Map<String, dynamic> data) async {
     debugPrint("Posting user training...");
     data["name"] = data["name"] + " " + DateTime.now().toIso8601String();
-    data["isOfficial"] = false;
     Response response = await getDio().post(postUser, data: data);
     dynamic responseData = response.data;
+    debugPrint(responseData.toString());
     return Training.fromJson(jsonDecode(responseData));
   }
 

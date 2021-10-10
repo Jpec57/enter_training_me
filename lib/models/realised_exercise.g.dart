@@ -8,7 +8,6 @@ part of 'realised_exercise.dart';
 
 RealisedExercise _$RealisedExerciseFromJson(Map<String, dynamic> json) =>
     RealisedExercise(
-      id: json['id'] as int?,
       exerciseReference: ReferenceExercise.fromJson(
           json['exerciseReference'] as Map<String, dynamic>),
       sets: (json['sets'] as List<dynamic>)
@@ -23,9 +22,8 @@ RealisedExercise _$RealisedExerciseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$RealisedExerciseToJson(RealisedExercise instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'sets': instance.sets,
-      'exerciseReference': instance.exerciseReference,
+      'exerciseReference': exerciseRefToJson(instance.exerciseReference),
       'restBetweenSet': instance.restBetweenSet,
-      'executionStyle': instance.executionStyle,
+      'executionStyle': executionStyleToJson(instance.executionStyle),
     };

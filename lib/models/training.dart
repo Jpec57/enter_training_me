@@ -4,6 +4,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'training.g.dart';
 
+String? trainingRefToJson(Training? ref) {
+  if (ref == null) {
+    return null;
+  }
+  return "api/trainings/${ref.id!}";
+}
+
 @JsonSerializable()
 class Training {
   final int? id;
@@ -13,6 +20,8 @@ class Training {
   final int restBetweenCycles;
   final int? estimatedTimeInSeconds;
   final bool isOfficial;
+  @JsonKey(toJson: trainingRefToJson)
+  final Training? reference;
 
   const Training(
       {required this.name,
@@ -20,6 +29,7 @@ class Training {
       this.author,
       this.id,
       this.isOfficial = false,
+      this.reference,
       this.estimatedTimeInSeconds,
       required this.restBetweenCycles});
 
@@ -32,6 +42,7 @@ class Training {
         name: ref.name,
         author: ref.author,
         isOfficial: false,
+        reference: ref,
         restBetweenCycles: ref.restBetweenCycles,
         cycles: ref.cycles);
   }
@@ -39,6 +50,11 @@ class Training {
   String toString() {
     return "Training $name [$cycles]";
   }
+
+  // Map<String, dynamic> cleanForCreation(Map<String, dynamic> training) {
+  //   training["cycles"];
+  //   return training;
+  // }
 
   Training copyWith({
     List<ExerciseCycle>? cycles,
@@ -50,5 +66,6 @@ class Training {
           restBetweenCycles: restBetweenCycles ?? this.restBetweenCycles,
           cycles: cycles ?? this.cycles,
           name: name ?? this.name,
+          reference: reference,
           author: author ?? this.author);
 }

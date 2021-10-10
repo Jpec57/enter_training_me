@@ -3,10 +3,12 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
+import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class WorkoutShowPage extends StatelessWidget {
@@ -51,6 +53,28 @@ class WorkoutShowPage extends StatelessWidget {
                                   unit: " min")
                               : Container(),
                           const WorkoutMetric(metric: "EXPERT", unit: ""),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("History"),
+                              IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () async {
+                                    List<Training> doneTrainings =
+                                        await RepositoryProvider.of<
+                                                TrainingRepository>(context)
+                                            .getByReference(
+                                                referenceTraining.id!);
+                                    print(doneTrainings);
+                                    print(doneTrainings.length);
+                                  },
+                                  icon: const Icon(
+                                    Icons.history,
+                                    color: Colors.white,
+                                  )),
+                            ],
+                          )
                         ],
                       ),
                     ),

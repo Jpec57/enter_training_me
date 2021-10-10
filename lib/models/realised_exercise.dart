@@ -5,19 +5,35 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'realised_exercise.g.dart';
 
+String? exerciseRefToJson(ReferenceExercise? ref) {
+  if (ref?.id == null) {
+    return null;
+  }
+  return "api/exercise_references/${ref!.id}";
+}
+
+String? executionStyleToJson(ExecutionStyle? style) {
+  if (style?.id == null) {
+    return null;
+  }
+  return "api/execution_styles/${style!.id}";
+}
+
 @JsonSerializable()
 class RealisedExercise {
-  final int? id;
+  // final int? id;
   //TODO
   final List<ExerciseSet> sets;
   //TODO
+  @JsonKey(toJson: exerciseRefToJson)
   final ReferenceExercise exerciseReference;
   final int restBetweenSet;
   //TODO
+  @JsonKey(toJson: executionStyleToJson)
   final ExecutionStyle? executionStyle;
 
   const RealisedExercise({
-    this.id,
+    // this.id,
     required this.exerciseReference,
     required this.sets,
     required this.restBetweenSet,
@@ -27,6 +43,7 @@ class RealisedExercise {
   factory RealisedExercise.fromJson(Map<String, dynamic> json) =>
       _$RealisedExerciseFromJson(json);
   Map<String, dynamic> toJson() => _$RealisedExerciseToJson(this);
+  Map<String, dynamic> toJsonForCreation() => _$RealisedExerciseToJson(this);
 
   RealisedExercise copyWith({List<ExerciseSet>? sets}) => RealisedExercise(
       exerciseReference: exerciseReference,
@@ -34,8 +51,8 @@ class RealisedExercise {
       restBetweenSet: restBetweenSet,
       sets: sets ?? this.sets);
 
-      @override
-      String toString() {
-        return "$exerciseReference (sets $sets)";
-      }
+  @override
+  String toString() {
+    return "$exerciseReference (sets $sets)";
+  }
 }

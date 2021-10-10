@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _trainingFuture =
-        RepositoryProvider.of<TrainingRepository>(context).getAll();
+        RepositoryProvider.of<TrainingRepository>(context).getOfficial();
 
     super.initState();
   }

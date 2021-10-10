@@ -38,6 +38,17 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     } else if (event is TrainingEndedEvent) {
       yield _mapTrainingEndedEventToState(event);
     } else if (event is TrainingLeftEvent) {
+      //Erase all sets above the current one and save training with query
+
+      try {
+        await trainingRepository
+            .postUserTraining(state.realisedTraining.toJson());
+      } on Exception catch (e) {
+        Get.snackbar("Error", e.toString());
+        //TODO Save in local storage to resend later
+      }
+
+      Get.offNamedUntil(HomePage.routeName, (route) => false);
       yield _mapTrainingLeftEventToState(event);
     }
   }
@@ -73,10 +84,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapTrainingLeftEventToState(TrainingLeftEvent event) {
-    //Erase all sets above the current one and save training with query
-
-    trainingRepository.postUserTraining(state.realisedTraining.toJson());
-    Get.offNamedUntil(HomePage.routeName, (route) => false);
     return state;
   }
 
