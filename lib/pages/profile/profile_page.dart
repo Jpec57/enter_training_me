@@ -1,6 +1,8 @@
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatefulWidget {
   static const routeName = "/profile";
@@ -37,61 +39,68 @@ class _ProfilePageState extends State<ProfilePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(),
       backgroundColor: CustomTheme.darkGrey,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            height: MediaQuery.of(context).size.height * 0.25,
-            child: Stack(
-              children: [
-                Container(
-                  color: Colors.lime,
-                ),
-                SafeArea(
-                  child: Row(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            IconButton(
+                onPressed: () {
+                  Get.toNamed(PreferencesPage.routeName);
+                },
+                icon: const Icon(Icons.settings)),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              height: MediaQuery.of(context).size.height * 0.25,
+              child: Stack(
+                children: [
+                  Container(
+                    color: Colors.lime,
+                  ),
+                  SafeArea(
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          child: const Icon(Icons.person),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text("Jpec57"),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: CustomTheme.middleGreen,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(kBottomContainerRadius),
+                      topRight: Radius.circular(kBottomContainerRadius),
+                    )),
+                child: SingleChildScrollView(
+                  controller: _bottomContainerScrollController,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircleAvatar(
-                        child: const Icon(Icons.person),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text("Jpec57"),
-                      )
+                      ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 20,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text("Tile $index"),
+                            );
+                          }),
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: CustomTheme.middleGreen,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(kBottomContainerRadius),
-                    topRight: Radius.circular(kBottomContainerRadius),
-                  )),
-              child: SingleChildScrollView(
-                controller: _bottomContainerScrollController,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 20,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text("Tile $index"),
-                          );
-                        }),
-                  ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

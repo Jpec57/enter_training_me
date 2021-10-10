@@ -1,3 +1,4 @@
+import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
 import 'package:enter_training_me/custom_theme.dart';
@@ -24,6 +25,7 @@ void main() {
         RepositoryProvider.value(value: _authRepository)
       ],
       child: MultiBlocProvider(providers: [
+        BlocProvider.value(value: AppBloc()),
         BlocProvider.value(
             value: AuthenticationBloc(
                 authenticationRepository: _authRepository,
