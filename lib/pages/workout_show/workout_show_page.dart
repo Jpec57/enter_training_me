@@ -10,8 +10,9 @@ import 'package:enter_training_me/widgets/workout/workout_training_content.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class WorkoutShowPage extends StatelessWidget {
+class WorkoutShowPage extends StatefulWidget {
   final Training referenceTraining;
   static const routeName = "/workout/show";
 
@@ -19,12 +20,36 @@ class WorkoutShowPage extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<WorkoutShowPage> createState() => _WorkoutShowPageState();
+}
+
+class _WorkoutShowPageState extends State<WorkoutShowPage>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  late Future<List<Training>> _historyTrainings;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
+    _historyTrainings = RepositoryProvider.of<TrainingRepository>(context)
+        .getByReference(widget.referenceTraining.id!);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          referenceTraining.name,
+          widget.referenceTraining.name,
           style: Theme.of(context).textTheme.headline3,
         ),
       ),
@@ -34,63 +59,95 @@ class WorkoutShowPage extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SectionDivider(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Wrap(
-                        spacing: 24,
-                        children: [
-                          referenceTraining.estimatedTimeInSeconds != null
-                              ? WorkoutMetric(
-                                  metric:
-                                      "${referenceTraining.estimatedTimeInSeconds! ~/ 60}",
-                                  unit: " min")
-                              : Container(),
-                          const WorkoutMetric(metric: "EXPERT", unit: ""),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("History"),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  onPressed: () async {
-                                    List<Training> doneTrainings =
-                                        await RepositoryProvider.of<
-                                                TrainingRepository>(context)
-                                            .getByReference(
-                                                referenceTraining.id!);
-                                    print(doneTrainings);
-                                    print(doneTrainings.length);
-                                  },
-                                  icon: const Icon(
-                                    Icons.history,
-                                    color: Colors.white,
-                                  )),
-                            ],
-                          )
-                        ],
-                      ),
+            const SectionDivider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Wrap(
+                spacing: 24,
+                children: [
+                  widget.referenceTraining.estimatedTimeInSeconds != null
+                      ? WorkoutMetric(
+                          metric:
+                              "${widget.referenceTraining.estimatedTimeInSeconds! ~/ 60}",
+                          unit: " min")
+                      : Container(),
+                  Text("EXPERT", style: GoogleFonts.bebasNeue(fontSize: 25)),
+                  InkWell(
+                    onTap: () async {
+                      List<Training> doneTrainings =
+                          await RepositoryProvider.of<TrainingRepository>(
+                                  context)
+                              .getByReference(widget.referenceTraining.id!);
+                      print(doneTrainings);
+                      print(doneTrainings.length);
+                      _tabController.index = 1;
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text("History",
+                            style: GoogleFonts.bebasNeue(fontSize: 25)),
+                        const Icon(
+                          Icons.history,
+                          color: Colors.white,
+                        )
+                      ],
                     ),
-                    const SectionDivider(),
-                    WorkoutTrainingContent(
-                        referenceTraining: referenceTraining),
-                    const SectionDivider(),
-                  ],
-                ),
+                  )
+                ],
               ),
+            ),
+            const SectionDivider(),
+            Expanded(
+              child: TabBarView(controller: _tabController, children: [
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      WorkoutTrainingContent(
+                          referenceTraining: widget.referenceTraining),
+                      const SectionDivider(),
+                    ],
+                  ),
+                ),
+                FutureBuilder(
+                  future: _historyTrainings,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      List<Training> oldTrainings = snapshot.data;
+                      if (oldTrainings.isEmpty) {
+                        return Center(child: Text("No history"));
+                      }
+                      return ListView.builder(
+                          itemCount: oldTrainings.length,
+                          itemBuilder: (context, index) {
+                            return ExpansionTile(
+                              title: Text(oldTrainings[index].name),
+                              children: [
+                                Text("hello"),
+                                Text("ca va"),
+                              ],
+                            );
+                          });
+                    }
+
+                    return Text("Error");
+                  },
+                ),
+              ]),
             ),
             TextButton(
               onPressed: () {
                 Get.toNamed(InWorkoutPage.routeName,
                     arguments: InWorkoutPageArguments(
-                        referenceTraining: referenceTraining));
+                        referenceTraining: widget.referenceTraining));
               },
               child: const Text("Start workout"),
             ),
