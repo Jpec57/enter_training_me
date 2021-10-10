@@ -88,11 +88,12 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    InkWell(onTap: () {}, child: Text("More...")),
+                    InkWell(onTap: () {}, child: const Text("More...")),
                   ],
                 ),
               ),

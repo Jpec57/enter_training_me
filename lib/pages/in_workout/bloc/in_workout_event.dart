@@ -5,8 +5,6 @@ abstract class InWorkoutEvent extends Equatable {
 }
 
 class RestDoneEvent extends InWorkoutEvent {
-
-
   const RestDoneEvent();
   // final int restTimeTaken;
 
@@ -15,6 +13,11 @@ class RestDoneEvent extends InWorkoutEvent {
 }
 
 class ExerciseDoneEvent extends InWorkoutEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class TrainingLeftEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [];
 }
@@ -30,19 +33,16 @@ class TimerTickEvent extends InWorkoutEvent {
 }
 
 class ChangeViewEvent extends InWorkoutEvent {
-
   @override
   List<Object?> get props => [];
 }
 
 class RemovedRepEvent extends InWorkoutEvent {
-  
   @override
   List<Object?> get props => [];
 }
 
 class AddedRepEvent extends InWorkoutEvent {
-  
   @override
   List<Object?> get props => [];
 }
@@ -51,7 +51,7 @@ class ChangedWeightEvent extends InWorkoutEvent {
   final double weight;
 
   const ChangedWeightEvent(this.weight);
-  
+
   @override
   List<Object?> get props => [weight];
 }

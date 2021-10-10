@@ -37,6 +37,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       yield _mapChangedWeightEventToState(event);
     } else if (event is TrainingEndedEvent) {
       yield _mapTrainingEndedEventToState(event);
+    } else if (event is TrainingLeftEvent) {
+      yield _mapTrainingLeftEventToState(event);
     }
   }
 
@@ -70,13 +72,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
   }
 
-  InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
+  InWorkoutState _mapTrainingLeftEventToState(TrainingLeftEvent event) {
     //Erase all sets above the current one and save training with query
-    
+
     trainingRepository.postUserTraining(state.realisedTraining.toJson());
     Get.offNamedUntil(HomePage.routeName, (route) => false);
-
     return state;
+  }
+
+  InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
+    return state.copyWith(isEnd: true);
   }
 
   InWorkoutState _mapTimerTickEventToState(TimerTickEvent event) {

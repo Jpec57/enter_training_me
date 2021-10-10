@@ -44,10 +44,12 @@ class WorkoutShowPage extends StatelessWidget {
                       child: Wrap(
                         spacing: 24,
                         children: [
-                          WorkoutMetric(
-                              metric:
-                                  "${Utils.estimateWorkoutTime(referenceTraining) ~/ 60}",
-                              unit: " min"),
+                          referenceTraining.estimatedTimeInSeconds != null
+                              ? WorkoutMetric(
+                                  metric:
+                                      "${referenceTraining.estimatedTimeInSeconds! ~/ 60}",
+                                  unit: " min")
+                              : Container(),
                           const WorkoutMetric(metric: "EXPERT", unit: ""),
                         ],
                       ),

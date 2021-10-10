@@ -10,9 +10,7 @@ import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_exercise_card.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_content.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class WorkoutEndView extends StatefulWidget {
   const WorkoutEndView({Key? key}) : super(key: key);
@@ -73,10 +71,11 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                 TextButton(
                   onPressed: () {
                     BlocProvider.of<InWorkoutBloc>(context)
-                        .add(TrainingEndedEvent());
+                        .add(TrainingLeftEvent());
+                    // BlocProvider.of<InWorkoutBloc>(context)
+                    //     .add(TrainingEndedEvent());
                   },
                   child: const Text("End of workout"),
-                  // style: ButtonStyle(backgroundColor: CustomTheme.middleGreen)
                 ),
               ],
             );

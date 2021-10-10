@@ -49,6 +49,7 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
               Flexible(
                   child: Text(
                 widget.referenceExercise.name,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline2,
               )),
               IconButton(

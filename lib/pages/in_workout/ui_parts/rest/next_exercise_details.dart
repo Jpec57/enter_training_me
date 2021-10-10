@@ -28,7 +28,7 @@ class _NextExerciseDetailState extends State<NextExerciseDetail> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               "${nextSetIndex + 1} / ${nextExo.sets.length} sets",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ],

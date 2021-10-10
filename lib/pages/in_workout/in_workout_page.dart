@@ -221,6 +221,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                   title: "Quit training",
                   message: "Would you like to quit the current training ?",
                   confirmCallback: () {
+                    Navigator.of(context).pop();
                     BlocProvider.of<InWorkoutBloc>(context)
                         .add(TrainingEndedEvent());
                   },
