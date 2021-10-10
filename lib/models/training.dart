@@ -12,12 +12,14 @@ class Training {
   final List<ExerciseCycle> cycles;
   final int restBetweenCycles;
   final int? estimatedTimeInSeconds;
+  final bool isOfficial;
 
   const Training(
       {required this.name,
       required this.cycles,
       this.author,
       this.id,
+      this.isOfficial = false,
       this.estimatedTimeInSeconds,
       required this.restBetweenCycles});
 
@@ -29,6 +31,7 @@ class Training {
     return Training(
         name: ref.name,
         author: ref.author,
+        isOfficial: false,
         restBetweenCycles: ref.restBetweenCycles,
         cycles: ref.cycles);
   }

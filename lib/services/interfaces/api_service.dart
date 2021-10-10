@@ -8,6 +8,9 @@ abstract class ApiService extends HttpService {
   ApiService() : super(BaseOptions(
     baseUrl: "https://enter-training-me.jpec.be",
     receiveDataWhenStatusError: true,
+  
+  responseType: ResponseType.json,
+    
     // validateStatus: (status) => status != null && status < 500
   ), interceptor: ApiInterceptors());
 }

@@ -15,6 +15,7 @@ Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
           ? null
           : User.fromJson(json['author'] as Map<String, dynamic>),
       id: json['id'] as int?,
+      isOfficial: json['isOfficial'] as bool? ?? false,
       estimatedTimeInSeconds: json['estimatedTimeInSeconds'] as int?,
       restBetweenCycles: json['restBetweenCycles'] as int,
     );
@@ -26,4 +27,5 @@ Map<String, dynamic> _$TrainingToJson(Training instance) => <String, dynamic>{
       'cycles': instance.cycles,
       'restBetweenCycles': instance.restBetweenCycles,
       'estimatedTimeInSeconds': instance.estimatedTimeInSeconds,
+      'isOfficial': instance.isOfficial,
     };
