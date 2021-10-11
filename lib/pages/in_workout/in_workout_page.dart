@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
@@ -11,6 +12,7 @@ import 'package:enter_training_me/pages/in_workout/ui_parts/rest/next_exercise_d
 import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/end/workout_end_view.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
@@ -254,6 +256,14 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               );
             },
           )),
+          IconButton(
+              onPressed: () {
+                BlocProvider.of<AppBloc>(context).add(
+                    const OnPreferenceChangedEvent(
+                        preferenceName: StorageConstants.soundInWorkout));
+              },
+              icon: const Icon(Icons.volume_off))
+          // ButtonIcon(onPressed: (){}, icon: Icon(Icons.settings))
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
+import 'package:enter_training_me/pages/workout_show/workout_history_view.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/utils/utils.dart';
@@ -27,14 +28,10 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
-  late Future<List<Training>> _historyTrainings;
-
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(length: 2, vsync: this);
-    _historyTrainings = RepositoryProvider.of<TrainingRepository>(context)
-        .getByReference(widget.referenceTraining.id!);
   }
 
   @override
@@ -84,7 +81,7 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text("History",
                             style: GoogleFonts.bebasNeue(fontSize: 25)),
@@ -112,34 +109,8 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
                     ],
                   ),
                 ),
-                FutureBuilder(
-                  future: _historyTrainings,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      List<Training> oldTrainings = snapshot.data;
-                      if (oldTrainings.isEmpty) {
-                        return Center(child: Text("No history"));
-                      }
-                      return ListView.builder(
-                          itemCount: oldTrainings.length,
-                          itemBuilder: (context, index) {
-                            return ExpansionTile(
-                              title: Text(oldTrainings[index].name),
-                              children: [
-                                Text("hello"),
-                                Text("ca va"),
-                              ],
-                            );
-                          });
-                    }
-
-                    return Text("Error");
-                  },
+                WorkoutHistoryView(
+                  referenceTraining: widget.referenceTraining,
                 ),
               ]),
             ),
