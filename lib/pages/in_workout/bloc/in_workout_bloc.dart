@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 
@@ -35,19 +37,20 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     InWorkoutEvent event,
   ) async* {
     if (event is ExerciseDoneEvent) {
-      FlutterTts flutterTts = FlutterTts();
-      await flutterTts.setLanguage("en-US");
-
-      await flutterTts.setSpeechRate(0.6);
-
-      await flutterTts.setVolume(1.0);
-
-      await flutterTts.setPitch(1.0);
-
-      await flutterTts.isLanguageAvailable("en-US");
-      String? nextExoName = state.nextExo?.exerciseReference.name;
-      if (nextExoName != null) {
-        _speak(flutterTts, "Next exercise: " + nextExoName);
+      bool isSoundOn = await const FlutterSecureStorage()
+              .read(key: StorageConstants.soundInWorkoutKey) ==
+          StorageConstants.soundInWorkoutOn;
+      if (isSoundOn) {
+        FlutterTts flutterTts = FlutterTts();
+        await flutterTts.setLanguage("en-US");
+        await flutterTts.setSpeechRate(0.5);
+        await flutterTts.setVolume(1.0);
+        await flutterTts.setPitch(1.0);
+        await flutterTts.isLanguageAvailable("en-US");
+        String? nextExoName = state.nextExo?.exerciseReference.name;
+        if (nextExoName != null) {
+          _speak(flutterTts, "Next exercise: " + nextExoName);
+        }
       }
 
       yield _mapExerciseDoneEventToState(event);

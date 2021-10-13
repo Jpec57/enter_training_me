@@ -22,13 +22,14 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
   }
 
   Widget _renderExerciseDescription() {
+    String description = widget.referenceExercise.description != null &&
+            widget.referenceExercise.description!.isNotEmpty
+        ? widget.referenceExercise.description!
+        : "No description available.";
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(widget.referenceExercise.description ??
-              "No description available.")
-        ],
+        children: [Text(description)],
       ),
     );
   }

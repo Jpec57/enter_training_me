@@ -18,6 +18,7 @@ import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -211,6 +212,10 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                 ),
         ));
   }
+  // Future<> _getStorageSoundPreferenceValue() async {
+  //   FlutterSecureStorage storage = FlutterSecureStorage();
+  //   await storage.read(key: StorageConstants.soundInWorkout);
+  // }
 
   Widget _renderTrainingProgressHead() {
     return Padding(
@@ -256,14 +261,26 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               );
             },
           )),
-          IconButton(
-              onPressed: () {
-                BlocProvider.of<AppBloc>(context).add(
-                    const OnPreferenceChangedEvent(
-                        preferenceName: StorageConstants.soundInWorkout));
-              },
-              icon: const Icon(Icons.volume_off))
-          // ButtonIcon(onPressed: (){}, icon: Icon(Icons.settings))
+          BlocBuilder<AppBloc, AppState>(
+            buildWhen: (prev, next) =>
+                prev.soundInWorkout != next.soundInWorkout,
+            builder: (context, state) {
+              bool isSoundOn = state.soundInWorkout == SoundInWorkout.on;
+              return IconButton(
+                  onPressed: () {
+                    BlocProvider.of<AppBloc>(context).add(
+                        OnPreferenceChangedEvent(
+                            preferenceName: StorageConstants.soundInWorkoutKey,
+                            value: isSoundOn
+                                ? StorageConstants.soundInWorkoutOff
+                                : StorageConstants.soundInWorkoutOn));
+                  },
+                  icon: Icon(
+                    isSoundOn ? Icons.volume_up : Icons.volume_off,
+                    color: Colors.white,
+                  ));
+            },
+          )
         ],
       ),
     );

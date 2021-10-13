@@ -25,7 +25,7 @@ void main() {
         RepositoryProvider.value(value: _authRepository)
       ],
       child: MultiBlocProvider(providers: [
-        BlocProvider.value(value: AppBloc()),
+        BlocProvider.value(value: AppBloc()..add(OnInitEvent())),
         BlocProvider.value(
             value: AuthenticationBloc(
                 authenticationRepository: _authRepository,
