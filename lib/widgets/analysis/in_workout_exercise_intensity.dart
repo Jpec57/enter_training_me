@@ -54,20 +54,20 @@ class InWorkoutExerciseIntensity extends StatelessWidget {
       seriesList,
       animate: animate,
       defaultInteractions: true,
-      primaryMeasureAxis: const charts.NumericAxisSpec(
-          renderSpec: charts.GridlineRendererSpec(
-        labelStyle: charts.TextStyleSpec(
-            fontSize: 10,
-            color: charts.MaterialPalette
-                .white), //chnage white color as per your requirement.
-      )),
-      domainAxis: const charts.AxisSpec(
-          renderSpec: charts.GridlineRendererSpec(
-        labelStyle: charts.TextStyleSpec(
-            fontSize: 10,
-            color: charts.MaterialPalette
-                .white), //chnage white color as per your requirement.
-      )),
+      // primaryMeasureAxis: const charts.NumericAxisSpec(
+      //     renderSpec: charts.GridlineRendererSpec(
+      //   labelStyle: charts.TextStyleSpec(
+      //       fontSize: 10,
+      //       color: charts.MaterialPalette
+      //           .white), //chnage white color as per your requirement.
+      // )),
+      // domainAxis: const charts.AxisSpec(
+      //     renderSpec: charts.GridlineRendererSpec(
+      //   labelStyle: charts.TextStyleSpec(
+      //       fontSize: 10,
+      //       color: charts.MaterialPalette
+      //           .white), //chnage white color as per your requirement.
+      // )),
     );
   }
 }
