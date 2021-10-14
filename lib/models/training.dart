@@ -51,10 +51,7 @@ class Training {
     return "Training $name [$cycles]";
   }
 
-  // Map<String, dynamic> cleanForCreation(Map<String, dynamic> training) {
-  //   training["cycles"];
-  //   return training;
-  // }
+  // List<Exercis
 
   Training copyWith({
     List<ExerciseCycle>? cycles,

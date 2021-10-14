@@ -20,10 +20,22 @@ class TrainingHistoryEvolution extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return charts.LineChart(seriesList,
-        defaultRenderer:
-            charts.LineRendererConfig(includeArea: true, stacked: true),
-        animate: animate);
+    return charts.LineChart(
+      seriesList,
+      defaultRenderer:
+          charts.LineRendererConfig(includeArea: true, stacked: true),
+      animate: animate,
+      primaryMeasureAxis: const charts.NumericAxisSpec(
+          renderSpec: charts.GridlineRendererSpec(
+        labelStyle: charts.TextStyleSpec(
+            fontSize: 10, color: charts.MaterialPalette.white),
+      )),
+      domainAxis: const charts.NumericAxisSpec(
+          renderSpec: charts.GridlineRendererSpec(
+        labelStyle: charts.TextStyleSpec(
+            fontSize: 10, color: charts.MaterialPalette.white),
+      )),
+    );
   }
 
   /// Create one series with sample hard coded data.

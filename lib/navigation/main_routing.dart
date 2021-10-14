@@ -15,13 +15,12 @@ import 'package:enter_training_me/pages/test/test_page.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../pages/workout_show/workout_show_page_arguments.dart';
 
 class MainRouting {
   // static const home = OneRMPage();
-  static const home = TestPage();
+  static const home = HomePage();
 
   static const homeNavigationElement = NavigationElement(
     title: "Home",

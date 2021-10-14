@@ -26,6 +26,7 @@ dependencies:
   audioplayers: ^0.20.1
   vibration: ^1.7.4-nullsafety.0
   flutter_tts: ^3.2.2
+  fl_chart: ^0.40.0
   charts_flutter:
     git:
       url: git://github.com/google/charts.git

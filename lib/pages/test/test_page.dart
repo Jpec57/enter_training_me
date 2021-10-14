@@ -1,5 +1,5 @@
-import 'package:enter_training_me/widgets/analysis/in_workout_exercise_intensity.dart';
-import 'package:enter_training_me/widgets/analysis/training_history_evolution.dart';
+import 'package:enter_training_me/widgets/analysis/current/in_workout_exercise_intensity.dart';
+import 'package:enter_training_me/widgets/analysis/history/training_history_evolution.dart';
 import 'package:flutter/material.dart';
 
 class TestPage extends StatelessWidget {

@@ -7,6 +7,7 @@ import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/widgets/analysis/current/in_workout_exercise_intensity.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_exercise_card.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_content.dart';
@@ -69,6 +70,20 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                   }),
                             ],
                           ),
+                        ),
+                        const SectionDivider(),
+                        BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                          buildWhen: (prev, next) =>
+                              prev.realisedTraining != next.realisedTraining,
+                          builder: (context, state) {
+                            return SizedBox(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                child: InWorkoutExerciseIntensity.fromTraining(
+                                  realisedTraining: state.realisedTraining,
+                                  referenceTraining: state.referenceTraining,
+                                ));
+                          },
                         ),
                         const SectionDivider(),
                         WorkoutTrainingContent(

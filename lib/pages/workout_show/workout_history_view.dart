@@ -1,7 +1,7 @@
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
-import 'package:enter_training_me/widgets/analysis/in_workout_exercise_intensity.dart';
-import 'package:enter_training_me/widgets/analysis/in_workout_exercise_intensity_custom.dart';
+import 'package:enter_training_me/widgets/analysis/current/in_workout_exercise_intensity.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +47,15 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView> {
               // WorkoutTrainingSummaryContent(
               //   referenceTraining: oldTrainings[0],
               // )
+
+              SizedBox(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: InWorkoutExerciseIntensity.fromTraining(
+                    realisedTraining: oldTrainings.first,
+                    referenceTraining: oldTrainings.last,
+                  )),
+
               SizedBox(
                   height: 200,
                   width: MediaQuery.of(context).size.width,

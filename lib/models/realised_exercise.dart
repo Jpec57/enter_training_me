@@ -55,4 +55,22 @@ class RealisedExercise {
   String toString() {
     return "$exerciseReference (sets $sets)";
   }
+
+  /// Estimate exercise intensity with the following assumptions:
+  /// - restTime
+  /// - weightPercent
+  /// - nbSets
+  ///  - exerciseDifficulty
+  ///  - executionStyle
+  ///  - isBodyweight
+  double get intensity {
+    int setNb = sets.length;
+    double difficulty = 0.5;
+    double intensity = 0;
+    for (var set in sets) {
+      intensity += (1 + (set.weight ?? 70)) * set.reps;
+    }
+
+    return intensity * difficulty;
+  }
 }
