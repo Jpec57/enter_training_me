@@ -48,9 +48,20 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 16.0, top: 16),
-                child: Headline3(title: "Workouts"),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, top: 16, right: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Headline3(title: "Workouts"),
+                    InkWell(
+                        onTap: () {},
+                        child: const Text(
+                          "More...",
+                          // style: TextStyle(fontStyle: FontStyle.italic),
+                        )),
+                  ],
+                ),
               ),
               FutureBuilder(
                 future: _trainingFuture,
@@ -92,9 +103,7 @@ class _HomePageState extends State<HomePage> {
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(onTap: () {}, child: const Text("More...")),
-                  ],
+                  children: [],
                 ),
               ),
               const Padding(

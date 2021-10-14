@@ -46,16 +46,14 @@ class CustomTheme {
       backgroundColor: Colors.black,
       hintColor: CustomTheme.middleGreen,
       textTheme: TextTheme(
+        // body1: const TextStyle(color: Colors.white),
         bodyText1: const TextStyle(color: Colors.white),
         bodyText2: const TextStyle(color: Colors.white),
-        headline1:
-            GoogleFonts.bebasNeue(color: Colors.white, fontSize: 60),
+        headline1: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 60),
         headline2:
             GoogleFonts.permanentMarker(color: Colors.white, fontSize: 40),
-        headline3:
-            GoogleFonts.bebasNeue(color: Colors.white, fontSize: 30),
-        headline4:
-            GoogleFonts.bebasNeue(color: Colors.white, fontSize: 20),
+        headline3: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 30),
+        headline4: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 20),
       ).apply(
         bodyColor: Colors.white,
       ));

@@ -19,7 +19,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       String? soundState =
           await storage.read(key: StorageConstants.soundInWorkoutKey);
       if (soundState == "on") {
-        state.copyWith(soundInWorkout: SoundInWorkout.on);
+        yield state.copyWith(soundInWorkout: SoundInWorkout.on);
       }
     }
     if (event is OnPreferenceChangedEvent) {

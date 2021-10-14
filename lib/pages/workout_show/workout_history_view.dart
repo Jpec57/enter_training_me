@@ -1,5 +1,8 @@
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/widgets/analysis/in_workout_exercise_intensity.dart';
+import 'package:enter_training_me/widgets/analysis/in_workout_exercise_intensity_custom.dart';
+import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,24 +39,29 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView> {
         if (snapshot.connectionState == ConnectionState.done) {
           List<Training> oldTrainings = snapshot.data;
           if (oldTrainings.isEmpty) {
-            return Center(child: Text("No history"));
+            return const Center(child: Text("No history"));
           }
           return Column(
             children: [
-              Text("Test"),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: oldTrainings.length,
-                    itemBuilder: (context, index) {
-                      return ExpansionTile(
-                        title: Text(oldTrainings[index].name),
-                        children: [
-                          Text("hello"),
-                          Text("ca va"),
-                        ],
-                      );
-                    }),
-              ),
+              InWorkoutExerciseIntensityCustom(),
+              // Expanded(
+              //   child: ListView.builder(
+              //       shrinkWrap: true,
+              //       itemCount: oldTrainings.length,
+              //       itemBuilder: (context, index) {
+              //         return ExpansionTile(
+              //           title: Text(oldTrainings[index].name),
+              //           children: [
+              //             SizedBox(
+              //               height: 500,
+              //               child: WorkoutTrainingSummaryContent(
+              //                 referenceTraining: oldTrainings[index],
+              //               ),
+              //             )
+              //           ],
+              //         );
+              //       }),
+              // ),
             ],
           );
         }
