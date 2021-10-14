@@ -11,6 +11,7 @@ import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/profile/profile_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:enter_training_me/pages/register/register_page.dart';
+import 'package:enter_training_me/pages/test/test_page.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ import '../pages/workout_show/workout_show_page_arguments.dart';
 
 class MainRouting {
   // static const home = OneRMPage();
-  static const home = HomePage();
+  static const home = TestPage();
 
   static const homeNavigationElement = NavigationElement(
     title: "Home",
@@ -77,6 +78,7 @@ class MainRouting {
         PreferencesPage.routeName: (context) => const PreferencesPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),
         LoginPage.routeName: (context) => const LoginPage(),
+        TestPage.routeName: (context) => const TestPage(),
         QuickCountdownPage.routeName: (context) => const QuickCountdownPage(),
         OneRMPage.routeName: (context) => const OneRMPage(),
         WorkoutListPage.routeName: (context) => const WorkoutListPage(),
