@@ -44,6 +44,9 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView> {
           return Column(
             children: [
               InWorkoutExerciseIntensityCustom(),
+              WorkoutTrainingSummaryContent(
+                              referenceTraining: oldTrainings[0],
+               )
               // Expanded(
               //   child: ListView.builder(
               //       shrinkWrap: true,

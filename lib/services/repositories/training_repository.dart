@@ -11,6 +11,7 @@ class TrainingRepository extends ApiService implements IRepository {
   static const getByReferenceUri = "/trainings/reference/{id}";
   static const GET = "/api/trainings/{id}";
   static const postUser = "/api/trainings";
+  static const shareByEmail = "/trainings/{id}/share";
 
   @override
   Future<Training> get(int id) async {
@@ -18,6 +19,13 @@ class TrainingRepository extends ApiService implements IRepository {
         await getDio().get(GET.replaceFirst("{id}", id.toString()));
     dynamic data = response.data;
     return Training.fromJson(data);
+  }
+
+  Future<bool> shareByEmailAction(int id) async {
+    Response response =
+        await getDio().get(shareByEmail.replaceFirst("{id}", id.toString()));
+    dynamic data = response.data;
+    return response.statusCode == 200;
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
+import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_exercise_card.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_content.dart';
@@ -55,7 +56,17 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                   unit: " min"),
                               const WorkoutMetric(
                                   metric: "420", unit: " points"),
-                              const Icon(Icons.share, color: Colors.white),
+                              IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: const Icon(Icons.share,
+                                      color: Colors.white),
+                                  onPressed: () {
+                                    RepositoryProvider.of<TrainingRepository>(
+                                            context)
+                                        .shareByEmailAction(
+                                            state.realisedTraining.id!);
+                                  }),
                             ],
                           ),
                         ),

@@ -55,7 +55,27 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
       yield _mapExerciseDoneEventToState(event);
     } else if (event is RestDoneEvent) {
-      yield _mapRestDoneEventToState(event);
+      List<ExerciseCycle> doneCycles =
+          updateSet(doneReps: state.reallyDoneReps);
+      print(doneCycles);
+      if (state.isEndOfWorkout) {
+        try {
+          await trainingRepository
+              .postUserTraining(state.realisedTraining.toJson());
+        } on Exception catch (e) {
+          Get.snackbar("Error", e.toString());
+          //TODO Save in local storage to resend later
+        }
+        yield state.copyWith(isEnd: true);
+      }
+      yield state.copyWith(
+          isEnd: state.isEndOfWorkout,
+          currentSetIndex: state.nextSetIndex,
+          currentExoIndex: state.nextExoIndex,
+          realisedTraining:
+              state.realisedTraining.copyWith(cycles: doneCycles));
+
+      // yield _mapRestDoneEventToState(event);
     } else if (event is TimerTickEvent) {
       yield _mapTimerTickEventToState(event);
     } else if (event is AddedRepEvent) {
@@ -65,10 +85,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     } else if (event is ChangedWeightEvent) {
       yield _mapChangedWeightEventToState(event);
     } else if (event is TrainingEndedEvent) {
-      yield _mapTrainingEndedEventToState(event);
-    } else if (event is TrainingLeftEvent) {
-      //Erase all sets above the current one and save training with query
-
       try {
         await trainingRepository
             .postUserTraining(state.realisedTraining.toJson());
@@ -76,7 +92,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         Get.snackbar("Error", e.toString());
         //TODO Save in local storage to resend later
       }
-
+      yield _mapTrainingEndedEventToState(event);
+    } else if (event is TrainingLeftEvent) {
+      //Erase all sets above the current one and save training with query
       Get.offNamedUntil(HomePage.routeName, (route) => false);
       yield _mapTrainingLeftEventToState(event);
     }
@@ -105,6 +123,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   InWorkoutState _mapRestDoneEventToState(RestDoneEvent event) {
     List<ExerciseCycle> doneCycles = updateSet(doneReps: state.reallyDoneReps);
     print(doneCycles);
+
     return state.copyWith(
         isEnd: state.isEndOfWorkout,
         currentSetIndex: state.nextSetIndex,
