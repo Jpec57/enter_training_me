@@ -11,6 +11,7 @@ ExecutionStyle _$ExecutionStyleFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int,
       name: json['name'] as String,
       description: json['description'] as String?,
+      timeUnderTension: json['timeUnderTension'] as String?,
       strainFactor: (json['strainFactor'] as num).toDouble(),
     );
 
@@ -20,4 +21,5 @@ Map<String, dynamic> _$ExecutionStyleToJson(ExecutionStyle instance) =>
       'name': instance.name,
       'description': instance.description,
       'strainFactor': instance.strainFactor,
+      'timeUnderTension': instance.timeUnderTension,
     };

@@ -5,4 +5,5 @@ export 'exercise_set.dart';
 export 'realised_exercise.dart';
 export 'reference_exercise.dart';
 export 'training.dart';
+export 'muscle_activation.dart';
 export 'user.dart';

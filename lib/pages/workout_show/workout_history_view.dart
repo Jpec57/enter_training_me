@@ -2,6 +2,7 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/analysis/current/in_workout_exercise_intensity.dart';
+import 'package:enter_training_me/widgets/analysis/current/new_in_workout_exercise_intensity.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,44 +42,53 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView> {
           if (oldTrainings.isEmpty) {
             return const Center(child: Text("No history"));
           }
-          return Column(
-            children: [
-              // InWorkoutExerciseIntensityCustom(),
-              // WorkoutTrainingSummaryContent(
-              //   referenceTraining: oldTrainings[0],
-              // )
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // InWorkoutExerciseIntensityCustom(),
+                // WorkoutTrainingSummaryContent(
+                //   referenceTraining: oldTrainings[0],
+                // )
+                SizedBox(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: NewInWorkoutExerciseIntensity(
+                      realisedTraining: oldTrainings.first,
+                      referenceTraining: oldTrainings.last,
+                    )),
 
-              SizedBox(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width,
-                  child: InWorkoutExerciseIntensity.fromTraining(
-                    realisedTraining: oldTrainings.first,
-                    referenceTraining: oldTrainings.last,
-                  )),
+                SizedBox(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: InWorkoutExerciseIntensity.fromTraining(
+                      realisedTraining: oldTrainings.first,
+                      referenceTraining: oldTrainings.last,
+                    )),
 
-              SizedBox(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width,
-                  child: InWorkoutExerciseIntensity.withSampleData())
-              // Expanded(
-              //   child: ListView.builder(
-              //       shrinkWrap: true,
-              //       itemCount: oldTrainings.length,
-              //       itemBuilder: (context, index) {
-              //         return ExpansionTile(
-              //           title: Text(oldTrainings[index].name),
-              //           children: [
-              //             SizedBox(
-              //               height: 500,
-              //               child: WorkoutTrainingSummaryContent(
-              //                 referenceTraining: oldTrainings[index],
-              //               ),
-              //             )
-              //           ],
-              //         );
-              //       }),
-              // ),
-            ],
+                SizedBox(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: InWorkoutExerciseIntensity.withSampleData())
+                // Expanded(
+                //   child: ListView.builder(
+                //       shrinkWrap: true,
+                //       itemCount: oldTrainings.length,
+                //       itemBuilder: (context, index) {
+                //         return ExpansionTile(
+                //           title: Text(oldTrainings[index].name),
+                //           children: [
+                //             SizedBox(
+                //               height: 500,
+                //               child: WorkoutTrainingSummaryContent(
+                //                 referenceTraining: oldTrainings[index],
+                //               ),
+                //             )
+                //           ],
+                //         );
+                //       }),
+                // ),
+              ],
+            ),
           );
         }
 

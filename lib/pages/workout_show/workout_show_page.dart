@@ -6,6 +6,7 @@ import 'package:enter_training_me/pages/workout_show/workout_history_view.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/utils/utils.dart';
+import 'package:enter_training_me/widgets/analysis/current/muscle_activation_repartition_graph.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_content.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,7 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      const MuscleActivationRepartitionGraph(),
                       WorkoutTrainingContent(
                           referenceTraining: widget.referenceTraining),
                       const SectionDivider(),

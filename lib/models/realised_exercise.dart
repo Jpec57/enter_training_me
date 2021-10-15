@@ -22,7 +22,6 @@ String? executionStyleToJson(ExecutionStyle? style) {
 @JsonSerializable()
 class RealisedExercise {
   // final int? id;
-  //TODO
   final List<ExerciseSet> sets;
   //TODO
   @JsonKey(toJson: exerciseRefToJson)

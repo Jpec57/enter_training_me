@@ -38,13 +38,13 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
               child: TextFormField(
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: "Chercher un exercice",
-                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.5))
-                ),
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: "Chercher un exercice",
+                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.5))),
                 controller: _searchController,
               ),
             ),
@@ -52,9 +52,19 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
               child: ListView.builder(
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
-                    return ExerciseHero(index: index, onTap: (){
-                      Get.toNamed(ExerciseViewPage.routeName, arguments: ExerciseViewPageArguments(exercise: const ReferenceExercise(id: 1, reference: "C1", name: "Pull ups", description: "")));
-                    },);
+                    return ExerciseHero(
+                      index: index,
+                      onTap: () {
+                        Get.toNamed(ExerciseViewPage.routeName,
+                            arguments: ExerciseViewPageArguments(
+                                exercise: const ReferenceExercise(
+                                    id: 1,
+                                    reference: "C1",
+                                    name: "Pull ups",
+                                    description: "",
+                                    strainessFactor: 0.5)));
+                      },
+                    );
                   }),
             )
           ],
@@ -63,4 +73,3 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
     );
   }
 }
-

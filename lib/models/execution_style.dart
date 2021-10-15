@@ -8,11 +8,13 @@ class ExecutionStyle {
   final String name;
   final String? description;
   final double strainFactor;
+  final String? timeUnderTension;
 
   const ExecutionStyle(
       {required this.id,
       required this.name,
       this.description,
+      this.timeUnderTension,
       required this.strainFactor});
 
   factory ExecutionStyle.fromJson(Map<String, dynamic> json) =>
