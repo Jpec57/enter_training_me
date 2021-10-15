@@ -1,92 +1,155 @@
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'dart:math';
+
+import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/widgets/analysis/series/workout_intensity_over_time_serie.dart';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 
-class TrainingHistoryEvolution extends StatelessWidget {
-  final List<charts.Series<WorkoutIntensityOverTimeSerie, int>> seriesList;
-  final bool animate;
-
-  const TrainingHistoryEvolution(
-      {Key? key, required this.seriesList, this.animate = false})
+class TrainingHistoryEvolution extends StatefulWidget {
+  final List<Training> trainings;
+  const TrainingHistoryEvolution({Key? key, required this.trainings})
       : super(key: key);
 
-  /// Creates a [LineChart] with sample data and no transition.
-  factory TrainingHistoryEvolution.withSampleData() {
-    return TrainingHistoryEvolution(
-      seriesList: _createSampleData(),
-      animate: true,
-    );
+  @override
+  State<TrainingHistoryEvolution> createState() =>
+      _TrainingHistoryEvolutionState();
+}
+
+class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
+  List<Color> gradientColors = [
+    const Color(0xff23b6e6),
+    const Color(0xff02d39a),
+  ];
+
+  List<FlSpot> generateSpotFromTrainings() {
+    List<FlSpot> spots = [];
+    /*
+              [
+            FlSpot(0, 3),
+            FlSpot(2.6, 2),
+            FlSpot(4.9, 5),
+            FlSpot(6.8, 3.1),
+            FlSpot(8, 4),
+            FlSpot(9.5, 3),
+            FlSpot(11, 4),
+          ],
+          */
+    for (var i = 0; i < widget.trainings.length; i++) {
+      spots.add(FlSpot(i.toDouble(), widget.trainings[i].intensity.toDouble()));
+    }
+    return spots;
   }
 
   @override
   Widget build(BuildContext context) {
-    return charts.LineChart(
-      seriesList,
-      defaultRenderer:
-          charts.LineRendererConfig(includeArea: true, stacked: true),
-      animate: animate,
-      primaryMeasureAxis: const charts.NumericAxisSpec(
-          renderSpec: charts.GridlineRendererSpec(
-        labelStyle: charts.TextStyleSpec(
-            fontSize: 10, color: charts.MaterialPalette.white),
-      )),
-      domainAxis: const charts.NumericAxisSpec(
-          renderSpec: charts.GridlineRendererSpec(
-        labelStyle: charts.TextStyleSpec(
-            fontSize: 10, color: charts.MaterialPalette.white),
-      )),
+    return Stack(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: 1.70,
+          child: Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                color: Color(0xff232d37)),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  right: 18.0, left: 12.0, top: 24, bottom: 12),
+              child: LineChart(
+                mainData(),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<WorkoutIntensityOverTimeSerie, int>>
-      _createSampleData() {
-    final myFakeDesktopData = [
-      WorkoutIntensityOverTimeSerie(timestamp: 0, intensity: 60),
-      WorkoutIntensityOverTimeSerie(timestamp: 1, intensity: 40),
-      WorkoutIntensityOverTimeSerie(timestamp: 2, intensity: 30),
-      WorkoutIntensityOverTimeSerie(timestamp: 3, intensity: 40),
-      WorkoutIntensityOverTimeSerie(timestamp: 4, intensity: 90),
-      WorkoutIntensityOverTimeSerie(timestamp: 5, intensity: 60),
-      WorkoutIntensityOverTimeSerie(timestamp: 10, intensity: 60),
-      WorkoutIntensityOverTimeSerie(timestamp: 11, intensity: 40),
-      WorkoutIntensityOverTimeSerie(timestamp: 12, intensity: 30),
-      WorkoutIntensityOverTimeSerie(timestamp: 13, intensity: 40),
-      WorkoutIntensityOverTimeSerie(timestamp: 14, intensity: 90),
-      WorkoutIntensityOverTimeSerie(timestamp: 15, intensity: 60),
-    ];
+  LineChartData mainData() {
+    double minY = widget.trainings
+            .map((e) => e.intensity)
+            .reduce((value, element) => min(value, element))
+            .toDouble() -
+        200;
+    double maxY = widget.trainings
+            .map((e) => e.intensity)
+            .reduce((value, element) => max(value, element))
+            .toDouble() +
+        200;
 
-    final referenceIntensities = [
-      WorkoutIntensityOverTimeSerie(timestamp: 0, intensity: 20),
-      WorkoutIntensityOverTimeSerie(timestamp: 1, intensity: 60),
-      WorkoutIntensityOverTimeSerie(timestamp: 2, intensity: 20),
-      WorkoutIntensityOverTimeSerie(timestamp: 3, intensity: 40),
-      WorkoutIntensityOverTimeSerie(timestamp: 4, intensity: 20),
-      WorkoutIntensityOverTimeSerie(timestamp: 5, intensity: 60),
-    ];
-
-    return [
-      charts.Series<WorkoutIntensityOverTimeSerie, int>(
-        id: 'Desktop',
-        // colorFn specifies that the line will be blue.
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        // areaColorFn specifies that the area skirt will be light blue.
-        areaColorFn: (_, __) =>
-            charts.MaterialPalette.blue.shadeDefault.lighter,
-        domainFn: (WorkoutIntensityOverTimeSerie sales, _) => sales.timestamp,
-        measureFn: (WorkoutIntensityOverTimeSerie sales, _) => sales.intensity,
-        data: myFakeDesktopData,
+    return LineChartData(
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: true,
+        getDrawingHorizontalLine: (value) {
+          return FlLine(
+            color: const Color(0xff37434d),
+            strokeWidth: 1,
+          );
+        },
+        getDrawingVerticalLine: (value) {
+          return FlLine(
+            color: const Color(0xff37434d),
+            strokeWidth: 1,
+          );
+        },
       ),
-      charts.Series<WorkoutIntensityOverTimeSerie, int>(
-        id: 'Desktop Ref',
-        // colorFn specifies that the line will be blue.
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        // areaColorFn specifies that the area skirt will be light blue.
-        areaColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.lighter,
-        domainFn: (WorkoutIntensityOverTimeSerie sales, _) => sales.timestamp,
-        measureFn: (WorkoutIntensityOverTimeSerie sales, _) => sales.intensity,
-        data: referenceIntensities,
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: SideTitles(showTitles: false),
+        topTitles: SideTitles(showTitles: false),
+        bottomTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 22,
+          interval: 1,
+          getTextStyles: (context, value) => const TextStyle(
+              color: Color(0xff68737d),
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
+          getTitles: (value) {
+            return "${value.toInt()}";
+          },
+          margin: 8,
+        ),
+        leftTitles: SideTitles(
+          showTitles: true,
+          interval: (maxY - minY) / 4,
+          getTextStyles: (context, value) => const TextStyle(
+            color: Color(0xff67727d),
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
+          getTitles: (value) {
+            return "${value.toInt()}";
+          },
+          reservedSize: 50,
+          margin: 12,
+        ),
       ),
-    ];
+      borderData: FlBorderData(
+          show: true,
+          border: Border.all(color: const Color(0xff37434d), width: 1)),
+      minX: 0,
+      maxX: widget.trainings.length.toDouble() - 1,
+      minY: minY,
+      maxY: maxY,
+      lineBarsData: [
+        LineChartBarData(
+          spots: generateSpotFromTrainings(),
+          isCurved: true,
+          colors: gradientColors,
+          barWidth: 5,
+          isStrokeCapRound: true,
+          dotData: FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            colors:
+                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+          ),
+        ),
+      ],
+    );
   }
 }

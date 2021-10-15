@@ -1,12 +1,12 @@
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/material.dart';
 
 class WorkoutIntensityOverTimeSerie {
   final int timestamp;
   final double intensity;
-  final charts.Color barColor;
+  final Color barColor;
 
   WorkoutIntensityOverTimeSerie(
       {required this.timestamp,
       required this.intensity,
-      this.barColor = charts.Color.white});
+      this.barColor = Colors.white});
 }

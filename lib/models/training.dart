@@ -1,4 +1,6 @@
+import 'package:enter_training_me/models/exercise_comparision_dto.dart';
 import 'package:enter_training_me/models/exercise_cycle.dart';
+import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,6 +16,7 @@ String? trainingRefToJson(Training? ref) {
 @JsonSerializable()
 class Training {
   final int? id;
+  final DateTime? createdDate;
   final String name;
   final User? author;
   final List<ExerciseCycle> cycles;
@@ -28,6 +31,7 @@ class Training {
       required this.cycles,
       this.author,
       this.id,
+      this.createdDate,
       this.isOfficial = false,
       this.reference,
       this.estimatedTimeInSeconds,
@@ -51,7 +55,50 @@ class Training {
     return "Training $name [$cycles]";
   }
 
-  // List<Exercis
+  int get intensity {
+    return exercisesAsFlatList
+        .map((e) => e.intensity)
+        .reduce((value, element) => value + element)
+        .floor();
+  }
+
+  List<RealisedExercise> get exercisesAsFlatList {
+    List<RealisedExercise> realisedExercises = [];
+
+    for (var i = 0; i < cycles.length; i++) {
+      var currentCycle = cycles[i];
+      for (var j = 0; j < currentCycle.exercises.length; j++) {
+        var currentExo = currentCycle.exercises[j];
+        realisedExercises.add(currentExo);
+      }
+    }
+    return realisedExercises;
+  }
+
+  List<ExerciseComparisionDTO> getExerciseComparisionsList(
+      Training? referenceTraining) {
+    List<ExerciseComparisionDTO> list = [];
+
+    int k = 0;
+
+    for (var i = 0; i < cycles.length; i++) {
+      var currentCycle = cycles[i];
+      var refCycle =
+          (referenceTraining != null && i < referenceTraining.cycles.length)
+              ? referenceTraining.cycles[i]
+              : null;
+      for (var j = 0; j < currentCycle.exercises.length; j++) {
+        var currentExo = currentCycle.exercises[j];
+        var refExo = (refCycle != null && j < refCycle.exercises.length)
+            ? refCycle.exercises[j]
+            : null;
+        list.add(ExerciseComparisionDTO(
+            index: k, realisedExercise: currentExo, referenceExercise: refExo));
+        k++;
+      }
+    }
+    return list;
+  }
 
   Training copyWith({
     List<ExerciseCycle>? cycles,

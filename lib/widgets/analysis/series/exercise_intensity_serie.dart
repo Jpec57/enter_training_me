@@ -1,9 +1,11 @@
-import 'package:charts_flutter/flutter.dart' as charts;
+
+import 'package:flutter/material.dart';
 
 class ExerciseIntensitySerie {
   final String exerciseName;
   final double intensity;
-  final charts.Color barColor;
+    final Color barColor;
 
-  ExerciseIntensitySerie({required this.exerciseName, required this.intensity, this.barColor = charts.Color.white });
+
+  ExerciseIntensitySerie({required this.exerciseName, required this.intensity, this.barColor = Colors.white });
 }

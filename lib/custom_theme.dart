@@ -6,6 +6,7 @@ class CustomTheme {
   static const green = Color(0xffD3CEC4);
   static const middleGreen = Color(0xff857F72);
   static const darkGrey = Color(0xff27241D);
+  static const grey = Color(0xffBCBCBC);
 
   static const MaterialColor greenSwatch = MaterialColor(
     0xffe55f48, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.

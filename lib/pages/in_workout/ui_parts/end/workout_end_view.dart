@@ -7,10 +7,11 @@ import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
-import 'package:enter_training_me/widgets/analysis/current/in_workout_exercise_intensity.dart';
+import 'package:enter_training_me/widgets/analysis/current/workout_exercise_intensity_graph.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_exercise_card.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_content.dart';
+import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,8 +56,10 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                               WorkoutMetric(
                                   metric: "${state.elapsedTime ~/ 60}",
                                   unit: " min"),
-                              const WorkoutMetric(
-                                  metric: "420", unit: " points"),
+                              WorkoutMetric(
+                                  metric: state.realisedTraining.intensity
+                                      .toString(),
+                                  unit: " points"),
                               IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
@@ -72,24 +75,32 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                           ),
                         ),
                         const SectionDivider(),
-                        BlocBuilder<InWorkoutBloc, InWorkoutState>(
-                          buildWhen: (prev, next) =>
-                              prev.realisedTraining != next.realisedTraining,
-                          builder: (context, state) {
-                            return SizedBox(
-                                height: 200,
-                                width: MediaQuery.of(context).size.width,
-                                child: InWorkoutExerciseIntensity.fromTraining(
-                                  realisedTraining: state.realisedTraining,
-                                  referenceTraining: state.referenceTraining,
-                                ));
-                          },
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16, bottom: 32.0),
+                          child: Text(
+                            "Workout Intensity",
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
                         ),
-                        const SectionDivider(),
-                        WorkoutTrainingContent(
-                            trainingToCompareWith: state.referenceTraining,
-                            referenceTraining: state.realisedTraining),
-                        const SectionDivider(),
+                        WorkoutExerciseIntensityGraph(
+                            realisedTraining: state.realisedTraining,
+                            referenceTraining: state.referenceTraining,
+                            barWidth: 10,
+                            barsSpace: 2,
+                            graphHeight:
+                                MediaQuery.of(context).size.height * 0.3),
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 16.0),
+                          child: SectionDivider(),
+                        ),
+                        WorkoutTrainingSummaryContent(
+                            realisedTraining: state.realisedTraining,
+                            referenceTraining: state.referenceTraining),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 32.0),
+                          child: SectionDivider(),
+                        ),
                       ],
                     ),
                   ),
@@ -98,8 +109,6 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                   onPressed: () {
                     BlocProvider.of<InWorkoutBloc>(context)
                         .add(TrainingLeftEvent());
-                    // BlocProvider.of<InWorkoutBloc>(context)
-                    //     .add(TrainingEndedEvent());
                   },
                   child: const Text("End of workout"),
                 ),
