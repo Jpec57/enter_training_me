@@ -87,6 +87,25 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 8),
+                        child: Wrap(
+                          spacing: 24,
+                          children: [
+                            widget.referenceTraining.estimatedTimeInSeconds !=
+                                    null
+                                ? WorkoutMetric(
+                                    metric:
+                                        "${widget.referenceTraining.estimatedTimeInSeconds! ~/ 60}",
+                                    unit: " min")
+                                : Container(),
+                            Text("EXPERT",
+                                style: GoogleFonts.bebasNeue(fontSize: 25)),
+                          ],
+                        ),
+                      ),
+                      const SectionDivider(),
                       WorkoutTrainingContent(
                           referenceTraining: widget.referenceTraining),
                     ],

@@ -87,14 +87,15 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _renderTrainingProgressHead(),
-              _renderExerciseHeader(),
+              Expanded(child: _renderExerciseHeader()),
               Expanded(
-                  child: TabBarView(controller: _tabController, children: [
-                const InWorkoutExerciseView(),
-                InWorkoutRestView(
-                  onTimerEndCallback: onExerciseSetEnd,
-                )
-              ])),
+                child: TabBarView(controller: _tabController, children: [
+                  const InWorkoutExerciseView(),
+                  InWorkoutRestView(
+                    onTimerEndCallback: onExerciseSetEnd,
+                  )
+                ]),
+              ),
               _renderDoneButton(context),
             ],
           )),

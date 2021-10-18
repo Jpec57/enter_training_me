@@ -11,22 +11,6 @@ class WorkoutInfoView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Wrap(
-              spacing: 24,
-              children: [
-                referenceTraining.estimatedTimeInSeconds != null
-                    ? WorkoutMetric(
-                        metric:
-                            "${referenceTraining.estimatedTimeInSeconds! ~/ 60}",
-                        unit: " min")
-                    : Container(),
-                Text("EXPERT", style: GoogleFonts.bebasNeue(fontSize: 25)),
-              ],
-            ),
-          ),
-          const SectionDivider(),
           const SectionTitle(title: "Muscle Repartition"),
           const MuscleActivationRepartitionGraph(),
           const SectionDivider(),

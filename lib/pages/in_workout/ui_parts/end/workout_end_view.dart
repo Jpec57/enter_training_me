@@ -74,10 +74,20 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                             ],
                           ),
                         ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 16.0, bottom: 16),
+                          child: SectionDivider(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: WorkoutTrainingSummaryContent(
+                              realisedTraining: state.realisedTraining,
+                              referenceTraining: state.referenceTraining),
+                        ),
                         const SectionDivider(),
                         Padding(
-                          padding:
-                              const EdgeInsets.only(left: 16, bottom: 32.0),
+                          padding: const EdgeInsets.only(
+                              top: 16, left: 16, bottom: 16.0),
                           child: Text(
                             "Workout Intensity",
                             style: Theme.of(context).textTheme.headline4,
@@ -92,13 +102,6 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                 MediaQuery.of(context).size.height * 0.3),
                         const Padding(
                           padding: EdgeInsets.only(bottom: 16.0),
-                          child: SectionDivider(),
-                        ),
-                        WorkoutTrainingSummaryContent(
-                            realisedTraining: state.realisedTraining,
-                            referenceTraining: state.referenceTraining),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 32.0),
                           child: SectionDivider(),
                         ),
                       ],

@@ -55,7 +55,7 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView>
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom :16.0),
+                  padding: const EdgeInsets.only(bottom: 16.0),
                   child: TrainingHistoryEvolution(trainings: oldTrainings),
                 ),
                 Padding(
