@@ -6,6 +6,7 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/training_container.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:enter_training_me/widgets/texts/headline3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +25,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Training>> _trainingFuture;
+  late Future<List<Training>> _feedFuture;
 
   @override
   void initState() {
     _trainingFuture =
         RepositoryProvider.of<TrainingRepository>(context).getOfficial();
-
+    _feedFuture =
+        RepositoryProvider.of<UserRepository>(context).getPersonalFeed();
     super.initState();
   }
 
@@ -99,17 +102,37 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
+                padding: const EdgeInsets.only(left: 16.0, top: 16, right: 16),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Headline3(title: "Feed"),
+                    InkWell(
+                        onTap: () {},
+                        child: const Text(
+                          "More...",
+                          // style: TextStyle(fontStyle: FontStyle.italic),
+                        )),
+                  ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 16.0, top: 16),
-                child: Headline3(title: "Feed"),
-              ),
+              FutureBuilder(
+                  future: _feedFuture,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return const Center(child: Text("Error"));
+                        }
+                        return Container();
+                      case ConnectionState.waiting:
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      default:
+                        return const Center(child: Text("Error"));
+                    }
+                  }),
             ],
           ),
         ),

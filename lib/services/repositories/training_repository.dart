@@ -7,6 +7,7 @@ import 'dart:convert';
 
 class TrainingRepository extends ApiService implements IRepository {
   static const GET_ALL = "/trainings/";
+  static const getPersonal = "/trainings/personal";
   static const getOfficialUri = "/trainings/official";
   static const getByReferenceUri = "/trainings/reference/{id}";
   static const GET = "/api/trainings/{id}";
