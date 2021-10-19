@@ -1,17 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({
-    required AuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
+  LoginBloc(
+      {required AuthenticationRepository authenticationRepository,
+      required VoidCallback onLoginCallback})
+      : _authenticationRepository = authenticationRepository,
+        onLoginCallback = onLoginCallback,
         super(const LoginState());
 
   final AuthenticationRepository _authenticationRepository;
+  final VoidCallback onLoginCallback;
 
   @override
   Stream<LoginState> mapEventToState(
@@ -21,8 +25,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield _mapUsernameChangedToState(event, state);
     } else if (event is LoginPasswordChanged) {
       yield _mapPasswordChangedToState(event, state);
-    } else if (event is LoginSubmitted) {
-      yield* _mapLoginSubmittedToState(event, state);
     }
   }
 
@@ -57,26 +59,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
     return null;
   }
-
-  Stream<LoginState> _mapLoginSubmittedToState(
-    LoginSubmitted event,
-    LoginState state,
-  ) async* {
-    // if (state.status == SubmitStatus.validated) {
-    yield state.copyWith(status: SubmitStatus.submitting);
-    try {
-      bool isLoginSuccess = await _authenticationRepository.logIn(
-        username: state.username,
-        password: state.password,
-      );
-      if (isLoginSuccess) {
-        yield state.copyWith(status: SubmitStatus.submitted);
-      } else {
-        yield state.copyWith(status: SubmitStatus.submitted);
-      }
-    } on Exception catch (_) {
-      yield state.copyWith(status: SubmitStatus.errorSubmission);
-    }
-  }
-  // }
 }

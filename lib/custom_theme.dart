@@ -47,6 +47,7 @@ class CustomTheme {
       backgroundColor: Colors.black,
       hintColor: CustomTheme.middleGreen,
       textTheme: TextTheme(
+        
         // body1: const TextStyle(color: Colors.white),
         bodyText1: const TextStyle(color: Colors.white),
         bodyText2: const TextStyle(color: Colors.white),

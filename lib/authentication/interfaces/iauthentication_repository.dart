@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:enter_training_me/authentication/authentication.dart';
+import 'package:enter_training_me/authentication/models/auth_response.dart';
+
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 abstract class IAuthenticationRepositoryInterface {
@@ -12,6 +15,11 @@ abstract class IAuthenticationRepositoryInterface {
 
   Future<bool> logIn({
     required String username,
+    required String password,
+  });
+
+  Future<AuthResponse?> logInAndGetUser({
+    required String email,
     required String password,
   });
 

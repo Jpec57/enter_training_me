@@ -4,8 +4,6 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 
 The last fitness project, I swear
 
-Wakelock.enable();
-
         boxShadow: [
           BoxShadow(
             color: Colors.black45,
@@ -14,3 +12,5 @@ Wakelock.enable();
             offset: Offset(2, 3),
           ),
         ],
+
+https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/radar_chart.md

@@ -1,10 +1,10 @@
 import 'dart:async';
 
-
 import 'package:bloc/bloc.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_repository.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_user.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_user_repository.dart';
+import 'package:enter_training_me/authentication/models/auth_response.dart';
 import 'package:equatable/equatable.dart';
 
 part 'authentication_event.dart';
@@ -15,7 +15,7 @@ class AuthenticationBloc
   AuthenticationBloc({
     required IAuthenticationRepositoryInterface authenticationRepository,
     required IAuthUserRepositoryInterface userRepository,
-  })   : _authenticationRepository = authenticationRepository,
+  })  : _authenticationRepository = authenticationRepository,
         _userRepository = userRepository,
         super(const AuthenticationState.unknown()) {
     _authenticationStatusSubscription = _authenticationRepository.status.listen(
@@ -36,6 +36,12 @@ class AuthenticationBloc
       yield await _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
       _authenticationRepository.logOut();
+    } else if (event is AuthenticationAttemptRequested) {
+      AuthResponse? authResponse = await _authenticationRepository
+          .logInAndGetUser(password: event.password, email: event.email);
+      if (authResponse != null) {
+        yield AuthenticationState.authenticated(authResponse.user);
+      }
     }
   }
 

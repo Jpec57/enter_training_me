@@ -18,6 +18,12 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(
+          onLoginCallback: () {
+            // saveUserToken
+            // RepositoryProvider.of<AuthenticationRepository>(context).saveUserToken(token)
+            // BlocProvider.of<AuthenticationBloc>(context).add(
+            // AuthenticationAttemptRequested());
+          },
           authenticationRepository:
               RepositoryProvider.of<AuthenticationRepository>(context)),
       child: const LoginPageContent(),
@@ -36,58 +42,72 @@ class LoginPageContent extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-          child: Form(
-            child: Column(
-              children: [
-                const Center(
-                  child: Text("LoginPage"),
-                ),
-                BlocBuilder<LoginBloc, LoginState>(
-                  buildWhen: (prev, next) => prev.username != next.username,
-                  builder: (context, state) {
-                    return TextFormField(
-                      initialValue: state.username,
-                      decoration: const InputDecoration(
-                        hintText: "Username/Email",
-                      ),
-                    );
-                  },
-                ),
-                BlocBuilder<LoginBloc, LoginState>(
-                  buildWhen: (prev, next) => prev.password != next.password,
-                  builder: (context, state) {
-                    return TextFormField(
-                      obscureText: true,
-                      initialValue: state.password,
-                      decoration: const InputDecoration(
-                        hintText: "Password",
-                      ),
-                    );
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: BlocBuilder<LoginBloc, LoginState>(
-                    buildWhen: (prev, next) => prev.status != next.status,
+          child: SingleChildScrollView(
+            child: Form(
+              child: Column(
+                children: [
+                  BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                    buildWhen: (prev, next) => prev != next,
                     builder: (context, state) {
-                      return ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<LoginBloc>(context)
-                                .add(const LoginSubmitted());
-                          },
-                          child: const Text("Submit"));
+                      if (state.status == AuthenticationStatus.authenticated) {
+                        return const Text("You are logged !",
+                            style: TextStyle(fontSize: 30));
+                      }
+                      return const Text("You are not logged :'(");
                     },
                   ),
-                ),
-                TextButton(
-                  child: const Text(
-                    "Not a member yet ? Join us!",
+                  const Center(
+                    child: Text("LoginPage"),
                   ),
-                  onPressed: () {
-                    Get.toNamed(RegisterPage.routeName);
-                  },
-                )
-              ],
+                  BlocBuilder<LoginBloc, LoginState>(
+                    buildWhen: (prev, next) => prev.username != next.username,
+                    builder: (context, state) {
+                      return TextFormField(
+                        initialValue: state.username,
+                        decoration: const InputDecoration(
+                            hintText: "Username/Email",
+                            hintStyle: TextStyle(color: Colors.white)),
+                      );
+                    },
+                  ),
+                  BlocBuilder<LoginBloc, LoginState>(
+                    buildWhen: (prev, next) => prev.password != next.password,
+                    builder: (context, state) {
+                      return TextFormField(
+                        obscureText: true,
+                        initialValue: state.password,
+                        decoration: const InputDecoration(
+                          hintText: "Password",
+                        ),
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: BlocBuilder<LoginBloc, LoginState>(
+                      buildWhen: (prev, next) => prev.status != next.status,
+                      builder: (context, state) {
+                        return ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<AuthenticationBloc>(context).add(
+                                  AuthenticationAttemptRequested(
+                                      email: state.username,
+                                      password: state.password));
+                            },
+                            child: const Text("Submit"));
+                      },
+                    ),
+                  ),
+                  TextButton(
+                    child: const Text(
+                      "Not a member yet ? Join us!",
+                    ),
+                    onPressed: () {
+                      Get.toNamed(RegisterPage.routeName);
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

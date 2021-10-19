@@ -28,66 +28,69 @@ class RegisterPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-          child: Form(
-            child: Column(
-              children: [
-                const Center(
-                  child: Text("RegisterPage"),
-                ),
-                TextFormField(
-                  initialValue: "jpec@test.fr",
-                  decoration: const InputDecoration(
-                    hintText: "Username",
+          child: SingleChildScrollView(
+            child: Form(
+              child: Column(
+                children: [
+                  const Center(
+                    child: Text("RegisterPage"),
                   ),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  initialValue: "jpec@test.fr",
-                  decoration: const InputDecoration(
-                    hintText: "Email",
+                  TextFormField(
+                    initialValue: "jpec@test.fr",
+                    decoration: const InputDecoration(
+                      hintText: "Username",
+                    ),
                   ),
-                ),
-                TextFormField(
-                  obscureText: true,
-                  initialValue: "test",
-                  decoration: const InputDecoration(
-                    hintText: "Password",
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    initialValue: "jpec@test.fr",
+                    decoration: const InputDecoration(
+                      hintText: "Email",
+                    ),
                   ),
-                ),
-                TextFormField(
-                  obscureText: true,
-                  initialValue: "test",
-                  decoration: const InputDecoration(
-                    hintText: "Confirm password",
+                  TextFormField(
+                    obscureText: true,
+                    initialValue: "test",
+                    decoration: const InputDecoration(
+                      hintText: "Password",
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: BlocBuilder<RegisterBloc, RegisterState>(
-                    buildWhen: (prev, next) => prev.status != next.status,
-                    builder: (context, state) {
-                      return ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<RegisterBloc>(context)
-                                .add(const RegisterSubmitted());
-                          },
-                          child: const Text("Submit"));
+                  TextFormField(
+                    obscureText: true,
+                    initialValue: "test",
+                    decoration: const InputDecoration(
+                      hintText: "Confirm password",
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: BlocBuilder<RegisterBloc, RegisterState>(
+                      buildWhen: (prev, next) => prev.status != next.status,
+                      builder: (context, state) {
+                        return ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<RegisterBloc>(context)
+                                  .add(const RegisterSubmitted());
+                            },
+                            child: const Text("Submit"));
+                      },
+                    ),
+                  ),
+                  TextButton(
+                    child: const Text(
+                      "Already a member yet ? Log in",
+                    ),
+                    onPressed: () {
+                      Get.toNamed(LoginPage.routeName);
                     },
-                  ),
-                ),
-                TextButton(
-                  child: const Text(
-                    "Already a member yet ? Log in",
-                  ),
-                  onPressed: () {
-                    Get.toNamed(LoginPage.routeName);
-                  },
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

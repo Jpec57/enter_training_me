@@ -1,7 +1,5 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page_arguments.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +18,6 @@ class TrainingContainer extends StatelessWidget {
       Get.toNamed(WorkoutShowPage.routeName,
           arguments:
               WorkoutShowPageArguments(referenceTraining: referenceTraining));
-      // Get.toNamed(InWorkoutPage.routeName,
-      //     arguments:
-      //         InWorkoutPageArguments(referenceTraining: referenceTraining));
     }, child: Builder(builder: (BuildContext context) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,

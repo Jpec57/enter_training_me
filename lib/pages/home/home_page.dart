@@ -116,23 +116,39 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              FutureBuilder(
-                  future: _feedFuture,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.done:
-                        if (snapshot.hasError) {
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: FutureBuilder(
+                    future: _feedFuture,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.done:
+                          if (snapshot.hasError) {
+                            return const Center(child: Text("Error"));
+                          }
+                          List<Training> trainings = snapshot.data;
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: trainings.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return SizedBox(
+                                height: 200,
+                                child: TrainingContainer(
+                                  referenceTraining: trainings[index],
+                                ),
+                              );
+                            },
+                          );
+                        case ConnectionState.waiting:
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        default:
                           return const Center(child: Text("Error"));
-                        }
-                        return Container();
-                      case ConnectionState.waiting:
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      default:
-                        return const Center(child: Text("Error"));
-                    }
-                  }),
+                      }
+                    }),
+              ),
             ],
           ),
         ),

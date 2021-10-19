@@ -15,6 +15,9 @@ Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
           ? null
           : User.fromJson(json['author'] as Map<String, dynamic>),
       id: json['id'] as int?,
+      createdDate: json['createdDate'] == null
+          ? null
+          : DateTime.parse(json['createdDate'] as String),
       isOfficial: json['isOfficial'] as bool? ?? false,
       reference: json['reference'] == null
           ? null
@@ -25,6 +28,7 @@ Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
 
 Map<String, dynamic> _$TrainingToJson(Training instance) => <String, dynamic>{
       'id': instance.id,
+      'createdDate': instance.createdDate?.toIso8601String(),
       'name': instance.name,
       'author': instance.author,
       'cycles': instance.cycles,

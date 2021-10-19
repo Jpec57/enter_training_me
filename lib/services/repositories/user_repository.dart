@@ -6,15 +6,18 @@ import 'package:flutter/material.dart';
 
 class UserRepository extends ApiService
     implements IAuthUserRepositoryInterface {
-  static const getUserFeed = "/users/feed";
+  static const getUserFeed = "/api/users/feed";
   static const loginUrl = "/api/login";
   static const registerUrl = "/api/register";
   static const getByToken = "/api/users/token/{token}";
 
   @override
   Future<IAuthUserInterface?> getUserWithToken(String apiToken) async {
+    print("getByToken ${getByToken.replaceFirst("{token}", apiToken)}");
     Response response =
         await getDio().get(getByToken.replaceFirst("{token}", apiToken));
+    print("getUserWithToken");
+    print(response.data);
     return User.fromJson(response.data);
   }
 
@@ -53,6 +56,7 @@ class UserRepository extends ApiService
     Response response =
         await getDio().get(getUserFeed, queryParameters: queryParams);
     List<dynamic> data = response.data;
+    print(response.data);
     return data.map((e) => Training.fromJson(e)).toList();
   }
 }

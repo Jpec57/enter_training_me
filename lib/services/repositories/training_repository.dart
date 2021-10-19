@@ -51,6 +51,7 @@ class TrainingRepository extends ApiService implements IRepository {
     debugPrint("Fetching official training list...");
     Response response = await getDio().get(getOfficialUri);
     print(response.data);
+
     List<dynamic> data = response.data;
     return data.map((e) => Training.fromJson(e)).toList();
   }

@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_repository.dart';
+import 'package:enter_training_me/authentication/interfaces/iauthentication_user.dart';
+import 'package:enter_training_me/authentication/models/auth_response.dart';
+import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/login/login_page.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/storage_constants.dart';
@@ -65,5 +68,24 @@ class AuthenticationRepository extends ApiService
   Stream<AuthenticationStatus> get status async* {
     yield AuthenticationStatus.unknown;
     yield* controller.stream;
+  }
+
+  @override
+  Future<AuthResponse?> logInAndGetUser(
+      {required String email, required String password}) async {
+    Map<String, dynamic> data = {
+      "username": email,
+      "email": email,
+      "password": password,
+    };
+
+    Response response = await getDio().post("/api/login", data: data);
+    Map<String, dynamic> res = response.data;
+    if (!res.containsKey("token")) {
+      return null;
+    }
+    String token = res["token"];
+    await saveUserToken(token);
+    return AuthResponse(token: token, user: User.fromJson(res["user"]));
   }
 }
