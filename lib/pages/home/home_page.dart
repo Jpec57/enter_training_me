@@ -73,8 +73,6 @@ class _HomePageState extends State<HomePage> {
                   switch (snapshot.connectionState) {
                     case ConnectionState.done:
                       if (snapshot.hasError) {
-                        print("error");
-                        print(snapshot.error.toString());
                         return Text(snapshot.error.toString());
                       }
                       if (snapshot.data == null) {
@@ -111,7 +109,6 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {},
                         child: const Text(
                           "More...",
-                          // style: TextStyle(fontStyle: FontStyle.italic),
                         )),
                   ],
                 ),
@@ -136,6 +133,7 @@ class _HomePageState extends State<HomePage> {
                               return SizedBox(
                                 height: 200,
                                 child: TrainingContainer(
+                                  otherColor: true,
                                   referenceTraining: trainings[index],
                                 ),
                               );

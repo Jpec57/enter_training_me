@@ -5,7 +5,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class MuscleActivationRepartitionGraph extends StatefulWidget {
-  const MuscleActivationRepartitionGraph({Key? key}) : super(key: key);
+  final List<MuscleActivation> muscleActivations;
+  const MuscleActivationRepartitionGraph(
+      {Key? key, required this.muscleActivations})
+      : super(key: key);
 
   @override
   State<MuscleActivationRepartitionGraph> createState() =>
@@ -24,19 +27,6 @@ class _MuscleActivationRepartitionGraphState
         aspectRatio: 1,
         child: PieChart(
           PieChartData(
-              // pieTouchData: PieTouchData(
-              //     touchCallback: (FlTouchEvent event, pieTouchResponse) {
-              //   setState(() {
-              //     if (!event.isInterestedForInteractions ||
-              //         pieTouchResponse == null ||
-              //         pieTouchResponse.touchedSection == null) {
-              //       touchedIndex = -1;
-              //       return;
-              //     }
-              //     touchedIndex =
-              //         pieTouchResponse.touchedSection!.touchedSectionIndex;
-              //   });
-              // }),
               borderData: FlBorderData(
                 show: false,
               ),
@@ -48,35 +38,52 @@ class _MuscleActivationRepartitionGraphState
     );
   }
 
-  List<MuscleActivationSerie> getMuscleActivationSeriesFromTraining(
-      Training training) {
-    const List<MuscleActivationSerie> muscleActivations = [
-      MuscleActivationSerie(
-          muscleName: "Triceps", ratio: 30, color: CustomTheme.middleGreen),
-      MuscleActivationSerie(muscleName: "Chest", ratio: 40, color: Colors.grey),
-      MuscleActivationSerie(
-          muscleName: "Shoulders", ratio: 30, color: CustomTheme.green)
-    ];
+  // List<MuscleActivationSerie> getMuscleActivationSeriesFromTraining(
+  //     Training training) {
+  //   const List<MuscleActivationSerie> muscleActivations = [
+  //     MuscleActivationSerie(
+  //         muscleName: "Triceps", ratio: 30, color: CustomTheme.middleGreen),
+  //     MuscleActivationSerie(muscleName: "Chest", ratio: 40, color: Colors.grey),
+  //     MuscleActivationSerie(
+  //         muscleName: "Shoulders", ratio: 30, color: CustomTheme.green)
+  //   ];
 
-    for (var cycle in training.cycles) {
-      for (var exo in cycle.exercises) {
-        // List<MuscleActivation> muscleActivations = exo.exerciseReference.muscles;
+  //   for (var cycle in training.cycles) {
+  //     for (var exo in cycle.exercises) {
+  //       // List<MuscleActivation> muscleActivations = exo.exerciseReference.muscles;
 
-      }
-    }
+  //     }
+  //   }
 
-    return muscleActivations;
-  }
+  //   return muscleActivations;
+  // }
 
   List<PieChartSectionData> buildSections() {
-    const List<MuscleActivationSerie> muscleActivations = [
-      MuscleActivationSerie(
-          muscleName: "Triceps", ratio: 30, color: CustomTheme.middleGreen),
-      MuscleActivationSerie(muscleName: "Chest", ratio: 40, color: Colors.grey),
-      MuscleActivationSerie(
-          muscleName: "Shoulders", ratio: 30, color: CustomTheme.green)
+    List<MuscleActivationSerie> muscleActivations = [
+      // MuscleActivationSerie(
+      //     muscleName: "Triceps", ratio: 30, color: CustomTheme.middleGreen),
+      // MuscleActivationSerie(muscleName: "Chest", ratio: 40, color: Colors.grey),
+      // MuscleActivationSerie(
+      //     muscleName: "Shoulders", ratio: 30, color: CustomTheme.green)
     ];
-    final isTouched = false;
+
+    List<Color> colors = [
+      CustomTheme.middleGreen,
+      Colors.grey,
+      CustomTheme.green
+    ];
+    var i = 0;
+    print("FIRST");
+    print(widget.muscleActivations);
+    muscleActivations = widget.muscleActivations.map((element) {
+      i++;
+      return MuscleActivationSerie(
+          muscleName: element.muscle,
+          ratio: element.activationRatio * 100,
+          color: colors[i % colors.length]);
+    }).toList();
+    print(muscleActivations);
+    const isTouched = false;
     final fontSize = isTouched ? 20.0 : 16.0;
     final radius = isTouched ? 110.0 : 100.0;
     final widgetSize = isTouched ? 55.0 : 40.0;

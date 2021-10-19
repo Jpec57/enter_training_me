@@ -5,7 +5,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class TrainingTypeRepartitionGraph extends StatefulWidget {
-  const TrainingTypeRepartitionGraph({Key? key}) : super(key: key);
+  final Map<String, double> typeRepartition;
+  const TrainingTypeRepartitionGraph({Key? key, required this.typeRepartition})
+      : super(key: key);
 
   @override
   State<TrainingTypeRepartitionGraph> createState() =>
@@ -35,21 +37,28 @@ class _TrainingTypeRepartitionGraphState
     );
   }
 
-  List<MuscleActivationSerie> getMuscleActivationSeriesFromTraining(
-      Training training) {
-    const List<MuscleActivationSerie> muscleActivations = [
-      MuscleActivationSerie(
-          muscleName: "Hypertrophy", ratio: 30, color: CustomTheme.middleGreen),
-      MuscleActivationSerie(
-          muscleName: "Strength", ratio: 40, color: Colors.grey),
-      MuscleActivationSerie(
-          muscleName: "Endurance", ratio: 30, color: CustomTheme.green)
+  List<MuscleActivationSerie> getMuscleActivationSeriesFromTraining() {
+    List<MuscleActivationSerie> muscleActivations = [
+      // MuscleActivationSerie(
+      //     muscleName: "Hypertrophy", ratio: 30, color: CustomTheme.middleGreen),
+      // MuscleActivationSerie(
+      //     muscleName: "Strength", ratio: 40, color: Colors.grey),
+      // MuscleActivationSerie(
+      //     muscleName: "Endurance", ratio: 30, color: CustomTheme.green)
     ];
-
-    for (var cycle in training.cycles) {
-      for (var exo in cycle.exercises) {
-        // List<MuscleActivation> muscleActivations = exo.exerciseReference.muscles;
-
+    var i = 0;
+    List<Color> colors = [
+      CustomTheme.middleGreen,
+      Colors.grey,
+      CustomTheme.green
+    ];
+    for (var element in widget.typeRepartition.entries) {
+      i++;
+      if (element.value != 0) {
+        muscleActivations.add(MuscleActivationSerie(
+            muscleName: element.key,
+            ratio: element.value * 100,
+            color: colors[i % colors.length]));
       }
     }
 
@@ -57,14 +66,16 @@ class _TrainingTypeRepartitionGraphState
   }
 
   List<PieChartSectionData> buildSections() {
-    const List<MuscleActivationSerie> muscleActivations = [
-      MuscleActivationSerie(
-          muscleName: "Hypertrophy", ratio: 30, color: CustomTheme.middleGreen),
-      MuscleActivationSerie(
-          muscleName: "Strength", ratio: 40, color: Colors.grey),
-      MuscleActivationSerie(
-          muscleName: "Endurance", ratio: 30, color: CustomTheme.green)
-    ];
+    // const List<MuscleActivationSerie> muscleActivations = [
+    //   MuscleActivationSerie(
+    //       muscleName: "Hypertrophy", ratio: 30, color: CustomTheme.middleGreen),
+    //   MuscleActivationSerie(
+    //       muscleName: "Strength", ratio: 40, color: Colors.grey),
+    //   MuscleActivationSerie(
+    //       muscleName: "Endurance", ratio: 30, color: CustomTheme.green)
+    // ];
+
+    var muscleActivations = getMuscleActivationSeriesFromTraining();
     final isTouched = false;
     final fontSize = isTouched ? 20.0 : 16.0;
     final radius = isTouched ? 110.0 : 100.0;

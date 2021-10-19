@@ -7,10 +7,10 @@ import 'package:get/get.dart';
 
 class TrainingContainer extends StatelessWidget {
   final Training referenceTraining;
-  const TrainingContainer({
-    Key? key,
-    required this.referenceTraining,
-  }) : super(key: key);
+  final bool otherColor;
+  const TrainingContainer(
+      {Key? key, required this.referenceTraining, this.otherColor = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,8 @@ class TrainingContainer extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 50.0),
               decoration: BoxDecoration(
-                  color: CustomTheme.middleGreen,
+                  color:
+                      otherColor ? CustomTheme.grey : CustomTheme.middleGreen,
                   borderRadius: BorderRadius.circular(10)),
             ),
             Positioned.fill(child: Image.asset("assets/exercises/pull_up.png")),

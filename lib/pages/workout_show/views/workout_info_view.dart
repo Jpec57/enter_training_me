@@ -11,11 +11,21 @@ class WorkoutInfoView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SectionTitle(title: "Muscle Repartition"),
-          const MuscleActivationRepartitionGraph(),
+          referenceTraining.muscleRepartition.isEmpty
+              ? Container()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SectionTitle(title: "Muscle Repartition"),
+                    MuscleActivationRepartitionGraph(
+                        muscleActivations: referenceTraining.muscleRepartition),
+                  ],
+                ),
           const SectionDivider(),
           const SectionTitle(title: "Training Type Repartition"),
-          const TrainingTypeRepartitionGraph(),
+          TrainingTypeRepartitionGraph(
+            typeRepartition: referenceTraining.focusRepartition,
+          ),
         ],
       ),
     );
