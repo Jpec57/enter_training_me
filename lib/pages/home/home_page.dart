@@ -128,6 +128,7 @@ class _HomePageState extends State<HomePage> {
                           }
                           List<Training> trainings = snapshot.data;
                           return ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 50),
                             shrinkWrap: true,
                             itemCount: trainings.length,
                             physics: const NeverScrollableScrollPhysics(),

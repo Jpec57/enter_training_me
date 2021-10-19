@@ -5,6 +5,7 @@ import 'package:enter_training_me/authentication/interfaces/iauthentication_repo
 import 'package:enter_training_me/authentication/interfaces/iauthentication_user.dart';
 import 'package:enter_training_me/authentication/models/auth_response.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/login/login_page.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/storage_constants.dart';
@@ -44,7 +45,7 @@ class AuthenticationRepository extends ApiService
   void logOut() {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     storage.delete(key: StorageConstants.apiKey);
-    get_lib.Get.offNamedUntil(LoginPage.routeName, (route) => false);
+    get_lib.Get.offNamedUntil(HomePage.routeName, (route) => false);
   }
 
   @override

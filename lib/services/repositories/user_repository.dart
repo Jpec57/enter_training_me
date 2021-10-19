@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserRepository extends ApiService
     implements IAuthUserRepositoryInterface {
@@ -12,12 +14,17 @@ class UserRepository extends ApiService
   static const getByToken = "/api/users/token/{token}";
 
   @override
-  Future<IAuthUserInterface?> getUserWithToken(String apiToken) async {
-    print("getByToken ${getByToken.replaceFirst("{token}", apiToken)}");
+  Future<IAuthUserInterface?> getUserWithToken(String? apiToken) async {
+    if (apiToken == null) {
+      FlutterSecureStorage storage = const FlutterSecureStorage();
+      apiToken = await storage.read(key: StorageConstants.apiKey);
+      if (apiToken == null) {
+        debugPrint("No token in storage.");
+        return null;
+      }
+    }
     Response response =
         await getDio().get(getByToken.replaceFirst("{token}", apiToken));
-    print("getUserWithToken");
-    print(response.data);
     return User.fromJson(response.data);
   }
 
