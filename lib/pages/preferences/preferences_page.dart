@@ -8,6 +8,7 @@ class PreferencesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Column(

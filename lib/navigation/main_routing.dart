@@ -32,7 +32,7 @@ class MainRouting {
     NavigationElement(
         title: "Profile",
         iconData: Icons.person,
-        routeName: ProfilePage.routeName),
+        routeName: LoginPage.routeName),
     NavigationElement(
         title: "Other",
         iconData: Icons.question_answer,
