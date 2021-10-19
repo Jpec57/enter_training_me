@@ -62,24 +62,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmitted event,
     LoginState state,
   ) async* {
-    // if (state.status.isValidated) {
-    // yield state.copyWith(status: submissionInProgress);
+    // if (state.status == SubmitStatus.validated) {
+    yield state.copyWith(status: SubmitStatus.submitting);
     try {
       bool isLoginSuccess = await _authenticationRepository.logIn(
         username: state.username,
         password: state.password,
       );
       if (isLoginSuccess) {
-        // yield state.copyWith(status: submissionSuccess);
+        yield state.copyWith(status: SubmitStatus.submitted);
       } else {
-        // yield state.copyWith(
-        //     serverState: ServerState(
-        //         code: 403, message: "You are not Jpec and never will be."),
-        //     status: FormzStatus.submissionFailure);
+        yield state.copyWith(status: SubmitStatus.submitted);
       }
     } on Exception catch (_) {
-      // yield state.copyWith(status: FormzStatus.submissionFailure);
+      yield state.copyWith(status: SubmitStatus.errorSubmission);
     }
-    // }
   }
+  // }
 }

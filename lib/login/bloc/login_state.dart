@@ -1,33 +1,30 @@
 part of 'login_bloc.dart';
 
+enum SubmitStatus { unknown, validated, submitting, submitted, errorSubmission }
+
 class LoginState extends Equatable {
   const LoginState({
-    // this.status = FormzStatus.pure,
-    this.username = "",
-    this.password = "",
+    this.status = SubmitStatus.unknown,
+    this.username = "test@jpec.fr",
+    this.password = "test",
   });
 
-  // final FormzStatus status;
+  final SubmitStatus status;
   final String username;
   final String password;
-  // final ServerState serverState;
 
   LoginState copyWith({
-    // FormzStatus? status,
+    SubmitStatus? status,
     String? username,
     String? password,
-    // ServerState? serverState
   }) {
     return LoginState(
-      // status: status ?? this.status,
+      status: status ?? this.status,
       username: username ?? this.username,
       password: password ?? this.password,
     );
   }
 
   @override
-  List<Object> get props => [
-        // status,
-        username, password
-      ];
+  List<Object> get props => [status, username, password];
 }

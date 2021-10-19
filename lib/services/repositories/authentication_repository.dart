@@ -22,9 +22,15 @@ class AuthenticationRepository extends ApiService
   @override
   Future<bool> logIn(
       {required String username, required String password}) async {
-    Response response = await getDio().get("/api/login");
-    dynamic data = response.data;
+    Map<String, dynamic> data = {
+      "username": username,
+      "email": username,
+      "password": password,
+    };
+    Response response = await getDio().post("/api/login", data: data);
+    // dynamic data = response.data;
 
+    print(response.data);
     if (response.statusCode == null) {
       return false;
     }
