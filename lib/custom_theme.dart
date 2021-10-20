@@ -4,12 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomTheme {
   static const color = Color(0xff000000);
   static const green = Color(0xffD3CEC4);
+  static const darkerGreen = Color(0xff256937);
   static const middleGreen = Color(0xff857F72);
   static const darkGrey = Color(0xff27241D);
   static const grey = Color(0xffBCBCBC);
 
   static const MaterialColor greenSwatch = MaterialColor(
-    0xffe55f48, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.
+    0xff857F72, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.
     <int, Color>{
       50: Color(0xffFAF9F7), //10%
       100: Color(0xffE8E6E1), //20%
@@ -47,7 +48,6 @@ class CustomTheme {
       backgroundColor: Colors.black,
       hintColor: CustomTheme.middleGreen,
       textTheme: TextTheme(
-        
         // body1: const TextStyle(color: Colors.white),
         bodyText1: const TextStyle(color: Colors.white),
         bodyText2: const TextStyle(color: Colors.white),

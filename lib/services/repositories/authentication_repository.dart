@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_repository.dart';
-import 'package:enter_training_me/authentication/interfaces/iauthentication_user.dart';
 import 'package:enter_training_me/authentication/models/auth_response.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
-import 'package:enter_training_me/pages/login/login_page.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

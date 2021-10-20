@@ -36,6 +36,7 @@ class AuthenticationBloc
       yield await _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
       _authenticationRepository.logOut();
+      yield const AuthenticationState.unauthenticated();
     } else if (event is AuthenticationAttemptRequested) {
       AuthResponse? authResponse = await _authenticationRepository
           .logInAndGetUser(password: event.password, email: event.email);

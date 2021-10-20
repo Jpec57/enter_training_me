@@ -1,6 +1,6 @@
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/pages/login/login_page.dart';
 import 'package:enter_training_me/pages/register/bloc/bloc/register_bloc.dart';
+import 'package:enter_training_me/pages/user/user_page.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,7 +86,7 @@ class RegisterPageContent extends StatelessWidget {
                       "Already a member yet ? Log in",
                     ),
                     onPressed: () {
-                      Get.toNamed(LoginPage.routeName);
+                      Get.toNamed(UserPage.routeName);
                     },
                   )
                 ],

@@ -1,12 +1,7 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/navigation/main_routing.dart';
 import 'package:enter_training_me/navigation/navigation_element.dart';
-import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
-import 'package:enter_training_me/pages/home/home_page.dart';
-import 'package:enter_training_me/pages/profile/profile_page.dart';
-import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
