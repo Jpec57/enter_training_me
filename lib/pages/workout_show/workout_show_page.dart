@@ -49,6 +49,8 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
 
   @override
   Widget build(BuildContext context) {
+    print("First exo");
+    print(widget.referenceTraining.exercisesAsFlatList[0]);
     return Scaffold(
       appBar: AppBar(
           elevation: 0,

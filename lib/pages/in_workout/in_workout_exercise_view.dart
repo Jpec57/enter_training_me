@@ -19,6 +19,8 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
           prev.currentExoIndex != next.currentExoIndex ||
           prev.currentCycleIndex != next.currentCycleIndex,
       builder: (context, state) {
+        print("Jpec");
+        print(state.currentExo);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

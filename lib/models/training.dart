@@ -3,7 +3,6 @@ import 'package:enter_training_me/models/exercise_cycle.dart';
 import 'package:enter_training_me/models/muscle_activation.dart';
 import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/models/user.dart';
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'training.g.dart';
@@ -18,7 +17,8 @@ String? trainingRefToJson(Training? ref) {
 @JsonSerializable()
 class Training {
   final int? id;
-  final DateTime? createdDate;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
   final String name;
   final User? author;
   final List<ExerciseCycle> cycles;
@@ -33,7 +33,8 @@ class Training {
       required this.cycles,
       this.author,
       this.id,
-      this.createdDate,
+      required this.createdAt,
+      this.updatedAt,
       this.isOfficial = false,
       this.reference,
       this.estimatedTimeInSeconds,
@@ -48,6 +49,7 @@ class Training {
         name: ref.name,
         author: ref.author,
         isOfficial: false,
+        createdAt: DateTime.now(),
         reference: ref,
         restBetweenCycles: ref.restBetweenCycles,
         cycles: ref.cycles);
@@ -178,5 +180,6 @@ class Training {
           cycles: cycles ?? this.cycles,
           name: name ?? this.name,
           reference: reference,
+          createdAt: createdAt,
           author: author ?? this.author);
 }

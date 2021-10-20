@@ -39,8 +39,11 @@ class RealisedExercise {
     this.executionStyle,
   });
 
-  factory RealisedExercise.fromJson(Map<String, dynamic> json) =>
-      _$RealisedExerciseFromJson(json);
+  factory RealisedExercise.fromJson(Map<String, dynamic> json) {
+    print("json");
+    print(json);
+    return _$RealisedExerciseFromJson(json);
+  }
   Map<String, dynamic> toJson() => _$RealisedExerciseToJson(this);
   Map<String, dynamic> toJsonForCreation() => _$RealisedExerciseToJson(this);
 
@@ -52,7 +55,7 @@ class RealisedExercise {
 
   @override
   String toString() {
-    return "$exerciseReference (sets $sets)";
+    return "$exerciseReference (Execution: $executionStyle, sets $sets)";
   }
 
   /// Estimate exercise intensity with the following assumptions:
