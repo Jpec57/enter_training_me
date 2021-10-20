@@ -48,20 +48,15 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
               }
               return Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: LayoutBuilder(builder: (context, constraints) {
-                  double maxSize =
-                      min(constraints.constrainHeight(), constraints.maxWidth);
-                  return Center(
-                    child: CountdownTimer(
-                      totalDuration: state.currentExo.restBetweenSet,
-                      backgroundColor: CustomTheme.darkGrey,
-                      isIncludingStop: true,
-                      onEndCallback: widget.onTimerEndCallback,
-                      progressStrokeColor: CustomTheme.middleGreen,
-                      size: 200,
-                    ),
-                  );
-                }),
+                child: Center(
+                  child: CountdownTimer(
+                    totalDuration: state.currentExo.restBetweenSet,
+                    backgroundColor: CustomTheme.darkGrey,
+                    isIncludingStop: true,
+                    onEndCallback: widget.onTimerEndCallback,
+                    progressStrokeColor: CustomTheme.middleGreen,
+                  ),
+                ),
               );
             },
           ),

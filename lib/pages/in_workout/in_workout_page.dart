@@ -213,10 +213,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                 ),
         ));
   }
-  // Future<> _getStorageSoundPreferenceValue() async {
-  //   FlutterSecureStorage storage = FlutterSecureStorage();
-  //   await storage.read(key: StorageConstants.soundInWorkout);
-  // }
+
 
   Widget _renderTrainingProgressHead() {
     return Padding(

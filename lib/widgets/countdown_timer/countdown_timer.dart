@@ -81,52 +81,55 @@ class _CountdownTimerState extends State<CountdownTimer>
     super.initState();
   }
 
+  Widget _renderStack(double size) {
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          child: CustomPaint(
+            painter: CountdownPainter(
+                radius: size / 2,
+                elapsedSeconds: _elapsedTime,
+                totalSeconds: widget.totalDuration,
+                progressStrokeColor:
+                    widget.progressStrokeColor ?? Colors.black,
+                divisionStrokeColor:
+                    widget.divisionStrokeColor ?? Colors.white),
+          ),
+        ),
+        widget.isIncludingStop
+            ? Positioned(
+                bottom: size / 4 - size / 20,
+                left: 0,
+                right: 0,
+                child: InkWell(
+                  onTap: widget.onEndCallback,
+                  child: Container(
+                    padding: EdgeInsets.all(widget.size / 30),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: widget.progressStrokeColor),
+                    child: Center(
+                      child: Container(
+                          height: size / 20,
+                          width: size / 20,
+                          color: widget.backgroundColor),
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: widget.size,
-        width: widget.size,
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: CustomPaint(
-                painter: CountdownPainter(
-                    radius: widget.size / 2,
-                    elapsedSeconds: _elapsedTime,
-                    totalSeconds: widget.totalDuration,
-                    progressStrokeColor:
-                        widget.progressStrokeColor ?? Colors.black,
-                    divisionStrokeColor:
-                        widget.divisionStrokeColor ?? Colors.white),
-              ),
-            ),
-            widget.isIncludingStop
-                ? Positioned(
-                    bottom: widget.size / 4 - widget.size / 20,
-                    left: 0,
-                    right: 0,
-                    child: InkWell(
-                      onTap: widget.onEndCallback,
-                      child: Container(
-                        padding: EdgeInsets.all(widget.size / 30),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: widget.progressStrokeColor),
-                        child: Center(
-                          child: Container(
-                              height: widget.size / 20,
-                              width: widget.size / 20,
-                              color: widget.backgroundColor),
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(),
-          ],
-        ));
+    return LayoutBuilder(builder: (context, constraints) {
+      return _renderStack(constraints.maxHeight);
+    });
   }
 }
