@@ -57,16 +57,17 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     } else if (event is RestDoneEvent) {
       List<ExerciseCycle> doneCycles =
           updateSet(doneReps: state.reallyDoneReps);
-      print(doneCycles);
       if (state.isEndOfWorkout) {
+        Training? training;
         try {
-          await trainingRepository
+          training = await trainingRepository
               .postUserTraining(state.realisedTraining.toJson());
         } on Exception catch (e) {
           Get.snackbar("Error", e.toString());
           //TODO Save in local storage to resend later
         }
-        yield state.copyWith(isEnd: true);
+
+        yield state.copyWith(isEnd: true, realisedTrainingId: training?.id);
       }
       yield state.copyWith(
           isEnd: state.isEndOfWorkout,
@@ -85,13 +86,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     } else if (event is ChangedWeightEvent) {
       yield _mapChangedWeightEventToState(event);
     } else if (event is TrainingEndedEvent) {
+      Training? training;
       try {
-        await trainingRepository
+        training = await trainingRepository
             .postUserTraining(state.realisedTraining.toJson());
       } on Exception catch (e) {
         Get.snackbar("Error", e.toString());
         //TODO Save in local storage to resend later
       }
+      yield state.copyWith(realisedTrainingId: training?.id);
+
       yield _mapTrainingEndedEventToState(event);
     } else if (event is TrainingLeftEvent) {
       //Erase all sets above the current one and save training with query

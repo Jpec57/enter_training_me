@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:video_player/video_player.dart';
 
 part 'views/workout_info_view.dart';
 part 'views/workout_history_view.dart';
@@ -49,8 +50,6 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
 
   @override
   Widget build(BuildContext context) {
-    print("First exo");
-    print(widget.referenceTraining.exercisesAsFlatList[0]);
     return Scaffold(
       appBar: AppBar(
           elevation: 0,
@@ -107,7 +106,7 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
                           ],
                         ),
                       ),
-                      const SectionDivider(),
+                      const SectionDivider(),                      
                       WorkoutTrainingContent(
                           referenceTraining: widget.referenceTraining),
                     ],

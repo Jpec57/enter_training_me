@@ -18,7 +18,8 @@ class ProfilePageContent extends StatefulWidget {
 
 class _ProfilePageContentState extends State<ProfilePageContent> {
   late Future<IAuthUserInterface?> _getUserFromTokenFuture;
-  final Color userBackgroundColor = CustomTheme.middleGreen;
+  final Color userBackgroundColor = CustomTheme.darkGrey;
+  // final Color userBackgroundColor = Color(0xff423D33);
 
   @override
   void initState() {
@@ -91,8 +92,8 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
   }
 
   Widget _renderProfile(User user) {
-    final Color trainingRowColor = Color(0xffA39E93);
-    // final Color trainingRowColor = CustomTheme.middleGreen;
+    // final Color trainingRowColor = Color(0xffA39E93);
+    final Color trainingRowColor = CustomTheme.middleGreen;
     final bottomPadding = 50.0;
     return Expanded(
       child: SingleChildScrollView(
@@ -136,19 +137,15 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
             Stack(
               alignment: Alignment.center,
               children: [
-                Positioned.fill(
+                // Positioned.fill(child: child)
+                Positioned(
+                    top: 100,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
                     child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment(0.0, 0.25),
-                      end: Alignment.bottomCenter,
-                      colors: <Color>[
-                        userBackgroundColor,
-                        trainingRowColor
-                      ], // red to yellow
-                    ),
-                  ),
-                )),
+                      decoration: BoxDecoration(color: CustomTheme.middleGreen),
+                    )),
                 Align(
                     alignment: Alignment.center,
                     child: Center(
@@ -193,55 +190,61 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.only(left: 8, bottom: 8.0, top: 16),
+                        const EdgeInsets.only(left: 8, bottom: 16.0, top: 24),
                     child: Text("Last trainings",
                         style: Theme.of(context).textTheme.headline4),
                   ),
-                  SizedBox(
-                    height: 150,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(bottom: 16),
-                      itemCount: 5,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, i) {
-                        double itemWidth =
-                            MediaQuery.of(context).size.width / 2.5;
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Container(
-                              width: itemWidth,
-                              decoration: BoxDecoration(
-                                  color: CustomTheme.green,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Stack(children: [
-                                Image.asset("assets/exercises/pull_up.png",
-                                    fit: BoxFit.cover),
-                                Container(
-                                  alignment: Alignment.lerp(Alignment.topCenter,
-                                      Alignment.bottomCenter, 0.75),
-                                  width: itemWidth,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    // color: Color.fromARGB(100, 255, 255, 255),
-                                  ),
-                                  child: Text("Training"),
-                                )
-                              ])),
-                        );
-                      },
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 32),
+                    child: SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 5,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, i) {
+                          double itemWidth =
+                              MediaQuery.of(context).size.width / 2.5;
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Container(
+                                width: itemWidth,
+                                decoration: BoxDecoration(
+                                    color: CustomTheme.green,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Stack(children: [
+                                  Image.asset("assets/exercises/pull_up.png",
+                                      fit: BoxFit.cover),
+                                  Container(
+                                    alignment: Alignment.lerp(
+                                        Alignment.topCenter,
+                                        Alignment.bottomCenter,
+                                        0.75),
+                                    width: itemWidth,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      // color: Color.fromARGB(100, 255, 255, 255),
+                                    ),
+                                    child: Text("Training"),
+                                  )
+                                ])),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, top: 16),
+              padding: const EdgeInsets.only(left: 8, bottom: 24.0, top: 32),
               child: Text("Dashboard",
                   style: Theme.of(context).textTheme.headline4),
             ),
             GridView.count(
                 physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 24),
                 shrinkWrap: true,
                 crossAxisCount: 2,
                 mainAxisSpacing: 16,

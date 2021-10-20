@@ -17,7 +17,7 @@ String? trainingRefToJson(Training? ref) {
 @JsonSerializable()
 class Training {
   final int? id;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final DateTime? updatedAt;
   final String name;
   final User? author;
@@ -33,7 +33,7 @@ class Training {
       required this.cycles,
       this.author,
       this.id,
-      required this.createdAt,
+      this.createdAt,
       this.updatedAt,
       this.isOfficial = false,
       this.reference,

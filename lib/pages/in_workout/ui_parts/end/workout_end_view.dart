@@ -60,17 +60,31 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                   metric: state.realisedTraining.intensity
                                       .toString(),
                                   unit: " points"),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  icon: const Icon(Icons.share,
-                                      color: Colors.white),
-                                  onPressed: () {
-                                    RepositoryProvider.of<TrainingRepository>(
-                                            context)
-                                        .shareByEmailAction(
-                                            state.realisedTraining.id!);
-                                  }),
+                              BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                                buildWhen: (prev, next) =>
+                                    prev.realisedTrainingId !=
+                                    next.realisedTrainingId,
+                                builder: (context, state) {
+                                  if (state.realisedTrainingId == null) {
+                                    return Container();
+                                  }
+                                  return IconButton(
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                      icon: const Icon(Icons.share,
+                                          color: Colors.white),
+                                      onPressed: () async {
+                                        //TODO SHOW POP UP
+
+                                        bool isSuccess =
+                                            await RepositoryProvider.of<
+                                                    TrainingRepository>(context)
+                                                .shareByEmailAction(
+                                                    state.realisedTrainingId!);
+                                        print("Send correctly");
+                                      });
+                                },
+                              ),
                             ],
                           ),
                         ),

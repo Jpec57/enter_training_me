@@ -2,6 +2,7 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/models/reference_exercise.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.dart';
+import 'package:enter_training_me/pages/test/video_content.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,7 +19,11 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
   bool _isShowingDescription = false;
 
   Widget _renderExerciseImage() {
-    return Image.asset("assets/exercises/pull_up.png");
+    return const VideoContent(
+      path: 'assets/exercises/pull_up.mp4',
+      thumbnailPath: 'assets/exercises/pull_up.png',
+      isNetwork: false,
+    );
   }
 
   Widget _renderExerciseDescription() {

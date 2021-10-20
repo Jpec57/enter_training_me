@@ -87,7 +87,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _renderTrainingProgressHead(),
-              Expanded(child: _renderExerciseHeader()),
+              _renderExerciseHeader(),
               Expanded(
                 child: TabBarView(controller: _tabController, children: [
                   const InWorkoutExerciseView(),
@@ -213,7 +213,6 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                 ),
         ));
   }
-
 
   Widget _renderTrainingProgressHead() {
     return Padding(

@@ -10,6 +10,7 @@ class InWorkoutState extends Equatable {
   final int currentSetIndex;
   final bool isEnd;
   final int elapsedTime;
+  final int? realisedTrainingId;
   final InWorkoutView currentView;
 
   final int reallyDoneReps;
@@ -19,6 +20,7 @@ class InWorkoutState extends Equatable {
       required this.realisedTraining,
       this.isEnd = false,
       this.elapsedTime = 0,
+      this.realisedTrainingId,
       this.currentCycleIndex = 0,
       this.currentExoIndex = 0,
       this.currentView = InWorkoutView.inExercise,
@@ -114,6 +116,7 @@ class InWorkoutState extends Equatable {
         currentExoIndex,
         currentSetIndex,
         isEnd,
+        realisedTrainingId,
         elapsedTime,
         currentView,
         reallyDoneReps
@@ -126,6 +129,7 @@ class InWorkoutState extends Equatable {
           int? elapsedTime,
           int? currentExoIndex,
           int? currentSetIndex,
+          int? realisedTrainingId,
           int? reallyDoneReps,
           double? reallyUsedWeight,
           InWorkoutView? currentView,
@@ -139,5 +143,6 @@ class InWorkoutState extends Equatable {
           currentCycleIndex: currentCycleIndex ?? this.currentCycleIndex,
           currentExoIndex: currentExoIndex ?? this.currentExoIndex,
           currentSetIndex: currentSetIndex ?? this.currentSetIndex,
+          realisedTrainingId: realisedTrainingId ?? this.realisedTrainingId,
           reallyDoneReps: reallyDoneReps ?? this.reallyDoneReps);
 }

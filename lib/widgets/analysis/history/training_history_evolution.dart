@@ -110,7 +110,7 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
             fontSize: 15,
           ),
           getTitles: (value) {
-            return "${widget.trainings[value.toInt()].createdAt.toIso8601String()}";
+            return "${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}";
           },
           reservedSize: 50,
           margin: 12,

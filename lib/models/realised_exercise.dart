@@ -23,11 +23,9 @@ String? executionStyleToJson(ExecutionStyle? style) {
 class RealisedExercise {
   // final int? id;
   final List<ExerciseSet> sets;
-  //TODO
   @JsonKey(toJson: exerciseRefToJson)
   final ReferenceExercise exerciseReference;
   final int restBetweenSet;
-  //TODO
   @JsonKey(toJson: executionStyleToJson)
   final ExecutionStyle? executionStyle;
 
@@ -40,8 +38,6 @@ class RealisedExercise {
   });
 
   factory RealisedExercise.fromJson(Map<String, dynamic> json) {
-    print("json");
-    print(json);
     return _$RealisedExerciseFromJson(json);
   }
   Map<String, dynamic> toJson() => _$RealisedExerciseToJson(this);

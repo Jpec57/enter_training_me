@@ -13,4 +13,20 @@ The last fitness project, I swear
           ),
         ],
 
+
+
+                  gradient: LinearGradient(
+                      begin: Alignment(0.0, 0.25),
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[
+                        userBackgroundColor,
+                        trainingRowColor
+                      ], // red to yellow
+                    ),
+
 https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/radar_chart.md
+
+# TODO
+
+Add internet for ios
+https://flutter.dev/docs/cookbook/plugins/play-video

@@ -2,7 +2,6 @@ import 'package:enter_training_me/models/execution_style.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class InWorkoutExerciseView extends StatefulWidget {
   const InWorkoutExerciseView({Key? key}) : super(key: key);
@@ -19,8 +18,6 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
           prev.currentExoIndex != next.currentExoIndex ||
           prev.currentCycleIndex != next.currentCycleIndex,
       builder: (context, state) {
-        print("Jpec");
-        print(state.currentExo);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -63,36 +60,45 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                                         Theme.of(context).textTheme.headline4),
                               )
                             : Container(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: InkWell(
-                            onTap: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    state.currentExo.executionStyle != null
-                                        ? state.currentExo.executionStyle!.name
-                                        : "Regular Execution Style",
-                                    style: const TextStyle(
-                                        fontStyle: FontStyle.italic),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                const Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(
-                                    Icons.info,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //   child: InkWell(
+                        //     onTap: () {},
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.start,
+                        //       children: [
+                        //         Flexible(
+                        //           child: Text(
+                        //             state.currentExo.executionStyle != null
+                        //                 ? state.currentExo.executionStyle!.name
+                        //                 : "Regular Execution Style",
+                        //             style: const TextStyle(
+                        //                 fontStyle: FontStyle.italic),
+                        //             textAlign: TextAlign.center,
+                        //           ),
+                        //         ),
+                        //         const Padding(
+                        //           padding:
+                        //               EdgeInsets.symmetric(horizontal: 8.0),
+                        //           child: Icon(
+                        //             Icons.info,
+                        //             color: Colors.white,
+                        //             size: 16,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        state.currentExo.executionStyle != null
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(state
+                                    .currentExo.executionStyle!.description
+                                    .toString()),
+                              )
+                            : Container()
                       ],
                     ),
                   ),

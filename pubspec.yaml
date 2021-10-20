@@ -27,6 +27,7 @@ dependencies:
   vibration: ^1.7.4-nullsafety.0
   flutter_tts: ^3.2.2
   fl_chart: ^0.40.0
+  video_player: ^2.2.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
