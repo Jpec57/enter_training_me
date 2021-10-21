@@ -1,5 +1,6 @@
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/layouts/separator_overlapping_section_layout.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/user/profile/profile_metric_container.dart';
@@ -18,8 +19,6 @@ class ProfilePageContent extends StatefulWidget {
 
 class _ProfilePageContentState extends State<ProfilePageContent> {
   late Future<IAuthUserInterface?> _getUserFromTokenFuture;
-  final Color userBackgroundColor = CustomTheme.darkGrey;
-  // final Color userBackgroundColor = Color(0xff423D33);
 
   @override
   void initState() {
@@ -35,7 +34,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            color: userBackgroundColor,
+            color: CustomTheme.darkGrey,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 3.0),
               child: Row(
@@ -92,27 +91,25 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
   }
 
   Widget _renderProfile(User user) {
-    final Color trainingRowColor = CustomTheme.middleGreen;
-    final bottomPadding = 50.0;
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              color: userBackgroundColor,
-              padding: EdgeInsets.only(bottom: 16),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
+            SeparatorOverlappingSectionLayout(
+              topWidgetPadding: const EdgeInsets.only(bottom: 16),
+              topWidgetBackgroundColor: CustomTheme.darkGrey,
+              bottomWidgetBackgroundColor: CustomTheme.middleGreen,
+              topWidget: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 50,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                       child: Text(user.username,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold)),
                     ),
                     Padding(
@@ -132,55 +129,36 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                       ),
                     )
                   ]),
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned.fill(
-                    child: Column(children: [
-                  Expanded(child: Container(color: userBackgroundColor)),
-                  Expanded(child: Container(color: trainingRowColor)),
-                ])),
-                Align(
-                    alignment: Alignment.center,
-                    child: Center(
-                      child: Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(30),
-                              border:
-                                  Border.all(color: Colors.black, width: 1)),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
-                                child: Icon(Icons.access_alarm),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Title",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black)),
-                                    Text(
-                                        "Fusce fermentum odio nec arcu. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis.",
-                                        style: TextStyle(color: Colors.black)),
-                                  ],
-                                ),
-                              )
-                            ],
-                          )),
-                    ))
-              ],
-            ),
-            Container(
-              color: trainingRowColor,
-              child: Column(
+              overlappingWidget: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.black, width: 1)),
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Icon(Icons.access_alarm),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text("Title",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                            Text(
+                                "Fusce fermentum odio nec arcu. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis.",
+                                style: TextStyle(color: Colors.black)),
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
+              bottomWidget: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
@@ -190,7 +168,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                         style: Theme.of(context).textTheme.headline4),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 32),
+                    padding: const EdgeInsets.only(bottom: 32),
                     child: SizedBox(
                       height: 150,
                       child: ListView.builder(
@@ -217,11 +195,11 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                                         Alignment.bottomCenter,
                                         0.75),
                                     width: itemWidth,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.black,
                                       // color: Color.fromARGB(100, 255, 255, 255),
                                     ),
-                                    child: Text("Training"),
+                                    child: const Text("Training"),
                                   )
                                 ])),
                           );
