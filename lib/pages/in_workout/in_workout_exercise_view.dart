@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:enter_training_me/models/execution_style.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/widgets/dialog/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class InWorkoutExerciseView extends StatefulWidget {
   const InWorkoutExerciseView({Key? key}) : super(key: key);
@@ -16,7 +20,8 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
       buildWhen: (prev, next) =>
           prev.currentSetIndex != next.currentSetIndex ||
           prev.currentExoIndex != next.currentExoIndex ||
-          prev.currentCycleIndex != next.currentCycleIndex,
+          prev.currentCycleIndex != next.currentCycleIndex ||
+          prev.currentRefTrainingSet != next.currentRefTrainingSet,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,8 +44,24 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(state.currentSet.reps.toString(),
-                          style: Theme.of(context).textTheme.headline1),
+                      InkWell(
+                        onTap: () {
+                          Get.dialog(CustomDialog<int>(
+                                  currentValue:
+                                      state.currentRefTrainingSet.reps,
+                                  title: "How many reps do you intent to do ?"))
+                              .then((value) {
+                            if (value != null) {
+                              int parseValue = int.parse(value);
+
+                              BlocProvider.of<InWorkoutBloc>(context)
+                                  .add(ChangedRefRepsEvent(parseValue));
+                            }
+                          });
+                        },
+                        child: Text(state.currentRefTrainingSet.reps.toString(),
+                            style: Theme.of(context).textTheme.headline1),
+                      ),
                       Text("reps",
                           style: Theme.of(context).textTheme.headline4),
                     ],
@@ -52,44 +73,31 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        state.currentSet.weight != null
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text("@${state.currentSet.weight}kg",
-                                    style:
-                                        Theme.of(context).textTheme.headline4),
-                              )
-                            : Container(),
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        //   child: InkWell(
-                        //     onTap: () {},
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.start,
-                        //       children: [
-                        //         Flexible(
-                        //           child: Text(
-                        //             state.currentExo.executionStyle != null
-                        //                 ? state.currentExo.executionStyle!.name
-                        //                 : "Regular Execution Style",
-                        //             style: const TextStyle(
-                        //                 fontStyle: FontStyle.italic),
-                        //             textAlign: TextAlign.center,
-                        //           ),
-                        //         ),
-                        //         const Padding(
-                        //           padding:
-                        //               EdgeInsets.symmetric(horizontal: 8.0),
-                        //           child: Icon(
-                        //             Icons.info,
-                        //             color: Colors.white,
-                        //             size: 16,
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
+                        InkWell(
+                          onTap: () {
+                            Get.dialog(CustomDialog<double>(
+                              title: "How heavy do you intent to lift ?",
+                              currentValue: state.currentRefTrainingSet.weight,
+                            )).then((value) {
+                              if (value != null) {
+                                double parseValue = double.parse(value);
+
+                                BlocProvider.of<InWorkoutBloc>(context)
+                                    .add(ChangedRefWeightEvent(parseValue));
+                              }
+                            });
+                          },
+                          child: state.currentRefTrainingSet.weight != null
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                      "@${state.currentRefTrainingSet.weight}kg",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4),
+                                )
+                              : Container(),
+                        ),
                         state.currentExo.executionStyle != null
                             ? Padding(
                                 padding:

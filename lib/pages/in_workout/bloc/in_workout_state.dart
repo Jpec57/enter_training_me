@@ -55,10 +55,21 @@ class InWorkoutState extends Equatable {
 
   RealisedExercise get currentExo => currentCycle.exercises[currentExoIndex];
 
-  ReferenceExercise get currentRefExo =>
-      currentCycle.exercises[currentExoIndex].exerciseReference;
+  ReferenceExercise get currentRefExo => currentExo.exerciseReference;
 
   ExerciseSet get currentSet => currentExo.sets[currentSetIndex];
+
+  ExerciseCycle get currentRefTrainingCycle =>
+      referenceTraining.cycles[currentCycleIndex];
+
+  RealisedExercise get currentRefTrainingExo =>
+      currentRefTrainingCycle.exercises[currentExoIndex];
+
+  ReferenceExercise get currentRefTrainingRefExo =>
+      currentRefTrainingExo.exerciseReference;
+
+  ExerciseSet get currentRefTrainingSet =>
+      currentRefTrainingExo.sets[currentSetIndex];
 
   int get nextSetIndex {
     int len = currentExo.sets.length;

@@ -1,10 +1,10 @@
-import 'package:enter_training_me/models/realised_exercise.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'exercise_set.g.dart';
 
 @JsonSerializable()
-class ExerciseSet {
+class ExerciseSet extends Equatable {
   final int reps;
   final double? weightPercent;
   final double? weight;
@@ -30,4 +30,7 @@ class ExerciseSet {
   String toString() {
     return "Set of $reps reps @${weight}kgs";
   }
+
+  @override
+  List<Object?> get props => [reps, weight, weightPercent];
 }

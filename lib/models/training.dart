@@ -3,6 +3,7 @@ import 'package:enter_training_me/models/exercise_cycle.dart';
 import 'package:enter_training_me/models/muscle_activation.dart';
 import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/models/user.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'training.g.dart';
@@ -15,7 +16,7 @@ String? trainingRefToJson(Training? ref) {
 }
 
 @JsonSerializable()
-class Training {
+class Training extends Equatable {
   final int? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -181,4 +182,16 @@ class Training {
           reference: reference,
           createdAt: createdAt,
           author: author ?? this.author);
+
+  @override
+  List<Object?> get props => [
+        cycles,
+        updatedAt,
+        name,
+        author,
+        restBetweenCycles,
+        estimatedTimeInSeconds,
+        isOfficial,
+        reference
+      ];
 }

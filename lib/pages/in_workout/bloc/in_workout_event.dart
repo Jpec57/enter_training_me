@@ -47,11 +47,30 @@ class AddedRepEvent extends InWorkoutEvent {
   List<Object?> get props => [];
 }
 
-class ChangedWeightEvent extends InWorkoutEvent {
+class ChangedRefWeightEvent extends InWorkoutEvent {
   final double weight;
 
-  const ChangedWeightEvent(this.weight);
+  const ChangedRefWeightEvent(this.weight);
 
   @override
   List<Object?> get props => [weight];
+}
+
+class ChangedRefRepsEvent extends InWorkoutEvent {
+  final int reps;
+
+  const ChangedRefRepsEvent(this.reps);
+
+  @override
+  List<Object?> get props => [reps];
+}
+
+
+class ChangedExoEvent extends InWorkoutEvent {
+  final RealisedExercise exo;
+
+  const ChangedExoEvent(this.exo);
+
+  @override
+  List<Object?> get props => [exo];
 }

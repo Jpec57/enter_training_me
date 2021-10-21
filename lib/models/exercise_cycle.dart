@@ -1,10 +1,11 @@
 import 'package:enter_training_me/models/realised_exercise.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'exercise_cycle.g.dart';
 
 @JsonSerializable()
-class ExerciseCycle {
+class ExerciseCycle extends Equatable {
   // final int? id;
   final List<RealisedExercise> exercises;
   final int restBetweenLoop;
@@ -30,4 +31,7 @@ class ExerciseCycle {
       exercises: exercises ?? this.exercises,
       numberOfLoops: numberOfLoops,
       restBetweenLoop: restBetweenLoop);
+
+  @override
+  List<Object?> get props => [exercises, numberOfLoops, restBetweenLoop];
 }

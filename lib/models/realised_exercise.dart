@@ -1,6 +1,7 @@
 import 'package:enter_training_me/models/execution_style.dart';
 import 'package:enter_training_me/models/exercise_set.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'realised_exercise.g.dart';
@@ -20,7 +21,7 @@ String? executionStyleToJson(ExecutionStyle? style) {
 }
 
 @JsonSerializable()
-class RealisedExercise {
+class RealisedExercise extends Equatable {
   // final int? id;
   final List<ExerciseSet> sets;
   @JsonKey(toJson: exerciseRefToJson)
@@ -71,4 +72,8 @@ class RealisedExercise {
 
     return intensity * difficulty;
   }
+
+  @override
+  List<Object?> get props =>
+      [sets, executionStyle, exerciseReference, restBetweenSet];
 }

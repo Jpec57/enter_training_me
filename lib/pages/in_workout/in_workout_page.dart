@@ -75,7 +75,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InWorkoutBloc, InWorkoutState>(
-      buildWhen: (prev, next) => prev.isEnd != next.isEnd,
+      buildWhen: (prev, next) => prev.isEnd != next.isEnd || prev.referenceTraining != next.referenceTraining,
       builder: (context, state) {
         if (state.isEnd) {
           return const WorkoutEndView();
@@ -192,7 +192,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
     return AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         height: MediaQuery.of(context).size.height *
-            ((_tabController.index == 0) ? 0.4 : 0.25),
+            ((_tabController.index == 0) ? 0.4 : 0.3),
         child: ExerciseContainer(
           child: (_tabController.index == 0)
               ? BlocBuilder<InWorkoutBloc, InWorkoutState>(
