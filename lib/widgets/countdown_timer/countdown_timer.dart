@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_paint.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
 class CountdownTimer extends StatefulWidget {
-  final double size;
+  final double? size;
   final int totalDuration;
   final Color? progressStrokeColor;
   final Color? divisionStrokeColor;
@@ -16,7 +17,7 @@ class CountdownTimer extends StatefulWidget {
   const CountdownTimer(
       {Key? key,
       required this.totalDuration,
-      this.size = 200.0,
+      this.size,
       this.progressStrokeColor,
       this.backgroundColor = Colors.white,
       this.divisionStrokeColor,
@@ -82,54 +83,60 @@ class _CountdownTimerState extends State<CountdownTimer>
   }
 
   Widget _renderStack(double size) {
-    return Stack(
-      children: [
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          child: CustomPaint(
-            painter: CountdownPainter(
-                radius: size / 2,
-                elapsedSeconds: _elapsedTime,
-                totalSeconds: widget.totalDuration,
-                progressStrokeColor:
-                    widget.progressStrokeColor ?? Colors.black,
-                divisionStrokeColor:
-                    widget.divisionStrokeColor ?? Colors.white),
+    // Prevent stack from expanding
+    return SizedBox(
+      height: size,
+      width: size,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: CustomPaint(
+              painter: CountdownPainter(
+                  radius: size / 2,
+                  elapsedSeconds: _elapsedTime,
+                  totalSeconds: widget.totalDuration,
+                  progressStrokeColor:
+                      widget.progressStrokeColor ?? Colors.black,
+                  divisionStrokeColor:
+                      widget.divisionStrokeColor ?? Colors.white),
+            ),
           ),
-        ),
-        widget.isIncludingStop
-            ? Positioned(
-                bottom: size / 4 - size / 20,
-                left: 0,
-                right: 0,
-                child: InkWell(
-                  onTap: widget.onEndCallback,
-                  child: Container(
-                    padding: EdgeInsets.all(widget.size / 30),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: widget.progressStrokeColor),
-                    child: Center(
-                      child: Container(
-                          height: size / 20,
-                          width: size / 20,
-                          color: widget.backgroundColor),
+          widget.isIncludingStop
+              ? Positioned(
+                  bottom: size / 4 - size / 20,
+                  left: 0,
+                  right: 0,
+                  child: InkWell(
+                    onTap: widget.onEndCallback,
+                    child: Container(
+                      padding: EdgeInsets.all(size / 30),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: widget.progressStrokeColor),
+                      child: Center(
+                        child: Container(
+                            height: size / 20,
+                            width: size / 20,
+                            color: widget.backgroundColor),
+                      ),
                     ),
                   ),
-                ),
-              )
-            : Container(),
-      ],
+                )
+              : Container(),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return _renderStack(constraints.maxHeight);
+      return _renderStack(
+          widget.size ?? min(constraints.maxWidth, constraints.maxHeight) - 20);
     });
   }
 }

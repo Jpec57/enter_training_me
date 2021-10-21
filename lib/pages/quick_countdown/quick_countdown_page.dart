@@ -64,7 +64,6 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      // drawer: const MyDrawer(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Column(
@@ -106,21 +105,14 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
                       ],
                     ),
                     Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CountdownTimer(
-                            backgroundColor: CustomTheme.darkGrey,
-                            totalDuration: _countdownValue,
-                            isIncludingStop: true,
-                            onEndCallback: () {
-                              _tabController.index = 0;
-                            },
-                            progressStrokeColor: CustomTheme.middleGreen,
-                            size: min(MediaQuery.of(context).size.height * 0.5,
-                                MediaQuery.of(context).size.width * 0.8),
-                          ),
-                        ],
+                      child: CountdownTimer(
+                        backgroundColor: CustomTheme.darkGrey,
+                        totalDuration: _countdownValue,
+                        isIncludingStop: true,
+                        onEndCallback: () {
+                          _tabController.index = 0;
+                        },
+                        progressStrokeColor: CustomTheme.middleGreen,
                       ),
                     ),
                   ]),
