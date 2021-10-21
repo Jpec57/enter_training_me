@@ -92,7 +92,6 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
   }
 
   Widget _renderProfile(User user) {
-    // final Color trainingRowColor = Color(0xffA39E93);
     final Color trainingRowColor = CustomTheme.middleGreen;
     final bottomPadding = 50.0;
     return Expanded(
@@ -111,8 +110,8 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                       radius: 50,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                      child: Text("Jpec57",
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 24),
+                      child: Text(user.username,
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold)),
                     ),
@@ -137,15 +136,11 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
             Stack(
               alignment: Alignment.center,
               children: [
-                // Positioned.fill(child: child)
-                Positioned(
-                    top: 100,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(color: CustomTheme.middleGreen),
-                    )),
+                Positioned.fill(
+                    child: Column(children: [
+                  Expanded(child: Container(color: userBackgroundColor)),
+                  Expanded(child: Container(color: trainingRowColor)),
+                ])),
                 Align(
                     alignment: Alignment.center,
                     child: Center(
@@ -279,7 +274,10 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
     return Column(
       children: [
         Text("Level".toUpperCase(),
-            style: TextStyle(fontSize: 20, color: Colors.redAccent)),
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.redAccent,
+                fontWeight: FontWeight.bold)),
         Text("32")
       ],
     );

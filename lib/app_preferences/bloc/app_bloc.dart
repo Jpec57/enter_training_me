@@ -23,7 +23,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       }
     }
     if (event is OnPreferenceChangedEvent) {
-      debugPrint(event.toString());
       FlutterSecureStorage storage = const FlutterSecureStorage();
       switch (event.preferenceName) {
         case StorageConstants.soundInWorkoutKey:

@@ -126,7 +126,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   InWorkoutState _mapRestDoneEventToState(RestDoneEvent event) {
     List<ExerciseCycle> doneCycles = updateSet(doneReps: state.reallyDoneReps);
-    print(doneCycles);
 
     return state.copyWith(
         isEnd: state.isEndOfWorkout,

@@ -30,9 +30,7 @@ class AuthenticationRepository extends ApiService
       "password": password,
     };
     Response response = await getDio().post("/api/login", data: data);
-    // dynamic data = response.data;
 
-    print(response.data);
     if (response.statusCode == null) {
       return false;
     }

@@ -83,7 +83,6 @@ class Training {
       if (exo.executionStyle != null) {
         switch (exo.executionStyle!.name) {
           default:
-            print(exo.executionStyle!.name);
             map[goalExplosivity] = 1 + (map[goalExplosivity] ?? 0);
             break;
         }

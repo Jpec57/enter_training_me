@@ -97,7 +97,7 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
               fontWeight: FontWeight.bold,
               fontSize: 16),
           getTitles: (value) {
-            return "${value.toInt()}";
+            return "${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}";
           },
           margin: 8,
         ),
@@ -110,7 +110,7 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
             fontSize: 15,
           ),
           getTitles: (value) {
-            return "${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}";
+            return "${value.toInt()}";
           },
           reservedSize: 50,
           margin: 12,

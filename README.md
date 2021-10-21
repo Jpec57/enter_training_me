@@ -21,7 +21,7 @@ The last fitness project, I swear
                       colors: <Color>[
                         userBackgroundColor,
                         trainingRowColor
-                      ], // red to yellow
+                      ], 
                     ),
 
 https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/radar_chart.md

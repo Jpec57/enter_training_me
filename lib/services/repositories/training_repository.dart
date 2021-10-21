@@ -26,7 +26,6 @@ class TrainingRepository extends ApiService implements IRepository {
     Response response =
         await getDio().get(shareByEmail.replaceFirst("{id}", id.toString()));
     dynamic data = response.data;
-    print(data);
     return response.statusCode == 200;
   }
 
@@ -47,11 +46,9 @@ class TrainingRepository extends ApiService implements IRepository {
 
   @override
   Future<List<Training>> getOfficial() async {
-    debugPrint("Fetching official training list...");
     Response response = await getDio().get(getOfficialUri);
 
     List<dynamic> data = response.data;
-    print(data[0]);
     return data.map((e) => Training.fromJson(e)).toList();
   }
 
@@ -74,13 +71,11 @@ class TrainingRepository extends ApiService implements IRepository {
   }
 
   Future postUserTraining(Map<String, dynamic> data) async {
-    debugPrint("Posting user training...");
     data["name"] = data["name"] + " " + DateTime.now().toIso8601String();
-    debugPrint(data["createdAt"]);
+
     data["createdAt"] = null;
     Response response = await getDio().post(postUser, data: data);
     dynamic responseData = response.data;
-    debugPrint(responseData.toString());
     return Training.fromJson(jsonDecode(responseData));
   }
 

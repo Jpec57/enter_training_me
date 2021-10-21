@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
             listener: (context, state) {
               switch (state.status) {
                 case AuthenticationStatus.authenticated:
-                  print("authenticated");
                   Get.offNamedUntil(HomePage.routeName, (route) => false);
                   break;
                 // case AuthenticationStatus.unauthenticated:

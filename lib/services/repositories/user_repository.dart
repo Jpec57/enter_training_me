@@ -19,7 +19,6 @@ class UserRepository extends ApiService
       FlutterSecureStorage storage = const FlutterSecureStorage();
       apiToken = await storage.read(key: StorageConstants.apiKey);
       if (apiToken == null) {
-        debugPrint("No token in storage.");
         return null;
       }
     }
@@ -54,7 +53,6 @@ class UserRepository extends ApiService
   }
 
   Future<List<Training>> getPersonalFeed({int page = 0, int limit = 10}) async {
-    debugPrint("Fetching personal training feed...");
     //Currently not taking user id and returning only trainings
     Map<String, dynamic> queryParams = {
       "limit": limit,
@@ -63,7 +61,6 @@ class UserRepository extends ApiService
     Response response =
         await getDio().get(getUserFeed, queryParameters: queryParams);
     List<dynamic> data = response.data;
-    print(response.data);
     return data.map((e) => Training.fromJson(e)).toList();
   }
 }

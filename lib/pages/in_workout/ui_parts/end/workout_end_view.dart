@@ -81,7 +81,6 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                                     TrainingRepository>(context)
                                                 .shareByEmailAction(
                                                     state.realisedTrainingId!);
-                                        print("Send correctly");
                                       });
                                 },
                               ),

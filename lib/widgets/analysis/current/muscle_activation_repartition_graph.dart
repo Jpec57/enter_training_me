@@ -73,8 +73,7 @@ class _MuscleActivationRepartitionGraphState
       CustomTheme.green
     ];
     var i = 0;
-    print("FIRST");
-    print(widget.muscleActivations);
+
     muscleActivations = widget.muscleActivations.map((element) {
       i++;
       return MuscleActivationSerie(
@@ -82,7 +81,6 @@ class _MuscleActivationRepartitionGraphState
           ratio: element.activationRatio * 100,
           color: colors[i % colors.length]);
     }).toList();
-    print(muscleActivations);
     const isTouched = false;
     final fontSize = isTouched ? 20.0 : 16.0;
     final radius = isTouched ? 110.0 : 100.0;
