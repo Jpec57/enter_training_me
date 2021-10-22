@@ -6,6 +6,7 @@ import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
@@ -13,13 +14,20 @@ import 'package:get/get.dart';
 part 'in_workout_event.dart';
 part 'in_workout_state.dart';
 
+enum InWorkoutView {
+  inExerciseView,
+  inRestView,
+  endWorkoutView,
+  newExerciseView
+}
+
 class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   final TrainingRepository trainingRepository;
 
-  InWorkoutBloc(this.trainingRepository, Training referenceTraining,
+  InWorkoutBloc(this.trainingRepository, int? referenceTrainingId,
       Training realisedTraining)
       : super(InWorkoutState(
-            referenceTraining: referenceTraining,
+            referenceTrainingId: referenceTrainingId,
             realisedTraining: realisedTraining));
 
   Future _speak(FlutterTts flutterTts, String text) async {
@@ -34,7 +42,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   Stream<InWorkoutState> mapEventToState(
     InWorkoutEvent event,
   ) async* {
-    if (event is ExerciseDoneEvent) {
+    if (event is ChangedViewEvent) {
+      yield _mapChangedViewEventToState(event);
+    } else if (event is ExerciseDoneEvent) {
       bool isSoundOn = await const FlutterSecureStorage()
               .read(key: StorageConstants.soundInWorkoutKey) ==
           StorageConstants.soundInWorkoutOn;
@@ -110,39 +120,17 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return state.copyWith(reallyDoneReps: state.currentSet.reps);
   }
 
-  List<ExerciseCycle> updateSetForReferenceTraining(
-      {int? doneReps, double? weight}) {
-    ExerciseSet doneCurrentSet =
-        state.currentRefTrainingSet.copyWith(reps: doneReps, weight: weight);
-
-    List<ExerciseSet> doneSets = [...state.currentRefTrainingExo.sets];
-    doneSets[state.currentSetIndex] = doneCurrentSet;
-
-    RealisedExercise doneExo =
-        state.currentRefTrainingExo.copyWith(sets: doneSets);
-    List<RealisedExercise> doneExos = [
-      ...state.currentRefTrainingCycle.exercises
-    ];
-    doneExos[state.currentExoIndex] = doneExo;
-
-    ExerciseCycle doneCycle =
-        state.currentRefTrainingCycle.copyWith(exercises: doneExos);
-    List<ExerciseCycle> doneCycles = [...state.referenceTraining.cycles];
-    doneCycles[state.currentCycleIndex] = doneCycle;
-    return doneCycles;
-  }
-
   List<ExerciseCycle> updateSet({int? doneReps, double? weight}) {
     ExerciseSet doneCurrentSet = state.currentSet.copyWith(reps: doneReps);
 
-    List<ExerciseSet> doneSets = [...state.currentExo.sets];
+    List<ExerciseSet> doneSets = [...state.currentExo!.sets];
     doneSets[state.currentSetIndex] = doneCurrentSet;
 
-    RealisedExercise doneExo = state.currentExo.copyWith(sets: doneSets);
-    List<RealisedExercise> doneExos = [...state.currentCycle.exercises];
+    RealisedExercise doneExo = state.currentExo!.copyWith(sets: doneSets);
+    List<RealisedExercise> doneExos = [...state.currentCycle!.exercises];
     doneExos[state.currentExoIndex] = doneExo;
 
-    ExerciseCycle doneCycle = state.currentCycle.copyWith(exercises: doneExos);
+    ExerciseCycle doneCycle = state.currentCycle!.copyWith(exercises: doneExos);
     List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
     doneCycles[state.currentCycleIndex] = doneCycle;
     return doneCycles;
@@ -167,6 +155,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapTimerTickEventToState(TimerTickEvent event) {
+    if (state.getNonTickingViews().contains(state.currentView)) {
+      return state;
+    }
     return state.copyWith(elapsedTime: (state.elapsedTime + 1));
   }
 
@@ -186,19 +177,29 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapChangedRefWeightEventToState(ChangedRefWeightEvent event) {
-    List<ExerciseCycle> doneCycles =
-        updateSetForReferenceTraining(weight: event.weight);
+    List<ExerciseCycle> doneCycles = updateSet(weight: event.weight);
     return state.copyWith(
-        referenceTraining:
-            state.referenceTraining.copyWith(cycles: doneCycles));
+        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
   }
 
   InWorkoutState _mapChangedRefRepsEventToState(ChangedRefRepsEvent event) {
-    List<ExerciseCycle> doneCycles =
-        updateSetForReferenceTraining(doneReps: event.reps);
+    List<ExerciseCycle> doneCycles = updateSet(doneReps: event.reps);
 
     return state.copyWith(
-        referenceTraining:
-            state.referenceTraining.copyWith(cycles: doneCycles));
+        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
+  }
+
+  InWorkoutState _mapChangedViewEventToState(ChangedViewEvent event) {
+    switch (event.view) {
+      case InWorkoutView.inExerciseView:
+        event.tabController.index = 0;
+        break;
+      case InWorkoutView.inRestView:
+        event.tabController.index = 1;
+        break;
+      default:
+        break;
+    }
+    return state.copyWith(currentView: event.view);
   }
 }

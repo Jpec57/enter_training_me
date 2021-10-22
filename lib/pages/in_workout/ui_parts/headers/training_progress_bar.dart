@@ -39,7 +39,7 @@ class TrainingProgressBar extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: Text("${(progress * 100).toInt()}%", style: TextStyle(color:Colors.white),),
+            child: Text("${(progress * 100).toInt()}%", style: const TextStyle(color:Colors.white),),
           )
         ],
       ),

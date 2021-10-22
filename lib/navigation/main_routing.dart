@@ -1,3 +1,4 @@
+import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/navigation/navigation_element.dart';
 import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
@@ -20,6 +21,9 @@ import '../pages/workout_show/workout_show_page_arguments.dart';
 class MainRouting {
   // static const home = OneRMPage();
   static const home = HomePage();
+  // static const home = InWorkoutPage(
+  // referenceTraining: Training(name: "Tmp Training", cycles: []),
+  // );
 
   static const homeNavigationElement = NavigationElement(
     title: "Home",

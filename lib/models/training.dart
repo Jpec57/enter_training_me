@@ -39,13 +39,22 @@ class Training extends Equatable {
       this.isOfficial = false,
       this.reference,
       this.estimatedTimeInSeconds,
-      required this.restBetweenCycles});
+      this.restBetweenCycles = 60});
 
   factory Training.fromJson(Map<String, dynamic> json) =>
       _$TrainingFromJson(json);
   Map<String, dynamic> toJson() => _$TrainingToJson(this);
 
-  factory Training.clone(Training ref) {
+  factory Training.clone(Training? ref) {
+    if (ref == null) {
+      return Training(
+          name: "Tmp training",
+          isOfficial: false,
+          createdAt: DateTime.now(),
+          reference: ref,
+          restBetweenCycles: 60,
+          cycles: const []);
+    }
     return Training(
         name: ref.name,
         author: ref.author,
@@ -61,6 +70,10 @@ class Training extends Equatable {
   }
 
   int get intensity {
+    var exos = exercisesAsFlatList;
+    if (exos.isEmpty) {
+      return 0;
+    }
     return exercisesAsFlatList
         .map((e) => e.intensity)
         .reduce((value, element) => value + element)

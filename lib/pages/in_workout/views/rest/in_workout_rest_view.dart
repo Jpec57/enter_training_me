@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
@@ -26,7 +24,7 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
             buildWhen: (prev, next) =>
                 prev.currentExoIndex != next.currentExoIndex,
             builder: (context, state) {
-              if (state.isEndOfWorkout) {
+              if (state.currentExo == null || state.isEndOfWorkout) {
                 return Center(
                   child: InkWell(
                     onTap: () {
@@ -46,15 +44,12 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                   ),
                 );
               }
-              return Padding(
-                padding: const EdgeInsets.only(top: 16.0, bottom: 16),
-                child: CountdownTimer(
-                  totalDuration: state.currentExo.restBetweenSet,
-                  backgroundColor: CustomTheme.darkGrey,
-                  isIncludingStop: true,
-                  onEndCallback: widget.onTimerEndCallback,
-                  progressStrokeColor: CustomTheme.middleGreen,
-                ),
+              return CountdownTimer(
+                totalDuration: state.currentExo!.restBetweenSet,
+                backgroundColor: CustomTheme.darkGrey,
+                isIncludingStop: true,
+                onEndCallback: widget.onTimerEndCallback,
+                progressStrokeColor: CustomTheme.middleGreen,
               );
             },
           ),

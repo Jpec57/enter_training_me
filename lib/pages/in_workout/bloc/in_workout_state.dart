@@ -1,9 +1,7 @@
 part of 'in_workout_bloc.dart';
 
-enum InWorkoutView { inExercise, inRest, end }
-
 class InWorkoutState extends Equatable {
-  final Training referenceTraining;
+  final int? referenceTrainingId;
   final Training realisedTraining;
   final int currentCycleIndex;
   final int currentExoIndex;
@@ -16,14 +14,14 @@ class InWorkoutState extends Equatable {
   final int reallyDoneReps;
 
   const InWorkoutState(
-      {required this.referenceTraining,
+      {this.referenceTrainingId,
       required this.realisedTraining,
       this.isEnd = false,
       this.elapsedTime = 0,
       this.realisedTrainingId,
       this.currentCycleIndex = 0,
       this.currentExoIndex = 0,
-      this.currentView = InWorkoutView.inExercise,
+      this.currentView = InWorkoutView.inExerciseView,
       this.currentSetIndex = 0,
       this.reallyDoneReps = 0});
 
@@ -31,11 +29,17 @@ class InWorkoutState extends Equatable {
     int totalDoneSets = 0;
     int totalSets = 0;
     int setPerCycle = 0;
-    List<RealisedExercise> exos = referenceTraining.cycles[0].exercises;
+    if (realisedTraining.cycles.isEmpty) {
+      return 100;
+    }
+    List<RealisedExercise> exos = realisedTraining.cycles[0].exercises;
+    if (exos.isEmpty) {
+      return 100;
+    }
     for (var exo in exos) {
       setPerCycle += exo.sets.length;
     }
-    totalSets = referenceTraining.cycles.length * setPerCycle;
+    totalSets = realisedTraining.cycles.length * setPerCycle;
     //Total set END
 
     int totalCurrentCycleDoneSets = 0;
@@ -50,29 +54,27 @@ class InWorkoutState extends Equatable {
   }
 
   bool get isEndOfWorkout => nextExoIndex == null;
+  bool get isNewWorkout => referenceTrainingId == null;
 
-  ExerciseCycle get currentCycle => realisedTraining.cycles[currentCycleIndex];
+  ExerciseCycle? get currentCycle =>
+      currentCycleIndex < realisedTraining.cycles.length
+          ? realisedTraining.cycles[currentCycleIndex]
+          : null;
 
-  RealisedExercise get currentExo => currentCycle.exercises[currentExoIndex];
+  RealisedExercise? get currentExo =>
+      currentCycle != null && currentExoIndex < currentCycle!.exercises.length
+          ? currentCycle!.exercises[currentExoIndex]
+          : null;
 
-  ReferenceExercise get currentRefExo => currentExo.exerciseReference;
+  ReferenceExercise get currentRefExo => currentExo!.exerciseReference;
 
-  ExerciseSet get currentSet => currentExo.sets[currentSetIndex];
-
-  ExerciseCycle get currentRefTrainingCycle =>
-      referenceTraining.cycles[currentCycleIndex];
-
-  RealisedExercise get currentRefTrainingExo =>
-      currentRefTrainingCycle.exercises[currentExoIndex];
-
-  ReferenceExercise get currentRefTrainingRefExo =>
-      currentRefTrainingExo.exerciseReference;
-
-  ExerciseSet get currentRefTrainingSet =>
-      currentRefTrainingExo.sets[currentSetIndex];
+  ExerciseSet get currentSet => currentExo!.sets[currentSetIndex];
 
   int get nextSetIndex {
-    int len = currentExo.sets.length;
+    if (currentExo == null) {
+      return 0;
+    }
+    int len = currentExo!.sets.length;
     if (currentSetIndex + 1 < len) {
       return currentSetIndex + 1;
     }
@@ -83,8 +85,8 @@ class InWorkoutState extends Equatable {
     int nextSetIndex = this.nextSetIndex;
     // Changing exercise
     if (nextSetIndex == 0) {
-      int cycleLength = referenceTraining.cycles.length;
-      int exerciseLength = currentCycle.exercises.length;
+      int cycleLength = realisedTraining.cycles.length;
+      int exerciseLength = currentCycle?.exercises.length ?? 0;
       int currentExoIndex = this.currentExoIndex;
       // Has next exo in cycle
       if (currentExoIndex + 1 < exerciseLength) {
@@ -103,38 +105,42 @@ class InWorkoutState extends Equatable {
     int nextSetIndex = this.nextSetIndex;
     // Changing exercise
     if (nextSetIndex == 0) {
-      int cycleLength = referenceTraining.cycles.length;
-      int exerciseLength = currentCycle.exercises.length;
+      int cycleLength = realisedTraining.cycles.length;
+      int exerciseLength = currentCycle?.exercises.length ?? 0;
       int currentExoIndex = this.currentExoIndex;
       // Has next exo in cycle
       if (currentExoIndex + 1 < exerciseLength) {
-        return currentCycle.exercises[currentExoIndex + 1];
+        return currentCycle!.exercises[currentExoIndex + 1];
       }
       // loop to first exo in cycle
       if (currentCycleIndex + 1 < cycleLength) {
-        return referenceTraining.cycles[currentCycleIndex + 1].exercises[0];
+        return realisedTraining.cycles[currentCycleIndex + 1].exercises[0];
       }
       return null;
     }
     return currentExo;
   }
 
+  List<InWorkoutView> getNonTickingViews() => [
+    InWorkoutView.endWorkoutView,
+    InWorkoutView.newExerciseView
+  ];
+
   @override
   List<Object?> get props => [
-        referenceTraining,
+        referenceTrainingId,
         realisedTraining,
         currentCycleIndex,
         currentExoIndex,
         currentSetIndex,
         isEnd,
         realisedTrainingId,
-        elapsedTime,
         currentView,
         reallyDoneReps
       ];
 
   InWorkoutState copyWith(
-          {Training? referenceTraining,
+          {int? referenceTrainingId,
           Training? realisedTraining,
           int? currentCycleIndex,
           int? elapsedTime,
@@ -147,7 +153,7 @@ class InWorkoutState extends Equatable {
           bool? isEnd}) =>
       InWorkoutState(
           isEnd: isEnd ?? this.isEnd,
-          referenceTraining: referenceTraining ?? this.referenceTraining,
+          referenceTrainingId: referenceTrainingId ?? this.referenceTrainingId,
           elapsedTime: elapsedTime ?? this.elapsedTime,
           currentView: currentView ?? this.currentView,
           realisedTraining: realisedTraining ?? this.realisedTraining,

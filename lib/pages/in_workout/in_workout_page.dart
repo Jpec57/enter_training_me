@@ -1,29 +1,27 @@
 import 'dart:async';
-import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
+import 'dart:math';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_exercise_view.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_rest_view.dart';
-import 'package:enter_training_me/pages/in_workout/ui_parts/in_exercise/current_exercise_details.dart';
+import 'package:enter_training_me/pages/in_workout/ui_parts/headers/training_header_bar.dart';
+import 'package:enter_training_me/pages/in_workout/views/in_exercise/current_exercise_details.dart';
+import 'package:enter_training_me/pages/in_workout/views/in_exercise/in_workout_exercise_view.dart';
+import 'package:enter_training_me/pages/in_workout/views/rest/in_workout_rest_view.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.dart';
-import 'package:enter_training_me/pages/in_workout/ui_parts/rest/next_exercise_details.dart';
-import 'package:enter_training_me/pages/in_workout/ui_parts/training_progress_bar.dart';
-import 'package:enter_training_me/pages/in_workout/ui_parts/end/workout_end_view.dart';
+import 'package:enter_training_me/pages/in_workout/views/rest/next_exercise_details.dart';
+import 'package:enter_training_me/pages/in_workout/views/workout_end_view.dart';
+import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
-import 'package:enter_training_me/storage_constants.dart';
-import 'package:enter_training_me/utils/utils.dart';
-import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
+import 'package:enter_training_me/widgets/lists/reference_exercise_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get.dart';
 import 'package:wakelock/wakelock.dart';
 
+part 'views/new_exercise/new_exercise_view.dart';
+
 class InWorkoutPage extends StatelessWidget {
-  final Training referenceTraining;
+  final Training? referenceTraining;
 
   static const routeName = "/workout/in";
 
@@ -35,7 +33,7 @@ class InWorkoutPage extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => InWorkoutBloc(
           RepositoryProvider.of<TrainingRepository>(context),
-          referenceTraining,
+          referenceTraining?.id,
           Training.clone(referenceTraining)),
       child: const InWorkoutScreen(),
     );
@@ -75,10 +73,20 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InWorkoutBloc, InWorkoutState>(
-      buildWhen: (prev, next) => prev.isEnd != next.isEnd || prev.referenceTraining != next.referenceTraining,
+      buildWhen: (prev, next) =>
+          prev.isEnd != next.isEnd ||
+          next.currentExo == null ||
+          prev.currentView != next.currentView,
       builder: (context, state) {
-        if (state.isEnd) {
-          return const WorkoutEndView();
+        if (state.currentView == InWorkoutView.newExerciseView) {
+          return NewExerciseView(
+            tabController: _tabController,
+          );
+        }
+        if (state.currentExo == null || state.isEnd) {
+          return WorkoutEndView(
+              tabController: _tabController,
+              referenceId: state.referenceTrainingId);
         }
         return Scaffold(
           backgroundColor: Colors.black,
@@ -86,7 +94,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _renderTrainingProgressHead(),
+              const TrainingHeaderBar(),
               _renderExerciseHeader(),
               Expanded(
                 child: TabBarView(controller: _tabController, children: [
@@ -212,74 +220,5 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                   },
                 ),
         ));
-  }
-
-  Widget _renderTrainingProgressHead() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
-      child: Row(
-        children: [
-          IconButton(
-              onPressed: () {
-                Get.dialog(ConfirmDialog(
-                  title: "Quit training",
-                  message: "Would you like to quit the current training ?",
-                  confirmCallback: () {
-                    Navigator.of(context).pop();
-                    BlocProvider.of<InWorkoutBloc>(context)
-                        .add(TrainingEndedEvent());
-                  },
-                ));
-              },
-              icon: const Icon(
-                Icons.exit_to_app,
-                color: Colors.white,
-              )),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
-              buildWhen: (prev, next) => prev.elapsedTime != next.elapsedTime,
-              builder: (context, state) {
-                return Text(
-                  Utils.convertToTime(state.elapsedTime),
-                  style: const TextStyle(color: Colors.white),
-                );
-              },
-            ),
-          ),
-          Flexible(
-              child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
-            buildWhen: (prev, next) =>
-                prev.currentSetIndex != next.currentExoIndex ||
-                prev.currentSetIndex != next.currentSetIndex,
-            builder: (context, state) {
-              return TrainingProgressBar(
-                progress: state.progress,
-              );
-            },
-          )),
-          BlocBuilder<AppBloc, AppState>(
-            buildWhen: (prev, next) =>
-                prev.soundInWorkout != next.soundInWorkout,
-            builder: (context, state) {
-              bool isSoundOn = state.soundInWorkout == SoundInWorkout.on;
-              return IconButton(
-                  onPressed: () {
-                    BlocProvider.of<AppBloc>(context).add(
-                        OnPreferenceChangedEvent(
-                            preferenceName: StorageConstants.soundInWorkoutKey,
-                            value: isSoundOn
-                                ? StorageConstants.soundInWorkoutOff
-                                : StorageConstants.soundInWorkoutOn));
-                  },
-                  icon: Icon(
-                    isSoundOn ? Icons.volume_up : Icons.volume_off,
-                    color: Colors.white,
-                  ));
-            },
-          )
-        ],
-      ),
-    );
   }
 }

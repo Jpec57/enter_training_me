@@ -2,22 +2,22 @@ import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
-import 'package:flutter/material.dart';
 import 'dart:convert';
 
-class TrainingRepository extends ApiService implements IRepository {
+class TrainingRepository extends ApiService implements IRepository<Training> {
   static const GET_ALL = "/trainings/";
+  static const getAllUrl = "/api/trainings";
   static const getPersonal = "/trainings/personal";
   static const getOfficialUri = "/trainings/official";
   static const getByReferenceUri = "/trainings/reference/{id}";
-  static const GET = "/api/trainings/{id}";
+  static const getUrl = "/api/trainings/{id}";
   static const postUser = "/api/trainings";
   static const shareByEmail = "/trainings/{id}/share";
 
   @override
   Future<Training> get(int id) async {
     Response response =
-        await getDio().get(GET.replaceFirst("{id}", id.toString()));
+        await getDio().get(getUrl.replaceFirst("{id}", id.toString()));
     dynamic data = response.data;
     return Training.fromJson(data);
   }
@@ -31,7 +31,8 @@ class TrainingRepository extends ApiService implements IRepository {
 
   @override
   Future<List<Training>> getAll() async {
-    Response response = await getDio().get(GET_ALL);
+    Response response = await getDio().get(getAllUrl);
+    // Response response = await getDio().get(GET_ALL);
     List<dynamic> data = response.data;
     return data.map((e) => Training.fromJson(e)).toList();
   }
@@ -54,21 +55,10 @@ class TrainingRepository extends ApiService implements IRepository {
 
   @override
   Future<bool> delete(int id) {
-    // TODO: implement delete
     throw UnimplementedError();
   }
 
-  @override
-  Future patch(Map<String, dynamic> data) {
-    // TODO: implement patch
-    throw UnimplementedError();
-  }
 
-  @override
-  Future post(Map<String, dynamic> data) {
-    // TODO: implement post
-    throw UnimplementedError();
-  }
 
   Future postUserTraining(Map<String, dynamic> data) async {
     data["name"] = data["name"] + " " + DateTime.now().toIso8601String();
@@ -80,8 +70,17 @@ class TrainingRepository extends ApiService implements IRepository {
   }
 
   @override
-  Future put(data) {
-    // TODO: implement put
+  Future<Training> patch(Map<String, dynamic> data) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Training> post(Map<String, dynamic> data) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Training> put(Training data) {
     throw UnimplementedError();
   }
 }

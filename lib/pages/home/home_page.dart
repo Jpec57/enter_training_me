@@ -53,6 +53,13 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              ElevatedButton(
+                  onPressed: () {
+                    Get.to(const InWorkoutPage(
+                      referenceTraining: null,
+                    ));
+                  },
+                  child: Text("New training")),
               BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 buildWhen: (prev, next) => prev.user != next.user,
                 builder: (context, state) {

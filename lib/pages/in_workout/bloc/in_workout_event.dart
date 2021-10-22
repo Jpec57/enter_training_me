@@ -32,9 +32,14 @@ class TimerTickEvent extends InWorkoutEvent {
   List<Object?> get props => [];
 }
 
-class ChangeViewEvent extends InWorkoutEvent {
+class ChangedViewEvent extends InWorkoutEvent {
+  final InWorkoutView view;
+  final TabController tabController;
+
+  const ChangedViewEvent(this.tabController, this.view);
+  
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [view, tabController];
 }
 
 class RemovedRepEvent extends InWorkoutEvent {
@@ -64,7 +69,6 @@ class ChangedRefRepsEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [reps];
 }
-
 
 class ChangedExoEvent extends InWorkoutEvent {
   final RealisedExercise exo;

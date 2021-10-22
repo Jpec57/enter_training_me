@@ -3,7 +3,6 @@ import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/storage_constants.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserRepository extends ApiService

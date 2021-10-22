@@ -1,3 +1,4 @@
+import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:flutter/material.dart';
 
 class TestPage extends StatelessWidget {
@@ -10,21 +11,8 @@ class TestPage extends StatelessWidget {
         backgroundColor: Colors.black,
         body: SafeArea(
           child: Column(children: [
-            //https://google.github.io/charts/flutter/example/line_charts/stacked_area_custom_color
-            // SingleChildScrollView(
-            //   scrollDirection: Axis.horizontal,
-            //   child: SizedBox(
-            //       height: 200,
-            //       width: MediaQuery.of(context).size.width * 2,
-            //       child: InWorkoutExerciseIntensity.withSampleData()),
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: SizedBox(
-            //       height: 200,
-            //       width: MediaQuery.of(context).size.width,
-            //       child: TrainingHistoryEvolution.withSampleData()),
-            // )
+
+            
           ]),
         ));
   }
