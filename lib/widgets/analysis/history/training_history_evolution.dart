@@ -92,12 +92,14 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
           showTitles: true,
           reservedSize: 22,
           interval: 1,
+          rotateAngle: 90,
           getTextStyles: (context, value) => const TextStyle(
               color: Color(0xff68737d),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 12),
           getTitles: (value) {
-            return "${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}";
+            return "21/10/21";
+            // return "${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}";
           },
           margin: 8,
         ),
@@ -123,6 +125,32 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
       maxX: widget.trainings.length.toDouble() - 1,
       minY: minY,
       maxY: maxY,
+      lineTouchData: LineTouchData(touchTooltipData: LineTouchTooltipData(
+          //   getTooltipItem: (
+          //     BarChartGroupData group,
+          //     int groupIndex,
+          //     BarChartRodData rod,
+          //     int rodIndex,
+          //   ) {
+          //     return BarTooltipItem(
+          //         rod.y.round().toString(),
+          //         const TextStyle(
+          //           color: Colors.white,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //         textAlign: TextAlign.center);
+          //   },
+          // ),
+          getTooltipItems: (spots) {
+        List<LineTooltipItem> items = [];
+        for (var spot in spots) {
+          var index = spot.x.toInt();
+          items.add(LineTooltipItem("21/10/21 14:30:28", const TextStyle()));
+
+          // items.add(LineTooltipItem("${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}", const TextStyle()));
+        }
+        return items;
+      })),
       lineBarsData: [
         LineChartBarData(
           spots: generateSpotFromTrainings(),
@@ -131,7 +159,7 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
+            show: true,
           ),
           belowBarData: BarAreaData(
             show: true,

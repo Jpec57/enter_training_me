@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
+import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/drawer.dart';
@@ -51,8 +53,28 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                buildWhen: (prev, next) => prev.user != next.user,
+                builder: (context, state) {
+                  if (state.user == null) {
+                    return Text("Welcome !",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline2!
+                            .copyWith(fontSize: 35));
+                  }
+                  User user = state.user as User;
+                  return Text("Welcome back ${user.username}",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline2!
+                          .copyWith(fontSize: 35));
+                },
+              ),
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16, right: 16),
+                padding: const EdgeInsets.only(left: 16.0, top: 32, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
