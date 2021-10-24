@@ -1,4 +1,3 @@
-import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/navigation/navigation_element.dart';
 import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
@@ -15,7 +14,6 @@ import 'package:enter_training_me/pages/user/user_page.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
-
 import '../pages/workout_show/workout_show_page_arguments.dart';
 
 class MainRouting {
@@ -73,6 +71,7 @@ class MainRouting {
     assert(false, 'Need to implement ${settings.name}');
     return null;
   }
+
 
   static routes(BuildContext context) => {
         HomePage.routeName: (context) => const HomePage(),

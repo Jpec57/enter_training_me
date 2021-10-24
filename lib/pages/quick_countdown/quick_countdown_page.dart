@@ -1,10 +1,6 @@
-import 'dart:async';
-import 'dart:math';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/drawer.dart';
-import 'package:enter_training_me/utils/utils.dart';
+import 'package:enter_training_me/pages/quick_countdown/total_time_info.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
@@ -18,31 +14,28 @@ class QuickCountdownPage extends StatefulWidget {
 }
 
 class _QuickCountdownPageState extends State<QuickCountdownPage>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   final maxSetCount = 7;
   final List<int> availableDurations = [25, 60, 90, 120, 180, 300];
   late TabController _tabController;
-  late Timer _totalTimeTimer;
   int _currentSet = 6;
   int _countdownValue = 0;
-  int _totalTime = 0;
 
   @override
   void initState() {
     super.initState();
     Wakelock.enable();
     _tabController = TabController(length: 2, vsync: this);
-    _totalTimeTimer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      setState(() {
-        _totalTime = timer.tick;
-      });
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        setState(() {});
+      }
     });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _totalTimeTimer.cancel();
     super.dispose();
   }
 
@@ -55,14 +48,10 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
       bottomNavigationBar: const CustomBottomNavigationBar(),
       appBar: AppBar(
         leading: const Icon(Icons.timer),
-        // automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 40,
-        title: Text(
-          Utils.convertToTime(_totalTime),
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const TotalTimeInfo(),
       ),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
@@ -105,15 +94,19 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
                       ],
                     ),
                     Center(
-                      child: CountdownTimer(
-                        backgroundColor: CustomTheme.darkGrey,
-                        totalDuration: _countdownValue,
-                        isIncludingStop: true,
-                        onEndCallback: () {
-                          _tabController.index = 0;
-                        },
-                        progressStrokeColor: CustomTheme.middleGreen,
-                      ),
+                      child: _countdownValue <= 0
+                          ? Container()
+                          : CountdownTimer(
+                              backgroundColor: CustomTheme.darkGrey,
+                              totalDuration: _countdownValue,
+                              isIncludingStop: true,
+                              onEndCallback: () {
+                                setState(() {
+                                  _tabController.index = 0;
+                                });
+                              },
+                              progressStrokeColor: CustomTheme.middleGreen,
+                            ),
                     ),
                   ]),
             )
@@ -169,7 +162,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
     setState(() {
       _countdownValue = optionDuration;
     });
-    _tabController.index = 1;
+    _tabController.animateTo(1);
   }
 
   Widget _renderTimerOption(int optionDuration) {

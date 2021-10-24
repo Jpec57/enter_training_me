@@ -1,6 +1,7 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/navigation/main_routing.dart';
 import 'package:enter_training_me/navigation/navigation_element.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return FloatingActionButton(
         backgroundColor: CustomTheme.middleGreen,
         onPressed: () {
-          Get.toNamed(MainRouting.homeNavigationElement.routeName);
+          Get.offNamedUntil(MainRouting.homeNavigationElement.routeName,
+              ModalRoute.withName(HomePage.routeName));
         },
         tooltip: MainRouting.homeNavigationElement.title,
         child: Icon(
@@ -27,7 +29,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
         icon: Icon(element.iconData),
         color: _bottomNavigationBarColor,
         onPressed: () {
-          Get.toNamed(element.routeName);
+          Get.offNamedUntil(
+              element.routeName, ModalRoute.withName(HomePage.routeName));
         });
   }
 

@@ -36,6 +36,14 @@ class _CountdownTimerState extends State<CountdownTimer>
   int _elapsedTime = 0;
 
   @override
+  void initState() {
+    if (widget.totalDuration > 0) {
+      initTimer();
+    }
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
@@ -64,7 +72,7 @@ class _CountdownTimerState extends State<CountdownTimer>
       if (widget.bipSeconds.contains(remainingSeconds)) {
         playLocalAsset();
       }
-      if (_elapsedTime == widget.totalDuration) {
+      if (_elapsedTime >= widget.totalDuration) {
         playLocalAsset(isEnd: true);
         bool? hasVibrator = await Vibration.hasVibrator();
         if (hasVibrator != null && hasVibrator) {
@@ -74,12 +82,6 @@ class _CountdownTimerState extends State<CountdownTimer>
         widget.onEndCallback();
       }
     });
-  }
-
-  @override
-  void initState() {
-    initTimer();
-    super.initState();
   }
 
   Widget _renderStack(double size) {
