@@ -8,12 +8,14 @@ import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+part 'end_workout_analysis.dart';
 
 class WorkoutEndView extends StatefulWidget {
   final TabController tabController;
   final int? referenceId;
-  const WorkoutEndView({Key? key, this.referenceId, required this.tabController}) : super(key: key);
+  const WorkoutEndView(
+      {Key? key, this.referenceId, required this.tabController})
+      : super(key: key);
 
   @override
   _WorkoutEndViewState createState() => _WorkoutEndViewState();
@@ -36,39 +38,6 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
     super.dispose();
   }
 
-  Widget _renderWorkoutAnalysis(
-      Training realisedTraining, Training? referenceTraining) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: WorkoutTrainingSummaryContent(
-              realisedTraining: realisedTraining,
-              referenceTraining: referenceTraining),
-        ),
-        const SectionDivider(),
-        Padding(
-          padding: const EdgeInsets.only(top: 16, left: 16, bottom: 16.0),
-          child: Text(
-            "Workout Intensity",
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ),
-        WorkoutExerciseIntensityGraph(
-            realisedTraining: realisedTraining,
-            referenceTraining: referenceTraining,
-            barWidth: 10,
-            barsSpace: 2,
-            graphHeight: MediaQuery.of(context).size.height * 0.3),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-          child: SectionDivider(),
-        ),
-      ],
-    );
-  }
-
   Widget _renderAddNewExerciseSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,7 +45,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
         Text("Not done ?"),
         InkWell(
             onTap: () {
-              BlocProvider.of<InWorkoutBloc>(context).add(ChangedViewEvent(widget.tabController, InWorkoutView.newExerciseView));
+              BlocProvider.of<InWorkoutBloc>(context).add(ChangedViewEvent(
+                  widget.tabController, InWorkoutView.newExerciseView));
             },
             child: Text("Add an exercise")),
       ],
@@ -169,21 +139,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                               child: SectionDivider(),
                             ),
                             _renderAddNewExerciseSection(),
-                            FutureBuilder(
-                              future: _referenceTrainingFuture,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<Training?> snapshot) {
-                                print(snapshot);
-                                if (snapshot.connectionState ==
-                                        ConnectionState.done &&
-                                    snapshot.hasData) {
-                                  return _renderWorkoutAnalysis(
-                                      state.realisedTraining, snapshot.data);
-                                }
-                                return _renderWorkoutAnalysis(
-                                    state.realisedTraining, null);
-                              },
-                            ),
+                            _renderWorkoutAnalysisSection(
+                                state.realisedTraining),
                           ],
                         );
                       },
@@ -204,10 +161,23 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
       ),
     );
   }
+
+  Widget _renderWorkoutAnalysisSection(Training realisedTraining) {
+    if (realisedTraining.exercisesAsFlatList.isEmpty) {
+      return Container();
+    }
+    return FutureBuilder(
+      future: _referenceTrainingFuture,
+      builder: (BuildContext context, AsyncSnapshot<Training?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          return EndWorkoutAnalysis(
+              realisedTraining: realisedTraining,
+              referenceTraining: snapshot.data);
+        }
+        return EndWorkoutAnalysis(
+            realisedTraining: realisedTraining, referenceTraining: null);
+      },
+    );
+  }
 }
-
-/*
-
- 
-      
-*/

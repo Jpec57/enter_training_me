@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/reference_exercise.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
@@ -6,7 +8,7 @@ import 'package:enter_training_me/services/interfaces/irepository.dart';
 class ReferenceExerciseRepository extends ApiService
     implements IRepository<ReferenceExercise> {
   static const getUrl = "/api/exercise_references/{id}";
-  static const getAllUrl = "/api/exercise_references";
+  static const getAllUrl = "/api/exercise_references/";
 
   @override
   Future<bool> delete(int id) {
@@ -24,8 +26,8 @@ class ReferenceExerciseRepository extends ApiService
   @override
   Future<List<ReferenceExercise>> getAll() async {
     Response response = await getDio().get(getAllUrl);
-    List<dynamic> data = response.data;
-    print(data);
+    Map<String, dynamic> hydraCollection = jsonDecode(response.data);
+    List<dynamic> data = hydraCollection['hydra:member'];
     return data.map((e) => ReferenceExercise.fromJson(e)).toList();
   }
 

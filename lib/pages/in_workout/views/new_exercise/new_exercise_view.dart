@@ -32,40 +32,56 @@ class _NewExerciseViewState extends State<NewExerciseView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: CustomTheme.darkGrey,
-      body: SafeArea(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-              child: ReferenceExerciseList(
-            withSearch: true,
-          )),
-          IconButton(
-            icon: const Icon(Icons.close, color: Colors.white),
-            onPressed: () {
-              BlocProvider.of<InWorkoutBloc>(context).add(ChangedViewEvent(
-                  widget.tabController, InWorkoutView.endWorkoutView));
-            },
-          ),
-          Center(child: Text("New exo")),
-          Container(
-              decoration: BoxDecoration(color: Colors.amber),
-              height: min(size.width, size.height) * 0.5,
-              width: min(size.width, size.height) * 0.5,
-              child: Container()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: CustomTheme.darkGrey,
+        body: SafeArea(
             child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
               children: [
-                _renderIntRow(),
-                _renderIntRow(),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    BlocProvider.of<InWorkoutBloc>(context).add(
+                        ChangedViewEvent(widget.tabController,
+                            InWorkoutView.endWorkoutView));
+                  },
+                ),
+                Expanded(
+                    child: Center(
+                        child: Text(
+                  "New exo",
+                  style: Theme.of(context).textTheme.headline4,
+                )))
               ],
             ),
-          )
-        ],
-      )),
+            InkWell(
+              onTap: () {
+                Get.dialog(const ChooseExerciseDialog());
+              },
+              child: Container(
+                  decoration: const BoxDecoration(color: Colors.amber),
+                  height: min(size.width, size.height) * 0.5,
+                  width: min(size.width, size.height) * 0.5,
+                  child: Container()),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  _renderIntRow(),
+                  _renderIntRow(),
+                ],
+              ),
+            )
+          ],
+        )),
+      ),
     );
   }
 }
