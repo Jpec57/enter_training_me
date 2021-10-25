@@ -12,6 +12,7 @@ import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.d
 import 'package:enter_training_me/pages/in_workout/views/rest/next_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/views/end/workout_end_view.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';

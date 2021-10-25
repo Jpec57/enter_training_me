@@ -21,12 +21,15 @@ The last fitness project, I swear
                       colors: <Color>[
                         userBackgroundColor,
                         trainingRowColor
-                      ], 
+                      ],
                     ),
 
 https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/radar_chart.md
 
 # TODO
+
+- change TrainingBar with exo section
+- use AskedToChangeExoEvent in InWorkoutBloc
 
 Add internet for ios
 https://flutter.dev/docs/cookbook/plugins/play-video

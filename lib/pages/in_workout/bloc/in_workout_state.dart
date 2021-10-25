@@ -11,6 +11,7 @@ class InWorkoutState extends Equatable {
   final int? realisedTrainingId;
   final InWorkoutView currentView;
   final bool isAutoPlayOn;
+  final Map<String, dynamic> changes;
 
   final int reallyDoneReps;
 
@@ -19,6 +20,7 @@ class InWorkoutState extends Equatable {
       required this.realisedTraining,
       this.isEnd = false,
       this.elapsedTime = 0,
+      this.changes = const {},
       this.isAutoPlayOn = true,
       this.realisedTrainingId,
       this.currentCycleIndex = 0,
@@ -138,7 +140,8 @@ class InWorkoutState extends Equatable {
         currentView,
         reallyDoneReps,
         elapsedTime,
-        isAutoPlayOn
+        isAutoPlayOn,
+        changes
       ];
 
   InWorkoutState copyWith(
@@ -146,6 +149,7 @@ class InWorkoutState extends Equatable {
           Training? realisedTraining,
           int? currentCycleIndex,
           int? elapsedTime,
+          Map<String, dynamic>? changes,
           bool? isAutoPlayOn,
           int? currentExoIndex,
           int? currentSetIndex,
@@ -156,6 +160,7 @@ class InWorkoutState extends Equatable {
           bool? isEnd}) =>
       InWorkoutState(
           isEnd: isEnd ?? this.isEnd,
+          changes: changes ?? this.changes,
           isAutoPlayOn: isAutoPlayOn ?? this.isAutoPlayOn,
           referenceTrainingId: referenceTrainingId ?? this.referenceTrainingId,
           elapsedTime: elapsedTime ?? this.elapsedTime,

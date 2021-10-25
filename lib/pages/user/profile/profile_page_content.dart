@@ -9,6 +9,7 @@ import 'package:enter_training_me/pages/user/profile/profile_metric_container.da
 import 'package:enter_training_me/pages/user/profile/sections/profile_last_training_section.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
+import 'package:enter_training_me/widgets/analysis/user/exercised_muscle_radar_repartition_graph.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -169,6 +170,12 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                     child: Container(),
                   ),
                 ]),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, top: 32),
+              child: Text("Muscle Profile",
+                  style: Theme.of(context).textTheme.headline4),
+            ),
+            ExercisedMuscleRadarRepartitionGraph()
           ],
         ),
       ),

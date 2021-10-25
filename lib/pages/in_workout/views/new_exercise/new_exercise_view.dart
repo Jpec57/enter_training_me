@@ -23,54 +23,46 @@ class _NewExerciseViewState extends State<NewExerciseView> {
   void initState() {
     super.initState();
     _weightTextController = TextEditingController();
+    _weightTextController.addListener(() {
+      _weight = double.parse(_weightTextController.text);
+    });
   }
 
   @override
   void dispose() {
+    _weightTextController.removeListener(() {});
     _weightTextController.dispose();
     super.dispose();
   }
 
   Widget _renderWeightChoiceRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        IconButton(
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            onPressed: () {
-              _weight = _weight;
-              if (_weight - 1 >= 0) {
-                setState(() {
-                  _weight = _weight - 1;
-                });
-              }
-            },
-            icon: const Icon(Icons.remove_circle, color: Colors.white)),
-        Column(children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text("How much weight ?",
-                style: Theme.of(context).textTheme.headline4),
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text("How much weight ?",
+            style: Theme.of(context).textTheme.headline4),
+      ),
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 30,
+            width: 150,
+            child: TextField(
+                controller: _weightTextController,
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                    filled: true, fillColor: Colors.white)),
           ),
-          Text(
-              ((_selectedRefExo?.isBodyweightExercise ?? false) && _weight == 0)
-                  ? "BW"
-                  : "${_weight}kgs",
-              style: Theme.of(context).textTheme.headline4)
-        ]),
-        IconButton(
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            onPressed: () {
-              setState(() {
-                _weight = (_weight) + 1;
-              });
-            },
-            icon: const Icon(Icons.add_circle, color: Colors.white)),
-      ],
-    );
+        ],
+      ),
+      // Text(
+      //     ((_selectedRefExo?.isBodyweightExercise ?? false) && _weight == 0)
+      //         ? "BW"
+      //         : "${_weight}kgs",
+      //     style: Theme.of(context).textTheme.headline4)
+    ]);
   }
 
   Widget _renderRestChoiceRow() {

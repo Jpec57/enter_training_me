@@ -70,6 +70,15 @@ class ChangedRefRepsEvent extends InWorkoutEvent {
   List<Object?> get props => [reps];
 }
 
+class AskedToChangeExoEvent extends InWorkoutEvent {
+  final bool isDowngrading;
+
+  const AskedToChangeExoEvent(this.isDowngrading);
+
+  @override
+  List<Object?> get props => [isDowngrading];
+}
+
 class ChangedExoEvent extends InWorkoutEvent {
   final RealisedExercise exo;
 

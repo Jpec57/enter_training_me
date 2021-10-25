@@ -1,14 +1,16 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class RadarChartSample1 extends StatefulWidget {
-  const RadarChartSample1({Key? key}) : super(key: key);
+class ExercisedMuscleRadarRepartitionGraph extends StatefulWidget {
+  const ExercisedMuscleRadarRepartitionGraph({Key? key}) : super(key: key);
 
   @override
-  _RadarChartSample1State createState() => _RadarChartSample1State();
+  _ExercisedMuscleRadarRepartitionGraphState createState() =>
+      _ExercisedMuscleRadarRepartitionGraphState();
 }
 
-class _RadarChartSample1State extends State<RadarChartSample1> {
+class _ExercisedMuscleRadarRepartitionGraphState
+    extends State<ExercisedMuscleRadarRepartitionGraph> {
   int selectedDataSetIndex = -1;
   final gridColor = const Color(0xff68739f);
   final titleColor = const Color(0xff8c95db);
@@ -26,22 +28,6 @@ class _RadarChartSample1State extends State<RadarChartSample1> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedDataSetIndex = -1;
-              });
-            },
-            child: Text(
-              'Categories'.toUpperCase(),
-              style: TextStyle(
-                color: titleColor,
-                fontSize: 32,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: rawDataSets()
@@ -124,11 +110,15 @@ class _RadarChartSample1State extends State<RadarChartSample1> {
                 getTitle: (index) {
                   switch (index) {
                     case 0:
-                      return 'Mobile or Tablet';
-                    case 2:
-                      return 'Desktop';
+                      return 'Chest';
                     case 1:
-                      return 'TV';
+                      return 'Legs';
+                    case 2:
+                      return 'Back';
+                    case 3:
+                      return 'Biceps';
+                    case 4:
+                      return 'Triceps';
                     default:
                       return '';
                   }
@@ -175,12 +165,14 @@ class _RadarChartSample1State extends State<RadarChartSample1> {
   List<RawDataSet> rawDataSets() {
     return [
       RawDataSet(
-        title: 'Fashion',
+        title: 'Maximum',
         color: fashionColor,
         values: [
           300,
-          50,
-          250,
+          300,
+          300,
+          300,
+          300,
         ],
       ),
       RawDataSet(
@@ -190,33 +182,8 @@ class _RadarChartSample1State extends State<RadarChartSample1> {
           250,
           100,
           200,
-        ],
-      ),
-      RawDataSet(
-        title: 'Entertainment',
-        color: entertainmentColor,
-        values: [
-          200,
-          150,
+          180,
           50,
-        ],
-      ),
-      RawDataSet(
-        title: 'Off-road Vehicle',
-        color: offRoadColor,
-        values: [
-          150,
-          200,
-          150,
-        ],
-      ),
-      RawDataSet(
-        title: 'Boxing',
-        color: boxingColor,
-        values: [
-          100,
-          250,
-          100,
         ],
       ),
     ];

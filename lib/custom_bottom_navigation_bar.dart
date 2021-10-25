@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class CustomBottomNavigationBar extends StatelessWidget {
   final String selectedRoute;
   static const _bottomNavigationBarColor = Colors.white;
-  static const _bottomNavigationBarSelectedColor = CustomTheme.darkGrey;
+  static const _bottomNavigationBarSelectedColor = CustomTheme.grey;
 
   const CustomBottomNavigationBar({Key? key, required this.selectedRoute})
       : super(key: key);

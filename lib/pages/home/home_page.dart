@@ -55,7 +55,8 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16,  vertical: 16.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16.0),
                 child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   buildWhen: (prev, next) => prev.user != next.user,
                   builder: (context, state) {
@@ -219,7 +220,7 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Headline4(title: "Saved Workouts"),
+              const Headline4(title: "Personal Workouts"),
               InkWell(
                   onTap: () {
                     Get.to(const InWorkoutPage(

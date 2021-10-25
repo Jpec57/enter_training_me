@@ -39,12 +39,6 @@ class _TrainingTypeRepartitionGraphState
 
   List<MuscleActivationSerie> getMuscleActivationSeriesFromTraining() {
     List<MuscleActivationSerie> muscleActivations = [
-      // MuscleActivationSerie(
-      //     muscleName: "Hypertrophy", ratio: 30, color: CustomTheme.middleGreen),
-      // MuscleActivationSerie(
-      //     muscleName: "Strength", ratio: 40, color: Colors.grey),
-      // MuscleActivationSerie(
-      //     muscleName: "Endurance", ratio: 30, color: CustomTheme.green)
     ];
     var i = 0;
     List<Color> colors = [

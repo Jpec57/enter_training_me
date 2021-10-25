@@ -94,7 +94,7 @@ class Training extends Equatable {
       goalExplosivity: 0,
     };
     for (RealisedExercise exo in exos) {
-      if (exo.executionStyle != null) {
+      if (false && exo.executionStyle != null) {
         switch (exo.executionStyle!.name) {
           default:
             map[goalExplosivity] = 1 + (map[goalExplosivity] ?? 0);
