@@ -1,6 +1,7 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/views/new_exercise/add_new_exercise_section.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/analysis/current/workout_exercise_intensity_graph.dart';
@@ -38,19 +39,26 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
     super.dispose();
   }
 
-  Widget _renderAddNewExerciseSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text("Not done ?"),
-        InkWell(
-            onTap: () {
-              BlocProvider.of<InWorkoutBloc>(context).add(ChangedViewEvent(
-                  widget.tabController, InWorkoutView.newExerciseView));
-            },
-            child: Text("Add an exercise")),
-      ],
+  Widget _renderAddNewExerciseSection(Training realisedTraining) {
+    if (realisedTraining.exercisesAsFlatList.isNotEmpty) {
+      return Container();
+    }
+    return InkWell(
+      onTap: () {
+        BlocProvider.of<InWorkoutBloc>(context).add(ChangedViewEvent(
+            widget.tabController, InWorkoutView.newExerciseView));
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Text("Start by adding an exercise"),
+          Icon(Icons.add_circle, color: Colors.white),
+        ],
+      ),
     );
+    // return AddNewExerciseSection(
+    //   tabController: widget.tabController,
+    // );
   }
 
   @override
@@ -138,7 +146,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                               padding: EdgeInsets.only(top: 16.0, bottom: 16),
                               child: SectionDivider(),
                             ),
-                            _renderAddNewExerciseSection(),
+                            _renderAddNewExerciseSection(
+                                state.realisedTraining),
                             _renderWorkoutAnalysisSection(
                                 state.realisedTraining),
                           ],
@@ -154,7 +163,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                 BlocProvider.of<InWorkoutBloc>(context)
                     .add(TrainingLeftEvent());
               },
-              child: const Text("End of workout"),
+              child: const Text("Back to home"),
             ),
           ],
         ),

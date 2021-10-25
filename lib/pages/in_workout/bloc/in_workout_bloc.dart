@@ -42,7 +42,11 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   Stream<InWorkoutState> mapEventToState(
     InWorkoutEvent event,
   ) async* {
-    if (event is ChangedViewEvent) {
+    if (event is AddedExoEvent) {
+      yield _mapAddedExoEventToState(event);
+      yield _mapChangedViewEventToState(
+          ChangedViewEvent(event.tabController, InWorkoutView.inExerciseView));
+    } else if (event is ChangedViewEvent) {
       yield _mapChangedViewEventToState(event);
     } else if (event is ExerciseDoneEvent) {
       bool isSoundOn = await const FlutterSecureStorage()
@@ -66,6 +70,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       List<ExerciseCycle> doneCycles =
           updateSet(doneReps: state.reallyDoneReps);
       if (state.isEndOfWorkout) {
+        print("Exercise done END OF WORKOUT");
         //TODO save change in referenceTraining with a patch request
         Training? training;
         try {
@@ -201,5 +206,46 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         break;
     }
     return state.copyWith(currentView: event.view);
+  }
+
+  InWorkoutState _mapAddedExoEventToState(AddedExoEvent event) {
+    int nextExoIndex = state.currentExoIndex;
+    Training currentTraining = state.realisedTraining;
+    if (state.currentCycleIndex >= currentTraining.cycles.length) {
+      currentTraining = currentTraining.copyWith(cycles: [
+        ...currentTraining.cycles,
+        const ExerciseCycle(
+            exercises: [], numberOfLoops: 1, restBetweenLoop: 60)
+      ]);
+    }
+    if (currentTraining.cycles[state.currentCycleIndex].exercises.isNotEmpty) {
+      List<RealisedExercise> exos = [
+        ...currentTraining.cycles[state.currentCycleIndex].exercises
+      ];
+      exos.insert(state.currentExoIndex + 1, event.exo);
+      currentTraining.cycles[state.currentCycleIndex] = currentTraining
+          .cycles[state.currentCycleIndex]
+          .copyWith(exercises: exos);
+      nextExoIndex++;
+      print(
+          "Not empty => updating currentcycle BY INSERTING ${currentTraining.cycles[state.currentCycleIndex]}");
+    } else {
+      currentTraining.cycles[state.currentCycleIndex] = currentTraining
+          .cycles[state.currentCycleIndex]
+          .copyWith(exercises: [event.exo]);
+      print(
+          "Empty => updating currentcycle BY ADDING ${currentTraining.cycles[state.currentCycleIndex]}");
+    }
+
+    List<ExerciseCycle> cycles = [
+      ...currentTraining.cycles,
+    ];
+    print(
+        "Current cycle : ${state.currentCycleIndex} EXO INDEX: ${state.currentExoIndex}");
+    currentTraining = currentTraining.copyWith(cycles: cycles);
+    return state.copyWith(
+        realisedTraining: currentTraining,
+        currentExoIndex: nextExoIndex,
+        currentSetIndex: 0);
   }
 }

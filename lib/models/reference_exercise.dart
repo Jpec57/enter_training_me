@@ -39,4 +39,9 @@ class ReferenceExercise {
   factory ReferenceExercise.fromJson(Map<String, dynamic> json) =>
       _$ReferenceExerciseFromJson(json);
   Map<String, dynamic> toJson() => _$ReferenceExerciseToJson(this);
+
+  @override
+  String toString() {
+    return "RefExo: $name";
+  }
 }

@@ -1,9 +1,13 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/models/reference_exercise.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list.dart';
 import 'package:flutter/material.dart';
 
+
 class ChooseExerciseDialog extends StatelessWidget {
-  const ChooseExerciseDialog({Key? key}) : super(key: key);
+  final OnExerciseChosen onExerciseChosen;
+  const ChooseExerciseDialog({Key? key, required this.onExerciseChosen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +42,7 @@ class ChooseExerciseDialog extends StatelessWidget {
           Expanded(
             child: ReferenceExerciseList(
               withSearch: true,
-              onItemTap: () {
-                
-              },
+              onExerciseChosen: onExerciseChosen,
             ),
           ),
         ],

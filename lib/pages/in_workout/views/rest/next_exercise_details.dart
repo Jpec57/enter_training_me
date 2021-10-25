@@ -31,13 +31,15 @@ class _NextExerciseDetailState extends State<NextExerciseDetail> {
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "@${nextExo.sets[nextSetIndex].weight} kgs",
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ),
+          nextExo.sets[nextSetIndex].weight != null
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "@${nextExo.sets[nextSetIndex].weight} kgs",
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

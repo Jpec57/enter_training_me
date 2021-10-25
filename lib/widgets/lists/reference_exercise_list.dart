@@ -4,11 +4,13 @@ import 'package:enter_training_me/services/repositories/reference_exercise_repos
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+typedef OnExerciseChosen = void Function(ReferenceExercise exercise);
+
 class ReferenceExerciseList extends StatefulWidget {
   final bool withSearch;
-  final VoidCallback onItemTap;
+  final OnExerciseChosen onExerciseChosen;
   const ReferenceExerciseList(
-      {Key? key, this.withSearch = true, required this.onItemTap})
+      {Key? key, this.withSearch = true, required this.onExerciseChosen})
       : super(key: key);
 
   @override
@@ -50,7 +52,9 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
 //Expandable to see more info ? ?
 
     return InkWell(
-      onTap: widget.onItemTap,
+      onTap: () {
+        widget.onExerciseChosen(exo);
+      },
       child: Container(
         decoration: const BoxDecoration(
             border: Border(

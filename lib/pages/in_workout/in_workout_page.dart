@@ -99,6 +99,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                 child: TabBarView(controller: _tabController, children: [
                   const InWorkoutExerciseView(),
                   InWorkoutRestView(
+                    tabController: _tabController,
                     onTimerEndCallback: onExerciseSetEnd,
                   )
                 ]),

@@ -13,8 +13,8 @@ class ExerciseCycle extends Equatable {
 
   const ExerciseCycle({
     required this.exercises,
-    required this.numberOfLoops,
-    required this.restBetweenLoop,
+    this.numberOfLoops = 1,
+    this.restBetweenLoop = 60,
     // this.id
   });
 

@@ -71,9 +71,11 @@ class WorkoutExerciseCardSummary extends StatelessWidget {
                           Text("${set.reps} reps ".toUpperCase(),
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold)),
-                          Text(
-                            "${set.weight}kg ",
-                          ),
+                          set.weight != null
+                              ? Text(
+                                  "${set.weight}kg ",
+                                )
+                              : const Text("@ bodyweight"),
                           _renderSetComparison(set, expectedSet)
                         ],
                       ),

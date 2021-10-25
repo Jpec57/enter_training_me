@@ -78,3 +78,12 @@ class ChangedExoEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [exo];
 }
+
+class AddedExoEvent extends InWorkoutEvent {
+  final RealisedExercise exo;
+  final TabController tabController;
+  const AddedExoEvent(this.tabController, this.exo);
+
+  @override
+  List<Object?> get props => [tabController, exo];
+}

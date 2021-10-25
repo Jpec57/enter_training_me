@@ -58,9 +58,8 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     throw UnimplementedError();
   }
 
-
-
   Future postUserTraining(Map<String, dynamic> data) async {
+    print("------------------------------POSTING TRAINING");
     data["name"] = data["name"] + " " + DateTime.now().toIso8601String();
 
     data["createdAt"] = null;
