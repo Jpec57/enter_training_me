@@ -44,7 +44,6 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                             .then((value) {
                           if (value != null) {
                             int parseValue = int.parse(value);
-
                             BlocProvider.of<InWorkoutBloc>(context)
                                 .add(ChangedRefRepsEvent(parseValue));
                           }

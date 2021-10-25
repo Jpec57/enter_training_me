@@ -15,25 +15,183 @@ class _NewExerciseViewState extends State<NewExerciseView> {
   int _restBtwSet = 120;
   int _nbSets = 2;
   int _nbReps = 5;
-  double? _weight;
+  double _weight = 0;
+  late TextEditingController _weightTextController;
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  Widget _renderIntRow() {
+  @override
+  void initState() {
+    super.initState();
+    _weightTextController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _weightTextController.dispose();
+    super.dispose();
+  }
+
+  Widget _renderWeightChoiceRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.remove_circle, color: Colors.white)),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            onPressed: () {
+              _weight = _weight;
+              if (_weight - 1 >= 0) {
+                setState(() {
+                  _weight = _weight - 1;
+                });
+              }
+            },
+            icon: const Icon(Icons.remove_circle, color: Colors.white)),
         Column(children: [
-          Text("Number of sets"),
-          Text("4"),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text("How much weight ?",
+                style: Theme.of(context).textTheme.headline4),
+          ),
+          Text(
+              ((_selectedRefExo?.isBodyweightExercise ?? false) && _weight == 0)
+                  ? "BW"
+                  : "${_weight}kgs",
+              style: Theme.of(context).textTheme.headline4)
         ]),
         IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.add_circle, color: Colors.white)),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            onPressed: () {
+              setState(() {
+                _weight = (_weight) + 1;
+              });
+            },
+            icon: const Icon(Icons.add_circle, color: Colors.white)),
       ],
     );
+  }
+
+  Widget _renderRestChoiceRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            onPressed: () {
+              if (_restBtwSet > 10) {
+                setState(() {
+                  _restBtwSet = _restBtwSet - 10;
+                });
+              }
+            },
+            icon: const Icon(Icons.remove_circle, color: Colors.white)),
+        Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text("How much rest between set ?",
+                style: Theme.of(context).textTheme.headline4),
+          ),
+          Text("${_restBtwSet}s", style: Theme.of(context).textTheme.headline4)
+        ]),
+        IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            onPressed: () {
+              setState(() {
+                _restBtwSet = _restBtwSet + 10;
+              });
+            },
+            icon: const Icon(Icons.add_circle, color: Colors.white)),
+      ],
+    );
+  }
+
+  Widget _renderRepsChoiceRow() {
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text("How many reps ?",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline4),
+      ),
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onPressed: () {
+                if (_nbSets > 0) {
+                  setState(() {
+                    _nbReps = _nbReps - 1;
+                  });
+                }
+              },
+              icon: const Icon(Icons.remove_circle, color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child:
+                Text("$_nbReps", style: Theme.of(context).textTheme.headline4),
+          ),
+          IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onPressed: () {
+                setState(() {
+                  _nbReps = _nbReps + 1;
+                });
+              },
+              icon: const Icon(Icons.add_circle, color: Colors.white)),
+        ],
+      )
+    ]);
+  }
+
+  Widget _renderNumberSetChoice() {
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text("Number of sets",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline4),
+      ),
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onPressed: () {
+                if (_nbSets > 0) {
+                  setState(() {
+                    _nbSets = _nbSets - 1;
+                  });
+                }
+              },
+              icon: const Icon(Icons.remove_circle, color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child:
+                Text("$_nbSets", style: Theme.of(context).textTheme.headline4),
+          ),
+          IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onPressed: () {
+                setState(() {
+                  _nbSets = _nbSets + 1;
+                });
+              },
+              icon: const Icon(Icons.add_circle, color: Colors.white)),
+        ],
+      )
+    ]);
   }
 
   Widget _renderSelectedExoWidget(ReferenceExercise exo) {
@@ -88,8 +246,8 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                 },
                 child: Container(
                     decoration: const BoxDecoration(color: Colors.amber),
-                    height: min(size.width, size.height) * 0.5,
-                    width: min(size.width, size.height) * 0.5,
+                    height: 100,
+                    width: size.width,
                     child: _selectedRefExo == null
                         ? Container()
                         : _renderSelectedExoWidget(_selectedRefExo!)),
@@ -102,8 +260,24 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
                           children: [
-                            _renderIntRow(),
-                            _renderIntRow(),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 16.0, bottom: 8),
+                              child: Row(
+                                children: [
+                                  Expanded(child: _renderNumberSetChoice()),
+                                  Expanded(child: _renderRepsChoiceRow()),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: _renderWeightChoiceRow(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: _renderRestChoiceRow(),
+                            ),
                           ],
                         ),
                       ),

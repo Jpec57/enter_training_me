@@ -19,12 +19,16 @@ class ReferenceExerciseList extends StatefulWidget {
 
 class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
   late Future<List<ReferenceExercise>> _exoListFuture;
+
   late TextEditingController _exoSearchTextController;
 
   @override
   void initState() {
     super.initState();
     _exoSearchTextController = TextEditingController();
+    _exoSearchTextController.addListener(() {
+      setState(() {});
+    });
     setState(() {
       _exoListFuture =
           RepositoryProvider.of<ReferenceExerciseRepository>(context).getAll();
@@ -33,6 +37,7 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
 
   @override
   void dispose() {
+    _exoSearchTextController.removeListener(() {});
     _exoSearchTextController.dispose();
     super.dispose();
   }
@@ -40,10 +45,18 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
   Widget _renderSearchBar() {
     return TextField(
       controller: _exoSearchTextController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        prefixIcon: Icon(Icons.search),
+        prefixIcon: InkWell(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+                currentFocus.focusedChild?.unfocus();
+              }
+            },
+            child: const Icon(Icons.search)),
       ),
     );
   }
@@ -104,6 +117,16 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
     );
   }
 
+  List<ReferenceExercise> filterBySearch(List<ReferenceExercise> list) {
+    String searchText = _exoSearchTextController.text;
+    if (searchText.isEmpty) {
+      return list;
+    }
+    return list.where((element) {
+      return element.name.toLowerCase().contains(searchText.toLowerCase());
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -116,11 +139,13 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
             builder: (BuildContext context,
                 AsyncSnapshot<List<ReferenceExercise>> snapshot) {
               if (snapshot.hasData) {
+                List<ReferenceExercise> filteredExos =
+                    filterBySearch(snapshot.data!);
                 return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: snapshot.data?.length ?? 0,
+                    itemCount: filteredExos.length,
                     itemBuilder: (context, index) {
-                      return _renderListTile(snapshot.data![index]);
+                      return _renderListTile(filteredExos[index]);
                     });
               } else if (ConnectionState.waiting == snapshot.connectionState) {
                 return const Center(

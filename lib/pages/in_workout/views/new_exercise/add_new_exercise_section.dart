@@ -15,6 +15,7 @@ class AddNewExerciseSection extends StatelessWidget {
             ChangedViewEvent(tabController, InWorkoutView.newExerciseView));
       },
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const [
           Text("Not done ?"),

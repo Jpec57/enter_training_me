@@ -44,8 +44,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   ) async* {
     if (event is AddedExoEvent) {
       yield _mapAddedExoEventToState(event);
-      yield _mapChangedViewEventToState(
-          ChangedViewEvent(event.tabController, InWorkoutView.inExerciseView));
+      if (state.isAutoPlayOn) {
+        yield _mapChangedViewEventToState(ChangedViewEvent(
+            event.tabController, InWorkoutView.inExerciseView));
+      } else {
+        yield _mapChangedViewEventToState(ChangedViewEvent(
+            event.tabController, InWorkoutView.endWorkoutView));
+      }
+    } else if (event is ChangedTrainingNameEvent) {
+      yield state.copyWith(
+          realisedTraining: state.realisedTraining.copyWith(name: event.name));
     } else if (event is ChangedViewEvent) {
       yield _mapChangedViewEventToState(event);
     } else if (event is ExerciseDoneEvent) {
@@ -70,7 +78,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       List<ExerciseCycle> doneCycles =
           updateSet(doneReps: state.reallyDoneReps);
       if (state.isEndOfWorkout) {
-        print("Exercise done END OF WORKOUT");
         //TODO save change in referenceTraining with a patch request
         Training? training;
         try {
@@ -196,6 +203,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   InWorkoutState _mapChangedViewEventToState(ChangedViewEvent event) {
     switch (event.view) {
+      case InWorkoutView.endWorkoutView:
+        event.tabController.index = 0;
+        break;
       case InWorkoutView.inExerciseView:
         event.tabController.index = 0;
         break;
@@ -227,21 +237,14 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
           .cycles[state.currentCycleIndex]
           .copyWith(exercises: exos);
       nextExoIndex++;
-      print(
-          "Not empty => updating currentcycle BY INSERTING ${currentTraining.cycles[state.currentCycleIndex]}");
     } else {
       currentTraining.cycles[state.currentCycleIndex] = currentTraining
           .cycles[state.currentCycleIndex]
           .copyWith(exercises: [event.exo]);
-      print(
-          "Empty => updating currentcycle BY ADDING ${currentTraining.cycles[state.currentCycleIndex]}");
     }
-
     List<ExerciseCycle> cycles = [
       ...currentTraining.cycles,
     ];
-    print(
-        "Current cycle : ${state.currentCycleIndex} EXO INDEX: ${state.currentExoIndex}");
     currentTraining = currentTraining.copyWith(cycles: cycles);
     return state.copyWith(
         realisedTraining: currentTraining,

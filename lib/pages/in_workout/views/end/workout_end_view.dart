@@ -1,7 +1,7 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
-import 'package:enter_training_me/pages/in_workout/views/new_exercise/add_new_exercise_section.dart';
+import 'package:enter_training_me/pages/in_workout/views/end/rename_training_dialog.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/analysis/current/workout_exercise_intensity_graph.dart';
@@ -9,6 +9,7 @@ import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 part 'end_workout_analysis.dart';
 
 class WorkoutEndView extends StatefulWidget {
@@ -24,6 +25,7 @@ class WorkoutEndView extends StatefulWidget {
 
 class _WorkoutEndViewState extends State<WorkoutEndView> {
   late Future<Training>? _referenceTrainingFuture;
+  bool _isTrainingSaved = false;
 
   @override
   void initState() {
@@ -86,14 +88,28 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(
-                                    state.realisedTraining.name,
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
+                                  Flexible(
+                                    child: Text(
+                                      state.realisedTraining.name,
+                                      style:
+                                          Theme.of(context).textTheme.headline3,
+                                    ),
                                   ),
                                   state.isNewWorkout
                                       ? IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Get.dialog(RenameTrainingDialog(
+                                                initialValue:
+                                                    state.realisedTraining.name,
+                                                callback: (str) {
+                                                  BlocProvider.of<
+                                                              InWorkoutBloc>(
+                                                          context)
+                                                      .add(
+                                                          ChangedTrainingNameEvent(
+                                                              str));
+                                                }));
+                                          },
                                           icon: const Icon(Icons.edit,
                                               color: Colors.white))
                                       : Container()
@@ -123,10 +139,61 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                         return Container();
                                       }
                                       return IconButton(
+                                        padding: EdgeInsets.zero,
+                                        constraints: const BoxConstraints(),
+                                        onPressed: () async {
+                                          Get.dialog(Dialog(
+                                            backgroundColor: CustomTheme
+                                                .darkGrey
+                                                .withAlpha(150),
+                                            child: const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                          ));
+                                          bool isSuccess = false;
+                                          if (_isTrainingSaved) {
+                                            isSuccess = await RepositoryProvider
+                                                    .of<TrainingRepository>(
+                                                        context)
+                                                .removeFromSavedTrainingAction(
+                                                    state.realisedTrainingId!);
+                                          } else {
+                                            isSuccess = await RepositoryProvider
+                                                    .of<TrainingRepository>(
+                                                        context)
+                                                .saveTrainingAction(
+                                                    state.realisedTrainingId!);
+                                          }
+                                          if (isSuccess) {
+                                            setState(() {
+                                              _isTrainingSaved =
+                                                  !_isTrainingSaved;
+                                            });
+                                          }
+                                          Navigator.of(context).pop();
+                                        },
+                                        icon: Icon(
+                                            _isTrainingSaved
+                                                ? Icons.bookmark
+                                                : Icons.bookmark_border,
+                                            color: Colors.white,
+                                            size: 25),
+                                      );
+                                    },
+                                  ),
+                                  BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                                    buildWhen: (prev, next) =>
+                                        prev.realisedTrainingId !=
+                                        next.realisedTrainingId,
+                                    builder: (context, state) {
+                                      if (state.realisedTrainingId == null) {
+                                        return Container();
+                                      }
+                                      return IconButton(
                                           padding: EdgeInsets.zero,
                                           constraints: const BoxConstraints(),
                                           icon: const Icon(Icons.share,
-                                              color: Colors.white),
+                                              size: 25, color: Colors.white),
                                           onPressed: () async {
                                             //TODO SHOW POP UP
 
@@ -138,7 +205,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                                         .realisedTrainingId!);
                                           });
                                     },
-                                  ),
+                                  )
                                 ],
                               ),
                             ),

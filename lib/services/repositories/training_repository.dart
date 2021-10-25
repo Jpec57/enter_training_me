@@ -13,6 +13,9 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   static const getUrl = "/api/trainings/{id}";
   static const postUser = "/api/trainings";
   static const shareByEmail = "/trainings/{id}/share";
+  static const getSavedUrl = "/trainings/saved";
+  static const saveTraining = "/trainings/{id}/save";
+  static const removeFromSaved = "/trainings/{id}/unsave";
 
   @override
   Future<Training> get(int id) async {
@@ -29,10 +32,30 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     return response.statusCode == 200;
   }
 
+  Future<bool> saveTrainingAction(int id) async {
+    Response response =
+        await getDio().get(saveTraining.replaceFirst("{id}", id.toString()));
+    dynamic data = response.data;
+    return response.statusCode == 200;
+  }
+
+  Future<bool> removeFromSavedTrainingAction(int id) async {
+    Response response =
+        await getDio().get(removeFromSaved.replaceFirst("{id}", id.toString()));
+    dynamic data = response.data;
+
+    return response.statusCode == 200;
+  }
+
+  Future<List<Training>> getSavedTrainings() async {
+    Response response = await getDio().get(getSavedUrl);
+    List<dynamic> data = response.data;
+    return data.map((e) => Training.fromJson(e)).toList();
+  }
+
   @override
   Future<List<Training>> getAll() async {
     Response response = await getDio().get(getAllUrl);
-    // Response response = await getDio().get(GET_ALL);
     List<dynamic> data = response.data;
     return data.map((e) => Training.fromJson(e)).toList();
   }
@@ -60,7 +83,6 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
 
   Future postUserTraining(Map<String, dynamic> data) async {
     print("------------------------------POSTING TRAINING");
-    data["name"] = data["name"] + " " + DateTime.now().toIso8601String();
 
     data["createdAt"] = null;
     Response response = await getDio().post(postUser, data: data);

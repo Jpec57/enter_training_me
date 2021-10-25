@@ -2,6 +2,7 @@ import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/layouts/separator_overlapping_section_layout.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_header.dart';
 import 'package:enter_training_me/pages/user/profile/profile_metric_container.dart';
@@ -44,7 +45,8 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                   IconButton(
                       alignment: Alignment.centerLeft,
                       onPressed: () {
-                        Navigator.pop(context);
+                        // Navigator.of(context).pop();
+                        Get.toNamed(HomePage.routeName);
                       },
                       icon: const Icon(Icons.chevron_left,
                           color: Colors.white, size: 40)),
@@ -102,7 +104,9 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
               topWidgetPadding: const EdgeInsets.only(bottom: 16),
               topWidgetBackgroundColor: CustomTheme.darkGrey,
               bottomWidgetBackgroundColor: CustomTheme.middleGreen,
-              topWidget: ProfileHeader(user: user,),
+              topWidget: ProfileHeader(
+                user: user,
+              ),
               overlappingWidget: Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   padding: const EdgeInsets.all(10.0),
@@ -170,6 +174,4 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
       ),
     );
   }
-
-
 }

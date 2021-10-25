@@ -10,6 +10,7 @@ class InWorkoutState extends Equatable {
   final int elapsedTime;
   final int? realisedTrainingId;
   final InWorkoutView currentView;
+  final bool isAutoPlayOn;
 
   final int reallyDoneReps;
 
@@ -18,6 +19,7 @@ class InWorkoutState extends Equatable {
       required this.realisedTraining,
       this.isEnd = false,
       this.elapsedTime = 0,
+      this.isAutoPlayOn = true,
       this.realisedTrainingId,
       this.currentCycleIndex = 0,
       this.currentExoIndex = 0,
@@ -121,10 +123,8 @@ class InWorkoutState extends Equatable {
     return currentExo;
   }
 
-  List<InWorkoutView> getNonTickingViews() => [
-    InWorkoutView.endWorkoutView,
-    InWorkoutView.newExerciseView
-  ];
+  List<InWorkoutView> getNonTickingViews() =>
+      [InWorkoutView.endWorkoutView, InWorkoutView.newExerciseView];
 
   @override
   List<Object?> get props => [
@@ -136,7 +136,9 @@ class InWorkoutState extends Equatable {
         isEnd,
         realisedTrainingId,
         currentView,
-        reallyDoneReps
+        reallyDoneReps,
+        elapsedTime,
+        isAutoPlayOn
       ];
 
   InWorkoutState copyWith(
@@ -144,6 +146,7 @@ class InWorkoutState extends Equatable {
           Training? realisedTraining,
           int? currentCycleIndex,
           int? elapsedTime,
+          bool? isAutoPlayOn,
           int? currentExoIndex,
           int? currentSetIndex,
           int? realisedTrainingId,
@@ -153,6 +156,7 @@ class InWorkoutState extends Equatable {
           bool? isEnd}) =>
       InWorkoutState(
           isEnd: isEnd ?? this.isEnd,
+          isAutoPlayOn: isAutoPlayOn ?? this.isAutoPlayOn,
           referenceTrainingId: referenceTrainingId ?? this.referenceTrainingId,
           elapsedTime: elapsedTime ?? this.elapsedTime,
           currentView: currentView ?? this.currentView,

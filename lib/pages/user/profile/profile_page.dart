@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
       floatingActionButton:
           CustomBottomNavigationBar.getCenteredFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const CustomBottomNavigationBar(),
+      bottomNavigationBar: const CustomBottomNavigationBar(selectedRoute: ProfilePage.routeName,),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Column(

@@ -103,7 +103,7 @@ class _OneRMPageState extends State<OneRMPage> {
       floatingActionButton:
           CustomBottomNavigationBar.getCenteredFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const CustomBottomNavigationBar(),
+      bottomNavigationBar: const CustomBottomNavigationBar(selectedRoute: OneRMPage.routeName,),
       appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,

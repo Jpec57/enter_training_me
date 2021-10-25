@@ -8,12 +8,10 @@ class TestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         backgroundColor: Colors.black,
         body: SafeArea(
-          child: Column(children: [
-
-            
-          ]),
+          child: Column(children: []),
         ));
   }
 }

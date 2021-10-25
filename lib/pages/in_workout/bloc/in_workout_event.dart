@@ -37,7 +37,7 @@ class ChangedViewEvent extends InWorkoutEvent {
   final TabController tabController;
 
   const ChangedViewEvent(this.tabController, this.view);
-  
+
   @override
   List<Object?> get props => [view, tabController];
 }
@@ -86,4 +86,13 @@ class AddedExoEvent extends InWorkoutEvent {
 
   @override
   List<Object?> get props => [tabController, exo];
+}
+
+class ChangedTrainingNameEvent extends InWorkoutEvent {
+  final String name;
+
+  const ChangedTrainingNameEvent(this.name);
+
+  @override
+  List<Object?> get props => [name];
 }

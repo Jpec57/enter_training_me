@@ -1,11 +1,15 @@
 import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/views/new_exercise/add_new_exercise_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NextExerciseDetail extends StatefulWidget {
   final RealisedExercise? nextExercise;
-  const NextExerciseDetail({Key? key, this.nextExercise}) : super(key: key);
+  final TabController tabController;
+  const NextExerciseDetail(
+      {Key? key, this.nextExercise, required this.tabController})
+      : super(key: key);
 
   @override
   State<NextExerciseDetail> createState() => _NextExerciseDetailState();
@@ -45,6 +49,14 @@ class _NextExerciseDetailState extends State<NextExerciseDetail> {
     );
   }
 
+  Widget _addExerciseSection() {
+    return Center(
+      child: AddNewExerciseSection(
+        tabController: widget.tabController,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InWorkoutBloc, InWorkoutState>(
@@ -69,19 +81,18 @@ class _NextExerciseDetailState extends State<NextExerciseDetail> {
                 ),
               ),
               Expanded(
-                child: InkWell(
-                  onTap: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _renderExerciseImage(),
-                      Expanded(
-                          flex: 4,
-                          child: _renderNextExoInfo(
-                              state.nextExo, state.nextSetIndex)),
-                    ],
-                  ),
-                ),
+                child: state.nextExo == null
+                    ? _addExerciseSection()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _renderExerciseImage(),
+                          Expanded(
+                              flex: 4,
+                              child: _renderNextExoInfo(
+                                  state.nextExo, state.nextSetIndex)),
+                        ],
+                      ),
               ),
             ],
           ),

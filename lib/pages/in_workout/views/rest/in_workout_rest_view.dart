@@ -30,7 +30,7 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
               if (state.currentExo == null || state.isEndOfWorkout) {
                 return Center(
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -51,12 +51,6 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: AddNewExerciseSection(
-                          tabController: widget.tabController,
-                        ),
-                      )
                     ],
                   ),
                 );

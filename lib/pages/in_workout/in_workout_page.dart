@@ -82,7 +82,9 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             tabController: _tabController,
           );
         }
-        if (state.currentExo == null || state.isEnd) {
+        if (state.currentExo == null ||
+            state.isEnd ||
+            state.currentView == InWorkoutView.endWorkoutView) {
           return WorkoutEndView(
               tabController: _tabController,
               referenceId: state.referenceTrainingId);
@@ -96,13 +98,16 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               const TrainingHeaderBar(),
               _renderExerciseHeader(),
               Expanded(
-                child: TabBarView(controller: _tabController, children: [
-                  const InWorkoutExerciseView(),
-                  InWorkoutRestView(
-                    tabController: _tabController,
-                    onTimerEndCallback: onExerciseSetEnd,
-                  )
-                ]),
+                child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _tabController,
+                    children: [
+                      const InWorkoutExerciseView(),
+                      InWorkoutRestView(
+                        tabController: _tabController,
+                        onTimerEndCallback: onExerciseSetEnd,
+                      )
+                    ]),
               ),
               _renderDoneButton(context),
             ],
@@ -216,7 +221,9 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                       prev.currentExoIndex != next.currentExoIndex ||
                       prev.currentSetIndex != next.currentSetIndex,
                   builder: (context, state) {
-                    return NextExerciseDetail(nextExercise: state.nextExo);
+                    return NextExerciseDetail(
+                        nextExercise: state.nextExo,
+                        tabController: _tabController);
                   },
                 ),
         ));

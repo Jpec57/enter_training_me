@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
+  final String selectedRoute;
   static const _bottomNavigationBarColor = Colors.white;
+  static const _bottomNavigationBarSelectedColor = CustomTheme.darkGrey;
 
-  const CustomBottomNavigationBar({Key? key}) : super(key: key);
+  const CustomBottomNavigationBar({Key? key, required this.selectedRoute})
+      : super(key: key);
 
-  static Widget getCenteredFloatingButton() {
+  static Widget getCenteredFloatingButton({bool isSelected = false}) {
     return FloatingActionButton(
         backgroundColor: CustomTheme.middleGreen,
         onPressed: () {
@@ -20,23 +23,29 @@ class CustomBottomNavigationBar extends StatelessWidget {
         tooltip: MainRouting.homeNavigationElement.title,
         child: Icon(
           MainRouting.homeNavigationElement.iconData,
-          color: _bottomNavigationBarColor,
+          color: isSelected
+              ? _bottomNavigationBarSelectedColor
+              : _bottomNavigationBarColor,
         ));
   }
 
-  Widget _renderBottomNavigationItem(NavigationElement element) {
+  Widget _renderBottomNavigationItem(
+      NavigationElement element, bool isSelected) {
     return IconButton(
         icon: Icon(element.iconData),
-        color: _bottomNavigationBarColor,
+        color: isSelected
+            ? _bottomNavigationBarSelectedColor
+            : _bottomNavigationBarColor,
         onPressed: () {
           Get.offNamedUntil(
               element.routeName, ModalRoute.withName(HomePage.routeName));
         });
   }
 
-  List<Widget> _renderElements() {
+  List<Widget> _renderElements(String selectedRoute) {
     List<Widget> elements = MainRouting.mainNavigationElements
-        .map((element) => _renderBottomNavigationItem(element))
+        .map((element) => _renderBottomNavigationItem(
+            element, element.routeName == selectedRoute))
         .toList();
     int len = elements.length;
     if (len % 2 == 0) {
@@ -59,6 +68,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
         child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _renderElements()));
+            children: _renderElements(selectedRoute)));
   }
 }

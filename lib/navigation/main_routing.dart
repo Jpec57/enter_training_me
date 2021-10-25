@@ -37,7 +37,7 @@ class MainRouting {
     NavigationElement(
         title: "Other",
         iconData: Icons.question_answer,
-        routeName: HomePage.routeName),
+        routeName: TestPage.routeName),
     NavigationElement(
         title: "1RM Calculator",
         iconData: Icons.calculate,

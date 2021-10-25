@@ -45,7 +45,8 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
       floatingActionButton:
           CustomBottomNavigationBar.getCenteredFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const CustomBottomNavigationBar(),
+      bottomNavigationBar: const CustomBottomNavigationBar(
+          selectedRoute: QuickCountdownPage.routeName),
       appBar: AppBar(
         leading: const Icon(Icons.timer),
         backgroundColor: Colors.transparent,
