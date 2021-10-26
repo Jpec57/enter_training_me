@@ -24,7 +24,11 @@ class _NewExerciseViewState extends State<NewExerciseView> {
     super.initState();
     _weightTextController = TextEditingController();
     _weightTextController.addListener(() {
-      _weight = double.parse(_weightTextController.text);
+      if (_weightTextController.text.isNotEmpty) {
+        _weight = double.parse(_weightTextController.text);
+      } else {
+        _weight = 0;
+      }
     });
   }
 

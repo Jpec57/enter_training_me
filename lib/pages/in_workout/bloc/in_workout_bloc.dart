@@ -44,8 +44,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         yield _mapChangedViewEventToState(ChangedViewEvent(
             event.tabController, InWorkoutView.inExerciseView));
       } else {
-        yield _mapChangedViewEventToState(ChangedViewEvent(
-            event.tabController, InWorkoutView.endWorkoutView));
+        if (state.realisedTraining.exercisesAsFlatList.isEmpty) {
+          print("empty list");
+          yield _mapChangedViewEventToState(ChangedViewEvent(
+              event.tabController, InWorkoutView.endWorkoutView));
+        } else {
+          print(" list");
+
+          yield _mapChangedViewEventToState(
+              ChangedViewEvent(event.tabController, InWorkoutView.inRestView));
+        }
       }
     } else if (event is ChangedTrainingNameEvent) {
       yield state.copyWith(
@@ -109,6 +117,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   Future<Training?> saveTraining() async {
     Training? training;
+    print("saving training");
     try {
       //TODO save change in referenceTraining with a patch request
       training = await trainingRepository

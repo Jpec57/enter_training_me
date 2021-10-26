@@ -6,10 +6,8 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/training_container.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
-import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:enter_training_me/widgets/clippers/diagonal_corner_clipper.dart';
 import 'package:enter_training_me/widgets/texts/headline3.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -72,8 +70,11 @@ class _HomePageState extends State<HomePage> {
               ),
               Stack(fit: StackFit.loose, children: [
                 Positioned.fill(
-                    child: Container(
-                  color: CustomTheme.grey,
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 1.0),
+                  child: Container(
+                    color: CustomTheme.grey,
+                  ),
                 )),
                 Positioned.fill(
                     child: ClipPath(
@@ -89,8 +90,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ]),
               _renderSavedWorkoutSection(),
-
-
               Container(height: 50)
             ],
           ),
@@ -98,7 +97,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 
   Widget _renderOfficialWorkoutSection() {
     return Padding(

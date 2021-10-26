@@ -83,6 +83,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             tabController: _tabController,
           );
         }
+        // TODO NewTrainingView ?
         if (state.currentExo == null ||
             state.isEnd ||
             state.currentView == InWorkoutView.endWorkoutView) {

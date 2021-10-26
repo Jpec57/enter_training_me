@@ -41,8 +41,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
     super.dispose();
   }
 
-  Widget _renderAddNewExerciseSection(Training realisedTraining) {
-    if (realisedTraining.exercisesAsFlatList.isNotEmpty) {
+  Widget _renderAddNewExerciseSection(Training realisedTraining, bool isEnd) {
+    if (realisedTraining.exercisesAsFlatList.isNotEmpty && isEnd) {
       return Container();
     }
     return InkWell(
@@ -53,8 +53,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const [
-          Text("Start by adding an exercise"),
           Icon(Icons.add_circle, color: Colors.white),
+          Text("Add an exercise"),
         ],
       ),
     );
@@ -213,10 +213,14 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                               padding: EdgeInsets.only(top: 16.0, bottom: 16),
                               child: SectionDivider(),
                             ),
-                            _renderAddNewExerciseSection(
-                                state.realisedTraining),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: _renderAddNewExerciseSection(
+                                  state.realisedTraining, state.isEnd),
+                            ),
                             _renderWorkoutAnalysisSection(
-                                state.realisedTraining),
+                                state.realisedTraining, state.isEnd),
                           ],
                         );
                       },
@@ -238,8 +242,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
     );
   }
 
-  Widget _renderWorkoutAnalysisSection(Training realisedTraining) {
-    if (realisedTraining.exercisesAsFlatList.isEmpty) {
+  Widget _renderWorkoutAnalysisSection(Training realisedTraining, bool isEnd) {
+    if (realisedTraining.exercisesAsFlatList.isEmpty || isEnd) {
       return Container();
     }
     return FutureBuilder(
