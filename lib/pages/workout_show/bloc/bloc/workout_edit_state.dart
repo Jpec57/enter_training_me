@@ -6,6 +6,12 @@ class WorkoutEditState extends Equatable {
 
   const WorkoutEditState({this.isEditting = false, required this.training});
 
+  WorkoutEditState copyWith({Training? training, bool? isEditting}) =>
+      WorkoutEditState(
+        training: training ?? this.training,
+        isEditting: isEditting ?? this.isEditting,
+      );
+
   @override
   List<Object> get props => [training, isEditting];
 }

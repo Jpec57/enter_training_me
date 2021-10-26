@@ -31,11 +31,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
             realisedTraining: realisedTraining));
 
   Future _speak(FlutterTts flutterTts, String text) async {
-    var result = await flutterTts.speak(text);
-  }
-
-  Future _stop(FlutterTts flutterTts) async {
-    var result = await flutterTts.stop();
+    await flutterTts.speak(text);
   }
 
   @override
@@ -78,16 +74,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       List<ExerciseCycle> doneCycles =
           updateSet(doneReps: state.reallyDoneReps);
       if (state.isEndOfWorkout) {
-        //TODO save change in referenceTraining with a patch request
-        Training? training;
-        try {
-          training = await trainingRepository
-              .postUserTraining(state.realisedTraining.toJson());
-        } on Exception catch (e) {
-          Get.snackbar("Error", e.toString());
-          //TODO Save in local storage to resend later
-        }
-
+        Training? training = await saveTraining();
         yield state.copyWith(isEnd: true, realisedTrainingId: training?.id);
       }
       yield state.copyWith(
@@ -109,15 +96,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     } else if (event is ChangedRefWeightEvent) {
       yield _mapChangedRefWeightEventToState(event);
     } else if (event is TrainingEndedEvent) {
-      Training? training;
-      //TODO save change in referenceTraining with a patch request
-      try {
-        training = await trainingRepository
-            .postUserTraining(state.realisedTraining.toJson());
-      } on Exception catch (e) {
-        Get.snackbar("Error", e.toString());
-        //TODO Save in local storage to resend later
-      }
+      Training? training = await saveTraining();
       yield state.copyWith(realisedTrainingId: training?.id);
 
       yield _mapTrainingEndedEventToState(event);
@@ -126,6 +105,19 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       Get.offNamedUntil(HomePage.routeName, (route) => false);
       yield _mapTrainingLeftEventToState(event);
     }
+  }
+
+  Future<Training?> saveTraining() async {
+    Training? training;
+    try {
+      //TODO save change in referenceTraining with a patch request
+      training = await trainingRepository
+          .postUserTraining(state.realisedTraining.toJson());
+    } on Exception catch (e) {
+      Get.snackbar("Error", e.toString());
+      //TODO Save in local storage to resend later
+    }
+    return training;
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {

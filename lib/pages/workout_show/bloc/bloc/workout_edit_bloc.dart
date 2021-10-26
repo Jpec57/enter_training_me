@@ -13,7 +13,17 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
   Stream<WorkoutEditState> mapEventToState(
     WorkoutEditEvent event,
   ) async* {
-    if (event is SwitchedExerciseEvent){
+    if (event is SwitchedExerciseEvent) {
+      Training editedTraining = Training.clone(state.training);
+
+      yield state.copyWith(training: editedTraining);
+    }
+    if (event is RemovedExerciseEvent) {
+      Training editedTraining = Training.clone(state.training);
+      // editedTraining.cycles
+      yield state.copyWith(training: editedTraining);
+    } else if (event is ToggledEditModeEvent) {
+      yield state.copyWith(isEditting: !state.isEditting);
     }
   }
 }

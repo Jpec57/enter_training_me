@@ -62,7 +62,7 @@ class Training extends Equatable {
         name: ref.name,
         author: ref.author,
         isOfficial: false,
-        createdAt: DateTime.now(),
+        createdAt: ref.createdAt,
         reference: ref,
         intensity: ref.intensity,
         restBetweenCycles: ref.restBetweenCycles,

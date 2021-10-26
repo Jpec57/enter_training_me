@@ -11,7 +11,6 @@ class RegisterPage extends StatelessWidget {
 
   const RegisterPage({Key? key}) : super(key: key);
 
-  // final GlobalKey<Form
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -28,7 +27,6 @@ class RegisterPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Padding(
