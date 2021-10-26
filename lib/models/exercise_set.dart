@@ -26,6 +26,10 @@ class ExerciseSet extends Equatable {
           weight: weight ?? this.weight,
           weightPercent: weightPercent ?? this.weightPercent);
 
+  String get str {
+    return "$reps${weight != null && weight! > 0 ? "@${weight}kgs" : ""}";
+  }
+
   @override
   String toString() {
     return "Set of $reps reps @${weight}kgs";

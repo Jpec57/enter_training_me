@@ -65,7 +65,7 @@ class MainRouting {
     if (settings.name == WorkoutShowPage.routeName) {
       var args = settings.arguments as WorkoutShowPageArguments;
       return MaterialPageRoute(
-          builder: (context) => WorkoutShowPage(
+          builder: (context) => WorkoutShowPageContent(
                 referenceTraining: args.referenceTraining,
               ));
     }
