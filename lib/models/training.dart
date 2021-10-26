@@ -26,6 +26,7 @@ class Training extends Equatable {
   final int restBetweenCycles;
   final int? estimatedTimeInSeconds;
   final bool isOfficial;
+  final double intensity;
   @JsonKey(toJson: trainingRefToJson)
   final Training? reference;
 
@@ -38,6 +39,7 @@ class Training extends Equatable {
       this.updatedAt,
       this.isOfficial = false,
       this.reference,
+      required this.intensity,
       this.estimatedTimeInSeconds,
       this.restBetweenCycles = 60});
 
@@ -52,6 +54,7 @@ class Training extends Equatable {
           isOfficial: false,
           createdAt: DateTime.now(),
           reference: ref,
+          intensity: 0,
           restBetweenCycles: 60,
           cycles: const []);
     }
@@ -61,6 +64,7 @@ class Training extends Equatable {
         isOfficial: false,
         createdAt: DateTime.now(),
         reference: ref,
+        intensity: ref.intensity,
         restBetweenCycles: ref.restBetweenCycles,
         cycles: ref.cycles);
   }
@@ -69,15 +73,16 @@ class Training extends Equatable {
     return "Training $name [$cycles]";
   }
 
-  int get intensity {
-    var exos = exercisesAsFlatList;
-    if (exos.isEmpty) {
-      return 0;
+  List<String> get materials {
+    List<String> materials = [];
+    for (var exo in exercisesAsFlatList) {
+      for (var mat in exo.exerciseReference.material) {
+        if (!materials.contains(mat)) {
+          materials.add(mat);
+        }
+      }
     }
-    return exercisesAsFlatList
-        .map((e) => e.intensity)
-        .reduce((value, element) => value + element)
-        .floor();
+    return materials;
   }
 
   Map<String, double> get focusRepartition {
@@ -193,6 +198,7 @@ class Training extends Equatable {
           cycles: cycles ?? this.cycles,
           name: name ?? this.name,
           reference: reference,
+          intensity: intensity,
           createdAt: createdAt,
           author: author ?? this.author);
 

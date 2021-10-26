@@ -3,6 +3,7 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/workout_show/section_title.dart';
+import 'package:enter_training_me/pages/workout_show/views/workout_description.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/analysis/current/muscle_activation_repartition_graph.dart';
@@ -83,34 +84,8 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
             Expanded(
               child: TabBarView(controller: _tabController, children: [
                 WorkoutInfoView(referenceTraining: widget.referenceTraining),
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 8),
-                        child: Wrap(
-                          spacing: 24,
-                          children: [
-                            widget.referenceTraining.estimatedTimeInSeconds !=
-                                    null
-                                ? WorkoutMetric(
-                                    metric:
-                                        "${widget.referenceTraining.estimatedTimeInSeconds! ~/ 60}",
-                                    unit: " min")
-                                : Container(),
-                            Text("EXPERT",
-                                style: GoogleFonts.bebasNeue(fontSize: 25)),
-                          ],
-                        ),
-                      ),
-                      const SectionDivider(),                      
-                      WorkoutTrainingContent(
-                          referenceTraining: widget.referenceTraining),
-                    ],
-                  ),
+                WorkoutShowDescription(
+                  referenceTraining: widget.referenceTraining,
                 ),
                 WorkoutHistoryView(
                   referenceTraining: widget.referenceTraining,

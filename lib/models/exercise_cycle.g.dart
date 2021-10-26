@@ -11,8 +11,8 @@ ExerciseCycle _$ExerciseCycleFromJson(Map<String, dynamic> json) =>
       exercises: (json['exercises'] as List<dynamic>)
           .map((e) => RealisedExercise.fromJson(e as Map<String, dynamic>))
           .toList(),
-      numberOfLoops: json['numberOfLoops'] as int,
-      restBetweenLoop: json['restBetweenLoop'] as int,
+      numberOfLoops: json['numberOfLoops'] as int? ?? 1,
+      restBetweenLoop: json['restBetweenLoop'] as int? ?? 60,
     );
 
 Map<String, dynamic> _$ExerciseCycleToJson(ExerciseCycle instance) =>

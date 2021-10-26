@@ -1,5 +1,6 @@
 import 'package:enter_training_me/navigation/navigation_element.dart';
 import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
+import 'package:enter_training_me/pages/community/community_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_view_page_arguments.dart';
 import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
@@ -37,7 +38,7 @@ class MainRouting {
     NavigationElement(
         title: "Other",
         iconData: Icons.question_answer,
-        routeName: TestPage.routeName),
+        routeName: CommunityPage.routeName),
     NavigationElement(
         title: "1RM Calculator",
         iconData: Icons.calculate,
@@ -72,9 +73,9 @@ class MainRouting {
     return null;
   }
 
-
   static routes(BuildContext context) => {
         HomePage.routeName: (context) => const HomePage(),
+        CommunityPage.routeName: (context) => const CommunityPage(),
         PreferencesPage.routeName: (context) => const PreferencesPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),
         UserPage.routeName: (context) => const UserPage(),

@@ -25,8 +25,9 @@ Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
       reference: json['reference'] == null
           ? null
           : Training.fromJson(json['reference'] as Map<String, dynamic>),
+      intensity: (json['intensity'] as num).toDouble(),
       estimatedTimeInSeconds: json['estimatedTimeInSeconds'] as int?,
-      restBetweenCycles: json['restBetweenCycles'] as int,
+      restBetweenCycles: json['restBetweenCycles'] as int? ?? 60,
     );
 
 Map<String, dynamic> _$TrainingToJson(Training instance) => <String, dynamic>{
@@ -39,5 +40,6 @@ Map<String, dynamic> _$TrainingToJson(Training instance) => <String, dynamic>{
       'restBetweenCycles': instance.restBetweenCycles,
       'estimatedTimeInSeconds': instance.estimatedTimeInSeconds,
       'isOfficial': instance.isOfficial,
+      'intensity': instance.intensity,
       'reference': trainingRefToJson(instance.reference),
     };

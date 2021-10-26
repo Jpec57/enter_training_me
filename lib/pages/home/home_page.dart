@@ -26,7 +26,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<List<Training>> _trainingFuture;
   late Future<List<Training>>? _savedTrainingFuture;
-  late Future<List<Training>> _feedFuture;
 
   @override
   void initState() {
@@ -34,8 +33,7 @@ class _HomePageState extends State<HomePage> {
         RepositoryProvider.of<TrainingRepository>(context).getSavedTrainings();
     _trainingFuture =
         RepositoryProvider.of<TrainingRepository>(context).getOfficial();
-    _feedFuture =
-        RepositoryProvider.of<UserRepository>(context).getPersonalFeed();
+
     super.initState();
   }
 
@@ -80,6 +78,7 @@ class _HomePageState extends State<HomePage> {
                 Positioned.fill(
                     child: ClipPath(
                   clipper: DiagonalCornerClipper(),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: Container(
                     color: CustomTheme.darkGrey,
                   ),
@@ -91,7 +90,7 @@ class _HomePageState extends State<HomePage> {
               ]),
               _renderSavedWorkoutSection(),
 
-              // _renderFeedSection()
+
               Container(height: 50)
             ],
           ),
@@ -100,56 +99,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _renderFeedSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Headline4(title: "Feed"),
-            InkWell(
-                onTap: () {},
-                child: const Text(
-                  "More...",
-                )),
-          ],
-        ),
-        FutureBuilder(
-            future: _feedFuture,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return const Center(child: Text("Error"));
-                  }
-                  List<Training> trainings = snapshot.data;
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    shrinkWrap: true,
-                    itemCount: trainings.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 200,
-                        child: TrainingContainer(
-                          otherColor: true,
-                          referenceTraining: trainings[index],
-                        ),
-                      );
-                    },
-                  );
-                case ConnectionState.waiting:
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                default:
-                  return const Center(child: Text("Error"));
-              }
-            }),
-      ]),
-    );
-  }
 
   Widget _renderOfficialWorkoutSection() {
     return Padding(
