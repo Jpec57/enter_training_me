@@ -46,7 +46,6 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                   IconButton(
                       alignment: Alignment.centerLeft,
                       onPressed: () {
-                        // Navigator.of(context).pop();
                         Get.toNamed(HomePage.routeName);
                       },
                       icon: const Icon(Icons.chevron_left,

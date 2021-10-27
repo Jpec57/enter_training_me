@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -23,7 +24,22 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     } else if (event is RegisterPasswordChanged) {
       yield _mapPasswordChangedToState(event, state);
     } else if (event is RegisterSubmitted) {
-      yield* _mapRegisterSubmittedToState(event, state);
+      yield state.copyWith(status: SubmitStatus.submitting);
+      try {
+        IAuthUserInterface? user = await _userRepository.register(
+          username: state.username,
+          password: state.password,
+          email: state.email,
+        );
+        if (user != null) {
+          yield state.copyWith(status: SubmitStatus.submitted);
+        } else {
+          yield state.copyWith(status: SubmitStatus.submitted);
+        }
+      } on DioError catch (_) {
+        yield state.copyWith(status: SubmitStatus.errorSubmission);
+      }
+      // yield* _mapRegisterSubmittedToState(event, state);
     }
   }
 

@@ -4,10 +4,11 @@ import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
 import 'dart:convert';
 
+import 'package:get/get.dart' as Get;
+
 class TrainingRepository extends ApiService implements IRepository<Training> {
   static const GET_ALL = "/trainings/";
   static const getAllUrl = "/api/trainings";
-  static const getPersonal = "/trainings/personal";
   static const getOfficialUri = "/trainings/official";
   static const getByReferenceUri = "/trainings/reference/{id}";
   static const getUrl = "/api/trainings/{id}";
@@ -33,24 +34,37 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   }
 
   Future<bool> saveTrainingAction(int id) async {
-    Response response =
-        await getDio().get(saveTraining.replaceFirst("{id}", id.toString()));
-    dynamic data = response.data;
-    return response.statusCode == 200;
+    try {
+      Response response =
+          await getDio().get(saveTraining.replaceFirst("{id}", id.toString()));
+      dynamic data = response.data;
+      return response.statusCode == 200;
+    } on DioError catch (e) {
+      Get.Get.snackbar("Forbidden", "You must be connected to do this :(");
+      return false;
+    }
   }
 
   Future<bool> removeFromSavedTrainingAction(int id) async {
-    Response response =
-        await getDio().get(removeFromSaved.replaceFirst("{id}", id.toString()));
-    dynamic data = response.data;
-
-    return response.statusCode == 200;
+    try {
+      Response response = await getDio()
+          .get(removeFromSaved.replaceFirst("{id}", id.toString()));
+      dynamic data = response.data;
+      return response.statusCode == 200;
+    } on DioError catch (e) {
+      Get.Get.snackbar("Forbidden", "You must be connected to do this :(");
+      return false;
+    }
   }
 
   Future<List<Training>> getSavedTrainings() async {
-    Response response = await getDio().get(getSavedUrl);
-    List<dynamic> data = response.data;
-    return data.map((e) => Training.fromJson(e)).toList();
+    try {
+      Response response = await getDio().get(getSavedUrl);
+      List<dynamic> data = response.data;
+      return data.map((e) => Training.fromJson(e)).toList();
+    } on DioError catch (e) {
+      return [];
+    }
   }
 
   @override

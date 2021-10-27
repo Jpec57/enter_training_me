@@ -36,6 +36,27 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
         : null;
   }
 
+  void saveTrainingInPersonal(InWorkoutState state) async {
+    Get.dialog(Dialog(
+      backgroundColor: CustomTheme.darkGrey.withAlpha(150),
+      child: const Center(child: CircularProgressIndicator()),
+    ));
+    bool isSuccess = false;
+    if (_isTrainingSaved) {
+      isSuccess = await RepositoryProvider.of<TrainingRepository>(context)
+          .removeFromSavedTrainingAction(state.realisedTrainingId!);
+    } else {
+      isSuccess = await RepositoryProvider.of<TrainingRepository>(context)
+          .saveTrainingAction(state.realisedTrainingId!);
+    }
+    if (isSuccess) {
+      setState(() {
+        _isTrainingSaved = !_isTrainingSaved;
+      });
+    }
+    Navigator.of(context).pop();
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -141,37 +162,8 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                       return IconButton(
                                         padding: EdgeInsets.zero,
                                         constraints: const BoxConstraints(),
-                                        onPressed: () async {
-                                          Get.dialog(Dialog(
-                                            backgroundColor: CustomTheme
-                                                .darkGrey
-                                                .withAlpha(150),
-                                            child: const Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                          ));
-                                          bool isSuccess = false;
-                                          if (_isTrainingSaved) {
-                                            isSuccess = await RepositoryProvider
-                                                    .of<TrainingRepository>(
-                                                        context)
-                                                .removeFromSavedTrainingAction(
-                                                    state.realisedTrainingId!);
-                                          } else {
-                                            isSuccess = await RepositoryProvider
-                                                    .of<TrainingRepository>(
-                                                        context)
-                                                .saveTrainingAction(
-                                                    state.realisedTrainingId!);
-                                          }
-                                          if (isSuccess) {
-                                            setState(() {
-                                              _isTrainingSaved =
-                                                  !_isTrainingSaved;
-                                            });
-                                          }
-                                          Navigator.of(context).pop();
-                                        },
+                                        onPressed: () =>
+                                            saveTrainingInPersonal(state),
                                         icon: Icon(
                                             _isTrainingSaved
                                                 ? Icons.bookmark
@@ -243,7 +235,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
   }
 
   Widget _renderWorkoutAnalysisSection(Training realisedTraining, bool isEnd) {
-    if (realisedTraining.exercisesAsFlatList.isEmpty || isEnd) {
+    if (realisedTraining.exercisesAsFlatList.isEmpty || !isEnd) {
       return Container();
     }
     return FutureBuilder(

@@ -1,4 +1,5 @@
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/register/bloc/bloc/register_bloc.dart';
 import 'package:enter_training_me/pages/user/user_page.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
@@ -35,34 +36,71 @@ class RegisterPageContent extends StatelessWidget {
             child: Form(
               child: Column(
                 children: [
-                  const Center(
-                    child: Text("RegisterPage"),
-                  ),
-                  TextFormField(
-                    initialValue: "jpec@test.fr",
-                    decoration: const InputDecoration(
-                      hintText: "Username",
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24.0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                            alignment: Alignment.centerLeft,
+                            onPressed: () {
+                              Get.toNamed(HomePage.routeName);
+                            },
+                            icon: const Icon(Icons.chevron_left,
+                                color: Colors.white, size: 40)),
+                        Expanded(
+                            child: Center(
+                                child: Text(
+                          "Register",
+                          style: Theme.of(context).textTheme.headline3,
+                        ))),
+                      ],
                     ),
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    initialValue: "jpec@test.fr",
-                    decoration: const InputDecoration(
-                      hintText: "Email",
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      initialValue: "jpec@test.fr",
+                      decoration: const InputDecoration(
+                        hintText: "Username",
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
                     ),
                   ),
-                  TextFormField(
-                    obscureText: true,
-                    initialValue: "test",
-                    decoration: const InputDecoration(
-                      hintText: "Password",
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      initialValue: "jpec@test.fr",
+                      decoration: const InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: "Email",
+                      ),
                     ),
                   ),
-                  TextFormField(
-                    obscureText: true,
-                    initialValue: "test",
-                    decoration: const InputDecoration(
-                      hintText: "Confirm password",
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      obscureText: true,
+                      initialValue: "test",
+                      decoration: const InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: "Password",
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      obscureText: true,
+                      initialValue: "test",
+                      decoration: const InputDecoration(
+                        hintText: "Confirm password",
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
                     ),
                   ),
                   Padding(
