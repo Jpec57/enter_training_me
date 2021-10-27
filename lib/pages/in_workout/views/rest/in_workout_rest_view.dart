@@ -55,12 +55,25 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                   ),
                 );
               }
-              return CountdownTimer(
-                totalDuration: state.currentExo!.restBetweenSet,
-                backgroundColor: CustomTheme.darkGrey,
-                isIncludingStop: true,
-                onEndCallback: widget.onTimerEndCallback,
-                progressStrokeColor: CustomTheme.middleGreen,
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle, color: Colors.white),
+                    onPressed: () {},
+                  ),
+                  CountdownTimer(
+                    totalDuration: state.currentExo!.restBetweenSet,
+                    backgroundColor: CustomTheme.darkGrey,
+                    isIncludingStop: true,
+                    onEndCallback: widget.onTimerEndCallback,
+                    progressStrokeColor: CustomTheme.middleGreen,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle, color: Colors.white),
+                    onPressed: () {},
+                  ),
+                ],
               );
             },
           ),

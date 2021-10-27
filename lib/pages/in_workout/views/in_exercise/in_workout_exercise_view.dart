@@ -5,15 +5,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-class InWorkoutExerciseView extends StatefulWidget {
+class InWorkoutExerciseView extends StatelessWidget {
   const InWorkoutExerciseView({Key? key}) : super(key: key);
 
-  @override
-  _InWorkoutExerciseViewState createState() => _InWorkoutExerciseViewState();
-}
+  void showRepsModal(BuildContext context, InWorkoutState state) {
+    // BlocProvider.of<InWorkoutBloc>(context)
+    //     .add(const ToggledContentVisibilityEvent(true));
+    Get.dialog(CustomDialog<int>(
+            currentValue: state.currentSet.reps,
+            title: "How many reps do you intent to do ?"))
+        .then((value) {
+      if (value != null) {
+        int parseValue = int.parse(value);
+        BlocProvider.of<InWorkoutBloc>(context)
+            .add(ChangedRefRepsEvent(parseValue));
+      }
+      // BlocProvider.of<InWorkoutBloc>(context)
+      //     .add(const ToggledContentVisibilityEvent(false));
+    });
+  }
 
-class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
-  Widget _renderExerciseInfo(RealisedExercise exo, InWorkoutState state) {
+  void showWeightModal(BuildContext context, InWorkoutState state) {
+    BlocProvider.of<InWorkoutBloc>(context)
+        .add(const ToggledContentVisibilityEvent(true));
+
+    Get.dialog(CustomDialog<double>(
+      title: "How heavy do you intent to lift ?",
+      currentValue: state.currentSet.weight,
+    )).then((value) {
+      print("value $value");
+      if (value != null) {
+        double parseValue = double.parse(value);
+
+        BlocProvider.of<InWorkoutBloc>(context)
+            .add(ChangedRefWeightEvent(parseValue));
+      }
+      BlocProvider.of<InWorkoutBloc>(context)
+          .add(const ToggledContentVisibilityEvent(false));
+    });
+  }
+
+  Widget _renderExerciseInfo(
+      BuildContext context, RealisedExercise exo, InWorkoutState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -38,16 +71,7 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Get.dialog(CustomDialog<int>(
-                                currentValue: state.currentSet.reps,
-                                title: "How many reps do you intent to do ?"))
-                            .then((value) {
-                          if (value != null) {
-                            int parseValue = int.parse(value);
-                            BlocProvider.of<InWorkoutBloc>(context)
-                                .add(ChangedRefRepsEvent(parseValue));
-                          }
-                        });
+                        showRepsModal(context, state);
                       },
                       child: Text(state.currentSet.reps.toString(),
                           style: Theme.of(context).textTheme.headline1),
@@ -64,17 +88,7 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.dialog(CustomDialog<double>(
-                            title: "How heavy do you intent to lift ?",
-                            currentValue: state.currentSet.weight,
-                          )).then((value) {
-                            if (value != null) {
-                              double parseValue = double.parse(value);
-
-                              BlocProvider.of<InWorkoutBloc>(context)
-                                  .add(ChangedRefWeightEvent(parseValue));
-                            }
-                          });
+                          showWeightModal(context, state);
                         },
                         child: state.currentSet.weight != null
                             ? Padding(
@@ -122,7 +136,7 @@ class _InWorkoutExerciseViewState extends State<InWorkoutExerciseView> {
                 if (state.currentExo == null) {
                   return Container();
                 }
-                return _renderExerciseInfo(state.currentExo!, state);
+                return _renderExerciseInfo(context, state.currentExo!, state);
               },
             ),
           ),

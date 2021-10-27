@@ -22,15 +22,23 @@ class WorkoutShowPageContent extends StatefulWidget {
 class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  int currentTabIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
+    _tabController =
+        TabController(length: 3, vsync: this, initialIndex: currentTabIndex);
+    _tabController.addListener(() {
+      setState(() {
+        currentTabIndex = _tabController.index;
+      });
+    });
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(() {});
     _tabController.dispose();
     super.dispose();
   }
@@ -51,23 +59,27 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
           },
         ),
         actions: [
-          BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
-            buildWhen: (prev, next) => prev.isEditting != next.isEditting,
-            builder: (context, state) {
-              bool isEditting = state.isEditting;
-              return IconButton(
-                icon: Icon(isEditting ? Icons.save : Icons.edit,
-                    color: Colors.white),
-                onPressed: () async {
-                  if (isEditting) {
-                    //
-                  }
-                  BlocProvider.of<WorkoutEditBloc>(context)
-                      .add(ToggledEditModeEvent());
-                },
-              );
-            },
-          ),
+          currentTabIndex == 1
+              ? BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
+                  buildWhen: (prev, next) =>
+                      prev.isEditting != next.isEditting ||
+                      _tabController.index == 1,
+                  builder: (context, state) {
+                    bool isEditting = state.isEditting;
+                    return IconButton(
+                      icon: Icon(isEditting ? Icons.save : Icons.edit,
+                          color: Colors.white),
+                      onPressed: () async {
+                        if (isEditting) {
+                          //
+                        }
+                        BlocProvider.of<WorkoutEditBloc>(context)
+                            .add(ToggledEditModeEvent());
+                      },
+                    );
+                  },
+                )
+              : Container(),
         ],
       ),
       backgroundColor: CustomTheme.darkGrey,

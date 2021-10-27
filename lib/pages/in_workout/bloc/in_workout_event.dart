@@ -42,6 +42,15 @@ class ChangedViewEvent extends InWorkoutEvent {
   List<Object?> get props => [view, tabController];
 }
 
+class ToggledContentVisibilityEvent extends InWorkoutEvent {
+  final bool shouldHideContent;
+
+  const ToggledContentVisibilityEvent(this.shouldHideContent);
+
+  @override
+  List<Object?> get props => [shouldHideContent];
+}
+
 class RemovedRepEvent extends InWorkoutEvent {
   @override
   List<Object?> get props => [];

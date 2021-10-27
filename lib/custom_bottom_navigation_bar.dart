@@ -15,7 +15,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   static Widget getCenteredFloatingButton({bool isSelected = false}) {
     return FloatingActionButton(
-        backgroundColor: CustomTheme.middleGreen,
+        backgroundColor: CustomTheme.greenGrey,
         onPressed: () {
           Get.offNamedUntil(MainRouting.homeNavigationElement.routeName,
               ModalRoute.withName(HomePage.routeName));
@@ -63,7 +63,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-        color: CustomTheme.middleGreen,
+        color: CustomTheme.greenGrey,
         shape: const CircularNotchedRectangle(),
         child: Row(
             mainAxisSize: MainAxisSize.max,

@@ -99,19 +99,34 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             children: [
               const TrainingHeaderBar(),
               _renderExerciseHeader(),
-              Expanded(
-                child: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    controller: _tabController,
-                    children: [
-                      const InWorkoutExerciseView(),
-                      InWorkoutRestView(
-                        tabController: _tabController,
-                        onTimerEndCallback: onExerciseSetEnd,
-                      )
-                    ]),
+              BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                buildWhen: (prev, next) =>
+                    prev.shouldHideContent != next.shouldHideContent,
+                builder: (context, state) {
+                  if (state.currentExo == null || state.shouldHideContent) {
+                    return Container();
+                  }
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              controller: _tabController,
+                              children: [
+                                const InWorkoutExerciseView(),
+                                InWorkoutRestView(
+                                  tabController: _tabController,
+                                  onTimerEndCallback: onExerciseSetEnd,
+                                )
+                              ]),
+                        ),
+                        _renderDoneButton(context),
+                      ],
+                    ),
+                  );
+                },
               ),
-              _renderDoneButton(context),
             ],
           )),
         );

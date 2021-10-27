@@ -6,6 +6,7 @@ class CustomTheme {
   static const green = Color(0xffD3CEC4);
   static const darkerGreen = Color(0xff256937);
   static const middleGreen = Color(0xff857F72);
+  static const greenGrey = Color(0xff504A40);
   static const darkGrey = Color(0xff27241D);
   static const grey = Color(0xffBCBCBC);
 
