@@ -13,8 +13,16 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
   Stream<WorkoutEditState> mapEventToState(
     WorkoutEditEvent event,
   ) async* {
-    if (event is SwitchedExerciseEvent) {
+    if (event is ChangedExerciseEvent) {
+    } else if (event is SwitchedExerciseEvent) {
       Training editedTraining = Training.clone(state.training);
+      List<RealisedExercise> exos = editedTraining.cycles[0].exercises;
+      RealisedExercise tmpExo = exos[event.secondIndex];
+      // for (var cycle in cycles){
+
+      // }
+      exos[event.secondIndex] = exos[event.firstIndex];
+      exos[event.firstIndex] = tmpExo;
 
       yield state.copyWith(training: editedTraining);
     }

@@ -3,17 +3,17 @@ part of 'workout_edit_bloc.dart';
 abstract class WorkoutEditEvent extends Equatable {}
 
 class SwitchedExerciseEvent extends WorkoutEditEvent {
-  final int cycleIndex;
+  final int? cycleIndex;
   final int firstIndex;
   final int secondIndex;
 
   SwitchedExerciseEvent(
       {required this.firstIndex,
       required this.secondIndex,
-      this.cycleIndex = 0});
+      this.cycleIndex });
 
   @override
-  List<Object> get props => [firstIndex, secondIndex, cycleIndex];
+  List<Object?> get props => [firstIndex, secondIndex, cycleIndex];
 }
 
 class ToggledEditModeEvent extends WorkoutEditEvent {
