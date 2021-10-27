@@ -21,13 +21,13 @@ class InWorkoutExerciseView extends StatelessWidget {
             .add(ChangedRefRepsEvent(parseValue));
       }
       // BlocProvider.of<InWorkoutBloc>(context)
-      //     .add(const ToggledContentVisibilityEvent(false));
+      //     .add(ToggledContentVisibilityEvent(false));
     });
   }
 
   void showWeightModal(BuildContext context, InWorkoutState state) {
-    BlocProvider.of<InWorkoutBloc>(context)
-        .add(const ToggledContentVisibilityEvent(true));
+    // BlocProvider.of<InWorkoutBloc>(context)
+    //     .add(const ToggledContentVisibilityEvent(true));
 
     Get.dialog(CustomDialog<double>(
       title: "How heavy do you intent to lift ?",
@@ -40,8 +40,8 @@ class InWorkoutExerciseView extends StatelessWidget {
         BlocProvider.of<InWorkoutBloc>(context)
             .add(ChangedRefWeightEvent(parseValue));
       }
-      BlocProvider.of<InWorkoutBloc>(context)
-          .add(const ToggledContentVisibilityEvent(false));
+      // BlocProvider.of<InWorkoutBloc>(context)
+      //     .add(const ToggledContentVisibilityEvent(false));
     });
   }
 
