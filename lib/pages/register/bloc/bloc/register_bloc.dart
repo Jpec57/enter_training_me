@@ -68,6 +68,16 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 
+  RegisterState _mapEmailChangedToState(
+      RegisterEmailChanged event, RegisterState state) {
+    return state.copyWith(email: event.username);
+  }
+
+  RegisterState _mapConfirmPasswordChangedToState(
+      RegisterConfirmPasswordChanged event, RegisterState state) {
+    return state.copyWith(confirmPassword: event.password);
+  }
+
   String? getUsernameError(RegisterState state) {
     if (state.username.length <= 3) {
       return "Your username must have at least 4 characters.";
@@ -102,15 +112,5 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     } on Exception catch (_) {
       yield state.copyWith(status: SubmitStatus.errorSubmission);
     }
-  }
-
-  RegisterState _mapEmailChangedToState(
-      RegisterEmailChanged event, RegisterState state) {
-    return state.copyWith(email: event.username);
-  }
-
-  RegisterState _mapConfirmPasswordChangedToState(
-      RegisterConfirmPasswordChanged event, RegisterState state) {
-    return state.copyWith(confirmPassword: event.password);
   }
 }

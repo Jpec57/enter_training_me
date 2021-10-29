@@ -5,8 +5,8 @@ enum SubmitStatus { unknown, validated, submitting, submitted, errorSubmission }
 class RegisterState extends Equatable {
   const RegisterState({
     this.status = SubmitStatus.unknown,
-    this.username = "test@jpec.fr",
-    this.email = "test@jpec.fr",
+    this.username = "test2@jpec.fr",
+    this.email = "test2@jpec.fr",
     this.password = "test",
     this.confirmPassword = "test",
   });
