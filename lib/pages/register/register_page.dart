@@ -56,52 +56,72 @@ class RegisterPageContent extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextFormField(
-                      initialValue: "jpec2@test.fr",
-                      decoration: const InputDecoration(
-                        hintText: "Username",
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                    ),
+                  BlocBuilder<RegisterBloc, RegisterState>(
+                    buildWhen: (prev, next) => prev.username != next.username,
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: TextFormField(
+                          initialValue: state.username,
+                          decoration: const InputDecoration(
+                            hintText: "Username",
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      initialValue: "jpec2@test.fr",
-                      decoration: const InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: "Email",
-                      ),
-                    ),
+                  BlocBuilder<RegisterBloc, RegisterState>(
+                    buildWhen: (prev, next) => prev.email != next.email,
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          initialValue: state.email,
+                          decoration: const InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: "Email",
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextFormField(
-                      obscureText: true,
-                      initialValue: "test",
-                      decoration: const InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: "Password",
-                      ),
-                    ),
+                  BlocBuilder<RegisterBloc, RegisterState>(
+                    buildWhen: (prev, next) => prev.password != next.password,
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: TextFormField(
+                          obscureText: true,
+                          initialValue: state.password,
+                          decoration: const InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: "Password",
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextFormField(
-                      obscureText: true,
-                      initialValue: "test",
-                      decoration: const InputDecoration(
-                        hintText: "Confirm password",
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                    ),
+                  BlocBuilder<RegisterBloc, RegisterState>(
+                    buildWhen: (prev, next) => prev.confirmPassword != next.confirmPassword,
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: TextFormField(
+                          obscureText: true,
+                          initialValue: state.confirmPassword,
+                          decoration: const InputDecoration(
+                            hintText: "Confirm password",
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),

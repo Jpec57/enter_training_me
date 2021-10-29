@@ -21,9 +21,16 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   ) async* {
     if (event is RegisterUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
+    } else if (event is RegisterEmailChanged) {
+      yield _mapEmailChangedToState(event, state);
     } else if (event is RegisterPasswordChanged) {
       yield _mapPasswordChangedToState(event, state);
+    } else if (event is RegisterConfirmPasswordChanged) {
+      yield _mapConfirmPasswordChangedToState(event, state);
     } else if (event is RegisterSubmitted) {
+      // if (){
+
+      // }
       yield state.copyWith(status: SubmitStatus.submitting);
       try {
         IAuthUserInterface? user = await _userRepository.register(
@@ -96,5 +103,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       yield state.copyWith(status: SubmitStatus.errorSubmission);
     }
   }
-  // }
+
+  RegisterState _mapEmailChangedToState(
+      RegisterEmailChanged event, RegisterState state) {
+    return state.copyWith(email: event.username);
+  }
+
+  RegisterState _mapConfirmPasswordChangedToState(
+      RegisterConfirmPasswordChanged event, RegisterState state) {
+    return state.copyWith(confirmPassword: event.password);
+  }
 }
