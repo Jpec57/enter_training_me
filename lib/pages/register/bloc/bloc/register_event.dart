@@ -16,15 +16,15 @@ class RegisterUsernameChanged extends RegisterEvent {
   List<Object> get props => [username];
 }
 
-
 class RegisterEmailChanged extends RegisterEvent {
-  const RegisterEmailChanged(this.username);
+  const RegisterEmailChanged(this.email);
 
-  final String username;
+  final String email;
 
   @override
-  List<Object> get props => [username];
+  List<Object> get props => [email];
 }
+
 class RegisterPasswordChanged extends RegisterEvent {
   const RegisterPasswordChanged(this.password);
 
@@ -34,16 +34,16 @@ class RegisterPasswordChanged extends RegisterEvent {
   List<Object> get props => [password];
 }
 
-
 class RegisterConfirmPasswordChanged extends RegisterEvent {
-  const RegisterConfirmPasswordChanged(this.password);
+  const RegisterConfirmPasswordChanged(this.confirmPassword);
 
-  final String password;
+  final String confirmPassword;
 
   @override
-  List<Object> get props => [password];
+  List<Object> get props => [confirmPassword];
 }
 
 class RegisterSubmitted extends RegisterEvent {
-  const RegisterSubmitted();
+  final BuildContext context;
+  const RegisterSubmitted(this.context);
 }

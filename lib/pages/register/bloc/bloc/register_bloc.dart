@@ -1,9 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
-
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart' as get_lib;
 part 'register_event.dart';
 part 'register_state.dart';
 
@@ -28,9 +31,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     } else if (event is RegisterConfirmPasswordChanged) {
       yield _mapConfirmPasswordChangedToState(event, state);
     } else if (event is RegisterSubmitted) {
-      // if (){
-
-      // }
       yield state.copyWith(status: SubmitStatus.submitting);
       try {
         IAuthUserInterface? user = await _userRepository.register(
@@ -38,16 +38,23 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           password: state.password,
           email: state.email,
         );
+        yield state.copyWith(status: SubmitStatus.submitted);
+
         if (user != null) {
-          yield state.copyWith(status: SubmitStatus.submitted);
-        } else {
-          yield state.copyWith(status: SubmitStatus.submitted);
+          BlocProvider.of<AuthenticationBloc>(event.context).add(
+              const AuthenticationStatusChanged(
+                  AuthenticationStatus.authenticated));
+          get_lib.Get.offNamed(HomePage.routeName);
         }
       } on DioError catch (_) {
         yield state.copyWith(status: SubmitStatus.errorSubmission);
       }
-      // yield* _mapRegisterSubmittedToState(event, state);
     }
+  }
+
+  RegisterState _mapEmailChangedToState(
+      RegisterEmailChanged event, RegisterState state) {
+    return state.copyWith(email: event.email);
   }
 
   RegisterState _mapUsernameChangedToState(
@@ -68,49 +75,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 
-  RegisterState _mapEmailChangedToState(
-      RegisterEmailChanged event, RegisterState state) {
-    return state.copyWith(email: event.username);
-  }
-
   RegisterState _mapConfirmPasswordChangedToState(
       RegisterConfirmPasswordChanged event, RegisterState state) {
-    return state.copyWith(confirmPassword: event.password);
-  }
-
-  String? getUsernameError(RegisterState state) {
-    if (state.username.length <= 3) {
-      return "Your username must have at least 4 characters.";
-    }
-    return null;
-  }
-
-  String? getPasswordError(RegisterState state) {
-    if (state.password.length <= 3) {
-      return "Too short.";
-    }
-    return null;
-  }
-
-  Stream<RegisterState> _mapRegisterSubmittedToState(
-    RegisterSubmitted event,
-    RegisterState state,
-  ) async* {
-    // if (state.status == SubmitStatus.validated) {
-    yield state.copyWith(status: SubmitStatus.submitting);
-    try {
-      IAuthUserInterface? user = await _userRepository.register(
-        username: state.username,
-        password: state.password,
-        email: state.email,
-      );
-      if (user != null) {
-        yield state.copyWith(status: SubmitStatus.submitted);
-      } else {
-        yield state.copyWith(status: SubmitStatus.submitted);
-      }
-    } on Exception catch (_) {
-      yield state.copyWith(status: SubmitStatus.errorSubmission);
-    }
+    return state.copyWith(confirmPassword: event.confirmPassword);
   }
 }

@@ -22,8 +22,15 @@ class RegisterPage extends StatelessWidget {
   }
 }
 
-class RegisterPageContent extends StatelessWidget {
+class RegisterPageContent extends StatefulWidget {
   const RegisterPageContent({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterPageContent> createState() => _RegisterPageContentState();
+}
+
+class _RegisterPageContentState extends State<RegisterPageContent> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +41,7 @@ class RegisterPageContent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
           child: SingleChildScrollView(
             child: Form(
+              key: _formKey,
               child: Column(
                 children: [
                   Padding(
@@ -63,9 +71,20 @@ class RegisterPageContent extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
                           initialValue: state.username,
+                          validator: (value) {
+                            if (value == null || value.length <= 3) {
+                              return "Your username must have at least 4 characters.";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            BlocProvider.of<RegisterBloc>(context)
+                                .add(RegisterUsernameChanged(value));
+                          },
                           decoration: const InputDecoration(
                             hintText: "Username",
                             fillColor: Colors.white,
+                            label: Text("Username"),
                             filled: true,
                           ),
                         ),
@@ -80,10 +99,21 @@ class RegisterPageContent extends StatelessWidget {
                         child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           initialValue: state.email,
+                          validator: (value) {
+                            if (value == null || value.length <= 3) {
+                              return "Your email must be valid.";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            BlocProvider.of<RegisterBloc>(context)
+                                .add(RegisterEmailChanged(value));
+                          },
                           decoration: const InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
                             hintText: "Email",
+                            label: Text("Email"),
                           ),
                         ),
                       );
@@ -97,6 +127,16 @@ class RegisterPageContent extends StatelessWidget {
                         child: TextFormField(
                           obscureText: true,
                           initialValue: state.password,
+                          validator: (value) {
+                            if (value == null || value.length <= 3) {
+                              return "Your password must have at least 3 characters.";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            BlocProvider.of<RegisterBloc>(context)
+                                .add(RegisterPasswordChanged(value));
+                          },
                           decoration: const InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -107,12 +147,23 @@ class RegisterPageContent extends StatelessWidget {
                     },
                   ),
                   BlocBuilder<RegisterBloc, RegisterState>(
-                    buildWhen: (prev, next) => prev.confirmPassword != next.confirmPassword,
+                    buildWhen: (prev, next) =>
+                        prev.confirmPassword != next.confirmPassword,
                     builder: (context, state) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
                           obscureText: true,
+                          validator: (value) {
+                            if (value != state.password) {
+                              return "Your passwords don't match.";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            BlocProvider.of<RegisterBloc>(context)
+                                .add(RegisterConfirmPasswordChanged(value));
+                          },
                           initialValue: state.confirmPassword,
                           decoration: const InputDecoration(
                             hintText: "Confirm password",
@@ -130,8 +181,11 @@ class RegisterPageContent extends StatelessWidget {
                       builder: (context, state) {
                         return ElevatedButton(
                             onPressed: () {
-                              BlocProvider.of<RegisterBloc>(context)
-                                  .add(const RegisterSubmitted());
+                              if (_formKey.currentState != null &&
+                                  _formKey.currentState!.validate()) {
+                                BlocProvider.of<RegisterBloc>(context)
+                                    .add(RegisterSubmitted(context));
+                              }
                             },
                             child: const Text("Submit"));
                       },

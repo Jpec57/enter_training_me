@@ -4,6 +4,7 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart' as get_lib;
 
 class UserRepository extends ApiService
     implements IAuthUserRepositoryInterface {
@@ -35,9 +36,23 @@ class UserRepository extends ApiService
       "email": email,
       "password": password,
     };
-    Response response = await getDio().post(registerUrl, data: map);
-    response.data;
-    return null;
+    try {
+      Response response = await getDio().post(registerUrl, data: map);
+      Map<String, dynamic> res = response.data;
+      if (!res.containsKey("token")) {
+        return null;
+      }
+      String token = res["token"];
+      FlutterSecureStorage storage = const FlutterSecureStorage();
+      storage.write(key: StorageConstants.apiKey, value: token);
+      return User.fromJson(res["user"]);
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.statusCode == 400) {
+        get_lib.Get.snackbar("Already used email",
+            "This email is already in use. Please log in.");
+      }
+      return null;
+    }
   }
 
   Future<IAuthUserInterface?> authenticate(
@@ -47,7 +62,6 @@ class UserRepository extends ApiService
       "password": password,
     };
     Response response = await getDio().post(loginUrl, data: map);
-    response.data;
     return null;
   }
 
