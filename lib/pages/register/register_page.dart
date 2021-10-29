@@ -59,7 +59,7 @@ class RegisterPageContent extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextFormField(
-                      initialValue: "jpec@test.fr",
+                      initialValue: "jpec2@test.fr",
                       decoration: const InputDecoration(
                         hintText: "Username",
                         fillColor: Colors.white,
@@ -71,7 +71,7 @@ class RegisterPageContent extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      initialValue: "jpec@test.fr",
+                      initialValue: "jpec2@test.fr",
                       decoration: const InputDecoration(
                         fillColor: Colors.white,
                         filled: true,

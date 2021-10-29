@@ -8,6 +8,7 @@ import 'package:vibration/vibration.dart';
 class CountdownTimer extends StatefulWidget {
   final double? size;
   final int totalDuration;
+  final int? elapsedTime;
   final Color? progressStrokeColor;
   final Color? divisionStrokeColor;
   final Color? backgroundColor;
@@ -17,6 +18,7 @@ class CountdownTimer extends StatefulWidget {
   const CountdownTimer(
       {Key? key,
       required this.totalDuration,
+      this.elapsedTime,
       this.size,
       this.progressStrokeColor,
       this.backgroundColor = Colors.white,
@@ -38,7 +40,9 @@ class _CountdownTimerState extends State<CountdownTimer>
   @override
   void initState() {
     if (widget.totalDuration > 0) {
-      initTimer();
+      if ((widget.elapsedTime ?? 0) < widget.totalDuration) {
+        initTimer();
+      }
     }
     super.initState();
   }
@@ -50,7 +54,7 @@ class _CountdownTimerState extends State<CountdownTimer>
   }
 
   void resetTimer() {
-    _elapsedTime = 0;
+    _elapsedTime = widget.elapsedTime ?? 0;
     _timer?.cancel();
   }
 
@@ -64,6 +68,7 @@ class _CountdownTimerState extends State<CountdownTimer>
 
   void initTimer() {
     resetTimer();
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       setState(() {
         _elapsedTime += 1;

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/widgets/analysis/series/workout_intensity_over_time_serie.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 

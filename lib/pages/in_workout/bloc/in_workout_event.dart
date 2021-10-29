@@ -63,20 +63,22 @@ class AddedRepEvent extends InWorkoutEvent {
 
 class ChangedRefWeightEvent extends InWorkoutEvent {
   final double weight;
+  final bool isForAll;
 
-  const ChangedRefWeightEvent(this.weight);
+  const ChangedRefWeightEvent(this.weight, {this.isForAll = false});
 
   @override
-  List<Object?> get props => [weight];
+  List<Object?> get props => [weight, isForAll];
 }
 
 class ChangedRefRepsEvent extends InWorkoutEvent {
   final int reps;
+  final bool isForAll;
 
-  const ChangedRefRepsEvent(this.reps);
+  const ChangedRefRepsEvent(this.reps, {this.isForAll = false});
 
   @override
-  List<Object?> get props => [reps];
+  List<Object?> get props => [reps, isForAll];
 }
 
 class AskedToChangeExoEvent extends InWorkoutEvent {

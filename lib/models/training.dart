@@ -85,6 +85,52 @@ class Training extends Equatable {
     return materials;
   }
 
+
+    double get sumOfUsedWeight {
+    double sum = 0;
+    for (var exo in exercisesAsFlatList) {
+      double setWeight = 0;
+      int setLength = exo.sets.length;
+      if (setLength > 0) {
+        for (var set in exo.sets) {
+          setWeight += (set.weight) ?? 0;
+        }
+        sum += (setWeight);
+      }
+    }
+    return sum;
+  }
+
+  double get sumOfUsedAvgWeight {
+    double sum = 0;
+    for (var exo in exercisesAsFlatList) {
+      double setWeight = 0;
+      int setLength = exo.sets.length;
+      if (setLength > 0) {
+        for (var set in exo.sets) {
+          setWeight += (set.weight) ?? 0;
+        }
+        sum += (setWeight / setLength);
+      }
+    }
+    return sum;
+  }
+
+  double get sumOfAvgRMWeight {
+    double sum = 0;
+    for (var exo in exercisesAsFlatList) {
+      double setWeight = 0;
+      int setLength = exo.sets.length;
+      if (setLength > 0) {
+        for (var set in exo.sets) {
+          setWeight += (set.estimated1RM);
+        }
+        sum += (setWeight / setLength);
+      }
+    }
+    return sum;
+  }
+
   Map<String, double> get focusRepartition {
     List<RealisedExercise> exos = exercisesAsFlatList;
     int setLength = 0;

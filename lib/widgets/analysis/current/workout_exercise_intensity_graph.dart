@@ -36,65 +36,6 @@ class _WorkoutExerciseIntensityGraphState
 
   int touchedGroupIndex = -1;
 
-  List<BarChartGroupData> buildDataFromTraining(
-      {required Training realisedTraining, Training? referenceTraining}) {
-    List<BarChartGroupData> barGroups = [];
-
-    List<RealisedExercise> realisedExos = realisedTraining.exercisesAsFlatList;
-    List<RealisedExercise>? refExos = referenceTraining?.exercisesAsFlatList;
-
-    int k = 0;
-    for (var i = 0; i < realisedExos.length; i++) {
-      var currentExo = realisedExos[i];
-
-      if (refExos != null && i < refExos.length) {
-        var refExo = refExos[i];
-        barGroups.add(makeGroupData(
-            x: k, y1: refExo.intensity, y2: currentExo.intensity));
-      } else {
-        barGroups.add(makeGroupData(x: i, y1: currentExo.intensity));
-      }
-      k++;
-    }
-
-    return barGroups;
-  }
-
-  BarTouchData get barTouchData => BarTouchData(
-        enabled: false,
-        touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.black,
-          tooltipPadding: const EdgeInsets.all(0),
-          tooltipMargin: 8,
-          getTooltipItem: (
-            BarChartGroupData group,
-            int groupIndex,
-            BarChartRodData rod,
-            int rodIndex,
-          ) {
-            return BarTooltipItem(
-                rod.y.round().toString(),
-                const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center);
-          },
-        ),
-      );
-
-  @override
-  void initState() {
-    super.initState();
-
-    final List<BarChartGroupData> items = buildDataFromTraining(
-        realisedTraining: widget.realisedTraining,
-        referenceTraining: widget.referenceTraining);
-
-    rawBarGroups = items;
-    showingBarGroups = rawBarGroups;
-  }
-
   BarChartGroupData makeGroupData(
       {required int x, required double y1, double? y2}) {
     List<BarChartRodData> rods = [
@@ -129,6 +70,81 @@ class _WorkoutExerciseIntensityGraphState
     );
   }
 
+  List<BarChartGroupData> buildDataFromTraining(
+      {required Training realisedTraining, Training? referenceTraining}) {
+    List<BarChartGroupData> barGroups = [];
+
+    List<RealisedExercise> realisedExos = realisedTraining.exercisesAsFlatList;
+    List<RealisedExercise>? refExos = referenceTraining?.exercisesAsFlatList;
+
+    int k = 0;
+    for (var i = 0; i < realisedExos.length; i++) {
+      var currentExo = realisedExos[i];
+
+      if (refExos != null && i < refExos.length) {
+        var refExo = refExos[i];
+        barGroups.add(makeGroupData(
+            x: k,
+            y1: refExo.maxEstimated1RMInSet,
+            y2: currentExo.maxEstimated1RMInSet));
+        // barGroups.add(makeGroupData(
+        // x: k, y1: refExo.intensity, y2: currentExo.intensity));
+      } else {
+        // barGroups.add(makeGroupData(x: i, y1: currentExo.intensity));
+        barGroups.add(makeGroupData(x: i, y1: currentExo.maxEstimated1RMInSet));
+      }
+      k++;
+    }
+
+    return barGroups;
+  }
+
+  BarTouchData get barTouchData => BarTouchData(
+        enabled: false,
+        touchTooltipData: BarTouchTooltipData(
+          tooltipBgColor: Colors.black,
+          tooltipPadding: const EdgeInsets.all(0),
+          tooltipMargin: 8,
+          getTooltipItem: (
+            BarChartGroupData group,
+            int groupIndex,
+            BarChartRodData rod,
+            int rodIndex,
+          ) {
+            return BarTooltipItem(
+                rod.y.round().toString(),
+                const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center);
+          },
+        ),
+      );
+
+  @override
+  void initState() {
+    super.initState();
+    final List<BarChartGroupData> items = buildDataFromTraining(
+        realisedTraining: widget.realisedTraining,
+        referenceTraining: widget.referenceTraining);
+    rawBarGroups = items;
+    showingBarGroups = items;
+  }
+
+  double get maxY {
+    double max = 0;
+    for (var group in rawBarGroups) {
+      for (var rod in group.barRods) {
+        var y = rod.y;
+        if (max < y) {
+          max = y;
+        }
+      }
+    }
+    return max * 1.1;
+  }
+
   @override
   Widget build(BuildContext context) {
     double minWidth = MediaQuery.of(context).size.width;
@@ -138,6 +154,7 @@ class _WorkoutExerciseIntensityGraphState
     if (graphWidth < minWidth) {
       graphWidth = minWidth;
     }
+
     return SizedBox(
       height: widget.graphHeight,
       width: graphWidth,
@@ -147,12 +164,7 @@ class _WorkoutExerciseIntensityGraphState
           width: graphWidth,
           child: BarChart(
             BarChartData(
-              // axisTitleData: FlAxisTitleData(
-              //   show: true,
-              //   leftTitle:
-              //       AxisTitle(showTitle: true, titleText: "points"),
-              // ),
-              maxY: 2300,
+              maxY: maxY,
               titlesData: FlTitlesData(
                 show: true,
                 leftTitles: SideTitles(
@@ -162,10 +174,11 @@ class _WorkoutExerciseIntensityGraphState
                       fontWeight: FontWeight.bold,
                       fontSize: 14),
                   reservedSize: 50,
-                  interval: 500,
+                  interval: maxY / 5,
                   getTitles: (value) {
                     if (value >= 1000) {
-                      return "${value ~/ 1000}K${(value % 1000).toInt()}";
+                      var units = (value % 1000).toInt();
+                      return "${value ~/ 1000}K${units > 0 ? units.toString() : ""}";
                     }
                     return value.toInt().toString();
                   },

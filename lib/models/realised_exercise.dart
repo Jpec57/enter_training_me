@@ -73,6 +73,18 @@ class RealisedExercise extends Equatable {
     return intensity * difficulty;
   }
 
+  double get maxEstimated1RMInSet {
+    double max = 0;
+    for (var set in sets) {
+      var rm = set.estimated1RM;
+      if (max < rm) {
+        max = rm;
+      }
+    }
+
+    return max;
+  }
+
   @override
   List<Object?> get props =>
       [sets, executionStyle, exerciseReference, restBetweenSet];

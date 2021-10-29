@@ -94,7 +94,7 @@ class _VideoContentState extends State<VideoContent> {
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(10),
                             primary: Colors.red,
-                            onPrimary: Colors.red,
+                            onPrimary: Colors.white,
                           ),
                           child: Icon(Icons.close)),
                     ),

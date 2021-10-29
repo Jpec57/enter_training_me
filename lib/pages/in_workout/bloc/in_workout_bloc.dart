@@ -39,9 +39,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     InWorkoutEvent event,
   ) async* {
     if (event is ToggledContentVisibilityEvent) {
-      yield state.copyWith(
-        shouldHideContent: event.shouldHideContent
-      );
+      yield state.copyWith(shouldHideContent: event.shouldHideContent);
     } else if (event is AddedExoEvent) {
       yield _mapAddedExoEventToState(event);
       if (state.isAutoPlayOn) {
@@ -137,12 +135,18 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return state.copyWith(reallyDoneReps: state.currentSet.reps);
   }
 
-  List<ExerciseCycle> updateSet({int? doneReps, double? weight}) {
+  List<ExerciseCycle> updateSet(
+      {int? doneReps, double? weight, bool updateNextSets = false}) {
+    List<ExerciseSet> doneSets = [...state.currentExo!.sets];
+
     ExerciseSet doneCurrentSet =
         state.currentSet.copyWith(reps: doneReps, weight: weight);
-
-    List<ExerciseSet> doneSets = [...state.currentExo!.sets];
     doneSets[state.currentSetIndex] = doneCurrentSet;
+    if (updateNextSets) {
+      for (var i = state.currentSetIndex + 1; i < doneSets.length; i++) {
+        doneSets[i] = doneCurrentSet;
+      }
+    }
 
     RealisedExercise doneExo = state.currentExo!.copyWith(sets: doneSets);
     List<RealisedExercise> doneExos = [...state.currentCycle!.exercises];
@@ -195,13 +199,15 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapChangedRefWeightEventToState(ChangedRefWeightEvent event) {
-    List<ExerciseCycle> doneCycles = updateSet(weight: event.weight);
+    List<ExerciseCycle> doneCycles =
+        updateSet(weight: event.weight, updateNextSets: event.isForAll);
     return state.copyWith(
         realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
   }
 
   InWorkoutState _mapChangedRefRepsEventToState(ChangedRefRepsEvent event) {
-    List<ExerciseCycle> doneCycles = updateSet(doneReps: event.reps);
+    List<ExerciseCycle> doneCycles =
+        updateSet(doneReps: event.reps, updateNextSets: event.isForAll);
 
     return state.copyWith(
         realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));

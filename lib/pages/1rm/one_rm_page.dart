@@ -1,6 +1,6 @@
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/drawer.dart';
+import 'package:enter_training_me/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
@@ -19,28 +19,7 @@ class _OneRMPageState extends State<OneRMPage> {
   late FixedExtentScrollController _listWheelScrollController;
 
   late TextEditingController _textEditingController;
-  final List<double> matchingPercents = [
-    1,
-    0.97,
-    0.94,
-    0.92,
-    0.89,
-    0.86,
-    0.83,
-    0.81,
-    0.78,
-    0.75,
-    0.73,
-    0.71,
-    0.7,
-    0.68,
-    0.67,
-    0.65,
-    0.64,
-    0.63,
-    0.61,
-    0.6
-  ];
+
 
   @override
   void initState() {
@@ -54,20 +33,20 @@ class _OneRMPageState extends State<OneRMPage> {
     });
 
     _listWheelScrollController = FixedExtentScrollController();
-    _listWheelScrollController.animateToItem((matchingPercents.length ~/ 2),
+    _listWheelScrollController.animateToItem((rmPercents.length ~/ 2),
         duration: const Duration(milliseconds: 500), curve: Curves.linear);
     super.initState();
   }
 
   double _calculateOneRM() {
-    return givenWeight / matchingPercents[_selectedRepNumber - 1];
+    return givenWeight / rmPercents[_selectedRepNumber - 1];
   }
 
   List<Widget> _renderGridChildren() {
     List<Widget> children = [];
-    for (int i = 0; i < matchingPercents.length; i++) {
+    for (int i = 0; i < rmPercents.length; i++) {
       int reps = i + 1;
-      double percent = matchingPercents[i];
+      double percent = rmPercents[i];
 
       double weight = percent * _calculateOneRM();
       children.add(Padding(
@@ -143,7 +122,7 @@ class _OneRMPageState extends State<OneRMPage> {
                 },
                 items: <int>[
                   ...List.generate(
-                      matchingPercents.length, (index) => index + 1)
+                      rmPercents.length, (index) => index + 1)
                 ].map<DropdownMenuItem<int>>((int value) {
                   return DropdownMenuItem<int>(
                     value: value,

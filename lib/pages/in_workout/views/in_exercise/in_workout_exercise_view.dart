@@ -1,6 +1,6 @@
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
-import 'package:enter_training_me/widgets/dialog/custom_dialog.dart';
+import 'package:enter_training_me/widgets/dialog/change_exercise_set_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -11,38 +11,52 @@ class InWorkoutExerciseView extends StatelessWidget {
   void showRepsModal(BuildContext context, InWorkoutState state) {
     // BlocProvider.of<InWorkoutBloc>(context)
     //     .add(const ToggledContentVisibilityEvent(true));
-    Get.dialog(CustomDialog<int>(
-            currentValue: state.currentSet.reps,
-            title: "How many reps do you intent to do ?"))
-        .then((value) {
-      if (value != null) {
+    Get.dialog(ChangeExerciseSetDialog<int>(
+      currentValue: state.currentSet.reps,
+      title: "How many reps do you intent to do ?",
+      setForAllCallback: (value) {
         int parseValue = int.parse(value);
+
+        BlocProvider.of<InWorkoutBloc>(context)
+            .add(ChangedRefRepsEvent(parseValue, isForAll: true));
+        // BlocProvider.of<InWorkoutBloc>(context)
+        //     .add(const ToggledContentVisibilityEvent(false));
+      },
+      setForOneCallback: (value) {
+        int parseValue = int.parse(value);
+
         BlocProvider.of<InWorkoutBloc>(context)
             .add(ChangedRefRepsEvent(parseValue));
-      }
-      // BlocProvider.of<InWorkoutBloc>(context)
-      //     .add(ToggledContentVisibilityEvent(false));
-    });
+        // BlocProvider.of<InWorkoutBloc>(context)
+        //     .add(const ToggledContentVisibilityEvent(false));
+      },
+    ));
   }
 
   void showWeightModal(BuildContext context, InWorkoutState state) {
     // BlocProvider.of<InWorkoutBloc>(context)
     //     .add(const ToggledContentVisibilityEvent(true));
 
-    Get.dialog(CustomDialog<double>(
+    Get.dialog(ChangeExerciseSetDialog<double>(
       title: "How heavy do you intent to lift ?",
       currentValue: state.currentSet.weight,
-    )).then((value) {
-      print("value $value");
-      if (value != null) {
+      setForAllCallback: (value) {
+        double parseValue = double.parse(value);
+
+        BlocProvider.of<InWorkoutBloc>(context)
+            .add(ChangedRefWeightEvent(parseValue, isForAll: true));
+        // BlocProvider.of<InWorkoutBloc>(context)
+        //     .add(const ToggledContentVisibilityEvent(false));
+      },
+      setForOneCallback: (value) {
         double parseValue = double.parse(value);
 
         BlocProvider.of<InWorkoutBloc>(context)
             .add(ChangedRefWeightEvent(parseValue));
-      }
-      // BlocProvider.of<InWorkoutBloc>(context)
-      //     .add(const ToggledContentVisibilityEvent(false));
-    });
+        // BlocProvider.of<InWorkoutBloc>(context)
+        //     .add(const ToggledContentVisibilityEvent(false));
+      },
+    ));
   }
 
   Widget _renderExerciseInfo(

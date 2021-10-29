@@ -65,23 +65,25 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
               ),
             ),
           ),
-          FutureBuilder(
-            future: _getUserFromTokenFuture,
-            builder: (BuildContext context,
-                AsyncSnapshot<IAuthUserInterface?> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return const Center(child: CircularProgressIndicator());
-                case ConnectionState.done:
-                  if (!snapshot.hasData) {
-                    return const Text("No User");
-                  }
-                  User user = snapshot.data as User;
-                  return _renderProfile(user);
-                default:
-                  return const Text("Error");
-              }
-            },
+          Expanded(
+            child: FutureBuilder(
+              future: _getUserFromTokenFuture,
+              builder: (BuildContext context,
+                  AsyncSnapshot<IAuthUserInterface?> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return const Center(child: CircularProgressIndicator());
+                  case ConnectionState.done:
+                    if (!snapshot.hasData) {
+                      return const Text("No User");
+                    }
+                    User user = snapshot.data as User;
+                    return _renderProfile(user);
+                  default:
+                    return const Text("Error");
+                }
+              },
+            ),
           ),
           IconButton(
               onPressed: () {
@@ -95,88 +97,86 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
   }
 
   Widget _renderProfile(User user) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SeparatorOverlappingSectionLayout(
-              topWidgetPadding: const EdgeInsets.only(bottom: 16),
-              topWidgetBackgroundColor: CustomTheme.darkGrey,
-              bottomWidgetBackgroundColor: CustomTheme.middleGreen,
-              topWidget: ProfileHeader(
-                user: user,
-              ),
-              overlappingWidget: Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.black, width: 1)),
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Icon(Icons.access_alarm),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("Title",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black)),
-                            Text(
-                                "Fusce fermentum odio nec arcu. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis.",
-                                style: TextStyle(color: Colors.black)),
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-              bottomWidget: const ProfileLastTrainingSection(),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SeparatorOverlappingSectionLayout(
+            topWidgetPadding: const EdgeInsets.only(bottom: 16),
+            topWidgetBackgroundColor: CustomTheme.darkGrey,
+            bottomWidgetBackgroundColor: CustomTheme.middleGreen,
+            topWidget: ProfileHeader(
+              user: user,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8, bottom: 24.0, top: 32),
-              child: Text("Dashboard",
-                  style: Theme.of(context).textTheme.headline4),
-            ),
-            GridView.count(
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                children: [
-                  ProfileMetricContainer(
+            overlappingWidget: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.black, width: 1)),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Icon(Icons.access_alarm),
+                    ),
+                    Expanded(
                       child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("142"),
-                      Text("trainings"),
-                    ],
-                  )),
-                  ProfileMetricContainer(
-                    child: Container(),
-                  ),
-                  ProfileMetricContainer(
-                    child: Container(),
-                  ),
-                  ProfileMetricContainer(
-                    child: Container(),
-                  ),
-                ]),
-            Padding(
-              padding: const EdgeInsets.only(left: 8, top: 32),
-              child: Text("Muscle Profile",
-                  style: Theme.of(context).textTheme.headline4),
-            ),
-            ExercisedMuscleRadarRepartitionGraph()
-          ],
-        ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text("Title",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          Text(
+                              "Fusce fermentum odio nec arcu. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis.",
+                              style: TextStyle(color: Colors.black)),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
+            bottomWidget: const ProfileLastTrainingSection(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8, bottom: 24.0, top: 32),
+            child:
+                Text("Dashboard", style: Theme.of(context).textTheme.headline4),
+          ),
+          GridView.count(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              children: [
+                ProfileMetricContainer(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("142"),
+                    Text("trainings"),
+                  ],
+                )),
+                ProfileMetricContainer(
+                  child: Container(),
+                ),
+                ProfileMetricContainer(
+                  child: Container(),
+                ),
+                ProfileMetricContainer(
+                  child: Container(),
+                ),
+              ]),
+          Padding(
+            padding: const EdgeInsets.only(left: 8, top: 32),
+            child: Text("Muscle Profile",
+                style: Theme.of(context).textTheme.headline4),
+          ),
+          ExercisedMuscleRadarRepartitionGraph()
+        ],
       ),
     );
   }

@@ -22,7 +22,7 @@ class EndWorkoutAnalysis extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 16, left: 16, bottom: 16.0),
           child: Text(
-            "Workout Intensity",
+            "Workout Estimated 1RM Summary",
             style: Theme.of(context).textTheme.headline4,
           ),
         ),
