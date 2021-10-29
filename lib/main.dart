@@ -13,9 +13,13 @@ import 'package:enter_training_me/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
   final AuthenticationRepository _authRepository = AuthenticationRepository();
   final UserRepository _userRepository = UserRepository();
   final TrainingRepository _trainingRepository = TrainingRepository();
