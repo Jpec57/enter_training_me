@@ -1,6 +1,5 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
-import 'package:enter_training_me/pages/in_workout/views/new_exercise/add_new_exercise_section.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,12 +61,14 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                     icon: const Icon(Icons.remove_circle, color: Colors.white),
                     onPressed: () {},
                   ),
-                  CountdownTimer(
-                    totalDuration: state.currentExo!.restBetweenSet,
-                    backgroundColor: CustomTheme.darkGrey,
-                    isIncludingStop: true,
-                    onEndCallback: widget.onTimerEndCallback,
-                    progressStrokeColor: CustomTheme.middleGreen,
+                  Expanded(
+                    child: CountdownTimer(
+                      totalDuration: state.currentExo!.restBetweenSet,
+                      backgroundColor: CustomTheme.darkGrey,
+                      isIncludingStop: true,
+                      onEndCallback: widget.onTimerEndCallback,
+                      progressStrokeColor: CustomTheme.middleGreen,
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.add_circle, color: Colors.white),

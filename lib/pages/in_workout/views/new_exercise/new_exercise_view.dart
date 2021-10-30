@@ -213,12 +213,26 @@ class _NewExerciseViewState extends State<NewExerciseView> {
             children: [
               Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
-                    onPressed: () {
-                      BlocProvider.of<InWorkoutBloc>(context).add(
-                          ChangedViewEvent(widget.tabController,
-                              InWorkoutView.endWorkoutView));
+                  BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                    buildWhen: (prev, next) =>
+                        prev.realisedTraining.exercisesAsFlatList.length !=
+                        next.realisedTraining.exercisesAsFlatList.length,
+                    builder: (context, state) {
+                      return IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        onPressed: () {
+                          if (state
+                              .realisedTraining.exercisesAsFlatList.isEmpty) {
+                            BlocProvider.of<InWorkoutBloc>(context).add(
+                                ChangedViewEvent(widget.tabController,
+                                    InWorkoutView.endWorkoutView));
+                          } else {
+                            BlocProvider.of<InWorkoutBloc>(context).add(
+                                ChangedViewEvent(widget.tabController,
+                                    InWorkoutView.inRestView));
+                          }
+                        },
+                      );
                     },
                   ),
                   Expanded(

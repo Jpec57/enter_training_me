@@ -5,19 +5,20 @@ typedef StringMethod = void Function(String strValue);
 
 class ChangeExerciseSetDialog<T> extends StatefulWidget {
   final String title;
-  final StringMethod setForAllCallback;
+  final StringMethod? setForAllCallback;
   final StringMethod setForOneCallback;
   final T? currentValue;
   const ChangeExerciseSetDialog(
       {Key? key,
       required this.title,
       this.currentValue,
-      required this.setForAllCallback,
+      this.setForAllCallback,
       required this.setForOneCallback})
       : super(key: key);
 
   @override
-  State<ChangeExerciseSetDialog> createState() => _ChangeExerciseSetDialogState();
+  State<ChangeExerciseSetDialog> createState() =>
+      _ChangeExerciseSetDialogState();
 }
 
 class _ChangeExerciseSetDialogState extends State<ChangeExerciseSetDialog> {
@@ -58,16 +59,18 @@ class _ChangeExerciseSetDialogState extends State<ChangeExerciseSetDialog> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: CustomTheme.greenGrey,
-                        onPrimary: Colors.white,
-                      ),
-                      onPressed: () {
-                        widget.setForAllCallback(_textController.text);
-                        Navigator.of(context).pop();
-                      },
-                      child: Text("Set for all sets")),
+                  widget.setForAllCallback != null
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: CustomTheme.greenGrey,
+                            onPrimary: Colors.white,
+                          ),
+                          onPressed: () {
+                            widget.setForAllCallback!(_textController.text);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Set for all sets"))
+                      : Container(),
                   ElevatedButton(
                       onPressed: () {
                         widget.setForOneCallback(_textController.text);

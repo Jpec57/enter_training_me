@@ -8,9 +8,28 @@ import 'package:get/get.dart';
 class InWorkoutExerciseView extends StatelessWidget {
   const InWorkoutExerciseView({Key? key}) : super(key: key);
 
-  void showRepsModal(BuildContext context, InWorkoutState state) {
+  void showModal() {
     // BlocProvider.of<InWorkoutBloc>(context)
     //     .add(const ToggledContentVisibilityEvent(true));
+
+    // BlocProvider.of<InWorkoutBloc>(context)
+    //     .add(const ToggledContentVisibilityEvent(false));
+  }
+
+  void showSetsModal(BuildContext context, InWorkoutState state) {
+    Get.dialog(ChangeExerciseSetDialog<int>(
+      currentValue: state.currentSet.reps,
+      title: "How many sets do you intent to do ?",
+      setForOneCallback: (value) {
+        int parseValue = int.parse(value);
+
+        BlocProvider.of<InWorkoutBloc>(context)
+            .add(ChangedNbSetEvent(parseValue));
+      },
+    ));
+  }
+
+  void showRepsModal(BuildContext context, InWorkoutState state) {
     Get.dialog(ChangeExerciseSetDialog<int>(
       currentValue: state.currentSet.reps,
       title: "How many reps do you intent to do ?",
@@ -19,16 +38,12 @@ class InWorkoutExerciseView extends StatelessWidget {
 
         BlocProvider.of<InWorkoutBloc>(context)
             .add(ChangedRefRepsEvent(parseValue, isForAll: true));
-        // BlocProvider.of<InWorkoutBloc>(context)
-        //     .add(const ToggledContentVisibilityEvent(false));
       },
       setForOneCallback: (value) {
         int parseValue = int.parse(value);
 
         BlocProvider.of<InWorkoutBloc>(context)
             .add(ChangedRefRepsEvent(parseValue));
-        // BlocProvider.of<InWorkoutBloc>(context)
-        //     .add(const ToggledContentVisibilityEvent(false));
       },
     ));
   }
@@ -66,10 +81,20 @@ class InWorkoutExerciseView extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Center(
-            child: Text(
-              "${state.currentSetIndex + 1} / ${exo.sets.length} sets",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+          child: InkWell(
+            onTap: () {
+              showSetsModal(context, state);
+            },
+            child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
+              buildWhen: (prev, next) => prev.currentExo != next.currentExo,
+              builder: (context, state) {
+                return Center(
+                  child: Text(
+                    "${state.currentSetIndex + 1} / ${exo.sets.length} sets",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                );
+              },
             ),
           ),
         ),

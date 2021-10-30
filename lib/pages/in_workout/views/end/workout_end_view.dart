@@ -79,9 +79,6 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
         ],
       ),
     );
-    // return AddNewExerciseSection(
-    //   tabController: widget.tabController,
-    // );
   }
 
   @override

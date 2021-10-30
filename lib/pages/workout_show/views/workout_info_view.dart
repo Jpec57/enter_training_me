@@ -38,9 +38,9 @@ class WorkoutInfoView extends StatelessWidget {
                     const SectionTitle(title: "Muscle Repartition"),
                     MuscleActivationRepartitionGraph(
                         muscleActivations: referenceTraining.muscleRepartition),
+                    const SectionDivider(),
                   ],
                 ),
-          const SectionDivider(),
           const SectionTitle(title: "Training Type Repartition"),
           TrainingTypeRepartitionGraph(
             typeRepartition: referenceTraining.focusRepartition,

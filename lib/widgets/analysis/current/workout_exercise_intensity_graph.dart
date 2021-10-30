@@ -174,7 +174,7 @@ class _WorkoutExerciseIntensityGraphState
                       fontWeight: FontWeight.bold,
                       fontSize: 14),
                   reservedSize: 50,
-                  interval: maxY / 5,
+                  interval: (maxY > 0 ? maxY : 10) / 5,
                   getTitles: (value) {
                     if (value >= 1000) {
                       var units = (value % 1000).toInt();
