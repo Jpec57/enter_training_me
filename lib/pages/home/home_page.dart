@@ -58,12 +58,10 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, state) {
                     if (state.user == null) {
                       return Text("Welcome !",
-                          // textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline4);
                     }
                     User user = state.user as User;
                     return Text("Welcome back ${user.username}",
-                        // textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline4);
                   },
                 ),
@@ -174,7 +172,13 @@ class _HomePageState extends State<HomePage> {
                       referenceTraining: null,
                     ));
                   },
-                  child: const Icon(Icons.add_circle, color: Colors.white)),
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.white)),
+                      child: const Text("CREATE"))),
             ],
           ),
         ),

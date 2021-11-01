@@ -55,6 +55,7 @@ class InWorkoutExerciseView extends StatelessWidget {
     Get.dialog(ChangeExerciseSetDialog<double>(
       title: "How heavy do you intent to lift ?",
       currentValue: state.currentSet.weight,
+      showQuickIntIncrease: false,
       setForAllCallback: (value) {
         double parseValue = double.parse(value);
 

@@ -1,6 +1,7 @@
 import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/models/cached_request.dart';
 import 'package:enter_training_me/navigation/main_routing.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';
@@ -18,7 +19,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
+  Hive.registerAdapter(CachedRequestAdapter());
+  await Hive.openBox<CachedRequest>('request');
 
   final AuthenticationRepository _authRepository = AuthenticationRepository();
   final UserRepository _userRepository = UserRepository();

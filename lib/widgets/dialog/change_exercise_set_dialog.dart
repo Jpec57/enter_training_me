@@ -8,10 +8,12 @@ class ChangeExerciseSetDialog<T> extends StatefulWidget {
   final StringMethod? setForAllCallback;
   final StringMethod setForOneCallback;
   final T? currentValue;
+  final bool showQuickIntIncrease;
   const ChangeExerciseSetDialog(
       {Key? key,
       required this.title,
       this.currentValue,
+      this.showQuickIntIncrease = true,
       this.setForAllCallback,
       required this.setForOneCallback})
       : super(key: key);
@@ -51,11 +53,51 @@ class _ChangeExerciseSetDialogState extends State<ChangeExerciseSetDialog> {
               Text(widget.title,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline4),
-              TextField(
-                  controller: _textController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      filled: true, fillColor: Colors.white)),
+              Row(
+                children: [
+                  widget.showQuickIntIncrease
+                      ? IconButton(
+                          onPressed: () {
+                            String text = _textController.text;
+                            int val = int.parse(text);
+                            setState(() {
+                              if (val > 0) {
+                                val = val - 1;
+                              }
+                              _textController.text = val.toString();
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.remove_circle,
+                            color: Colors.white,
+                          ))
+                      : Container(),
+                  Flexible(
+                    child: TextField(
+                        controller: _textController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                            filled: true, fillColor: Colors.white)),
+                  ),
+                  widget.showQuickIntIncrease
+                      ? IconButton(
+                          onPressed: () {
+                            String text = _textController.text;
+                            int val = int.parse(text);
+                            setState(() {
+                              if (val >= 0) {
+                                val = val + 1;
+                              }
+                              _textController.text = val.toString();
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.add_circle,
+                            color: Colors.white,
+                          ))
+                      : Container(),
+                ],
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -69,14 +111,14 @@ class _ChangeExerciseSetDialogState extends State<ChangeExerciseSetDialog> {
                             widget.setForAllCallback!(_textController.text);
                             Navigator.of(context).pop();
                           },
-                          child: Text("Set for all sets"))
+                          child: const Text("Set for all sets"))
                       : Container(),
                   ElevatedButton(
                       onPressed: () {
                         widget.setForOneCallback(_textController.text);
                         Navigator.of(context).pop();
                       },
-                      child: Text("Set for this set")),
+                      child: const Text("Set for this set")),
                 ],
               )
             ],

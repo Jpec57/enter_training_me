@@ -53,7 +53,7 @@ class _RenameTrainingDialogState extends State<RenameTrainingDialog> {
                   widget.callback(_nameController.text);
                   Navigator.of(context).pop();
                 },
-                child: Text("Rename"))
+                child: const Text("Rename"))
           ],
         ),
       ),

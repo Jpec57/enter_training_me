@@ -39,7 +39,7 @@ class _NextExerciseDetailState extends State<NextExerciseDetail> {
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "@${nextExo.sets[nextSetIndex].weight} kgs",
+                    "${nextExo.sets[nextSetIndex].reps}@${nextExo.sets[nextSetIndex].weight} kgs",
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 )

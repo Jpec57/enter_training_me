@@ -30,11 +30,14 @@ dependencies:
   video_player: ^2.2.5
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  chewie: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   copy_with_extension_gen: ^2.0.3
   flutter_lints: ^1.0.0
+  hive_generator: ^1.1.1
+
 
 flutter:
 

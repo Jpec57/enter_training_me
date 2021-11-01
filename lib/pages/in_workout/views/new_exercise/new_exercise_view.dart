@@ -13,9 +13,9 @@ class NewExerciseView extends StatefulWidget {
 class _NewExerciseViewState extends State<NewExerciseView> {
   ReferenceExercise? _selectedRefExo;
   int _restBtwSet = 120;
-  int _nbSets = 2;
-  int _nbReps = 5;
   double _weight = 0;
+  final ExerciseSet _defaultSet = const ExerciseSet(reps: 5, weight: 100);
+  final List<ExerciseSet> _setList = [const ExerciseSet(reps: 5, weight: 100)];
   late TextEditingController _weightTextController;
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -37,36 +37,6 @@ class _NewExerciseViewState extends State<NewExerciseView> {
     _weightTextController.removeListener(() {});
     _weightTextController.dispose();
     super.dispose();
-  }
-
-  Widget _renderWeightChoiceRow() {
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text("How much weight ?",
-            style: Theme.of(context).textTheme.headline4),
-      ),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 30,
-            width: 150,
-            child: TextField(
-                controller: _weightTextController,
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                    filled: true, fillColor: Colors.white)),
-          ),
-        ],
-      ),
-      // Text(
-      //     ((_selectedRefExo?.isBodyweightExercise ?? false) && _weight == 0)
-      //         ? "BW"
-      //         : "${_weight}kgs",
-      //     style: Theme.of(context).textTheme.headline4)
-    ]);
   }
 
   Widget _renderRestChoiceRow() {
@@ -106,94 +76,104 @@ class _NewExerciseViewState extends State<NewExerciseView> {
     );
   }
 
-  Widget _renderRepsChoiceRow() {
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text("How many reps ?",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline4),
-      ),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: () {
-                if (_nbSets > 0) {
-                  setState(() {
-                    _nbReps = _nbReps - 1;
-                  });
-                }
-              },
-              icon: const Icon(Icons.remove_circle, color: Colors.white)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child:
-                Text("$_nbReps", style: Theme.of(context).textTheme.headline4),
-          ),
-          IconButton(
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: () {
-                setState(() {
-                  _nbReps = _nbReps + 1;
-                });
-              },
-              icon: const Icon(Icons.add_circle, color: Colors.white)),
-        ],
-      )
-    ]);
-  }
-
-  Widget _renderNumberSetChoice() {
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text("Number of sets",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline4),
-      ),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: () {
-                if (_nbSets > 0) {
-                  setState(() {
-                    _nbSets = _nbSets - 1;
-                  });
-                }
-              },
-              icon: const Icon(Icons.remove_circle, color: Colors.white)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child:
-                Text("$_nbSets", style: Theme.of(context).textTheme.headline4),
-          ),
-          IconButton(
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: () {
-                setState(() {
-                  _nbSets = _nbSets + 1;
-                });
-              },
-              icon: const Icon(Icons.add_circle, color: Colors.white)),
-        ],
-      )
-    ]);
-  }
-
   Widget _renderSelectedExoWidget(ReferenceExercise exo) {
     return Center(
-        child: Text("${exo.name}",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)));
+        child: Text(exo.name,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)));
+  }
+
+  void showRepsModal(BuildContext context, int setIndex) {
+    Get.dialog(ChangeExerciseSetDialog<int>(
+      currentValue: _setList[setIndex].reps,
+      title: "How many reps do you intent to do ?",
+      setForOneCallback: (value) {
+        int parseValue = int.parse(value);
+        setState(() {
+          _setList[setIndex] = _setList[setIndex].copyWith(reps: parseValue);
+        });
+      },
+    ));
+  }
+
+  void showWeightModal(BuildContext context, int setIndex) {
+    Get.dialog(ChangeExerciseSetDialog<double>(
+      title: "How heavy do you intent to lift ?",
+      currentValue: _setList[setIndex].weight,
+      showQuickIntIncrease: false,
+      setForOneCallback: (String value) {
+        print("value $value");
+        int parsedValue = int.parse(value.substring(0, value.indexOf('.')));
+
+        setState(() {
+          _setList[setIndex] =
+              _setList[setIndex].copyWith(weight: parsedValue.toDouble());
+        });
+      },
+    ));
+  }
+
+  Widget _renderExoSetWidget(ExerciseSet set, int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        children: [
+          Expanded(child: Text("${index + 1}")),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                showRepsModal(context, index);
+              },
+              child: Text("Reps ${set.reps}"),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                showWeightModal(context, index);
+              },
+              child: Text("Weight ${set.weight}"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _renderSetColumn() {
+    List<Widget> setChildren = [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Row(
+          children: [
+            Expanded(child: Container()),
+            const Expanded(
+              child:
+                  Text("REPS", style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            const Expanded(
+              child:
+                  Text("WEIGHT", style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ],
+        ),
+      )
+    ];
+    for (int i = 0; i < _setList.length; i++) {
+      setChildren.add(_renderExoSetWidget(_setList[i], i));
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: setChildren,
+    );
+  }
+
+  void addSet() {
+    ExerciseSet? lastSet =
+        _setList.isNotEmpty ? _setList[_setList.length - 1] : null;
+    setState(() {
+      _setList.add(lastSet ?? _defaultSet);
+    });
   }
 
   @override
@@ -259,7 +239,11 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                     height: 100,
                     width: size.width,
                     child: _selectedRefExo == null
-                        ? Container()
+                        ? Center(
+                            child: Text("Select an exo".toUpperCase(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )))
                         : _renderSelectedExoWidget(_selectedRefExo!)),
               ),
               Expanded(
@@ -267,22 +251,28 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 32),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            Text(
+                              "Sets",
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            _renderSetColumn(),
                             Padding(
                               padding:
-                                  const EdgeInsets.only(top: 16.0, bottom: 8),
-                              child: Row(
-                                children: [
-                                  Expanded(child: _renderNumberSetChoice()),
-                                  Expanded(child: _renderRepsChoiceRow()),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: _renderWeightChoiceRow(),
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: ElevatedButton(
+                                  onPressed: addSet,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      Icon(Icons.add_circle,
+                                          color: Colors.white),
+                                    ],
+                                  )),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 16.0),
@@ -301,16 +291,16 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                       onPressed: () {
                         RealisedExercise? _toAddExercise = RealisedExercise(
                             exerciseReference: _selectedRefExo!,
-                            sets: List.generate(
-                                _nbSets,
-                                (index) => ExerciseSet(
-                                    reps: _nbReps, weight: _weight)),
+                            sets: _setList,
                             restBetweenSet: _restBtwSet);
                         BlocProvider.of<InWorkoutBloc>(context).add(
                             AddedExoEvent(
                                 widget.tabController, _toAddExercise));
                       },
-                      child: Text("Add this exercise"))
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text("Add this exercise".toUpperCase()),
+                      ))
             ],
           ),
         )),
