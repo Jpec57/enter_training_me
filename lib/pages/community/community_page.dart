@@ -91,9 +91,11 @@ class _CommunityPageState extends State<CommunityPage> {
         selectedRoute: CommunityPage.routeName,
       ),
       backgroundColor: CustomTheme.darkGrey,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [_renderFeedSection()],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [_renderFeedSection()],
+          ),
         ),
       ),
     );

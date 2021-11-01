@@ -3,7 +3,6 @@ import 'package:enter_training_me/models/reference_exercise.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list.dart';
 import 'package:flutter/material.dart';
 
-
 class ChooseExerciseDialog extends StatelessWidget {
   final OnExerciseChosen onExerciseChosen;
   const ChooseExerciseDialog({Key? key, required this.onExerciseChosen})
@@ -42,7 +41,10 @@ class ChooseExerciseDialog extends StatelessWidget {
           Expanded(
             child: ReferenceExerciseList(
               withSearch: true,
-              onExerciseChosen: onExerciseChosen,
+              onExerciseChosen: (ReferenceExercise exo) {
+                onExerciseChosen(exo);
+                Navigator.of(context).pop();
+              },
             ),
           ),
         ],

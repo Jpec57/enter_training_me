@@ -91,7 +91,7 @@ class AskedToChangeExoEvent extends InWorkoutEvent {
 }
 
 class ChangedExoEvent extends InWorkoutEvent {
-  final RealisedExercise exo;
+  final ReferenceExercise exo;
 
   const ChangedExoEvent(this.exo);
 

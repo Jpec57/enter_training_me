@@ -101,9 +101,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
       currentValue: _setList[setIndex].weight,
       showQuickIntIncrease: false,
       setForOneCallback: (String value) {
-        print("value $value");
         int parsedValue = int.parse(value.substring(0, value.indexOf('.')));
-
         setState(() {
           _setList[setIndex] =
               _setList[setIndex].copyWith(weight: parsedValue.toDouble());
@@ -131,7 +129,19 @@ class _NewExerciseViewState extends State<NewExerciseView> {
               onTap: () {
                 showWeightModal(context, index);
               },
-              child: Text("Weight ${set.weight}"),
+              child: Text("${set.weight}kgs"),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                if (_setList.length > 1) {
+                  setState(() {
+                    _setList.removeAt(index);
+                  });
+                }
+              },
+              child: const Icon(Icons.delete, color: Colors.white),
             ),
           ),
         ],
@@ -153,6 +163,10 @@ class _NewExerciseViewState extends State<NewExerciseView> {
             const Expanded(
               child:
                   Text("WEIGHT", style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            const Expanded(
+              child: Text("ACTIONS",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -230,7 +244,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                       setState(() {
                         _selectedRefExo = exo;
                       });
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                     },
                   ));
                 },

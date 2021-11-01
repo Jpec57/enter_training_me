@@ -29,10 +29,13 @@ class _VideoContentState extends State<VideoContent> {
     super.initState();
     _controller = widget.isNetwork
         ? VideoPlayerController.network(widget.path,
-            videoPlayerOptions: VideoPlayerOptions())
-        : VideoPlayerController.asset(
-            widget.path,
-          );
+            videoPlayerOptions: VideoPlayerOptions(
+              mixWithOthers: true,
+            ))
+        : VideoPlayerController.asset(widget.path,
+            videoPlayerOptions: VideoPlayerOptions(
+              mixWithOthers: true,
+            ));
     _chewieController = ChewieController(
         videoPlayerController: _controller,
         autoPlay: true,
@@ -51,25 +54,31 @@ class _VideoContentState extends State<VideoContent> {
 
   @override
   Widget build(BuildContext context) {
-    // return Stack(
-    //   children: [
-    //     Align(
-    //       alignment: Alignment.center,
-    //       child: Chewie(
-    //         controller: _chewieController,
-    //       ),
-    //     ),
-    //     ...widget.stackChildren,
-    //   ],
-    // );
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Chewie(
+              controller: _chewieController,
+            ),
+          ),
+        ),
+        ...widget.stackChildren,
+      ],
+    );
     return AspectRatio(
       aspectRatio: _controller.value.aspectRatio,
       child: Stack(
         children: [
           Align(
             alignment: Alignment.center,
-            child: Chewie(
-              controller: _chewieController,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Chewie(
+                controller: _chewieController,
+              ),
             ),
           ),
           ...widget.stackChildren,

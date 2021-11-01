@@ -44,11 +44,13 @@ class RealisedExercise extends Equatable {
   Map<String, dynamic> toJson() => _$RealisedExerciseToJson(this);
   Map<String, dynamic> toJsonForCreation() => _$RealisedExerciseToJson(this);
 
-  RealisedExercise copyWith({List<ExerciseSet>? sets}) => RealisedExercise(
-      exerciseReference: exerciseReference,
-      executionStyle: executionStyle,
-      restBetweenSet: restBetweenSet,
-      sets: sets ?? this.sets);
+  RealisedExercise copyWith(
+          {List<ExerciseSet>? sets, ReferenceExercise? exerciseReference}) =>
+      RealisedExercise(
+          exerciseReference: exerciseReference ?? this.exerciseReference,
+          executionStyle: executionStyle,
+          restBetweenSet: restBetweenSet,
+          sets: sets ?? this.sets);
 
   @override
   String toString() {

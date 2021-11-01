@@ -93,6 +93,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
               state.realisedTraining.copyWith(cycles: doneCycles));
     } else if (event is ChangedNbSetEvent) {
       yield _mapChangedNbSetEventToState(event);
+    } else if (event is ChangedExoEvent) {
+      yield _mapChangedExoEventToState(event);
     } else if (event is TimerTickEvent) {
       yield _mapTimerTickEventToState(event);
     } else if (event is AddedRepEvent) {
@@ -196,7 +198,18 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapChangedExoEventToState(ChangedExoEvent event) {
-    return state;
+    RealisedExercise doneExo =
+        state.currentExo!.copyWith(exerciseReference: event.exo);
+    print("new exo ${event.exo}");
+    List<RealisedExercise> doneExos = [...state.currentCycle!.exercises];
+    doneExos[state.currentExoIndex] = doneExo;
+
+    ExerciseCycle doneCycle = state.currentCycle!.copyWith(exercises: doneExos);
+    List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
+    doneCycles[state.currentCycleIndex] = doneCycle;
+    print(doneCycles);
+    return state.copyWith(
+        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
   }
 
   InWorkoutState _mapChangedRefWeightEventToState(ChangedRefWeightEvent event) {
