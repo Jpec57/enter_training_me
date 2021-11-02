@@ -24,12 +24,16 @@ class ProfilePageContent extends StatefulWidget {
 
 class _ProfilePageContentState extends State<ProfilePageContent> {
   late Future<IAuthUserInterface?> _getUserFromTokenFuture;
+  late Future<List<ReferenceExercise>>? _realisedExoReferencesFuture;
 
   @override
   void initState() {
     super.initState();
     _getUserFromTokenFuture =
         RepositoryProvider.of<UserRepository>(context).getUserWithToken(null);
+    _realisedExoReferencesFuture =
+        RepositoryProvider.of<UserRepository>(context)
+            .getRealisedExoForViewer();
   }
 
   @override
@@ -172,13 +176,28 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                 ),
               ]),
           Padding(
-            padding: const EdgeInsets.only(left: 8, top: 32),
+            padding: const EdgeInsets.only(left: 8, top: 32, bottom: 16),
             child: Text(
-              "Exercise Progression",
+              "Exercise Estimated 1RM Progression",
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
-          ExerciseHistoryEvolution(),
+          FutureBuilder(
+            future: _realisedExoReferencesFuture,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ReferenceExercise>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                List<ReferenceExercise> exos = snapshot.data!;
+                return ExerciseHistoryEvolution(
+                  referenceExercises: exos,
+                );
+              }
+              return const Center(
+                child: Text("No data"),
+              );
+            },
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 8, top: 32),
             child: Text("Muscle Profile",

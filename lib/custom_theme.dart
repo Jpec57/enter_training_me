@@ -47,6 +47,7 @@ class CustomTheme {
       primarySwatch: CustomTheme.greenSwatch,
       appBarTheme: const AppBarTheme(backgroundColor: CustomTheme.darkGrey),
       backgroundColor: Colors.black,
+      scaffoldBackgroundColor: CustomTheme.darkGrey,
       hintColor: CustomTheme.middleGreen,
       textTheme: TextTheme(
         // body1: const TextStyle(color: Colors.white),

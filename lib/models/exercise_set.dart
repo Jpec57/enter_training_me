@@ -1,3 +1,4 @@
+import 'package:enter_training_me/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -31,9 +32,16 @@ class ExerciseSet extends Equatable {
   final int reps;
   final double? weightPercent;
   final double? weight;
+  final DateTime? realisedDate;
+  final User? user;
 
-  const ExerciseSet(
-      {required this.reps, this.weightPercent, required this.weight});
+  const ExerciseSet({
+    required this.reps,
+    this.weightPercent,
+    required this.weight,
+    this.realisedDate,
+    this.user,
+  });
 
   factory ExerciseSet.fromJson(Map<String, dynamic> json) =>
       _$ExerciseSetFromJson(json);
@@ -70,5 +78,5 @@ class ExerciseSet extends Equatable {
   }
 
   @override
-  List<Object?> get props => [reps, weight, weightPercent];
+  List<Object?> get props => [reps, weight, weightPercent, user, realisedDate];
 }

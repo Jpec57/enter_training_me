@@ -12,6 +12,7 @@ class UserRepository extends ApiService
   static const loginUrl = "/api/login";
   static const registerUrl = "/api/register";
   static const getByToken = "/api/users/token/{token}";
+  static const getRealisedExosByUser = "/api/users/realised_exercises";
 
   @override
   Future<IAuthUserInterface?> getUserWithToken(String? apiToken) async {
@@ -75,5 +76,16 @@ class UserRepository extends ApiService
         await getDio().get(getUserFeed, queryParameters: queryParams);
     List<dynamic> data = response.data;
     return data.map((e) => Training.fromJson(e)).toList();
+  }
+
+  Future<List<ReferenceExercise>> getRealisedExoForViewer() async {
+    try {
+      Response response = await getDio().get(getRealisedExosByUser);
+
+      List<dynamic> data = response.data;
+      return data.map((e) => ReferenceExercise.fromJson(e)).toList();
+    } on DioError catch (_) {
+      return [];
+    }
   }
 }

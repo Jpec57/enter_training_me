@@ -1,6 +1,7 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
+import 'package:enter_training_me/widgets/lists/reference_exercise_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,62 +62,6 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
     );
   }
 
-  Widget _renderListTile(ReferenceExercise exo) {
-//Expandable to see more info ? ?
-
-    return InkWell(
-      onTap: () {
-        widget.onExerciseChosen(exo);
-      },
-      child: Container(
-        decoration: const BoxDecoration(
-            border: Border(
-                bottom: BorderSide(width: 1, color: CustomTheme.middleGreen))),
-        margin: const EdgeInsets.symmetric(vertical: 3),
-        child: Row(
-          children: [
-            Container(
-              color: Colors.white,
-              child: Image.asset(
-                "assets/exercises/pull_up.png",
-                width: 70,
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      exo.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                          exo.material.isEmpty
-                              ? "None"
-                              : exo.material.join(', '),
-                          style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                              color: Colors.white54)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child:
-                          Text(exo.description ?? "No description available."),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   List<ReferenceExercise> filterBySearch(List<ReferenceExercise> list) {
     String searchText = _exoSearchTextController.text;
     if (searchText.isEmpty) {
@@ -145,7 +90,12 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
                     shrinkWrap: true,
                     itemCount: filteredExos.length,
                     itemBuilder: (context, index) {
-                      return _renderListTile(filteredExos[index]);
+                      return ReferenceExerciseListTile(
+                        exo: filteredExos[index],
+                        onExerciseChosen: (ReferenceExercise exercise) {
+                          widget.onExerciseChosen(exercise);
+                        },
+                      );
                     });
               } else if (ConnectionState.waiting == snapshot.connectionState) {
                 return const Center(
