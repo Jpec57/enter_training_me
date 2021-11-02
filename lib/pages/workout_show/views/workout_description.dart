@@ -1,11 +1,13 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WorkoutShowDescription extends StatefulWidget {
@@ -45,25 +47,40 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
     );
   }
 
-  Widget _renderDeleteTrainingButton() {
-    if (widget.referenceTraining.id == null) {
+  Widget _renderDeleteTrainingButton(bool isEditting) {
+    if (widget.referenceTraining.id == null || !isEditting) {
       return Container();
     }
-    return Container();
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: CustomTheme.greenGrey,
+            onPrimary: Colors.white,
+          ),
+          onPressed: () async {
+            bool isSuccess = await RepositoryProvider.of<TrainingRepository>(
+                    context)
+                .removeFromSavedTrainingAction(widget.referenceTraining.id!);
+            if (isSuccess) {
+              Get.offNamedUntil(HomePage.routeName, (route) => false);
+            }
+          },
+          child: const Text("REMOVE FROM SAVED")),
       ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: Colors.red,
             onPrimary: Colors.white,
           ),
           onPressed: () async {
-            Navigator.of(context).pop();
-            bool isSuccess = await RepositoryProvider.of<TrainingRepository>(
-                    context)
-                .removeFromSavedTrainingAction(widget.referenceTraining.id!);
-            if (isSuccess) {}
+            bool isSuccess =
+                await RepositoryProvider.of<TrainingRepository>(context)
+                    .delete(widget.referenceTraining.id!);
+            if (isSuccess) {
+              Get.offNamedUntil(HomePage.routeName, (route) => false);
+            }
           },
-          child: const Text("Remove from saved")),
+          child: const Text("DELETE",
+              style: TextStyle(fontWeight: FontWeight.bold))),
       const SectionDivider(),
     ]);
   }
@@ -162,7 +179,7 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _renderDeleteTrainingButton(),
+          _renderDeleteTrainingButton(widget.isEditting),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
             child: Wrap(

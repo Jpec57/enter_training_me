@@ -85,8 +85,7 @@ class Training extends Equatable {
     return materials;
   }
 
-
-    double get sumOfUsedWeight {
+  double get sumOfUsedWeight {
     double sum = 0;
     for (var exo in exercisesAsFlatList) {
       double setWeight = 0;
@@ -250,6 +249,7 @@ class Training extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         cycles,
         updatedAt,
         name,

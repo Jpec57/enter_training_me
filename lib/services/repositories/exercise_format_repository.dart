@@ -29,7 +29,7 @@ class ExerciseFormatRepository extends ApiService
   }
 
   @override
-  Future<ExerciseFormat> patch(Map<String, dynamic> data) {
+  Future<ExerciseFormat?> patch(int id, Map<String, dynamic> data) {
     throw UnimplementedError();
   }
 
@@ -39,7 +39,7 @@ class ExerciseFormatRepository extends ApiService
   }
 
   @override
-  Future<ExerciseFormat> put(ExerciseFormat data) {
+  Future<ExerciseFormat?> put(int id, ExerciseFormat data) {
     throw UnimplementedError();
   }
 }

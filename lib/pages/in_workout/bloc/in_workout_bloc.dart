@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
@@ -56,6 +57,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         }
       }
     } else if (event is ChangedTrainingNameEvent) {
+      Map<String, dynamic> nameData = {"name": event.name};
+      print("here name ${event.name}");
+      if (state.realisedTrainingId != null) {
+        try {
+          await trainingRepository.patch(state.realisedTrainingId!, nameData);
+        } on DioError catch (e) {
+          Get.snackbar("Error", e.toString());
+        }
+      }
+
       yield state.copyWith(
           realisedTraining: state.realisedTraining.copyWith(name: event.name));
     } else if (event is ChangedViewEvent) {
@@ -108,7 +119,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     } else if (event is TrainingEndedEvent) {
       Training? training = await saveTraining();
       yield state.copyWith(realisedTrainingId: training?.id);
-
       yield _mapTrainingEndedEventToState(event);
     } else if (event is TrainingLeftEvent) {
       //Erase all sets above the current one and save training with query
@@ -126,6 +136,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
           .postUserTraining(state.realisedTraining.toJson());
     } on Exception catch (e) {
       Get.snackbar("Error", e.toString());
+      print(e.toString());
       //TODO Save in local storage to resend later
     }
     return training;

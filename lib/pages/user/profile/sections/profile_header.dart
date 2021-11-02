@@ -33,22 +33,22 @@ class ProfileHeader extends StatelessWidget {
         child: Text(user.username,
             style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
       ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _renderQuickInfos("Level", "42"),
-                _renderQuickInfos("SBD", "702kg"),
-                _renderQuickInfos("Skill", "57"),
-              ],
-            ),
-          ],
-        ),
-      )
+      // Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 32),
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.stretch,
+      //     children: [
+      //       Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: [
+      //           _renderQuickInfos("Level", "42"),
+      //           _renderQuickInfos("SBD", "702kg"),
+      //           _renderQuickInfos("Skill", "57"),
+      //         ],
+      //       ),
+      //     ],
+      //   ),
+      // )
     ]);
   }
 }

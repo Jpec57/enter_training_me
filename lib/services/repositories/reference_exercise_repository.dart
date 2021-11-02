@@ -71,7 +71,7 @@ class ReferenceExerciseRepository extends ApiService
   }
 
   @override
-  Future<ReferenceExercise> patch(Map<String, dynamic> data) {
+  Future<ReferenceExercise?> patch(int id, Map<String, dynamic> data) {
     throw UnimplementedError();
   }
 
@@ -81,7 +81,7 @@ class ReferenceExerciseRepository extends ApiService
   }
 
   @override
-  Future<ReferenceExercise> put(ReferenceExercise data) {
+  Future<ReferenceExercise?> put(int id, ReferenceExercise data) {
     throw UnimplementedError();
   }
 }

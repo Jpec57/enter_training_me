@@ -2,6 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
+import 'package:enter_training_me/storage_constants.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:get/get.dart' as get_lib;
 
@@ -70,7 +73,6 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   Future<List<Training>> getAll() async {
     Response response = await getDio().get(getAllUrl);
     List<dynamic> data = response.data;
-    print(data);
     return data.map((e) => Training.fromJson(e)).toList();
   }
 
@@ -91,23 +93,33 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   }
 
   @override
-  Future<bool> delete(int id) {
-    throw UnimplementedError();
+  Future<bool> delete(int id) async {
+    Response response =
+        await getDio().delete(getUrl.replaceFirst("{id}", id.toString()));
+    if (response.statusCode == null) {
+      return false;
+    }
+    return response.statusCode! >= 200 && response.statusCode! < 300;
   }
 
   Future postUserTraining(Map<String, dynamic> data) async {
     print("------------------------------POSTING TRAINING");
 
     data.remove("createdAt");
-    // data["createdAt"] = null;
     Response response = await getDio().post(postUser, data: data);
     dynamic responseData = response.data;
     return Training.fromJson(jsonDecode(responseData));
   }
 
   @override
-  Future<Training> patch(Map<String, dynamic> data) {
-    throw UnimplementedError();
+  Future<Training?> patch(int id, Map<String, dynamic> data) async {
+    Response response = await getDio()
+        .patch(getUrl.replaceFirst("{id}", id.toString()), data: data);
+    if (response.statusCode == null) {
+      return null;
+    }
+    return null;
+    // return Training.fromJson(response.data);
   }
 
   @override
@@ -116,7 +128,7 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   }
 
   @override
-  Future<Training> put(Training data) {
+  Future<Training> put(int id, Training data) {
     throw UnimplementedError();
   }
 }

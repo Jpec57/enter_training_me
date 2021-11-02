@@ -1,10 +1,6 @@
-import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/workout_show/bloc/bloc/workout_edit_bloc.dart';
 import 'package:enter_training_me/pages/workout_show/section_title.dart';
-import 'package:enter_training_me/pages/workout_show/views/workout_description.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page_content.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/analysis/current/muscle_activation_repartition_graph.dart';

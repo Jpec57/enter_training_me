@@ -3,7 +3,8 @@ import 'package:enter_training_me/models/execution_style.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
 
-class ExecutionStyleRepository extends ApiService implements IRepository<ExecutionStyle> {
+class ExecutionStyleRepository extends ApiService
+    implements IRepository<ExecutionStyle> {
   static const getUrl = "/api/execution_styles/{id}";
   static const getAllUrl = "/api/execution_styles";
 
@@ -28,7 +29,7 @@ class ExecutionStyleRepository extends ApiService implements IRepository<Executi
   }
 
   @override
-  Future<ExecutionStyle> patch(Map<String, dynamic> data) {
+  Future<ExecutionStyle?> patch(int id, Map<String, dynamic> data) {
     throw UnimplementedError();
   }
 
@@ -38,9 +39,7 @@ class ExecutionStyleRepository extends ApiService implements IRepository<Executi
   }
 
   @override
-  Future<ExecutionStyle> put(ExecutionStyle data) {
+  Future<ExecutionStyle?> put(int id, ExecutionStyle data) {
     throw UnimplementedError();
   }
-
-
 }
