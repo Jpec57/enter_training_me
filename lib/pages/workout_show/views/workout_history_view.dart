@@ -19,6 +19,7 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView>
     super.initState();
     _historyTrainings = RepositoryProvider.of<TrainingRepository>(context)
         .getByReference(widget.referenceTraining.id!);
+    print(_historyTrainings);
   }
 
   @override
@@ -56,13 +57,13 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView>
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
-                  child: TrainingHistoryEvolution(trainings: oldTrainings),
+                  child: WorkoutHistoryEvolution(trainings: oldTrainings),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 16, right: 16, bottom: 32.0),
                   child: Text(
-                    "Workout Intensity Compare",
+                    "Estimated 1RM Compare",
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),

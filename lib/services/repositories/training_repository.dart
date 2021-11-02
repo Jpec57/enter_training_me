@@ -3,11 +3,9 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
 import 'dart:convert';
-
-import 'package:get/get.dart' as Get;
+import 'package:get/get.dart' as get_lib;
 
 class TrainingRepository extends ApiService implements IRepository<Training> {
-  static const GET_ALL = "/trainings/";
   static const getAllUrl = "/api/trainings";
   static const getOfficialUri = "/trainings/official";
   static const getByReferenceUri = "/trainings/reference/{id}";
@@ -23,6 +21,7 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     Response response =
         await getDio().get(getUrl.replaceFirst("{id}", id.toString()));
     dynamic data = response.data;
+    print(data);
     return Training.fromJson(data);
   }
 
@@ -40,7 +39,7 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
       dynamic data = response.data;
       return response.statusCode == 200;
     } on DioError catch (e) {
-      Get.Get.snackbar("Forbidden", "You must be connected to do this :(");
+      get_lib.Get.snackbar("Forbidden", "You must be connected to do this :(");
       return false;
     }
   }
@@ -52,7 +51,7 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
       dynamic data = response.data;
       return response.statusCode == 200;
     } on DioError catch (e) {
-      Get.Get.snackbar("Forbidden", "You must be connected to do this :(");
+      get_lib.Get.snackbar("Forbidden", "You must be connected to do this :(");
       return false;
     }
   }
@@ -71,6 +70,7 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   Future<List<Training>> getAll() async {
     Response response = await getDio().get(getAllUrl);
     List<dynamic> data = response.data;
+    print(data);
     return data.map((e) => Training.fromJson(e)).toList();
   }
 
@@ -98,7 +98,8 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   Future postUserTraining(Map<String, dynamic> data) async {
     print("------------------------------POSTING TRAINING");
 
-    data["createdAt"] = null;
+    data.remove("createdAt");
+    // data["createdAt"] = null;
     Response response = await getDio().post(postUser, data: data);
     dynamic responseData = response.data;
     return Training.fromJson(jsonDecode(responseData));

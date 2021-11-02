@@ -1,20 +1,20 @@
 import 'dart:math';
-
 import 'package:enter_training_me/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
-class TrainingHistoryEvolution extends StatefulWidget {
+class WorkoutHistoryEvolution extends StatefulWidget {
   final List<Training> trainings;
-  const TrainingHistoryEvolution({Key? key, required this.trainings})
+  const WorkoutHistoryEvolution({Key? key, required this.trainings})
       : super(key: key);
 
   @override
-  State<TrainingHistoryEvolution> createState() =>
-      _TrainingHistoryEvolutionState();
+  State<WorkoutHistoryEvolution> createState() =>
+      _WorkoutHistoryEvolutionState();
 }
 
-class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
+class _WorkoutHistoryEvolutionState extends State<WorkoutHistoryEvolution> {
   List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
@@ -89,7 +89,7 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
         topTitles: SideTitles(showTitles: false),
         bottomTitles: SideTitles(
           showTitles: true,
-          reservedSize: 22,
+          reservedSize: 50,
           interval: 1,
           rotateAngle: 90,
           getTextStyles: (context, value) => const TextStyle(
@@ -97,8 +97,11 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
               fontWeight: FontWeight.bold,
               fontSize: 12),
           getTitles: (value) {
-            return "21/10/21";
-            // return "${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}";
+            int index = value.toInt();
+            final DateFormat formatter = DateFormat('MM-dd');
+            return (DateFormat.yMd())
+                .format(widget.trainings[index].createdAt!);
+            return formatter.format(widget.trainings[index].createdAt!);
           },
           margin: 8,
         ),
@@ -124,29 +127,11 @@ class _TrainingHistoryEvolutionState extends State<TrainingHistoryEvolution> {
       maxX: widget.trainings.length.toDouble() - 1,
       minY: minY,
       maxY: maxY,
-      lineTouchData: LineTouchData(touchTooltipData: LineTouchTooltipData(
-          //   getTooltipItem: (
-          //     BarChartGroupData group,
-          //     int groupIndex,
-          //     BarChartRodData rod,
-          //     int rodIndex,
-          //   ) {
-          //     return BarTooltipItem(
-          //         rod.y.round().toString(),
-          //         const TextStyle(
-          //           color: Colors.white,
-          //           fontWeight: FontWeight.bold,
-          //         ),
-          //         textAlign: TextAlign.center);
-          //   },
-          // ),
-          getTooltipItems: (spots) {
+      lineTouchData: LineTouchData(
+          touchTooltipData: LineTouchTooltipData(getTooltipItems: (spots) {
         List<LineTooltipItem> items = [];
         for (var spot in spots) {
-          var index = spot.x.toInt();
-          items.add(LineTooltipItem("21/10/21 14:30:28", const TextStyle()));
-
-          // items.add(LineTooltipItem("${widget.trainings[value.toInt()].name + " " + value.toInt().toString()}", const TextStyle()));
+          items.add(LineTooltipItem("${spot.y}", const TextStyle()));
         }
         return items;
       })),

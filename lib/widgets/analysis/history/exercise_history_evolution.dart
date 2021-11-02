@@ -1,132 +1,150 @@
-// import 'package:enter_training_me/models/models.dart';
-// import 'package:enter_training_me/widgets/analysis/series/exercise_intensity_serie.dart';
-// import 'package:flutter/material.dart';
-// import 'package:charts_flutter/flutter.dart' as charts;
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 
-// //TODO
-// class ExerciseHistoryEvolutionGraph extends StatelessWidget {
-//   final List<charts.Series<ExerciseIntensitySerie, String>> seriesList;
-//   final bool animate;
+class ExerciseHistoryEvolution extends StatefulWidget {
+  const ExerciseHistoryEvolution({Key? key}) : super(key: key);
 
-//   const ExerciseHistoryEvolutionGraph(this.seriesList,
-//       {Key? key, this.animate = true})
-//       : super(key: key);
+  @override
+  State<ExerciseHistoryEvolution> createState() =>
+      _ExerciseHistoryEvolutionState();
+}
 
-//   factory ExerciseHistoryEvolutionGraph.withSampleData() {
-//     return ExerciseHistoryEvolutionGraph(
-//       _createSampleData(),
-//       animate: false,
-//     );
-//   }
+class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
+  List<Color> gradientColors = [
+    const Color(0xff23b6e6),
+    const Color(0xff02d39a),
+  ];
 
-//   factory ExerciseHistoryEvolutionGraph.fromTraining(
-//       {required Training realisedTraining, Training? referenceTraining}) {
-//     List<charts.Series<ExerciseIntensitySerie, String>> data = [];
-//     List<ExerciseIntensitySerie> realisedData = [];
-//     List<ExerciseIntensitySerie> referenceData = [];
+  List<FlSpot> generateSpotFromTrainings() {
+    List<FlSpot> spots = [];
 
-//     for (var i = 0; i < realisedTraining.cycles.length; i++) {
-//       var exos = realisedTraining.cycles[i].exercises;
-//       for (var j = 0; j < exos.length; j++) {
-//         realisedData.add(ExerciseIntensitySerie(
-//             exerciseName: "${exos[j].exerciseReference.name} ${i}C${j}E",
-//             intensity: exos[j].intensity));
-//       }
-//     }
-//     if (referenceTraining != null) {
-//       for (var i = 0; i < referenceTraining.cycles.length; i++) {
-//         var exos = referenceTraining.cycles[i].exercises;
-//         for (var j = 0; j < exos.length; j++) {
-//           referenceData.add(ExerciseIntensitySerie(
-//               exerciseName: "${exos[j].exerciseReference.name} ${i}C${j}E",
-//               intensity: exos[j].intensity));
-//         }
-//       }
-//       if (referenceData.isNotEmpty) {
-//         data.add(
-//           charts.Series<ExerciseIntensitySerie, String>(
-//             id: 'Workout Ref intensity',
-//             displayName: "Reference Workout Intensity",
-//             //Color bar
-//             seriesColor: charts.Color.fromHex(code: "#bcbcbc"),
-//             domainFn: (ExerciseIntensitySerie exo, _) => exo.exerciseName,
-//             measureFn: (ExerciseIntensitySerie exo, _) => exo.intensity,
-//             data: referenceData,
-//           ),
-//         );
-//       }
-//     }
+    for (var i = 0; i < 5; i++) {
+      spots.add(FlSpot(i.toDouble(), 14));
+    }
+    return spots;
+  }
 
-//     data = [
-//       charts.Series<ExerciseIntensitySerie, String>(
-//         id: 'Realised Workout Intensity',
-//         displayName: 'Realised Workout Intensity',
-//         //Color bar
-//         seriesColor: charts.Color.white,
-//         domainFn: (ExerciseIntensitySerie exo, _) => exo.exerciseName,
-//         measureFn: (ExerciseIntensitySerie exo, _) => exo.intensity,
-//         data: realisedData,
-//       ),
-//     ];
-//     return ExerciseHistoryEvolutionGraph(
-//       data,
-//       animate: false,
-//     );
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: 1.70,
+          child: Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                color: Color(0xff232d37)),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  right: 18.0, left: 12.0, top: 24, bottom: 12),
+              child: LineChart(
+                mainData(),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-//   static List<charts.Series<ExerciseIntensitySerie, String>> _createSampleData() {
-//     final data = [
-//       ExerciseIntensitySerie(exerciseName: "Dips", intensity: 45),
-//       ExerciseIntensitySerie(exerciseName: "Pull Ups", intensity: 60),
-//       ExerciseIntensitySerie(exerciseName: "Bench Press", intensity: 35),
-//       ExerciseIntensitySerie(exerciseName: "Curl", intensity: 15),
-//     ];
+  LineChartData mainData() {
+    List<double> yCoordinates =
+        generateSpotFromTrainings().map((spot) => spot.y).toList();
+    double minY = yCoordinates
+            .reduce((value, element) => min(value, element))
+            .toDouble() -
+        200;
+    double maxY = yCoordinates
+            .reduce((value, element) => max(value, element))
+            .toDouble() +
+        200;
 
-//     final refData = [
-//       ExerciseIntensitySerie(exerciseName: "Dips", intensity: 35),
-//       ExerciseIntensitySerie(exerciseName: "Pull Ups", intensity: 40),
-//       ExerciseIntensitySerie(exerciseName: "Bench Press", intensity: 25),
-//       ExerciseIntensitySerie(exerciseName: "Curl", intensity: 25),
-//     ];
-
-//     return [
-//       charts.Series<ExerciseIntensitySerie, String>(
-//         id: 'Workout Ref intensity',
-//         displayName: "Reference Workout Intensity",
-//         //Color bar
-//         seriesColor: charts.Color.fromHex(code: "#bcbcbc"),
-//         domainFn: (ExerciseIntensitySerie exo, _) => exo.exerciseName,
-//         measureFn: (ExerciseIntensitySerie exo, _) => exo.intensity,
-//         data: refData,
-//       ),
-//       charts.Series<ExerciseIntensitySerie, String>(
-//         id: 'Realised Workout Intensity',
-//         displayName: 'Realised Workout Intensity',
-//         //Color bar
-//         seriesColor: charts.Color.white,
-//         domainFn: (ExerciseIntensitySerie exo, _) => exo.exerciseName,
-//         measureFn: (ExerciseIntensitySerie exo, _) => exo.intensity,
-//         data: data,
-//       ),
-//     ];
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return charts.BarChart(
-//       seriesList,
-//       animate: animate,
-//       defaultInteractions: true,
-//       primaryMeasureAxis: const charts.NumericAxisSpec(
-//           renderSpec: charts.GridlineRendererSpec(
-//         labelStyle: charts.TextStyleSpec(
-//             fontSize: 10, color: charts.MaterialPalette.white),
-//       )),
-//       domainAxis: const charts.AxisSpec<String>(
-//           renderSpec: charts.GridlineRendererSpec(
-//         labelStyle: charts.TextStyleSpec(
-//             fontSize: 10, color: charts.MaterialPalette.white),
-//       )),
-//     );
-//   }
-// }
+    return LineChartData(
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: true,
+        getDrawingHorizontalLine: (value) {
+          return FlLine(
+            color: const Color(0xff37434d),
+            strokeWidth: 1,
+          );
+        },
+        getDrawingVerticalLine: (value) {
+          return FlLine(
+            color: const Color(0xff37434d),
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: SideTitles(showTitles: false),
+        topTitles: SideTitles(showTitles: false),
+        bottomTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 50,
+          interval: 1,
+          rotateAngle: 90,
+          getTextStyles: (context, value) => const TextStyle(
+              color: Color(0xff68737d),
+              fontWeight: FontWeight.bold,
+              fontSize: 12),
+          getTitles: (value) {
+            return "21/10/21";
+          },
+          margin: 8,
+        ),
+        leftTitles: SideTitles(
+          showTitles: true,
+          interval: (maxY - minY) / 4,
+          getTextStyles: (context, value) => const TextStyle(
+            color: Color(0xff67727d),
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+          ),
+          getTitles: (value) {
+            return "${value.toInt()}";
+          },
+          reservedSize: 50,
+          margin: 12,
+        ),
+      ),
+      borderData: FlBorderData(
+          show: true,
+          border: Border.all(color: const Color(0xff37434d), width: 1)),
+      minX: 0,
+      maxX: generateSpotFromTrainings().length.toDouble() - 1,
+      minY: minY,
+      maxY: maxY,
+      lineTouchData: LineTouchData(
+          touchTooltipData: LineTouchTooltipData(getTooltipItems: (spots) {
+        List<LineTooltipItem> items = [];
+        for (var spot in spots) {
+          var index = spot.x.toInt();
+          items.add(LineTooltipItem("21/10/21 14:30:28", const TextStyle()));
+        }
+        return items;
+      })),
+      lineBarsData: [
+        LineChartBarData(
+          spots: generateSpotFromTrainings(),
+          isCurved: true,
+          colors: gradientColors,
+          barWidth: 5,
+          isStrokeCapRound: true,
+          dotData: FlDotData(
+            show: true,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            colors:
+                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+}

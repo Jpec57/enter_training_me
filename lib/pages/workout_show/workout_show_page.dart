@@ -10,7 +10,7 @@ import 'package:enter_training_me/services/repositories/training_repository.dart
 import 'package:enter_training_me/widgets/analysis/current/muscle_activation_repartition_graph.dart';
 import 'package:enter_training_me/widgets/analysis/current/workout_exercise_intensity_graph.dart';
 import 'package:enter_training_me/widgets/analysis/current/training_type_repartition_graph.dart';
-import 'package:enter_training_me/widgets/analysis/history/training_history_evolution.dart';
+import 'package:enter_training_me/widgets/analysis/history/workout_history_evolution.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,4 @@
+import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:flutter/material.dart';
 
@@ -5,15 +6,18 @@ class ProfileHeader extends StatelessWidget {
   final User user;
   const ProfileHeader({Key? key, required this.user}) : super(key: key);
 
-  Widget _renderQuickInfos() {
+  Widget _renderQuickInfos(String title, String value) {
     return Column(
       children: [
-        Text("Level".toUpperCase(),
-            style: TextStyle(
+        Text(title.toUpperCase(),
+            style: const TextStyle(
                 fontSize: 16,
-                color: Colors.redAccent,
+                color: CustomTheme.green,
                 fontWeight: FontWeight.bold)),
-        Text("32")
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Text(value),
+        )
       ],
     );
   }
@@ -37,9 +41,9 @@ class ProfileHeader extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _renderQuickInfos(),
-                _renderQuickInfos(),
-                _renderQuickInfos()
+                _renderQuickInfos("Level", "42"),
+                _renderQuickInfos("SBD", "702kg"),
+                _renderQuickInfos("Skill", "57"),
               ],
             ),
           ],
