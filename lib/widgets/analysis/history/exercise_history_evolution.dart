@@ -22,6 +22,7 @@ class ExerciseHistoryEvolution extends StatefulWidget {
 class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
   late Future<List<ExerciseSet>> _setsFuture;
   late ReferenceExercise currentReferenceExercise;
+  final double percentMargin = 0.05;
 
   List<Color> gradientColors = [
     const Color(0xff23b6e6),
@@ -62,12 +63,12 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
     List<double> yCoordinates = spots.map((spot) => spot.y).toList();
     double minY = yCoordinates
             .reduce((value, element) => min(value, element))
-            .toDouble() -
-        200;
+            .toDouble() *
+        (1 - percentMargin);
     double maxY = yCoordinates
             .reduce((value, element) => max(value, element))
-            .toDouble() +
-        200;
+            .toDouble() *
+        (1 + percentMargin);
 
     return LineChartData(
       gridData: FlGridData(
@@ -132,7 +133,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
           touchTooltipData: LineTouchTooltipData(getTooltipItems: (spots) {
         List<LineTooltipItem> items = [];
         for (var spot in spots) {
-          items.add(LineTooltipItem("${spot.y.toInt()}}", const TextStyle()));
+          items.add(LineTooltipItem("${spot.y.toInt()}", const TextStyle()));
         }
         return items;
       })),
@@ -221,7 +222,8 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
                               child: SingleChildScrollView(
                                 child: ListView.builder(
                                     shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemCount: widget.referenceExercises.length,
                                     itemBuilder: (context, index) {
                                       return ReferenceExerciseListTile(

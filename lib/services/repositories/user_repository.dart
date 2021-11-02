@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/models/profile_info.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,6 +13,7 @@ class UserRepository extends ApiService
   static const loginUrl = "/api/login";
   static const registerUrl = "/api/register";
   static const getByToken = "/api/users/token/{token}";
+  static const getProfileInfoUrl = "/api/users/infos/{id}";
   static const getRealisedExosByUser = "/api/users/realised_exercises";
 
   @override
@@ -26,6 +28,12 @@ class UserRepository extends ApiService
     Response response =
         await getDio().get(getByToken.replaceFirst("{token}", apiToken));
     return User.fromJson(response.data);
+  }
+
+  Future<ProfileInfo?> getUserProfileInfo(int? id) async {
+    Response response = await getDio().get(getProfileInfoUrl.replaceFirst(
+        "{id}", (id != null ? id.toString() : "")));
+    return ProfileInfo.fromJson(response.data);
   }
 
   Future<IAuthUserInterface?> register(

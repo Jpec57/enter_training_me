@@ -11,6 +11,7 @@ class PerformanceRepository extends ApiService {
     Response response = await getDio()
         .get(getPerfForExoUrl.replaceFirst("{id}", id.toString()));
 
+
     List<dynamic> data = response.data;
     return data.map((e) => ExerciseSet.fromJson(e)).toList();
   }

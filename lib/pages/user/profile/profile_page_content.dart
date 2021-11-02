@@ -2,6 +2,7 @@ import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/layouts/separator_overlapping_section_layout.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/models/profile_info.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_header.dart';
@@ -23,14 +24,14 @@ class ProfilePageContent extends StatefulWidget {
 }
 
 class _ProfilePageContentState extends State<ProfilePageContent> {
-  late Future<IAuthUserInterface?> _getUserFromTokenFuture;
+  late Future<ProfileInfo?> _getUserProfileInfosFuture;
   late Future<List<ReferenceExercise>>? _realisedExoReferencesFuture;
 
   @override
   void initState() {
     super.initState();
-    _getUserFromTokenFuture =
-        RepositoryProvider.of<UserRepository>(context).getUserWithToken(null);
+    _getUserProfileInfosFuture =
+        RepositoryProvider.of<UserRepository>(context).getUserProfileInfo(null);
     _realisedExoReferencesFuture =
         RepositoryProvider.of<UserRepository>(context)
             .getRealisedExoForViewer();
@@ -72,9 +73,9 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
           ),
           Expanded(
             child: FutureBuilder(
-              future: _getUserFromTokenFuture,
-              builder: (BuildContext context,
-                  AsyncSnapshot<IAuthUserInterface?> snapshot) {
+              future: _getUserProfileInfosFuture,
+              builder:
+                  (BuildContext context, AsyncSnapshot<ProfileInfo?> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return const Center(child: CircularProgressIndicator());
@@ -82,8 +83,8 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                     if (!snapshot.hasData) {
                       return const Text("No User");
                     }
-                    User user = snapshot.data as User;
-                    return _renderProfile(user);
+                    ProfileInfo info = snapshot.data!;
+                    return _renderProfile(info);
                   default:
                     return const Text("Error");
                 }
@@ -101,7 +102,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
     );
   }
 
-  Widget _renderProfile(User user) {
+  Widget _renderProfile(ProfileInfo info) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -111,7 +112,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
             topWidgetBackgroundColor: CustomTheme.darkGrey,
             bottomWidgetBackgroundColor: CustomTheme.middleGreen,
             topWidget: ProfileHeader(
-              user: user,
+              user: info.user,
             ),
             overlappingWidget: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -142,7 +143,9 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                     )
                   ],
                 )),
-            bottomWidget: const ProfileLastTrainingSection(),
+            bottomWidget: ProfileLastTrainingSection(
+              lastTrainings: info.lastTrainings.reversed.toList(),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8, bottom: 24.0, top: 32),
@@ -161,8 +164,8 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                     child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("142"),
-                    Text("trainings"),
+                    Text(info.trainingCount.toString()),
+                    const Text("trainings"),
                   ],
                 )),
                 ProfileMetricContainer(

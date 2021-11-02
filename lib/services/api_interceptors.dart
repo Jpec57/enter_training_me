@@ -1,11 +1,8 @@
 import 'dart:io';
-
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get.dart' as Get;
 
 class ApiInterceptors extends Interceptor {
   @override
@@ -14,7 +11,7 @@ class ApiInterceptors extends Interceptor {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? apiToken = await storage.read(key: StorageConstants.apiKey);
     if (apiToken != null) {
-      // print("Sending with token $apiToken ${options.path}");
+      // debugPrint("Sending with token $apiToken ${options.path}");
       options.headers[HttpHeaders.authorizationHeader] = "Bearer $apiToken";
     }
     return handler.next(options);
