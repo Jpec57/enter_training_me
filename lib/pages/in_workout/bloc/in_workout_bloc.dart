@@ -58,7 +58,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       }
     } else if (event is ChangedTrainingNameEvent) {
       Map<String, dynamic> nameData = {"name": event.name};
-      print("here name ${event.name}");
       if (state.realisedTrainingId != null) {
         try {
           await trainingRepository.patch(state.realisedTrainingId!, nameData);
@@ -192,6 +191,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   InWorkoutState _mapTimerTickEventToState(TimerTickEvent event) {
     if (state.getNonTickingViews().contains(state.currentView)) {
+      return state;
+    }
+    if (state.realisedTraining.exercisesAsFlatList.isEmpty) {
       return state;
     }
     return state.copyWith(elapsedTime: (state.elapsedTime + 1));

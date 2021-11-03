@@ -1,6 +1,7 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
+import 'package:enter_training_me/pages/workout_show/bloc/bloc/workout_edit_bloc.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/utils/utils.dart';
@@ -33,15 +34,30 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
         children: [
           currentIndex > 0
               ? IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    BlocProvider.of<WorkoutEditBloc>(context).add(
+                        SwitchedExerciseEvent(
+                            firstIndex: currentIndex - 1,
+                            secondIndex: currentIndex));
+                  },
                   icon: const Icon(Icons.arrow_upward, color: Colors.white))
               : const Icon(Icons.arrow_upward, color: Colors.transparent),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                BlocProvider.of<WorkoutEditBloc>(context)
+                    .add(RemovedExerciseEvent(exoIndex: currentIndex));
+              },
               icon: const Icon(Icons.delete, color: Colors.white)),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_downward, color: Colors.white)),
+          totalExoCount - 1 > currentIndex
+              ? IconButton(
+                  onPressed: () {
+                    BlocProvider.of<WorkoutEditBloc>(context).add(
+                        SwitchedExerciseEvent(
+                            firstIndex: currentIndex,
+                            secondIndex: currentIndex + 1));
+                  },
+                  icon: const Icon(Icons.arrow_downward, color: Colors.white))
+              : Container(),
         ],
       ),
     );
@@ -168,12 +184,6 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
 
   @override
   Widget build(BuildContext context) {
-    List<RealisedExercise> exos = widget.referenceTraining.exercisesAsFlatList;
-    List<Widget> exoWidgets = [];
-    int exoLength = exos.length;
-    for (var i = 0; i < exoLength; i++) {
-      exoWidgets.add(_renderExoCard(exos[i], widget.isEditting, i, exoLength));
-    }
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -195,11 +205,23 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
               ],
             ),
           ),
-
           const SectionDivider(),
-
-          ...exoWidgets,
-          // WorkoutTrainingContent(referenceTraining: widget.referenceTraining),
+          BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
+            buildWhen: (prev, next) => prev.training != next.training,
+            builder: (context, state) {
+              List<RealisedExercise> exos =
+                  state.training.cycles.first.exercises;
+              List<Widget> exoWidgets = [];
+              int exoLength = exos.length;
+              for (var i = 0; i < exoLength; i++) {
+                exoWidgets.add(
+                    _renderExoCard(exos[i], widget.isEditting, i, exoLength));
+              }
+              return Column(
+                children: exoWidgets,
+              );
+            },
+          ),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/performance_repository.dart';
+import 'package:enter_training_me/widgets/lists/reference_exercise_list.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -200,44 +201,35 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
         ),
         InkWell(
             onTap: () {
-              reloadSpots(currentReferenceExercise);
               showBottomSheet(
                   context: context,
                   builder: (context) => Container(
                         color: Colors.grey[900],
                         height: MediaQuery.of(context).size.height * 0.6,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Container(
-                                color: CustomTheme.middleGreen,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Select an exercise",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline4),
-                                )),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: widget.referenceExercises.length,
-                                    itemBuilder: (context, index) {
-                                      return ReferenceExerciseListTile(
-                                        exo: widget.referenceExercises[index],
-                                        onExerciseChosen:
-                                            (ReferenceExercise exercise) {
-                                          reloadSpots(exercise);
-                                          Navigator.of(context).pop();
-                                        },
-                                      );
+                        child: SafeArea(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                  color: CustomTheme.middleGreen,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Select an exercise",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4),
+                                  )),
+                              Expanded(
+                                child: ReferenceExerciseList(
+                                    preloadedExos: widget.referenceExercises,
+                                    onExerciseChosen:
+                                        (ReferenceExercise exercise) {
+                                      reloadSpots(exercise);
+                                      Navigator.of(context).pop();
                                     }),
-                              ),
-                            ),
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ));
             },

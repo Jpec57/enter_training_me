@@ -1,4 +1,3 @@
-import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list_tile.dart';
@@ -10,8 +9,12 @@ typedef OnExerciseChosen = void Function(ReferenceExercise exercise);
 class ReferenceExerciseList extends StatefulWidget {
   final bool withSearch;
   final OnExerciseChosen onExerciseChosen;
+  final List<ReferenceExercise> preloadedExos;
   const ReferenceExerciseList(
-      {Key? key, this.withSearch = true, required this.onExerciseChosen})
+      {Key? key,
+      this.withSearch = true,
+      required this.onExerciseChosen,
+      this.preloadedExos = const []})
       : super(key: key);
 
   @override
@@ -23,6 +26,14 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
 
   late TextEditingController _exoSearchTextController;
 
+  Future<List<ReferenceExercise>> loadReferenceExercises() async {
+    if (widget.preloadedExos.isNotEmpty) {
+      return widget.preloadedExos;
+    }
+    return await RepositoryProvider.of<ReferenceExerciseRepository>(context)
+        .getAll();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -31,8 +42,7 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
       setState(() {});
     });
     setState(() {
-      _exoListFuture =
-          RepositoryProvider.of<ReferenceExerciseRepository>(context).getAll();
+      _exoListFuture = loadReferenceExercises();
     });
   }
 

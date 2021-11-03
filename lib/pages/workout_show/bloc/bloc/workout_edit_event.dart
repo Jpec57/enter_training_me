@@ -45,3 +45,14 @@ class RemovedExerciseEvent extends WorkoutEditEvent {
   @override
   List<Object?> get props => [exoIndex, cycleIndex];
 }
+
+
+class SavedTrainingChangesEvent extends WorkoutEditEvent {
+  final int trainingId;
+  final Training newTraining;
+
+  SavedTrainingChangesEvent({required this.trainingId, required this.newTraining});
+
+  @override
+  List<Object?> get props => [trainingId, newTraining];
+}

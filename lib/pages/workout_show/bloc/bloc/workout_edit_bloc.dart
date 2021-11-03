@@ -15,22 +15,30 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
   ) async* {
     if (event is ChangedExerciseEvent) {
     } else if (event is SwitchedExerciseEvent) {
+      List<ExerciseCycle> newCycles = [];
+      for (var cycle in state.training.cycles) {
+        List<RealisedExercise> cycleExos = [...cycle.exercises];
+        RealisedExercise tmpExo = cycleExos[event.secondIndex];
+        cycleExos[event.secondIndex] = cycleExos[event.firstIndex];
+        cycleExos[event.firstIndex] = tmpExo;
+        newCycles.add(cycle.copyWith(exercises: cycleExos));
+      }
+      yield state.copyWith(
+          training: state.training.copyWith(cycles: newCycles));
+    } else if (event is RemovedExerciseEvent) {
       Training editedTraining = Training.clone(state.training);
-      List<RealisedExercise> exos = editedTraining.cycles[0].exercises;
-      RealisedExercise tmpExo = exos[event.secondIndex];
-      // for (var cycle in cycles){
-
-      // }
-      exos[event.secondIndex] = exos[event.firstIndex];
-      exos[event.firstIndex] = tmpExo;
-
-      yield state.copyWith(training: editedTraining);
-    }
-    if (event is RemovedExerciseEvent) {
-      Training editedTraining = Training.clone(state.training);
-      // editedTraining.cycles
-      yield state.copyWith(training: editedTraining);
+      List<ExerciseCycle> newCycles = [];
+      for (var cycle in state.training.cycles) {
+        List<RealisedExercise> cycleExos = [...cycle.exercises];
+        cycleExos.removeAt(event.exoIndex);
+        newCycles.add(cycle.copyWith(exercises: cycleExos));
+      }
+      yield state.copyWith(
+          training: editedTraining.copyWith(cycles: newCycles));
     } else if (event is ToggledEditModeEvent) {
+      yield state.copyWith(isEditting: !state.isEditting);
+    } else if (event is SavedTrainingChangesEvent) {
+      //TODO SAVE WITH PATCH UPDATE TRAINING
       yield state.copyWith(isEditting: !state.isEditting);
     }
   }
