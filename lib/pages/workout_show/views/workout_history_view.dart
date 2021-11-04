@@ -19,7 +19,6 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView>
     super.initState();
     _historyTrainings = RepositoryProvider.of<TrainingRepository>(context)
         .getByReference(widget.referenceTraining.id!);
-    print(_historyTrainings);
   }
 
   @override

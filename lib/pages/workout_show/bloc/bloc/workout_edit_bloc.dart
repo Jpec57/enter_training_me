@@ -1,12 +1,18 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
+import 'package:enter_training_me/pages/workout_show/workout_show_page_arguments.dart';
+import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 
 part 'workout_edit_event.dart';
 part 'workout_edit_state.dart';
 
 class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
-  WorkoutEditBloc(Training training)
+  final TrainingRepository trainingRepository;
+  WorkoutEditBloc(this.trainingRepository, Training training)
       : super(WorkoutEditState(training: training));
 
   @override
@@ -24,9 +30,9 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
         newCycles.add(cycle.copyWith(exercises: cycleExos));
       }
       yield state.copyWith(
-          training: state.training.copyWith(cycles: newCycles));
+          training: state.training.copyWith(cycles: newCycles),
+          hasMadeChanges: true);
     } else if (event is RemovedExerciseEvent) {
-      Training editedTraining = Training.clone(state.training);
       List<ExerciseCycle> newCycles = [];
       for (var cycle in state.training.cycles) {
         List<RealisedExercise> cycleExos = [...cycle.exercises];
@@ -34,12 +40,40 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
         newCycles.add(cycle.copyWith(exercises: cycleExos));
       }
       yield state.copyWith(
-          training: editedTraining.copyWith(cycles: newCycles));
+          training: state.training.copyWith(cycles: newCycles),
+          hasMadeChanges: true);
     } else if (event is ToggledEditModeEvent) {
       yield state.copyWith(isEditting: !state.isEditting);
     } else if (event is SavedTrainingChangesEvent) {
-      //TODO SAVE WITH PATCH UPDATE TRAINING
-      yield state.copyWith(isEditting: !state.isEditting);
+      if (!state.hasMadeChanges) {
+        yield state.copyWith(isEditting: false);
+      } else {
+        if (state.training.id != null) {
+          try {
+            Training? training;
+            if (state.training.isOfficial) {
+              training = await trainingRepository
+                  .postUserTraining(state.training.toJson());
+              if (training != null) {
+                Get.offNamed(WorkoutShowPage.routeName,
+                    arguments:
+                        WorkoutShowPageArguments(referenceTraining: training));
+              }
+            } else {
+              training = await trainingRepository.patch(
+                  state.training.id!, state.training.toJson());
+            }
+
+            if (training != null) {
+              yield state.copyWith(training: state.training, isEditting: false);
+            }
+          } on DioError catch (e) {
+            Get.snackbar("Error", e.toString());
+          }
+        } else {
+          Get.snackbar("Error", "An error occurred. Please contact us.");
+        }
+      }
     }
   }
 }

@@ -27,6 +27,7 @@ class Training extends Equatable {
   final int? estimatedTimeInSeconds;
   final bool isOfficial;
   final double intensity;
+  final String? difficulty;
   @JsonKey(toJson: trainingRefToJson)
   final Training? reference;
 
@@ -35,6 +36,7 @@ class Training extends Equatable {
       required this.cycles,
       this.author,
       this.id,
+      this.difficulty,
       this.createdAt,
       this.updatedAt,
       this.isOfficial = false,
@@ -46,6 +48,20 @@ class Training extends Equatable {
   factory Training.fromJson(Map<String, dynamic> json) =>
       _$TrainingFromJson(json);
   Map<String, dynamic> toJson() => _$TrainingToJson(this);
+
+  Map<String, dynamic> toJsonForCreation() {
+    Map<String, dynamic> json = _$TrainingToJson(this);
+    return cleanForCreation(json);
+  }
+
+
+  
+
+  Map<String, dynamic> cleanForCreation(Map<String, dynamic> json) {
+    json.remove('author');
+    json['isOfficial'] = false;
+    return json;
+  }
 
   factory Training.clone(Training? ref) {
     if (ref == null) {
@@ -70,7 +86,7 @@ class Training extends Equatable {
   }
   @override
   String toString() {
-    return "Training $name [$cycles]";
+    return "Training $id $name [$cycles]";
   }
 
   List<String> get materials {
@@ -239,10 +255,12 @@ class Training extends Equatable {
     String? name,
   }) =>
       Training(
+          id: id,
           restBetweenCycles: restBetweenCycles ?? this.restBetweenCycles,
           cycles: cycles ?? this.cycles,
           name: name ?? this.name,
           reference: reference,
+          isOfficial: isOfficial,
           intensity: intensity,
           createdAt: createdAt,
           author: author ?? this.author);

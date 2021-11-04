@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' as get_lib;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -18,11 +19,12 @@ class ApiInterceptors extends Interceptor {
   }
 
   //401
-  void handleUnauthorized() {
-    // if (Get.Get.context != null){
-    //   BlocProvider.of<AuthBloc>(Get.Get.context!).add(LoggedOut());
-    // }
-    // Get.Get.offNamedUntil(LoginPage.routeName, (route) => false);
+  void handleUnauthorized() async {
+    get_lib.Get.snackbar(
+        "Log in", "You have been disconnected. Please log again");
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    storage.delete(key: StorageConstants.apiKey);
+    //TODO SHOW LOGIN DIALOG AND WAY TO RESUME REQUEST
   }
 
   //403

@@ -128,14 +128,12 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
   Future<Training?> saveTraining() async {
     Training? training;
-    print("saving training");
     try {
       //TODO save change in referenceTraining with a patch request
       training = await trainingRepository
           .postUserTraining(state.realisedTraining.toJson());
     } on Exception catch (e) {
       Get.snackbar("Error", e.toString());
-      print(e.toString());
       //TODO Save in local storage to resend later
     }
     return training;
@@ -213,14 +211,12 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   InWorkoutState _mapChangedExoEventToState(ChangedExoEvent event) {
     RealisedExercise doneExo =
         state.currentExo!.copyWith(exerciseReference: event.exo);
-    print("new exo ${event.exo}");
     List<RealisedExercise> doneExos = [...state.currentCycle!.exercises];
     doneExos[state.currentExoIndex] = doneExo;
 
     ExerciseCycle doneCycle = state.currentCycle!.copyWith(exercises: doneExos);
     List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
     doneCycles[state.currentCycleIndex] = doneCycle;
-    print(doneCycles);
     return state.copyWith(
         realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
   }

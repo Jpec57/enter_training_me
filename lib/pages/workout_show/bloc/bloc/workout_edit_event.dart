@@ -8,9 +8,7 @@ class SwitchedExerciseEvent extends WorkoutEditEvent {
   final int secondIndex;
 
   SwitchedExerciseEvent(
-      {required this.firstIndex,
-      required this.secondIndex,
-      this.cycleIndex });
+      {required this.firstIndex, required this.secondIndex, this.cycleIndex});
 
   @override
   List<Object?> get props => [firstIndex, secondIndex, cycleIndex];
@@ -46,13 +44,9 @@ class RemovedExerciseEvent extends WorkoutEditEvent {
   List<Object?> get props => [exoIndex, cycleIndex];
 }
 
-
 class SavedTrainingChangesEvent extends WorkoutEditEvent {
-  final int trainingId;
-  final Training newTraining;
-
-  SavedTrainingChangesEvent({required this.trainingId, required this.newTraining});
+  SavedTrainingChangesEvent();
 
   @override
-  List<Object?> get props => [trainingId, newTraining];
+  List<Object?> get props => [];
 }

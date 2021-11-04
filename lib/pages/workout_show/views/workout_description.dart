@@ -116,7 +116,6 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                 padding: const EdgeInsets.all(8.0),
                 child: Image.asset(
                   "assets/exercises/pull_up.png",
-                  // height: 70,
                 ),
               ),
             ),
@@ -189,7 +188,9 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _renderDeleteTrainingButton(widget.isEditting),
+          widget.referenceTraining.isOfficial
+              ? Container()
+              : _renderDeleteTrainingButton(widget.isEditting),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
             child: Wrap(
@@ -201,7 +202,8 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                             "${widget.referenceTraining.estimatedTimeInSeconds! ~/ 60}",
                         unit: " min")
                     : Container(),
-                Text("EXPERT", style: GoogleFonts.bebasNeue(fontSize: 25)),
+                Text(widget.referenceTraining.difficulty ?? "UNKNOWN",
+                    style: GoogleFonts.bebasNeue(fontSize: 25)),
               ],
             ),
           ),

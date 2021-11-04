@@ -24,7 +24,6 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     Response response =
         await getDio().get(getUrl.replaceFirst("{id}", id.toString()));
     dynamic data = response.data;
-    print(data);
     return Training.fromJson(data);
   }
 
@@ -102,9 +101,8 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     return response.statusCode! >= 200 && response.statusCode! < 300;
   }
 
-  Future postUserTraining(Map<String, dynamic> data) async {
-    print("------------------------------POSTING TRAINING");
-
+  Future<Training?> postUserTraining(Map<String, dynamic> data) async {
+    data.remove("id");
     data.remove("createdAt");
     Response response = await getDio().post(postUser, data: data);
     dynamic responseData = response.data;
@@ -113,13 +111,18 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
 
   @override
   Future<Training?> patch(int id, Map<String, dynamic> data) async {
+    //should be done in api as well
+    if (data['isOfficial']) {
+      data.remove('author');
+      data['isOfficial'] = false;
+      return await postUserTraining(data);
+    }
     Response response = await getDio()
         .patch(getUrl.replaceFirst("{id}", id.toString()), data: data);
     if (response.statusCode == null) {
       return null;
     }
-    return null;
-    // return Training.fromJson(response.data);
+    return Training.fromJson(response.data);
   }
 
   @override

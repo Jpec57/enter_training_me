@@ -15,6 +15,7 @@ Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
           ? null
           : User.fromJson(json['author'] as Map<String, dynamic>),
       id: json['id'] as int?,
+      difficulty: json['difficulty'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -41,5 +42,6 @@ Map<String, dynamic> _$TrainingToJson(Training instance) => <String, dynamic>{
       'estimatedTimeInSeconds': instance.estimatedTimeInSeconds,
       'isOfficial': instance.isOfficial,
       'intensity': instance.intensity,
+      'difficulty': instance.difficulty,
       'reference': trainingRefToJson(instance.reference),
     };

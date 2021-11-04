@@ -197,7 +197,6 @@ class _OneRMPageState extends State<OneRMPage> {
                           child: ListWheelScrollView(
                               controller: _listWheelScrollController,
                               onSelectedItemChanged: (int index) {
-                                // print("Selected item is $index");
                               },
                               physics: const FixedExtentScrollPhysics(),
                               itemExtent: 75.0,

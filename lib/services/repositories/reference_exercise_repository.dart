@@ -48,7 +48,6 @@ class ReferenceExerciseRepository extends ApiService
         200 <= response.statusCode! &&
         response.statusCode! < 300) {
       if (box != null) {
-        print("Not null box");
         var cachedRequest = CachedRequest(DateTime.now(), response.data);
         box.putAt(0, cachedRequest);
       }

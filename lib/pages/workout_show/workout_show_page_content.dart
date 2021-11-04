@@ -71,10 +71,12 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
                           color: Colors.white),
                       onPressed: () async {
                         if (isEditting) {
-                          //
+                          BlocProvider.of<WorkoutEditBloc>(context)
+                              .add(SavedTrainingChangesEvent());
+                        } else {
+                          BlocProvider.of<WorkoutEditBloc>(context)
+                              .add(ToggledEditModeEvent());
                         }
-                        BlocProvider.of<WorkoutEditBloc>(context)
-                            .add(ToggledEditModeEvent());
                       },
                     );
                   },

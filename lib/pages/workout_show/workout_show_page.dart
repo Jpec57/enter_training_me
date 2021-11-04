@@ -25,7 +25,9 @@ class WorkoutShowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<WorkoutEditBloc>(
       lazy: false,
-      create: (context) => WorkoutEditBloc(referenceTraining),
+      create: (context) => WorkoutEditBloc(
+          RepositoryProvider.of<TrainingRepository>(context),
+          referenceTraining),
       child: WorkoutShowPageContent(referenceTraining: referenceTraining),
     );
   }
