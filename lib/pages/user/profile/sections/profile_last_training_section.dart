@@ -7,6 +7,44 @@ class ProfileLastTrainingSection extends StatelessWidget {
   const ProfileLastTrainingSection({Key? key, required this.lastTrainings})
       : super(key: key);
 
+  Widget _renderTrainingContainer(double itemWidth, Training training) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: Container(
+          width: itemWidth,
+          decoration: BoxDecoration(
+              color: CustomTheme.green,
+              borderRadius: BorderRadius.circular(10)),
+          child: Stack(children: [
+            Image.asset("assets/exercises/pull_up.png", fit: BoxFit.cover),
+            Align(
+                alignment: const Alignment(0, 0.75),
+                child: Container(
+                  width: itemWidth,
+                  height: itemWidth * 0.25,
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(100, 255, 255, 255),
+                  ),
+                  child: Text(training.name,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(0, 0),
+                            blurRadius: 2.0,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ],
+                      )),
+                )),
+          ])),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,28 +65,7 @@ class ProfileLastTrainingSection extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, i) {
                 double itemWidth = MediaQuery.of(context).size.width / 2.5;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Container(
-                      width: itemWidth,
-                      decoration: BoxDecoration(
-                          color: CustomTheme.green,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Stack(children: [
-                        Image.asset("assets/exercises/pull_up.png",
-                            fit: BoxFit.cover),
-                        Container(
-                          alignment: Alignment.lerp(Alignment.topCenter,
-                              Alignment.bottomCenter, 0.75),
-                          width: itemWidth,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            // color: Color.fromARGB(100, 255, 255, 255),
-                          ),
-                          child: Text(lastTrainings[i].name),
-                        )
-                      ])),
-                );
+                return _renderTrainingContainer(itemWidth, lastTrainings[i]);
               },
             ),
           ),

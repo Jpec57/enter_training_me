@@ -32,6 +32,7 @@ class SeparatorOverlappingSectionLayout extends StatelessWidget {
           child: topWidget,
         ),
         Stack(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
           alignment: Alignment.center,
           children: [
             Positioned.fill(
