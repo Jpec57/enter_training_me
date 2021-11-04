@@ -50,3 +50,11 @@ class SavedTrainingChangesEvent extends WorkoutEditEvent {
   @override
   List<Object?> get props => [];
 }
+
+class RenamedWorkoutEvent extends WorkoutEditEvent {
+  final String name;
+  RenamedWorkoutEvent(this.name);
+
+  @override
+  List<Object?> get props => [name];
+}

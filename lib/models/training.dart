@@ -54,11 +54,11 @@ class Training extends Equatable {
     return cleanForCreation(json);
   }
 
-
-  
-
-  Map<String, dynamic> cleanForCreation(Map<String, dynamic> json) {
+  static Map<String, dynamic> cleanForCreation(Map<String, dynamic> json) {
+    //TODO in API
     json.remove('author');
+    json.remove("id");
+    json.remove("createdAt");
     json['isOfficial'] = false;
     return json;
   }

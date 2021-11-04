@@ -102,19 +102,16 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   }
 
   Future<Training?> postUserTraining(Map<String, dynamic> data) async {
-    data.remove("id");
-    data.remove("createdAt");
+    data = Training.cleanForCreation(data);
     Response response = await getDio().post(postUser, data: data);
-    dynamic responseData = response.data;
-    return Training.fromJson(jsonDecode(responseData));
+    return Training.fromJson(
+        response.data is String ? jsonDecode(response.data) : response.data);
   }
 
   @override
   Future<Training?> patch(int id, Map<String, dynamic> data) async {
     //should be done in api as well
     if (data['isOfficial']) {
-      data.remove('author');
-      data['isOfficial'] = false;
       return await postUserTraining(data);
     }
     Response response = await getDio()
@@ -122,7 +119,9 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     if (response.statusCode == null) {
       return null;
     }
-    return Training.fromJson(response.data);
+    Map<String, dynamic> map =
+        response.data is String ? jsonDecode(response.data) : response.data;
+    return Training.fromJson(map);
   }
 
   @override

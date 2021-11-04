@@ -2,6 +2,7 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
+import 'package:enter_training_me/pages/in_workout/views/end/rename_training_dialog.dart';
 import 'package:enter_training_me/pages/workout_show/bloc/bloc/workout_edit_bloc.dart';
 import 'package:enter_training_me/pages/workout_show/views/workout_description.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
@@ -48,9 +49,24 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          widget.referenceTraining.name,
-          style: Theme.of(context).textTheme.headline3,
+        title: BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
+          buildWhen: (prev, next) => prev.training.name != next.training.name,
+          builder: (context, state) {
+            return InkWell(
+              onTap: () {
+                Get.dialog(RenameTrainingDialog(
+                    initialValue: state.training.name,
+                    callback: (name) {
+                      BlocProvider.of<WorkoutEditBloc>(context)
+                          .add(RenamedWorkoutEvent(name));
+                    }));
+              },
+              child: Text(
+                state.training.name,
+                style: Theme.of(context).textTheme.headline3,
+              ),
+            );
+          },
         ),
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),

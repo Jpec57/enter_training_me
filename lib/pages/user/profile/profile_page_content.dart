@@ -190,7 +190,8 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
             builder: (BuildContext context,
                 AsyncSnapshot<List<ReferenceExercise>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
+                  snapshot.hasData &&
+                  snapshot.data!.isNotEmpty) {
                 List<ReferenceExercise> exos = snapshot.data!;
                 return ExerciseHistoryEvolution(
                   referenceExercises: exos,
