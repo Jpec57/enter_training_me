@@ -58,18 +58,45 @@ class CommunityPageContent extends StatelessWidget {
 
   List<TabElement> getTabElements(BuildContext context) {
     return [
-      const TabElement(
-          tab: Tab(text: "Feed", icon: Icon(Icons.bloodtype)),
-          view: FeedView()),
+      TabElement(
+          tab: const Tab(text: "Feed", icon: Icon(Icons.bloodtype)),
+          view: const FeedView(),
+          header: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/workouts/workout_wallpaper.jpeg"),
+                    fit: BoxFit.cover)),
+          )),
       TabElement(
           tab: const Tab(text: "Ranking", icon: Icon(Icons.computer)),
-          view: Container(color: Colors.red)),
+          view: Container(color: Colors.red),
+          header: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image:
+                        AssetImage("assets/workouts/workout_wallpaper2.jpeg"),
+                    fit: BoxFit.cover)),
+          )),
       TabElement(
           tab: const Tab(text: "Coaching", icon: Icon(Icons.security)),
-          view: Container(color: Colors.purple)),
+          view: Container(color: Colors.purple),
+          header: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image:
+                        AssetImage("assets/workouts/workout_wallpaper3.jpeg"),
+                    fit: BoxFit.cover)),
+          )),
       TabElement(
           tab: const Tab(text: "Map", icon: Icon(Icons.map)),
-          view: Container(color: Colors.green)),
+          view: Container(color: Colors.green),
+          header: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image:
+                        AssetImage("assets/workouts/workout_wallpaper4.jpeg"),
+                    fit: BoxFit.cover)),
+          )),
     ];
   }
 
@@ -79,11 +106,17 @@ class CommunityPageContent extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
+          Expanded(
+            child: TabBarView(
+                controller: innerTabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: tabElements.map((e) => e.header!).toList()),
+          ),
           TabBar(
-            // labelStyle: TextStyle(),
               controller: innerTabController,
               tabs: tabElements.map((e) => e.tab).toList()),
           Expanded(
+            flex: 3,
             child: TabBarView(
                 controller: innerTabController,
                 children: tabElements.map((e) => e.view).toList()),

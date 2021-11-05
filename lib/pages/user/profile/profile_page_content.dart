@@ -18,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 part 'sections/profile_metrics_section.dart';
+
 class ProfilePageContent extends StatefulWidget {
   const ProfilePageContent({Key? key}) : super(key: key);
 
@@ -184,5 +185,4 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
       ),
     );
   }
-
 }

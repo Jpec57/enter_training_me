@@ -13,8 +13,7 @@ class ProfileLastTrainingSection extends StatelessWidget {
       child: Container(
           width: itemWidth,
           decoration: BoxDecoration(
-              color: CustomTheme.green,
-              borderRadius: BorderRadius.circular(10)),
+              color: CustomTheme.grey, borderRadius: BorderRadius.circular(10)),
           child: Stack(children: [
             Image.asset("assets/exercises/pull_up.png", fit: BoxFit.cover),
             Align(
@@ -25,21 +24,23 @@ class ProfileLastTrainingSection extends StatelessWidget {
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(100, 255, 255, 255),
                   ),
-                  child: Text(training.name,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(0, 0),
-                            blurRadius: 2.0,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ],
-                      )),
+                  child: Center(
+                    child: Text(training.name,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          shadows: <Shadow>[
+                            Shadow(
+                              offset: Offset(0, 0),
+                              blurRadius: 2.0,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                          ],
+                        )),
+                  ),
                 )),
           ])),
     );

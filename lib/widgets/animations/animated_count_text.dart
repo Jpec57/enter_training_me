@@ -52,6 +52,12 @@ class _AnimatedCountTextState<T> extends State<AnimatedCountText>
     hasBeenAnimatedOnce = true;
   }
 
+  String formatNumberToString(num value) {
+    return widget.count is int
+        ? value.toInt().toString()
+        : value.toStringAsFixed(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
@@ -65,15 +71,15 @@ class _AnimatedCountTextState<T> extends State<AnimatedCountText>
         }
         _previousVisibilityFraction = visibleFraction;
       },
-      child: AnimatedBuilder(
-        animation: _animation,
-        builder: (BuildContext context, Widget? child) {
-          String value = widget.count is int
-              ? (_animation.value).toInt().toString()
-              : _animation.value.toStringAsFixed(1);
-          return widget.widgetFromStringGenerator(value);
-        },
-      ),
+      child: widget.count < 5
+          ? widget.widgetFromStringGenerator(formatNumberToString(widget.count))
+          : AnimatedBuilder(
+              animation: _animation,
+              builder: (BuildContext context, Widget? child) {
+                return widget.widgetFromStringGenerator(
+                    formatNumberToString(_animation.value));
+              },
+            ),
     );
   }
 }
