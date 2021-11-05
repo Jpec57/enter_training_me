@@ -1,3 +1,4 @@
+import 'package:auto_animated/auto_animated.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
@@ -219,9 +220,30 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                 exoWidgets.add(
                     _renderExoCard(exos[i], widget.isEditting, i, exoLength));
               }
-              return Column(
-                children: exoWidgets,
-              );
+              return LiveList.options(
+                  options: const LiveOptions(),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, i, Animation<double> animation) {
+                    return FadeTransition(
+                      opacity: Tween<double>(
+                        begin: 0,
+                        end: 1,
+                      ).animate(animation),
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, -0.1),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: _renderExoCard(
+                            exos[i], widget.isEditting, i, exoLength),
+                      ),
+                    );
+                  },
+                  itemCount: exos.length);
+              // return Column(
+              //   children: exoWidgets,
+              // );
             },
           ),
         ],

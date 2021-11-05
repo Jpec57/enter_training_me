@@ -12,12 +12,12 @@ import 'package:enter_training_me/pages/user/profile/sections/profile_last_train
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:enter_training_me/widgets/analysis/history/exercise_history_evolution.dart';
 import 'package:enter_training_me/widgets/analysis/user/exercised_muscle_radar_repartition_graph.dart';
-import 'package:enter_training_me/widgets/animations/animated_count.dart';
 import 'package:enter_training_me/widgets/animations/animated_count_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+part 'sections/profile_metrics_section.dart';
 class ProfilePageContent extends StatefulWidget {
   const ProfilePageContent({Key? key}) : super(key: key);
 
@@ -28,7 +28,6 @@ class ProfilePageContent extends StatefulWidget {
 class _ProfilePageContentState extends State<ProfilePageContent> {
   late Future<ProfileInfo?> _getUserProfileInfosFuture;
   late Future<List<ReferenceExercise>>? _realisedExoReferencesFuture;
-  final Key visibleKey = UniqueKey();
 
   @override
   void initState() {
@@ -150,7 +149,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
               lastTrainings: info.lastTrainings.reversed.toList(),
             ),
           ),
-          _renderKeyNumbersWidget(info),
+          ProfileMetricsSection(info: info),
           Padding(
             padding: const EdgeInsets.only(left: 8, top: 32, bottom: 16),
             child: Text(
@@ -186,93 +185,4 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
     );
   }
 
-  Widget _renderKeyNumbersWidget(ProfileInfo info) {
-    List<Widget> metrics = [
-      ProfileMetricContainer(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(info.trainingCount.toString(),
-              style: Theme.of(context).textTheme.headline1),
-          const Text("trainings"),
-        ],
-      )),
-      ProfileMetricContainer(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(info.sbdSum.toString(),
-                style: Theme.of(context).textTheme.headline1),
-            const Text("SBD"),
-          ],
-        ),
-      ),
-      ProfileMetricContainer(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("${info.globalRank}#",
-                style: Theme.of(context).textTheme.headline1),
-            const Text("Global Ranking"),
-          ],
-        ),
-      ),
-      ProfileMetricContainer(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedCountText(
-              count: info.sbdSum,
-              visibleKey: visibleKey,
-            ),
-            const Text("Global Ranking"),
-          ],
-        ),
-      ),
-    ];
-
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 8, bottom: 24.0, top: 32),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Dashboard", style: Theme.of(context).textTheme.headline4),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.edit))
-          ],
-        ),
-      ),
-      LiveGrid.options(
-        options: const LiveOptions(
-          reAnimateOnVisibility: false,
-        ),
-        itemBuilder: (
-          BuildContext context,
-          int index,
-          Animation<double> animation,
-        ) =>
-            FadeTransition(
-          opacity: Tween<double>(
-            begin: 0,
-            end: 1,
-          ).animate(animation),
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, -0.1),
-              end: Offset.zero,
-            ).animate(animation),
-            child: metrics[index],
-          ),
-        ),
-        itemCount: metrics.length,
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-      ),
-    ]);
-  }
 }

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+typedef StringWidget = Widget Function(String count);
+
 class AnimatedCountText extends StatefulWidget {
-  final double count;
+  final num count;
+  final num lowerBound;
   final bool reanimateOnVisibile;
-  final Key visibleKey;
+  final StringWidget widgetFromStringGenerator;
+  final Duration duration;
   const AnimatedCountText({
     Key? key,
     required this.count,
-    required this.visibleKey,
+    this.lowerBound = 0.0,
+    required this.widgetFromStringGenerator,
+    this.duration = const Duration(milliseconds: 1500),
     this.reanimateOnVisibile = false,
   }) : super(key: key);
 
@@ -16,21 +22,22 @@ class AnimatedCountText extends StatefulWidget {
   _AnimatedCountTextState createState() => _AnimatedCountTextState();
 }
 
-class _AnimatedCountTextState extends State<AnimatedCountText>
+class _AnimatedCountTextState<T> extends State<AnimatedCountText>
     with TickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _animation;
+  late Animation _animation;
   double _previousVisibilityFraction = 0;
   bool hasBeenAnimatedOnce = false;
+  final Key visibleKey = UniqueKey();
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
         vsync: this,
-        duration: const Duration(milliseconds: 1500),
-        lowerBound: 0,
-        upperBound: widget.count);
+        duration: widget.duration,
+        lowerBound: widget.lowerBound.toDouble(),
+        upperBound: widget.count.toDouble());
     _animation = _controller;
   }
 
@@ -47,25 +54,26 @@ class _AnimatedCountTextState extends State<AnimatedCountText>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (BuildContext context, Widget? child) {
-        return VisibilityDetector(
-          key: widget.visibleKey,
-          onVisibilityChanged: (visibilityInfo) {
-            double visibleFraction = visibilityInfo.visibleFraction;
-            if (visibleFraction > 0 &&
-                _previousVisibilityFraction <= 0 &&
-                (!hasBeenAnimatedOnce || widget.reanimateOnVisibile)) {
-              _relaunchAnimation();
-            }
-            _previousVisibilityFraction = visibleFraction;
-          },
-          child: Text(
-            _animation.value.toStringAsFixed(1),
-          ),
-        );
+    return VisibilityDetector(
+      key: visibleKey,
+      onVisibilityChanged: (visibilityInfo) {
+        double visibleFraction = visibilityInfo.visibleFraction;
+        if (visibleFraction > 0 &&
+            _previousVisibilityFraction <= 0 &&
+            (!hasBeenAnimatedOnce || widget.reanimateOnVisibile)) {
+          _relaunchAnimation();
+        }
+        _previousVisibilityFraction = visibleFraction;
       },
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (BuildContext context, Widget? child) {
+          String value = widget.count is int
+              ? (_animation.value).toInt().toString()
+              : _animation.value.toStringAsFixed(1);
+          return widget.widgetFromStringGenerator(value);
+        },
+      ),
     );
   }
 }
