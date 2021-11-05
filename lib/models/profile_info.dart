@@ -6,11 +6,15 @@ part 'profile_info.g.dart';
 class ProfileInfo {
   final User user;
   final int trainingCount;
+  final int globalRank;
+  final double sbdSum;
   final List<Training> lastTrainings;
 
   ProfileInfo(
       {required this.user,
       required this.trainingCount,
+      this.sbdSum = 762.3,
+      this.globalRank = 1,
       required this.lastTrainings});
 
   factory ProfileInfo.fromJson(Map<String, dynamic> json) =>

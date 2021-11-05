@@ -108,13 +108,13 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Headline4(title: "Official Workouts"),
-                InkWell(
-                    onTap: () {},
-                    child: const Text(
-                      "More...",
-                    )),
+              children: const [
+                Headline4(title: "Official Workouts"),
+                // InkWell(
+                //     onTap: () {},
+                //     child: const Text(
+                //       "More...",
+                //     )),
               ],
             ),
           ),

@@ -36,13 +36,13 @@ class _CommunityPageState extends State<CommunityPage> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Headline4(title: "Feed"),
-            InkWell(
-                onTap: () {},
-                child: const Text(
-                  "More...",
-                )),
+          children: const [
+            Headline4(title: "Feed"),
+            // InkWell(
+            //     onTap: () {},
+            //     child: const Text(
+            //       "More...",
+            //     )),
           ],
         ),
         FutureBuilder(

@@ -49,7 +49,10 @@ class CustomTheme {
       backgroundColor: Colors.black,
       scaffoldBackgroundColor: CustomTheme.darkGrey,
       hintColor: CustomTheme.middleGreen,
+      switchTheme: const SwitchThemeData(),
+      iconTheme: const IconThemeData(color: Colors.white),
       textTheme: TextTheme(
+        subtitle1: const TextStyle(color: Colors.white),
         // body1: const TextStyle(color: Colors.white),
         bodyText1: const TextStyle(color: Colors.white),
         bodyText2: const TextStyle(color: Colors.white),

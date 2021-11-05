@@ -48,11 +48,17 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
       bottomNavigationBar: const CustomBottomNavigationBar(
           selectedRoute: QuickCountdownPage.routeName),
       appBar: AppBar(
-        leading: const Icon(Icons.timer),
+        // leading: const Icon(Icons.timer),
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 40,
-        title: const TotalTimeInfo(),
+        actions: const [
+          Center(child: TotalTimeInfo()),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(Icons.timer),
+          )
+        ],
       ),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(

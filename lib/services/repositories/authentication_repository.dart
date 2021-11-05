@@ -29,6 +29,7 @@ class AuthenticationRepository extends ApiService
       "email": username,
       "password": password,
     };
+    await removeUserToken();
     Response response = await getDio().post("/api/login", data: data);
 
     if (response.statusCode == null) {
@@ -38,9 +39,8 @@ class AuthenticationRepository extends ApiService
   }
 
   @override
-  void logOut() {
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    storage.delete(key: StorageConstants.apiKey);
+  void logOut() async {
+    await removeUserToken();
     get_lib.Get.offNamedUntil(HomePage.routeName, (route) => false);
   }
 
@@ -75,7 +75,7 @@ class AuthenticationRepository extends ApiService
       "email": email,
       "password": password,
     };
-
+    await removeUserToken();
     Response response = await getDio().post("/api/login", data: data);
     Map<String, dynamic> res = response.data;
     if (!res.containsKey("token")) {
