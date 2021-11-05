@@ -6,7 +6,6 @@ abstract class InWorkoutEvent extends Equatable {
 
 class RestDoneEvent extends InWorkoutEvent {
   const RestDoneEvent();
-  // final int restTimeTaken;
 
   @override
   List<Object?> get props => [];
@@ -40,15 +39,6 @@ class ChangedViewEvent extends InWorkoutEvent {
 
   @override
   List<Object?> get props => [view, tabController];
-}
-
-class ToggledContentVisibilityEvent extends InWorkoutEvent {
-  final bool shouldHideContent;
-
-  const ToggledContentVisibilityEvent(this.shouldHideContent);
-
-  @override
-  List<Object?> get props => [shouldHideContent];
 }
 
 class RemovedRepEvent extends InWorkoutEvent {

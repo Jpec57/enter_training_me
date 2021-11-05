@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
@@ -84,7 +83,6 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             tabController: _tabController,
           );
         }
-        // TODO NewTrainingView ?
         if (state.currentExo == null ||
             state.isEnd ||
             state.currentView == InWorkoutView.endWorkoutView) {
@@ -93,6 +91,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               referenceId: state.referenceTrainingId);
         }
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.black,
           body: SafeArea(
               child: Column(
@@ -101,10 +100,9 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
               const TrainingHeaderBar(),
               _renderExerciseHeader(),
               BlocBuilder<InWorkoutBloc, InWorkoutState>(
-                buildWhen: (prev, next) =>
-                    prev.shouldHideContent != next.shouldHideContent,
+                buildWhen: (prev, next) => prev.currentExo != next.currentExo,
                 builder: (context, state) {
-                  if (state.currentExo == null || state.shouldHideContent) {
+                  if (state.currentExo == null) {
                     return Container();
                   }
                   return Expanded(
@@ -115,7 +113,8 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
                               physics: const NeverScrollableScrollPhysics(),
                               controller: _tabController,
                               children: [
-                                const InWorkoutExerciseView(),
+                                InWorkoutExerciseView(
+                                    parentBuildContext: context),
                                 InWorkoutRestView(
                                   tabController: _tabController,
                                   onTimerEndCallback: onExerciseSetEnd,
@@ -150,7 +149,6 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
       return Container(
         decoration: const BoxDecoration(
             color: CustomTheme.middleGreen,
-            // color: CustomTheme.green,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),

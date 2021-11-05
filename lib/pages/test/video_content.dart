@@ -68,22 +68,5 @@ class _VideoContentState extends State<VideoContent> {
         ...widget.stackChildren,
       ],
     );
-    return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Chewie(
-                controller: _chewieController,
-              ),
-            ),
-          ),
-          ...widget.stackChildren,
-        ],
-      ),
-    );
   }
 }

@@ -6,101 +6,90 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class InWorkoutExerciseView extends StatelessWidget {
-  const InWorkoutExerciseView({Key? key}) : super(key: key);
+  final BuildContext parentBuildContext;
+  const InWorkoutExerciseView({Key? key, required this.parentBuildContext})
+      : super(key: key);
 
-  void showModal() {
-    // BlocProvider.of<InWorkoutBloc>(context)
-    //     .add(const ToggledContentVisibilityEvent(true));
-
-    // BlocProvider.of<InWorkoutBloc>(context)
-    //     .add(const ToggledContentVisibilityEvent(false));
+  void showModal(Widget dialog) async {
+    await Get.dialog(dialog);
   }
 
-  void showSetsModal(BuildContext context, InWorkoutState state) {
-    Get.dialog(ChangeExerciseSetDialog<int>(
+  void showSetsModal(InWorkoutState state) {
+    showModal(ChangeExerciseSetDialog<int>(
       currentValue: state.currentSet.reps,
       title: "How many sets do you intent to do ?",
       setForOneCallback: (value) {
         int parseValue = int.parse(value);
 
-        BlocProvider.of<InWorkoutBloc>(context)
+        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
             .add(ChangedNbSetEvent(parseValue));
       },
     ));
   }
 
-  void showRepsModal(BuildContext context, InWorkoutState state) {
-    Get.dialog(ChangeExerciseSetDialog<int>(
+  void showRepsModal(InWorkoutState state) {
+    showModal(ChangeExerciseSetDialog<int>(
       currentValue: state.currentSet.reps,
       title: "How many reps do you intent to do ?",
       setForAllCallback: (value) {
         int parseValue = int.parse(value);
 
-        BlocProvider.of<InWorkoutBloc>(context)
+        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
             .add(ChangedRefRepsEvent(parseValue, isForAll: true));
       },
       setForOneCallback: (value) {
         int parseValue = int.parse(value);
 
-        BlocProvider.of<InWorkoutBloc>(context)
+        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
             .add(ChangedRefRepsEvent(parseValue));
       },
     ));
   }
 
-  void showWeightModal(BuildContext context, InWorkoutState state) {
-    // BlocProvider.of<InWorkoutBloc>(context)
-    //     .add(const ToggledContentVisibilityEvent(true));
-
-    Get.dialog(ChangeExerciseSetDialog<double>(
+  void showWeightModal(InWorkoutState state) {
+    showModal(ChangeExerciseSetDialog<double>(
       title: "How heavy do you intent to lift ?",
       currentValue: state.currentSet.weight,
       showQuickIntIncrease: false,
       setForAllCallback: (value) {
         double parseValue = double.parse(value);
-
-        BlocProvider.of<InWorkoutBloc>(context)
+        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
             .add(ChangedRefWeightEvent(parseValue, isForAll: true));
-        // BlocProvider.of<InWorkoutBloc>(context)
-        //     .add(const ToggledContentVisibilityEvent(false));
       },
       setForOneCallback: (value) {
         double parseValue = double.parse(value);
-
-        BlocProvider.of<InWorkoutBloc>(context)
+        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
             .add(ChangedRefWeightEvent(parseValue));
-        // BlocProvider.of<InWorkoutBloc>(context)
-        //     .add(const ToggledContentVisibilityEvent(false));
       },
     ));
   }
 
   Widget _renderExerciseInfo(
       BuildContext context, RealisedExercise exo, InWorkoutState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: InkWell(
-            onTap: () {
-              showSetsModal(context, state);
-            },
-            child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
-              buildWhen: (prev, next) => prev.currentExo != next.currentExo,
-              builder: (context, state) {
-                return Center(
-                  child: Text(
-                    "${state.currentSetIndex + 1} / ${exo.sets.length} sets",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                );
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: InkWell(
+              onTap: () {
+                showSetsModal(state);
               },
+              child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
+                buildWhen: (prev, next) => prev.currentExo != next.currentExo,
+                builder: (context, state) {
+                  return Center(
+                    child: Text(
+                      "${state.currentSetIndex + 1} / ${exo.sets.length} sets",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -111,7 +100,7 @@ class InWorkoutExerciseView extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        showRepsModal(context, state);
+                        showRepsModal(state);
                       },
                       child: Text(state.currentSet.reps.toString(),
                           style: Theme.of(context).textTheme.headline1),
@@ -128,7 +117,7 @@ class InWorkoutExerciseView extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          showWeightModal(context, state);
+                          showWeightModal(state);
                         },
                         child: state.currentSet.weight != null
                             ? Padding(
@@ -153,8 +142,8 @@ class InWorkoutExerciseView extends StatelessWidget {
               )
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

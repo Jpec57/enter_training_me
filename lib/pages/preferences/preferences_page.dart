@@ -23,6 +23,7 @@ class PreferencesPage extends StatelessWidget {
                 return SwitchListTile(
                     title: const Text(
                       "Sound during workout",
+                      style: TextStyle(color: Colors.white),
                     ),
                     value: state.soundInWorkout == SoundInWorkout.on,
                     onChanged: (value) {

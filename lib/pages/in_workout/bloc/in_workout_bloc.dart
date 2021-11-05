@@ -40,9 +40,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   Stream<InWorkoutState> mapEventToState(
     InWorkoutEvent event,
   ) async* {
-    if (event is ToggledContentVisibilityEvent) {
-      yield state.copyWith(shouldHideContent: event.shouldHideContent);
-    } else if (event is AddedExoEvent) {
+    if (event is AddedExoEvent) {
       yield _mapAddedExoEventToState(event);
       if (state.isAutoPlayOn) {
         yield _mapChangedViewEventToState(ChangedViewEvent(
@@ -93,7 +91,10 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
           updateSet(doneReps: state.reallyDoneReps);
       if (state.isEndOfWorkout) {
         Training? training = await saveTraining();
-        yield state.copyWith(isEnd: true, realisedTrainingId: training?.id);
+        yield state.copyWith(
+            isEnd: true,
+            realisedTrainingId: training?.id
+            );
       }
       yield state.copyWith(
           isEnd: state.isEndOfWorkout,
@@ -140,7 +141,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
-    return state.copyWith(reallyDoneReps: state.currentSet.reps);
+    return state.copyWith(
+        reallyDoneReps: state.currentSet.reps);
   }
 
   List<ExerciseCycle> updateSet(
