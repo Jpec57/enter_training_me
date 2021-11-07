@@ -54,6 +54,12 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
               ChangedViewEvent(event.tabController, InWorkoutView.inRestView));
         }
       }
+    } else if (event is ChangedNbLoopsEvent) {
+      if (event.nbLoops > 0) {
+        yield state.copyWith(
+            realisedTraining:
+                state.realisedTraining.copyWith(numberOfLoops: event.nbLoops));
+      }
     } else if (event is ChangedTrainingNameEvent) {
       Map<String, dynamic> nameData = {"name": event.name};
       if (state.realisedTrainingId != null) {
@@ -87,16 +93,25 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
       yield _mapExerciseDoneEventToState(event);
     } else if (event is RestDoneEvent) {
+      // In loop training, we must additionate all reps
+      int offset = 0;
+      if (state.realisedTraining.numberOfLoops > 1 &&
+          state.currentCycleIndex > 0) {
+        offset = state.currentSet.reps;
+      }
       List<RealisedExercise> doneExos =
-          updateSet(doneReps: state.reallyDoneReps);
+          updateSet(doneReps: state.reallyDoneReps + offset);
+
       if (state.isEndOfWorkout) {
         Training? training = await saveTraining();
         yield state.copyWith(isEnd: true, realisedTrainingId: training?.id);
       }
       yield state.copyWith(
           isEnd: state.isEndOfWorkout,
+          currentCycleIndex: state.nextCycleIndex,
           currentSetIndex: state.nextSetIndex,
           currentExoIndex: state.nextExoIndex,
+          currentView: InWorkoutView.inExerciseView,
           realisedTraining:
               state.realisedTraining.copyWith(exercises: doneExos));
     } else if (event is ChangedNbSetEvent) {
@@ -127,9 +142,23 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   Future<Training?> saveTraining() async {
     Training? training;
     try {
+      Training toSaveTraining = state.realisedTraining;
+      if (toSaveTraining.numberOfLoops > 1) {
+        int nbDoneCycles = state.currentCycleIndex + 1;
+        List<RealisedExercise> realisedExercises = [];
+        for (var exo in toSaveTraining.exercises) {
+          List<ExerciseSet> realisedSets = [];
+          for (var set in exo.sets) {
+            realisedSets.add(set.copyWith(reps: set.reps ~/ nbDoneCycles));
+          }
+          realisedExercises.add(exo.copyWith(sets: realisedSets));
+        }
+        toSaveTraining =
+            state.realisedTraining.copyWith(exercises: realisedExercises);
+      }
       //TODO save change in referenceTraining with a patch request
-      training = await trainingRepository
-          .postUserTraining(state.realisedTraining.toJson());
+      training =
+          await trainingRepository.postUserTraining(toSaveTraining.toJson());
     } on Exception catch (e) {
       Get.snackbar("Error", e.toString());
       //TODO Save in local storage to resend later
@@ -138,7 +167,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
-    return state.copyWith(reallyDoneReps: state.currentSet.reps);
+    return state.copyWith(
+        reallyDoneReps: state.currentSet.reps,
+        currentView: InWorkoutView.inRestView);
   }
 
   List<RealisedExercise> updateSet(

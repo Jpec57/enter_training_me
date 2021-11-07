@@ -98,6 +98,15 @@ class ChangedNbSetEvent extends InWorkoutEvent {
   List<Object?> get props => [nbSets];
 }
 
+class ChangedNbLoopsEvent extends InWorkoutEvent {
+  final int nbLoops;
+
+  const ChangedNbLoopsEvent(this.nbLoops);
+
+  @override
+  List<Object?> get props => [nbLoops];
+}
+
 class AddedExoEvent extends InWorkoutEvent {
   final RealisedExercise exo;
   final TabController tabController;

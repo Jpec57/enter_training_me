@@ -4,14 +4,14 @@ import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FeedView extends StatefulWidget {
-  const FeedView({Key? key}) : super(key: key);
+class CoachingView extends StatefulWidget {
+  const CoachingView({Key? key}) : super(key: key);
 
   @override
-  _FeedViewState createState() => _FeedViewState();
+  _CoachingViewState createState() => _CoachingViewState();
 }
 
-class _FeedViewState extends State<FeedView>
+class _CoachingViewState extends State<CoachingView>
     with AutomaticKeepAliveClientMixin {
   late Future<List<Training>> _feedFuture;
 

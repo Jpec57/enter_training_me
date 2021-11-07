@@ -45,8 +45,14 @@ class _RenameTrainingDialogState extends State<RenameTrainingDialog> {
               padding: const EdgeInsets.symmetric(vertical: 24.0),
               child: TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                      filled: true, fillColor: Colors.white)),
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            _nameController.clear();
+                          },
+                          icon: const Icon(Icons.close, color: Colors.black)),
+                      filled: true,
+                      fillColor: Colors.white)),
             ),
             ElevatedButton(
                 onPressed: () {

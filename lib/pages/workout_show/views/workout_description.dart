@@ -203,6 +203,9 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                             "${widget.referenceTraining.estimatedTimeInSeconds! ~/ 60}",
                         unit: " min")
                     : Container(),
+                WorkoutMetric(
+                    metric: "${widget.referenceTraining.numberOfLoops}",
+                    unit: " cycle(s)"),
                 Text(widget.referenceTraining.difficulty ?? "UNKNOWN",
                     style: GoogleFonts.bebasNeue(fontSize: 25)),
               ],

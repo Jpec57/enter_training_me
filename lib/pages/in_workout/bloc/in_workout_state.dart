@@ -52,8 +52,12 @@ class InWorkoutState extends Equatable {
     }
     totalCurrentCycleDoneSets += currentSetIndex;
 
-    totalDoneSets =
-        (currentCycleIndex * setPerCycle) + totalCurrentCycleDoneSets;
+    bool hasDoneCurrentSet = currentView == InWorkoutView.inRestView;
+    totalDoneSets = (currentCycleIndex * setPerCycle) +
+        totalCurrentCycleDoneSets +
+        (hasDoneCurrentSet ? 1 : 0);
+    print(
+        "progress hasDoneCurrentSet $hasDoneCurrentSet totalDoneSets $totalDoneSets");
     return totalDoneSets.toDouble() / totalSets;
   }
 
@@ -78,6 +82,17 @@ class InWorkoutState extends Equatable {
       return currentSetIndex + 1;
     }
     return 0;
+  }
+
+  int? get nextCycleIndex {
+    int? nextExoIndex = this.nextExoIndex;
+    if (nextExoIndex == null) {
+      return null;
+    }
+    if (nextExoIndex == 0 && nextSetIndex == 0) {
+      return currentCycleIndex + 1;
+    }
+    return currentCycleIndex;
   }
 
   int? get nextExoIndex {

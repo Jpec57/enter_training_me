@@ -87,6 +87,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             state.isEnd ||
             state.currentView == InWorkoutView.endWorkoutView) {
           return WorkoutEndView(
+            parentBuildContext: context,
               tabController: _tabController,
               referenceId: state.referenceTrainingId);
         }

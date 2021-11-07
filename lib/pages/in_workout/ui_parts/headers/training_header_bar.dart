@@ -48,6 +48,7 @@ class TrainingHeaderBar extends StatelessWidget {
           Flexible(
               child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
             buildWhen: (prev, next) =>
+                prev.currentView != next.currentView ||
                 prev.currentSetIndex != next.currentExoIndex ||
                 prev.currentSetIndex != next.currentSetIndex,
             builder: (context, state) {
