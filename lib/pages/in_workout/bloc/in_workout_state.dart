@@ -33,17 +33,17 @@ class InWorkoutState extends Equatable {
     int totalDoneSets = 0;
     int totalSets = 0;
     int setPerCycle = 0;
-    if (realisedTraining.cycles.isEmpty) {
+    if (realisedTraining.exercises.isEmpty) {
       return 100;
     }
-    List<RealisedExercise> exos = realisedTraining.cycles[0].exercises;
+    List<RealisedExercise> exos = realisedTraining.exercises;
     if (exos.isEmpty) {
       return 100;
     }
     for (var exo in exos) {
       setPerCycle += exo.sets.length;
     }
-    totalSets = realisedTraining.cycles.length * setPerCycle;
+    totalSets = realisedTraining.numberOfLoops * setPerCycle;
     //Total set END
 
     int totalCurrentCycleDoneSets = 0;
@@ -60,14 +60,9 @@ class InWorkoutState extends Equatable {
   bool get isEndOfWorkout => nextExoIndex == null;
   bool get isNewWorkout => referenceTrainingId == null;
 
-  ExerciseCycle? get currentCycle =>
-      currentCycleIndex < realisedTraining.cycles.length
-          ? realisedTraining.cycles[currentCycleIndex]
-          : null;
-
   RealisedExercise? get currentExo =>
-      currentCycle != null && currentExoIndex < currentCycle!.exercises.length
-          ? currentCycle!.exercises[currentExoIndex]
+      currentExoIndex < realisedTraining.exercises.length
+          ? realisedTraining.exercises[currentExoIndex]
           : null;
 
   ReferenceExercise get currentRefExo => currentExo!.exerciseReference;
@@ -89,8 +84,8 @@ class InWorkoutState extends Equatable {
     int nextSetIndex = this.nextSetIndex;
     // Changing exercise
     if (nextSetIndex == 0) {
-      int cycleLength = realisedTraining.cycles.length;
-      int exerciseLength = currentCycle?.exercises.length ?? 0;
+      int cycleLength = realisedTraining.numberOfLoops;
+      int exerciseLength = realisedTraining.exercises.length;
       int currentExoIndex = this.currentExoIndex;
       // Has next exo in cycle
       if (currentExoIndex + 1 < exerciseLength) {
@@ -109,16 +104,16 @@ class InWorkoutState extends Equatable {
     int nextSetIndex = this.nextSetIndex;
     // Changing exercise
     if (nextSetIndex == 0) {
-      int cycleLength = realisedTraining.cycles.length;
-      int exerciseLength = currentCycle?.exercises.length ?? 0;
+      int cycleLength = realisedTraining.numberOfLoops;
+      int exerciseLength = realisedTraining.exercises.length;
       int currentExoIndex = this.currentExoIndex;
       // Has next exo in cycle
       if (currentExoIndex + 1 < exerciseLength) {
-        return currentCycle!.exercises[currentExoIndex + 1];
+        return realisedTraining.exercises[currentExoIndex + 1];
       }
       // loop to first exo in cycle
       if (currentCycleIndex + 1 < cycleLength) {
-        return realisedTraining.cycles[currentCycleIndex + 1].exercises[0];
+        return realisedTraining.exercises[0];
       }
       return null;
     }

@@ -8,9 +8,10 @@ part of 'training.dart';
 
 Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
       name: json['name'] as String,
-      cycles: (json['cycles'] as List<dynamic>)
-          .map((e) => ExerciseCycle.fromJson(e as Map<String, dynamic>))
+      exercises: (json['exercises'] as List<dynamic>)
+          .map((e) => RealisedExercise.fromJson(e as Map<String, dynamic>))
           .toList(),
+      numberOfLoops: json['numberOfLoops'] as int,
       author: json['author'] == null
           ? null
           : User.fromJson(json['author'] as Map<String, dynamic>),
@@ -37,8 +38,9 @@ Map<String, dynamic> _$TrainingToJson(Training instance) => <String, dynamic>{
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'name': instance.name,
       'author': instance.author,
-      'cycles': instance.cycles,
+      'exercises': instance.exercises,
       'restBetweenCycles': instance.restBetweenCycles,
+      'numberOfLoops': instance.numberOfLoops,
       'estimatedTimeInSeconds': instance.estimatedTimeInSeconds,
       'isOfficial': instance.isOfficial,
       'intensity': instance.intensity,

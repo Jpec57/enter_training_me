@@ -209,14 +209,14 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                 children: [
                   BlocBuilder<InWorkoutBloc, InWorkoutState>(
                     buildWhen: (prev, next) =>
-                        prev.realisedTraining.exercisesAsFlatList.length !=
-                        next.realisedTraining.exercisesAsFlatList.length,
+                        prev.realisedTraining.exercises.length !=
+                        next.realisedTraining.exercises.length,
                     builder: (context, state) {
                       return IconButton(
                         icon: const Icon(Icons.close, color: Colors.white),
                         onPressed: () {
                           if (state
-                              .realisedTraining.exercisesAsFlatList.isEmpty) {
+                              .realisedTraining.exercises.isEmpty) {
                             BlocProvider.of<InWorkoutBloc>(context).add(
                                 ChangedViewEvent(widget.tabController,
                                     InWorkoutView.endWorkoutView));
@@ -244,7 +244,6 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                       setState(() {
                         _selectedRefExo = exo;
                       });
-                      // Navigator.of(context).pop();
                     },
                   ));
                 },
@@ -295,6 +294,9 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                           ],
                         ),
                       ),
+
+                      //TODO SHOW BOTTOM 
+                      
                     ],
                   ),
                 ),

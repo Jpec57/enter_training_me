@@ -23,26 +23,18 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
   ) async* {
     if (event is ChangedExerciseEvent) {
     } else if (event is SwitchedExerciseEvent) {
-      List<ExerciseCycle> newCycles = [];
-      for (var cycle in state.training.cycles) {
-        List<RealisedExercise> cycleExos = [...cycle.exercises];
-        RealisedExercise tmpExo = cycleExos[event.secondIndex];
-        cycleExos[event.secondIndex] = cycleExos[event.firstIndex];
-        cycleExos[event.firstIndex] = tmpExo;
-        newCycles.add(cycle.copyWith(exercises: cycleExos));
-      }
+      List<RealisedExercise> newExoList = [...state.training.exercises];
+      RealisedExercise tmpExo = newExoList[event.secondIndex];
+      newExoList[event.secondIndex] = newExoList[event.firstIndex];
+      newExoList[event.firstIndex] = tmpExo;
       yield state.copyWith(
-          training: state.training.copyWith(cycles: newCycles),
+          training: state.training.copyWith(exercises: newExoList),
           hasMadeChanges: true);
     } else if (event is RemovedExerciseEvent) {
-      List<ExerciseCycle> newCycles = [];
-      for (var cycle in state.training.cycles) {
-        List<RealisedExercise> cycleExos = [...cycle.exercises];
-        cycleExos.removeAt(event.exoIndex);
-        newCycles.add(cycle.copyWith(exercises: cycleExos));
-      }
+      List<RealisedExercise> newExoList = [...state.training.exercises];
+      newExoList.removeAt(event.exoIndex);
       yield state.copyWith(
-          training: state.training.copyWith(cycles: newCycles),
+          training: state.training.copyWith(exercises: newExoList),
           hasMadeChanges: true);
     } else if (event is ToggledEditModeEvent) {
       yield state.copyWith(isEditting: !state.isEditting);

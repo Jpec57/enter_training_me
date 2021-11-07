@@ -23,29 +23,17 @@ class WorkoutTrainingContent extends StatelessWidget {
     );
   }
 
-  Widget _renderCycleExercises(ExerciseCycle refCycle, ExerciseCycle? cycle) {
-    List<Widget> exerciceContainers = [];
-    for (var i = 0; i < refCycle.exercises.length; i++) {
-      exerciceContainers.add(_renderExerciseCard(
-          realisedExercise: refCycle.exercises[i],
-          expectedRealisedExercise: cycle?.exercises[i]));
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: exerciceContainers,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> cycleContainers = [];
-    for (var i = 0; i < referenceTraining.cycles.length; i++) {
-      cycleContainers.add(_renderCycleExercises(
-          referenceTraining.cycles[i], trainingToCompareWith?.cycles[i]));
+    List<Widget> exerciceContainers = [];
+    for (var i = 0; i < referenceTraining.exercises.length; i++) {
+      exerciceContainers.add(_renderExerciseCard(
+          realisedExercise: referenceTraining.exercises[i],
+          expectedRealisedExercise: trainingToCompareWith?.exercises[i]));
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Column(children: cycleContainers),
+      child: Column(children: exerciceContainers),
     );
   }
 }

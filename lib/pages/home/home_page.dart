@@ -143,8 +143,21 @@ class _HomePageState extends State<HomePage> {
                     }).toList(),
                   );
                 case ConnectionState.waiting:
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return CarouselSlider(
+                    options: CarouselOptions(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                    ),
+                    items: const [
+                      TrainingContainer(
+                        referenceTraining: Training(
+                            name: "Loading",
+                            exercises: [],
+                            intensity: 0,
+                            numberOfLoops: 1),
+                      )
+                    ],
                   );
                 default:
                   return const Center(child: Text("Error"));

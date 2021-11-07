@@ -46,7 +46,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         yield _mapChangedViewEventToState(ChangedViewEvent(
             event.tabController, InWorkoutView.inExerciseView));
       } else {
-        if (state.realisedTraining.exercisesAsFlatList.isEmpty) {
+        if (state.realisedTraining.exercises.isEmpty) {
           yield _mapChangedViewEventToState(ChangedViewEvent(
               event.tabController, InWorkoutView.endWorkoutView));
         } else {
@@ -87,21 +87,18 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
 
       yield _mapExerciseDoneEventToState(event);
     } else if (event is RestDoneEvent) {
-      List<ExerciseCycle> doneCycles =
+      List<RealisedExercise> doneExos =
           updateSet(doneReps: state.reallyDoneReps);
       if (state.isEndOfWorkout) {
         Training? training = await saveTraining();
-        yield state.copyWith(
-            isEnd: true,
-            realisedTrainingId: training?.id
-            );
+        yield state.copyWith(isEnd: true, realisedTrainingId: training?.id);
       }
       yield state.copyWith(
           isEnd: state.isEndOfWorkout,
           currentSetIndex: state.nextSetIndex,
           currentExoIndex: state.nextExoIndex,
           realisedTraining:
-              state.realisedTraining.copyWith(cycles: doneCycles));
+              state.realisedTraining.copyWith(exercises: doneExos));
     } else if (event is ChangedNbSetEvent) {
       yield _mapChangedNbSetEventToState(event);
     } else if (event is ChangedExoEvent) {
@@ -141,11 +138,10 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
-    return state.copyWith(
-        reallyDoneReps: state.currentSet.reps);
+    return state.copyWith(reallyDoneReps: state.currentSet.reps);
   }
 
-  List<ExerciseCycle> updateSet(
+  List<RealisedExercise> updateSet(
       {int? doneReps,
       double? weight,
       bool updateNextSets = false,
@@ -172,13 +168,10 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     }
 
     RealisedExercise doneExo = state.currentExo!.copyWith(sets: doneSets);
-    List<RealisedExercise> doneExos = [...state.currentCycle!.exercises];
+    List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
     doneExos[state.currentExoIndex] = doneExo;
 
-    ExerciseCycle doneCycle = state.currentCycle!.copyWith(exercises: doneExos);
-    List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
-    doneCycles[state.currentCycleIndex] = doneCycle;
-    return doneCycles;
+    return doneExos;
   }
 
   InWorkoutState _mapTrainingLeftEventToState(TrainingLeftEvent event) {
@@ -193,7 +186,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     if (state.getNonTickingViews().contains(state.currentView)) {
       return state;
     }
-    if (state.realisedTraining.exercisesAsFlatList.isEmpty) {
+    if (state.realisedTraining.exercises.isEmpty) {
       return state;
     }
     return state.copyWith(elapsedTime: (state.elapsedTime + 1));
@@ -213,29 +206,26 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   InWorkoutState _mapChangedExoEventToState(ChangedExoEvent event) {
     RealisedExercise doneExo =
         state.currentExo!.copyWith(exerciseReference: event.exo);
-    List<RealisedExercise> doneExos = [...state.currentCycle!.exercises];
+    List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
     doneExos[state.currentExoIndex] = doneExo;
 
-    ExerciseCycle doneCycle = state.currentCycle!.copyWith(exercises: doneExos);
-    List<ExerciseCycle> doneCycles = [...state.realisedTraining.cycles];
-    doneCycles[state.currentCycleIndex] = doneCycle;
     return state.copyWith(
-        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
+        realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
   }
 
   InWorkoutState _mapChangedRefWeightEventToState(ChangedRefWeightEvent event) {
-    List<ExerciseCycle> doneCycles =
+    List<RealisedExercise> doneExos =
         updateSet(weight: event.weight, updateNextSets: event.isForAll);
     return state.copyWith(
-        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
+        realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
   }
 
   InWorkoutState _mapChangedRefRepsEventToState(ChangedRefRepsEvent event) {
-    List<ExerciseCycle> doneCycles =
+    List<RealisedExercise> doneExos =
         updateSet(doneReps: event.reps, updateNextSets: event.isForAll);
 
     return state.copyWith(
-        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
+        realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
   }
 
   InWorkoutState _mapChangedViewEventToState(ChangedViewEvent event) {
@@ -258,31 +248,15 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   InWorkoutState _mapAddedExoEventToState(AddedExoEvent event) {
     int nextExoIndex = state.currentExoIndex;
     Training currentTraining = state.realisedTraining;
-    if (state.currentCycleIndex >= currentTraining.cycles.length) {
-      currentTraining = currentTraining.copyWith(cycles: [
-        ...currentTraining.cycles,
-        const ExerciseCycle(
-            exercises: [], numberOfLoops: 1, restBetweenLoop: 60)
-      ]);
-    }
-    if (currentTraining.cycles[state.currentCycleIndex].exercises.isNotEmpty) {
-      List<RealisedExercise> exos = [
-        ...currentTraining.cycles[state.currentCycleIndex].exercises
-      ];
+    if (currentTraining.exercises.isNotEmpty) {
+      List<RealisedExercise> exos = [...currentTraining.exercises];
       exos.insert(state.currentExoIndex + 1, event.exo);
-      currentTraining.cycles[state.currentCycleIndex] = currentTraining
-          .cycles[state.currentCycleIndex]
-          .copyWith(exercises: exos);
+      currentTraining = currentTraining.copyWith(exercises: exos);
       nextExoIndex++;
     } else {
-      currentTraining.cycles[state.currentCycleIndex] = currentTraining
-          .cycles[state.currentCycleIndex]
-          .copyWith(exercises: [event.exo]);
+      currentTraining = currentTraining.copyWith(exercises: [event.exo]);
     }
-    List<ExerciseCycle> cycles = [
-      ...currentTraining.cycles,
-    ];
-    currentTraining = currentTraining.copyWith(cycles: cycles);
+
     return state.copyWith(
         realisedTraining: currentTraining,
         currentExoIndex: nextExoIndex,
@@ -290,8 +264,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapChangedNbSetEventToState(ChangedNbSetEvent event) {
-    List<ExerciseCycle> doneCycles = updateSet(nbWantedSets: event.nbSets);
+    List<RealisedExercise> doneExos = updateSet(nbWantedSets: event.nbSets);
     return state.copyWith(
-        realisedTraining: state.realisedTraining.copyWith(cycles: doneCycles));
+        realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
   }
 }

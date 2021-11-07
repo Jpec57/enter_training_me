@@ -212,8 +212,7 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
           BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
             buildWhen: (prev, next) => prev.training != next.training,
             builder: (context, state) {
-              List<RealisedExercise> exos =
-                  state.training.cycles.first.exercises;
+              List<RealisedExercise> exos = state.training.exercises;
               List<Widget> exoWidgets = [];
               int exoLength = exos.length;
               for (var i = 0; i < exoLength; i++) {

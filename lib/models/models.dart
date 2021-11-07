@@ -1,5 +1,4 @@
 export 'execution_style.dart';
-export 'exercise_cycle.dart';
 export 'exercise_format.dart';
 export 'exercise_set.dart';
 export 'realised_exercise.dart';
@@ -7,3 +6,6 @@ export 'reference_exercise.dart';
 export 'training.dart';
 export 'muscle_activation.dart';
 export 'user.dart';
+export 'fitness_profile.dart';
+export 'fitness_team.dart';
+export 'fitness_badge.dart';

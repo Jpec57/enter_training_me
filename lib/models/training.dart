@@ -1,5 +1,4 @@
 import 'package:enter_training_me/models/exercise_comparision_dto.dart';
-import 'package:enter_training_me/models/exercise_cycle.dart';
 import 'package:enter_training_me/models/muscle_activation.dart';
 import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/models/user.dart';
@@ -22,8 +21,9 @@ class Training extends Equatable {
   final DateTime? updatedAt;
   final String name;
   final User? author;
-  final List<ExerciseCycle> cycles;
+  final List<RealisedExercise> exercises;
   final int restBetweenCycles;
+  final int numberOfLoops;
   final int? estimatedTimeInSeconds;
   final bool isOfficial;
   final double intensity;
@@ -33,7 +33,8 @@ class Training extends Equatable {
 
   const Training(
       {required this.name,
-      required this.cycles,
+      required this.exercises,
+      this.numberOfLoops = 1,
       this.author,
       this.id,
       this.difficulty,
@@ -71,27 +72,29 @@ class Training extends Equatable {
           createdAt: DateTime.now(),
           reference: ref,
           intensity: 0,
+          numberOfLoops: 1,
           restBetweenCycles: 60,
-          cycles: const []);
+          exercises: const []);
     }
     return Training(
         name: ref.name,
+        numberOfLoops: ref.numberOfLoops,
         author: ref.author,
         isOfficial: false,
         createdAt: ref.createdAt,
         reference: ref,
         intensity: ref.intensity,
         restBetweenCycles: ref.restBetweenCycles,
-        cycles: ref.cycles);
+        exercises: ref.exercises);
   }
   @override
   String toString() {
-    return "Training $id $name [$cycles]";
+    return "Training $id $name [$exercises]";
   }
 
   List<String> get materials {
     List<String> materials = [];
-    for (var exo in exercisesAsFlatList) {
+    for (var exo in exercises) {
       for (var mat in exo.exerciseReference.material) {
         if (!materials.contains(mat)) {
           materials.add(mat);
@@ -103,7 +106,7 @@ class Training extends Equatable {
 
   double get sumOfUsedWeight {
     double sum = 0;
-    for (var exo in exercisesAsFlatList) {
+    for (var exo in exercises) {
       double setWeight = 0;
       int setLength = exo.sets.length;
       if (setLength > 0) {
@@ -118,7 +121,7 @@ class Training extends Equatable {
 
   double get sumOfUsedAvgWeight {
     double sum = 0;
-    for (var exo in exercisesAsFlatList) {
+    for (var exo in exercises) {
       double setWeight = 0;
       int setLength = exo.sets.length;
       if (setLength > 0) {
@@ -133,7 +136,7 @@ class Training extends Equatable {
 
   double get sumOfAvgRMWeight {
     double sum = 0;
-    for (var exo in exercisesAsFlatList) {
+    for (var exo in exercises) {
       double setWeight = 0;
       int setLength = exo.sets.length;
       if (setLength > 0) {
@@ -147,7 +150,6 @@ class Training extends Equatable {
   }
 
   Map<String, double> get focusRepartition {
-    List<RealisedExercise> exos = exercisesAsFlatList;
     int setLength = 0;
     const goalHypertrophy = "HYPERTROPHY";
     const goalStrength = "STRENGTH";
@@ -159,7 +161,7 @@ class Training extends Equatable {
       goalEndurance: 0,
       goalExplosivity: 0,
     };
-    for (RealisedExercise exo in exos) {
+    for (RealisedExercise exo in exercises) {
       if (false && exo.executionStyle != null) {
         switch (exo.executionStyle!.name) {
           default:
@@ -187,7 +189,7 @@ class Training extends Equatable {
   }
 
   List<MuscleActivation> get muscleRepartition {
-    List<RealisedExercise> exos = exercisesAsFlatList;
+    List<RealisedExercise> exos = exercises;
     int length = exos.length;
     Map<String, double> map = {};
     for (RealisedExercise exo in exos) {
@@ -210,54 +212,35 @@ class Training extends Equatable {
         .toList();
   }
 
-  List<RealisedExercise> get exercisesAsFlatList {
-    List<RealisedExercise> realisedExercises = [];
-
-    for (var i = 0; i < cycles.length; i++) {
-      var currentCycle = cycles[i];
-      for (var j = 0; j < currentCycle.exercises.length; j++) {
-        var currentExo = currentCycle.exercises[j];
-        realisedExercises.add(currentExo);
-      }
-    }
-    return realisedExercises;
-  }
-
   List<ExerciseComparisionDTO> getExerciseComparisionsList(
       Training? referenceTraining) {
     List<ExerciseComparisionDTO> list = [];
 
     int k = 0;
 
-    for (var i = 0; i < cycles.length; i++) {
-      var currentCycle = cycles[i];
-      var refCycle =
-          (referenceTraining != null && i < referenceTraining.cycles.length)
-              ? referenceTraining.cycles[i]
-              : null;
-      for (var j = 0; j < currentCycle.exercises.length; j++) {
-        var currentExo = currentCycle.exercises[j];
-        var refExo = (refCycle != null && j < refCycle.exercises.length)
-            ? refCycle.exercises[j]
-            : null;
-        list.add(ExerciseComparisionDTO(
-            index: k, realisedExercise: currentExo, referenceExercise: refExo));
-        k++;
-      }
+    for (var j = 0; j < exercises.length; j++) {
+      var currentExo = exercises[j];
+      var refExo =
+          referenceTraining != null ? referenceTraining.exercises[j] : null;
+      list.add(ExerciseComparisionDTO(
+          index: k, realisedExercise: currentExo, referenceExercise: refExo));
+      k++;
     }
     return list;
   }
 
   Training copyWith({
-    List<ExerciseCycle>? cycles,
+    List<RealisedExercise>? exercises,
     int? restBetweenCycles,
     User? author,
+    int? numberOfLoops,
     String? name,
   }) =>
       Training(
           id: id,
+          numberOfLoops: numberOfLoops ?? this.numberOfLoops,
           restBetweenCycles: restBetweenCycles ?? this.restBetweenCycles,
-          cycles: cycles ?? this.cycles,
+          exercises: exercises ?? this.exercises,
           name: name ?? this.name,
           reference: reference,
           isOfficial: isOfficial,
@@ -268,7 +251,8 @@ class Training extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        cycles,
+        exercises,
+        numberOfLoops,
         updatedAt,
         name,
         author,

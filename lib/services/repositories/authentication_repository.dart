@@ -30,12 +30,17 @@ class AuthenticationRepository extends ApiService
       "password": password,
     };
     await removeUserToken();
-    Response response = await getDio().post("/api/login", data: data);
-
-    if (response.statusCode == null) {
+    try {
+      Response response = await getDio().post("/api/login", data: data);
+      if (response.statusCode == null) {
+        return false;
+      }
+      return response.statusCode! < 300 && response.statusCode! >= 200;
+    } on DioError catch (e) {
+      get_lib.Get.snackbar(
+          "Error", "An error occurred. Please try again later.");
       return false;
     }
-    return response.statusCode! < 300 && response.statusCode! >= 200;
   }
 
   @override
@@ -76,13 +81,19 @@ class AuthenticationRepository extends ApiService
       "password": password,
     };
     await removeUserToken();
-    Response response = await getDio().post("/api/login", data: data);
-    Map<String, dynamic> res = response.data;
-    if (!res.containsKey("token")) {
-      return null;
+    try {
+      Response response = await getDio().post("/api/login", data: data);
+      Map<String, dynamic> res = response.data;
+      if (!res.containsKey("token")) {
+        return null;
+      }
+      String token = res["token"];
+      await saveUserToken(token);
+      return AuthResponse(token: token, user: User.fromJson(res["user"]));
+    } on DioError catch (e) {
+      get_lib.Get.snackbar(
+          "Error", "An error occurred. Please try again later.");
     }
-    String token = res["token"];
-    await saveUserToken(token);
-    return AuthResponse(token: token, user: User.fromJson(res["user"]));
+    return null;
   }
 }

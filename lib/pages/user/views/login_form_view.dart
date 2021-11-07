@@ -1,8 +1,8 @@
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/login/bloc/login_bloc.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/register/register_page.dart';
-import 'package:enter_training_me/widgets/clippers/clipper_expo.dart';
 import 'package:enter_training_me/widgets/clippers/clippers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +35,7 @@ class LoginFormView extends StatelessWidget {
                       top: 0,
                       child: IconButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Get.offNamed(HomePage.routeName);
                           },
                           icon: const Icon(Icons.chevron_left,
                               color: Colors.white, size: 40))),
@@ -70,8 +70,10 @@ class LoginFormView extends StatelessWidget {
                             builder: (context, state) {
                               return TextFormField(
                                 initialValue: state.username,
+                                
                                 decoration: const InputDecoration(
                                     hintText: "Username/Email",
+                                    
                                     fillColor: Colors.white,
                                     contentPadding: EdgeInsets.symmetric(),
                                     hintStyle: TextStyle(color: Colors.white)),
@@ -127,13 +129,6 @@ class LoginFormView extends StatelessWidget {
               ],
             ),
           )),
-          // ClipPath(
-          //   clipper: WavyLoginBottomClipper(),
-          //   child: Container(
-          //       height: 100,
-          //       width: MediaQuery.of(context).size.width,
-          //       color: clipperColor),
-          // ),
         ],
       ),
     );

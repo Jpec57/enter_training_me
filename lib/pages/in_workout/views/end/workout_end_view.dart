@@ -63,7 +63,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
   }
 
   Widget _renderAddNewExerciseSection(Training realisedTraining, bool isEnd) {
-    if (realisedTraining.exercisesAsFlatList.isNotEmpty && isEnd) {
+    if (realisedTraining.exercises.isNotEmpty && isEnd) {
       return Container();
     }
     return InkWell(
@@ -232,7 +232,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
   }
 
   Widget _renderWorkoutAnalysisSection(Training realisedTraining, bool isEnd) {
-    if (realisedTraining.exercisesAsFlatList.isEmpty || !isEnd) {
+    if (realisedTraining.exercises.isEmpty || !isEnd) {
       return Container();
     }
     return FutureBuilder(

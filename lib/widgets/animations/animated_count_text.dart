@@ -48,8 +48,10 @@ class _AnimatedCountTextState<T> extends State<AnimatedCountText>
   }
 
   void _relaunchAnimation() {
-    _controller.forward(from: 0.0);
-    hasBeenAnimatedOnce = true;
+    if (widget.count > 0) {
+      _controller.forward(from: 0.0);
+      hasBeenAnimatedOnce = true;
+    }
   }
 
   String formatNumberToString(num value) {

@@ -74,8 +74,8 @@ class _WorkoutExerciseIntensityGraphState
       {required Training realisedTraining, Training? referenceTraining}) {
     List<BarChartGroupData> barGroups = [];
 
-    List<RealisedExercise> realisedExos = realisedTraining.exercisesAsFlatList;
-    List<RealisedExercise>? refExos = referenceTraining?.exercisesAsFlatList;
+    List<RealisedExercise> realisedExos = realisedTraining.exercises;
+    List<RealisedExercise>? refExos = referenceTraining?.exercises;
 
     int k = 0;
     for (var i = 0; i < realisedExos.length; i++) {
@@ -148,9 +148,8 @@ class _WorkoutExerciseIntensityGraphState
   @override
   Widget build(BuildContext context) {
     double minWidth = MediaQuery.of(context).size.width;
-    double graphWidth =
-        ((widget.realisedTraining.exercisesAsFlatList.length) + 1) *
-            (widget.barWidth * 2 + widget.barsSpace + widget.groupSpace);
+    double graphWidth = ((widget.realisedTraining.exercises.length) + 1) *
+        (widget.barWidth * 2 + widget.barsSpace + widget.groupSpace);
     if (graphWidth < minWidth) {
       graphWidth = minWidth;
     }
@@ -199,8 +198,8 @@ class _WorkoutExerciseIntensityGraphState
                     return "E${value.toInt()}";
                     return widget
                         .realisedTraining
-                        .exercisesAsFlatList[value.toInt() %
-                            widget.realisedTraining.exercisesAsFlatList.length]
+                        .exercises[value.toInt() %
+                            widget.realisedTraining.exercises.length]
                         .exerciseReference
                         .shortName;
                   },
