@@ -3,7 +3,6 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/performance_repository.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list.dart';
-import 'package:enter_training_me/widgets/lists/reference_exercise_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

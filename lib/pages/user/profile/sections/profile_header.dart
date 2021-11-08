@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileHeader extends StatelessWidget {
   final User user;
@@ -25,8 +28,16 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      const CircleAvatar(
-        radius: 50,
+      InkWell(
+        onTap: () async{
+          await RepositoryProvider.of<UserRepository>(context).changeProfilePic();
+        },
+        child: CircleAvatar(
+          radius: 50,
+          child: user.profilePicturePath != null
+              ? CachedNetworkImage(imageUrl: user.profilePicturePath!)
+              : const Icon(Icons.image, size: 40),
+        ),
       ),
       Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 24),

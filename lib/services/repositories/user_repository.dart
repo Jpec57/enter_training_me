@@ -15,6 +15,7 @@ class UserRepository extends ApiService
   static const getByToken = "/api/users/token/{token}";
   static const getProfileInfoUrl = "/api/users/infos/{id}";
   static const getRealisedExosByUser = "/api/users/realised_exercises";
+  static const changeProfilePicUrl = "/api/users/profile_pic";
 
   @override
   Future<IAuthUserInterface?> getUserWithToken(String? apiToken) async {
@@ -94,6 +95,16 @@ class UserRepository extends ApiService
       return data.map((e) => ReferenceExercise.fromJson(e)).toList();
     } on DioError catch (_) {
       return [];
+    }
+  }
+
+  Future<User?> changeProfilePic() async {
+    try {
+      Response response = await getDio().post(getRealisedExosByUser, data: {});
+      dynamic data = response.data;
+      return User.fromJson(data);
+    } on DioError catch (_) {
+      return null;
     }
   }
 }
