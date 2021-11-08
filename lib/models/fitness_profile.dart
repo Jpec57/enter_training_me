@@ -1,4 +1,5 @@
 import 'package:enter_training_me/models/fitness_badge.dart';
+import 'package:enter_training_me/models/muscle_experience.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'fitness_profile.g.dart';
@@ -41,4 +42,19 @@ class FitnessProfile {
   factory FitnessProfile.fromJson(Map<String, dynamic> json) =>
       _$FitnessProfileFromJson(json);
   Map<String, dynamic> toJson() => _$FitnessProfileToJson(this);
+
+  List<MuscleExperience> get muscleExperiences {
+    return [
+      MuscleExperience(muscle: "hamstring", experience: hamstringExperience),
+      MuscleExperience(muscle: "quadriceps", experience: quadricepsExperience),
+      MuscleExperience(muscle: "calf", experience: calfExperience),
+      MuscleExperience(muscle: "biceps", experience: bicepsExperience),
+      MuscleExperience(muscle: "triceps", experience: tricepsExperience),
+      MuscleExperience(muscle: "shoulder", experience: shoulderExperience),
+      MuscleExperience(muscle: "chest", experience: chestExperience),
+      MuscleExperience(muscle: "abs", experience: absExperience),
+      MuscleExperience(muscle: "back", experience: backExperience),
+      MuscleExperience(muscle: "forearm", experience: forearmExperience),
+    ];
+  }
 }

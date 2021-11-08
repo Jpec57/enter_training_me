@@ -116,6 +116,10 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
               state.realisedTraining.copyWith(exercises: doneExos));
     } else if (event is ChangedNbSetEvent) {
       yield _mapChangedNbSetEventToState(event);
+    } else if (event is ChangedRestBetweenLoopsEvent) {
+      yield state.copyWith(
+          realisedTraining: state.realisedTraining.copyWith(
+              restBetweenCycles: event.seconds > 0 ? event.seconds : 5));
     } else if (event is ChangedExoEvent) {
       yield _mapChangedExoEventToState(event);
     } else if (event is TimerTickEvent) {

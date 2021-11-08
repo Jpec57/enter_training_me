@@ -4,6 +4,7 @@ import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/in_workout/views/end/rename_training_dialog.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/analysis/current/workout_exercise_intensity_graph.dart';
 import 'package:enter_training_me/widgets/dialog/change_exercise_set_dialog.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
@@ -151,7 +152,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                       unit: " min"),
                                   WorkoutMetric(
                                       metric: state.realisedTraining.intensity
-                                          .toString(),
+                                          .toStringAsFixed(1),
                                       unit: " points"),
                                   InkWell(
                                     onTap: () {
@@ -176,6 +177,36 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                             .toString(),
                                         unit: " cycle(s)"),
                                   ),
+                                  state.realisedTraining.numberOfLoops > 1
+                                      ? InkWell(
+                                          onTap: () {
+                                            Get.dialog(
+                                                ChangeExerciseSetDialog<int>(
+                                              currentValue: state
+                                                  .realisedTraining
+                                                  .restBetweenCycles,
+                                              title:
+                                                  "How many seconds of rest between each loop ?",
+                                              setForOneCallback: (value) {
+                                                int parseValue =
+                                                    int.parse(value);
+
+                                                BlocProvider.of<InWorkoutBloc>(
+                                                        widget
+                                                            .parentBuildContext)
+                                                    .add(
+                                                        ChangedRestBetweenLoopsEvent(
+                                                            parseValue));
+                                              },
+                                            ));
+                                          },
+                                          child: WorkoutMetric(
+                                              metric: Utils.convertToDuration(
+                                                  state.realisedTraining
+                                                      .restBetweenCycles),
+                                              unit: " / cycle"),
+                                        )
+                                      : Container(),
                                   BlocBuilder<InWorkoutBloc, InWorkoutState>(
                                     buildWhen: (prev, next) =>
                                         prev.realisedTrainingId !=

@@ -56,8 +56,7 @@ class InWorkoutState extends Equatable {
     totalDoneSets = (currentCycleIndex * setPerCycle) +
         totalCurrentCycleDoneSets +
         (hasDoneCurrentSet ? 1 : 0);
-    print(
-        "progress hasDoneCurrentSet $hasDoneCurrentSet totalDoneSets $totalDoneSets");
+
     return totalDoneSets.toDouble() / totalSets;
   }
 

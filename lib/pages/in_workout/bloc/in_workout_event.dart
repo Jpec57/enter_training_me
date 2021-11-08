@@ -98,6 +98,15 @@ class ChangedNbSetEvent extends InWorkoutEvent {
   List<Object?> get props => [nbSets];
 }
 
+class ChangedRestBetweenLoopsEvent extends InWorkoutEvent {
+  final int seconds;
+
+  const ChangedRestBetweenLoopsEvent(this.seconds);
+
+  @override
+  List<Object?> get props => [seconds];
+}
+
 class ChangedNbLoopsEvent extends InWorkoutEvent {
   final int nbLoops;
 

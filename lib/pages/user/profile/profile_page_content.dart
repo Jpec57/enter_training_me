@@ -180,7 +180,8 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
             child: Text("Muscle Profile",
                 style: Theme.of(context).textTheme.headline4),
           ),
-          ExercisedMuscleRadarRepartitionGraph()
+          ExercisedMuscleRadarRepartitionGraph(
+              muscleExperiences: info.user.fitnessProfile.muscleExperiences)
         ],
       ),
     );

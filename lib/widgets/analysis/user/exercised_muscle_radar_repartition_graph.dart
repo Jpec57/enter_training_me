@@ -1,8 +1,12 @@
+import 'package:enter_training_me/models/muscle_experience.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class ExercisedMuscleRadarRepartitionGraph extends StatefulWidget {
-  const ExercisedMuscleRadarRepartitionGraph({Key? key}) : super(key: key);
+  final List<MuscleExperience> muscleExperiences;
+  const ExercisedMuscleRadarRepartitionGraph(
+      {Key? key, required this.muscleExperiences})
+      : super(key: key);
 
   @override
   _ExercisedMuscleRadarRepartitionGraphState createState() =>
@@ -22,6 +26,7 @@ class _ExercisedMuscleRadarRepartitionGraphState
 
   @override
   Widget build(BuildContext context) {
+    var dataSets = showingDataSets();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -30,7 +35,7 @@ class _ExercisedMuscleRadarRepartitionGraphState
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: rawDataSets()
+            children: rawDataSets(widget.muscleExperiences)
                 .asMap()
                 .map((index, value) {
                   final isSelected = index == selectedDataSetIndex;
@@ -101,27 +106,18 @@ class _ExercisedMuscleRadarRepartitionGraphState
                         response?.touchedSpot?.touchedDataSetIndex ?? -1;
                   });
                 }),
-                dataSets: showingDataSets(),
+                dataSets: dataSets,
                 radarBackgroundColor: Colors.transparent,
                 borderData: FlBorderData(show: false),
                 radarBorderData: const BorderSide(color: Colors.transparent),
                 titlePositionPercentageOffset: 0.2,
                 titleTextStyle: TextStyle(color: titleColor, fontSize: 14),
                 getTitle: (index) {
-                  switch (index) {
-                    case 0:
-                      return 'Chest';
-                    case 1:
-                      return 'Legs';
-                    case 2:
-                      return 'Back';
-                    case 3:
-                      return 'Biceps';
-                    case 4:
-                      return 'Triceps';
-                    default:
-                      return '';
-                  }
+                  var muscle = widget.muscleExperiences[index].muscle;
+                  muscle = muscle[0].toUpperCase() + muscle.substring(1);
+                  return muscle.length > 5
+                      ? muscle.substring(0, 5) + "."
+                      : muscle;
                 },
                 tickCount: 1,
                 ticksTextStyle:
@@ -138,7 +134,7 @@ class _ExercisedMuscleRadarRepartitionGraphState
   }
 
   List<RadarDataSet> showingDataSets() {
-    return rawDataSets().asMap().entries.map((entry) {
+    return rawDataSets(widget.muscleExperiences).asMap().entries.map((entry) {
       var index = entry.key;
       var rawDataSet = entry.value;
 
@@ -162,29 +158,32 @@ class _ExercisedMuscleRadarRepartitionGraphState
     }).toList();
   }
 
-  List<RawDataSet> rawDataSets() {
+  List<RawDataSet> rawDataSets(List<MuscleExperience> muscleExperiences) {
+    double min = muscleExperiences
+        .map((e) => e.experience)
+        .reduce((value, element) => (value > element ? element : value))
+        .toDouble();
+    double max = muscleExperiences
+        .map((e) => e.experience)
+        .reduce((value, element) => (value < element ? element : value))
+        .toDouble();
     return [
       RawDataSet(
         title: 'Maximum',
         color: fashionColor,
-        values: [
-          300,
-          300,
-          300,
-          300,
-          300,
-        ],
+        values: muscleExperiences.map((muscle) => max).toList(),
       ),
       RawDataSet(
-        title: 'Art & Tech',
+        title: 'User',
+        color: entertainmentColor,
+        values: muscleExperiences
+            .map((muscleExperience) => muscleExperience.experience.toDouble())
+            .toList(),
+      ),
+      RawDataSet(
+        title: 'Minimum',
         color: artColor,
-        values: [
-          250,
-          100,
-          200,
-          180,
-          50,
-        ],
+        values: muscleExperiences.map((muscle) => min).toList(),
       ),
     ];
   }

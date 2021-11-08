@@ -42,14 +42,11 @@ class _RankingViewState extends State<RankingView>
                 return ListView.builder(
                   padding: const EdgeInsets.only(bottom: 50),
                   shrinkWrap: true,
-                  itemCount: trainings.length,
+                  itemCount: 5,
                   itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 200,
-                      child: TrainingContainer(
-                        otherColor: true,
-                        referenceTraining: trainings[index],
-                      ),
+                    return Container(
+                      decoration: BoxDecoration(),
+                      child: Text("Rank ${index}"),
                     );
                   },
                 );
