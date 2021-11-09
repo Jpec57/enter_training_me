@@ -41,12 +41,19 @@ class _RankingViewState extends State<RankingView>
               case ConnectionState.done:
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   List<UserRanking> rankedUsers = snapshot.data!;
-                  return ListView.builder(
+                  return ListView.separated(
                     padding: const EdgeInsets.only(bottom: 50),
                     shrinkWrap: true,
-                    itemCount: 5,
+                    itemCount: rankedUsers.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return UserRankingCard(rank: index);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: UserRankingCard(
+                            rank: index + 1, rankUser: rankedUsers[index]),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider(height: 1, color: Colors.grey);
                     },
                   );
                 }

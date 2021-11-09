@@ -15,8 +15,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           : FitnessTeam.fromJson(json['fitnessTeam'] as Map<String, dynamic>),
       isMale: json['isMale'] as bool? ?? true,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      fitnessProfile: FitnessProfile.fromJson(
-          json['fitnessProfile'] as Map<String, dynamic>),
+      fitnessProfile: json['fitnessProfile'] == null
+          ? null
+          : FitnessProfile.fromJson(
+              json['fitnessProfile'] as Map<String, dynamic>),
       profilePicturePath: json['profilePicturePath'] as String?,
     );
 

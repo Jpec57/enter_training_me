@@ -14,7 +14,7 @@ class User implements IAuthUserInterface {
   final String? profilePicturePath;
   final bool isMale;
   final DateTime createdAt;
-  final FitnessProfile fitnessProfile;
+  final FitnessProfile? fitnessProfile;
   final FitnessTeam? fitnessTeam;
 
   const User(

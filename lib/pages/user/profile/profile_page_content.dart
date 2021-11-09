@@ -181,7 +181,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                 style: Theme.of(context).textTheme.headline4),
           ),
           ExercisedMuscleRadarRepartitionGraph(
-              muscleExperiences: info.user.fitnessProfile.muscleExperiences)
+              muscleExperiences: info.user.fitnessProfile!.muscleExperiences)
         ],
       ),
     );

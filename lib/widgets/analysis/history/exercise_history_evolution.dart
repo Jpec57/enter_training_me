@@ -22,6 +22,7 @@ class ExerciseHistoryEvolution extends StatefulWidget {
 class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
   late Future<List<ExerciseSet>> _setsFuture;
   late ReferenceExercise currentReferenceExercise;
+  late ScrollController _scrollController;
   final double percentMargin = 0.05;
 
   List<Color> gradientColors = [
@@ -32,11 +33,18 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     currentReferenceExercise = widget.referenceExercises.first;
     setState(() {
       _setsFuture = RepositoryProvider.of<PerformanceRepository>(context)
           .getPerfForReferenceExercise(currentReferenceExercise.id);
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future reloadSpots(ReferenceExercise? refExo) async {
@@ -45,7 +53,11 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
     }
     setState(() {
       _setsFuture = RepositoryProvider.of<PerformanceRepository>(context)
-          .getPerfForReferenceExercise(currentReferenceExercise.id);
+          .getPerfForReferenceExercise(currentReferenceExercise.id)
+          .then((value) {
+        // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        return value;
+      });
     });
   }
 
@@ -180,11 +192,14 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData &&
                   snapshot.data!.isNotEmpty) {
+                
+
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: MediaQuery.of(context).size.width,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
+                    controller: _scrollController,
                     child: SizedBox(
                       width: snapshot.data!.length > maxSpotPerSizeWidth
                           ? (MediaQuery.of(context).size.width /
