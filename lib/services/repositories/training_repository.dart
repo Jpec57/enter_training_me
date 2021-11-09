@@ -75,7 +75,6 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     return data.map((e) => Training.fromJson(e)).toList();
   }
 
-  @override
   Future<List<Training>> getByReference(int id) async {
     Response response = await getDio()
         .get(getByReferenceUri.replaceFirst("{id}", id.toString()));
@@ -83,7 +82,6 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     return data.map((e) => Training.fromJson(e)).toList();
   }
 
-  @override
   Future<List<Training>> getOfficial() async {
     Response response = await getDio().get(getOfficialUri);
 

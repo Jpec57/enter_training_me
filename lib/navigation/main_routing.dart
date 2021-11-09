@@ -37,7 +37,7 @@ class MainRouting {
         routeName: UserPage.routeName),
     NavigationElement(
         title: "Other",
-        iconData: Icons.question_answer,
+        iconData: Icons.public,
         routeName: CommunityPage.routeName),
     NavigationElement(
         title: "1RM Calculator",

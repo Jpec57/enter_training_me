@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/authentication/models/auth_response.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }

@@ -11,7 +11,7 @@ Training _$TrainingFromJson(Map<String, dynamic> json) => Training(
       exercises: (json['exercises'] as List<dynamic>)
           .map((e) => RealisedExercise.fromJson(e as Map<String, dynamic>))
           .toList(),
-      numberOfLoops: json['numberOfLoops'] as int,
+      numberOfLoops: json['numberOfLoops'] as int? ?? 1,
       author: json['author'] == null
           ? null
           : User.fromJson(json['author'] as Map<String, dynamic>),

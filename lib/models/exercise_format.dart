@@ -1,6 +1,5 @@
 import 'package:enter_training_me/models/execution_style.dart';
 import 'package:enter_training_me/models/exercise_set.dart';
-import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'exercise_format.g.dart';

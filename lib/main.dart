@@ -8,6 +8,7 @@ import 'package:enter_training_me/services/repositories/authentication_repositor
 import 'package:enter_training_me/services/repositories/execution_style_repository.dart';
 import 'package:enter_training_me/services/repositories/exercise_format_repository.dart';
 import 'package:enter_training_me/services/repositories/performance_repository.dart';
+import 'package:enter_training_me/services/repositories/ranking_repository.dart';
 import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
 
   final AuthenticationRepository _authRepository = AuthenticationRepository();
   final UserRepository _userRepository = UserRepository();
+  final RankingRepository _rankingRepository = RankingRepository();
   final TrainingRepository _trainingRepository = TrainingRepository();
   final PerformanceRepository _perfRepository = PerformanceRepository();
   final ReferenceExerciseRepository _refExoRepository =
@@ -45,6 +47,7 @@ Future<void> main() async {
         RepositoryProvider.value(value: _execStyleRepository),
         RepositoryProvider.value(value: _exoFormatRepository),
         RepositoryProvider.value(value: _perfRepository),
+        RepositoryProvider.value(value: _rankingRepository),
       ],
       child: MultiBlocProvider(providers: [
         BlocProvider.value(value: AppBloc()..add(OnInitEvent())),

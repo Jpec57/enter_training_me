@@ -1,5 +1,8 @@
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/models/user_ranking.dart';
+import 'package:enter_training_me/pages/community/views/ranking/user_ranking_card.dart';
 import 'package:enter_training_me/pages/home/training_container.dart';
+import 'package:enter_training_me/services/repositories/ranking_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,13 +16,13 @@ class RankingView extends StatefulWidget {
 
 class _RankingViewState extends State<RankingView>
     with AutomaticKeepAliveClientMixin {
-  late Future<List<Training>> _feedFuture;
+  late Future<List<UserRanking>> _rankingFuture;
 
   @override
   void initState() {
     super.initState();
-    _feedFuture =
-        RepositoryProvider.of<UserRepository>(context).getPersonalFeed();
+    _rankingFuture =
+        RepositoryProvider.of<RankingRepository>(context).getUserRanking();
   }
 
   @override
@@ -31,25 +34,24 @@ class _RankingViewState extends State<RankingView>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
       child: FutureBuilder(
-          future: _feedFuture,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          future: _rankingFuture,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<UserRanking>> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
-                if (snapshot.hasError) {
-                  return const Center(child: Text("Error"));
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  List<UserRanking> rankedUsers = snapshot.data!;
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 50),
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) {
+                      return UserRankingCard(rank: index);
+                    },
+                  );
                 }
-                List<Training> trainings = snapshot.data;
-                return ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 50),
-                  shrinkWrap: true,
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(),
-                      child: Text("Rank ${index}"),
-                    );
-                  },
-                );
+                return const Center(child: Text("Empty"));
+
               case ConnectionState.waiting:
                 return const Center(
                   child: CircularProgressIndicator(),

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/community/community_page.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/storage_constants.dart';
@@ -63,14 +64,10 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       }
     } else if (event is ChangedTrainingNameEvent) {
       Map<String, dynamic> nameData = {"name": event.name};
-      print("ChangedTrainingNameEvent ${state.realisedTrainingId}");
       if (state.realisedTrainingId != null) {
-        print("ChangedTrainingNameEvent IN");
-
         try {
           Training? training = await trainingRepository.patch(
               state.realisedTrainingId!, nameData);
-          print("ChangedTrainingNameEvent IN");
           if (training != null) {
             yield state.copyWith(
                 realisedTraining:
@@ -148,7 +145,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       yield _mapTrainingEndedEventToState(event);
     } else if (event is TrainingLeftEvent) {
       //Erase all sets above the current one and save training with query
-      Get.offNamedUntil(HomePage.routeName, (route) => false);
+      Get.offNamedUntil(
+          CommunityPage.routeName, ModalRoute.withName(HomePage.routeName));
       yield _mapTrainingLeftEventToState(event);
     }
   }

@@ -4,7 +4,7 @@ import 'package:enter_training_me/navigation/tab_element.dart';
 import 'package:enter_training_me/pages/community/bloc/community_tab_bloc.dart';
 import 'package:enter_training_me/pages/community/views/coaching_view.dart';
 import 'package:enter_training_me/pages/community/views/feed_view.dart';
-import 'package:enter_training_me/pages/community/views/ranking_view.dart';
+import 'package:enter_training_me/pages/community/views/ranking/ranking_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
