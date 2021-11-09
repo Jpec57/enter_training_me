@@ -16,6 +16,7 @@ ReferenceExercise _$ReferenceExerciseFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       isBodyweightExercise: json['isBodyweightExercise'] as bool? ?? false,
+      isOnlyIsometric: json['isOnlyIsometric'] as bool? ?? false,
       muscleActivations: (json['muscleActivations'] as List<dynamic>?)
               ?.map((e) => MuscleActivation.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -32,6 +33,7 @@ Map<String, dynamic> _$ReferenceExerciseToJson(ReferenceExercise instance) =>
       'description': instance.description,
       'strainessFactor': instance.strainessFactor,
       'isBodyweightExercise': instance.isBodyweightExercise,
+      'isOnlyIsometric': instance.isOnlyIsometric,
       'material': instance.material,
       'muscleActivations': instance.muscleActivations,
     };

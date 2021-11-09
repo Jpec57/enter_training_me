@@ -11,6 +11,7 @@ class ReferenceExercise {
   final String? description;
   final double strainessFactor;
   final bool isBodyweightExercise;
+  final bool isOnlyIsometric;
   final List<String> material;
   final List<MuscleActivation>? muscleActivations;
 
@@ -20,6 +21,7 @@ class ReferenceExercise {
       required this.reference,
       this.material = const [],
       this.isBodyweightExercise = false,
+      this.isOnlyIsometric = false,
       this.muscleActivations = const [],
       required this.strainessFactor,
       this.description});

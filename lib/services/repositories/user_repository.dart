@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/models/models.dart';
@@ -98,9 +100,15 @@ class UserRepository extends ApiService
     }
   }
 
-  Future<User?> changeProfilePic() async {
+  Future<User?> changeProfilePic(File image) async {
     try {
-      Response response = await getDio().post(getRealisedExosByUser, data: {});
+      String fileName = image.path.split('/').last;
+
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(image.path, filename: fileName),
+      });
+      Response response =
+          await getDio().post(changeProfilePicUrl, data: formData);
       dynamic data = response.data;
       return User.fromJson(data);
     } on DioError catch (_) {

@@ -1,5 +1,3 @@
-
-
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/views/new_exercise/choose_exercise_dialog.dart';
@@ -24,6 +22,7 @@ class NewExerciseView extends StatefulWidget {
 class _NewExerciseViewState extends State<NewExerciseView> {
   ReferenceExercise? _selectedRefExo;
   int _restBtwSet = 120;
+  bool isIsometric = false;
 
   final ExerciseSet _defaultSet = const ExerciseSet(reps: 5, weight: 100);
   final List<ExerciseSet> _setList = [const ExerciseSet(reps: 5, weight: 100)];
@@ -111,7 +110,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
               onTap: () {
                 showRepsModal(context, index);
               },
-              child: Text("Reps ${set.reps}"),
+              child: Text("${set.reps} ${isIsometric ? "sec" : "reps"}"),
             ),
           ),
           Expanded(
@@ -146,9 +145,9 @@ class _NewExerciseViewState extends State<NewExerciseView> {
         child: Row(
           children: [
             Expanded(child: Container()),
-            const Expanded(
-              child:
-                  Text("REPS", style: TextStyle(fontWeight: FontWeight.bold)),
+            Expanded(
+              child: Text(isIsometric ? "DURATION" : "REPS",
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
             const Expanded(
               child:
@@ -213,6 +212,9 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                 onTap: () {
                   Get.dialog(ChooseExerciseDialog(
                     onExerciseChosen: (ReferenceExercise exo) {
+                      if (exo.isOnlyIsometric) {
+                        isIsometric = true;
+                      }
                       setState(() {
                         _selectedRefExo = exo;
                       });
@@ -241,6 +243,20 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            Text(
+                              "Is Isometric ?",
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            SwitchListTile(
+                                title: Text(isIsometric ? "Yes" : "No",
+                                    style:
+                                        const TextStyle(color: Colors.white)),
+                                value: isIsometric,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isIsometric = value;
+                                  });
+                                }),
                             Text(
                               "Sets",
                               style: Theme.of(context).textTheme.headline4,
@@ -277,6 +293,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                         RealisedExercise? _toAddExercise = RealisedExercise(
                             exerciseReference: _selectedRefExo!,
                             sets: _setList,
+                            isIsometric: isIsometric,
                             restBetweenSet: _restBtwSet);
 
                         widget.onExerciseChosen(_toAddExercise);

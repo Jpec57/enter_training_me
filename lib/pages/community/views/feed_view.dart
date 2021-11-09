@@ -47,6 +47,13 @@ class _FeedViewState extends State<FeedView>
                     return SizedBox(
                       height: 200,
                       child: TrainingContainer(
+                        onTrainingRemove: () {
+                          setState(() {
+                            _feedFuture =
+                                RepositoryProvider.of<UserRepository>(context)
+                                    .getPersonalFeed();
+                          });
+                        },
                         otherColor: true,
                         referenceTraining: trainings[index],
                       ),
