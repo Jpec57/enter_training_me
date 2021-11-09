@@ -40,6 +40,11 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
       yield state.copyWith(
           training: state.training.copyWith(exercises: newExoList),
           hasMadeChanges: true);
+    } else if (event is ChangedNbLoopsEvent) {
+      if (event.nbLoops > 0) {
+        yield state.copyWith(
+            training: state.training.copyWith(numberOfLoops: event.nbLoops));
+      }
     } else if (event is ToggledEditModeEvent) {
       yield state.copyWith(isEditting: !state.isEditting);
     } else if (event is RenamedWorkoutEvent) {

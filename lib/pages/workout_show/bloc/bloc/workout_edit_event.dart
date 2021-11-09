@@ -67,3 +67,12 @@ class AddedExerciseEvent extends WorkoutEditEvent {
   @override
   List<Object?> get props => [exo];
 }
+
+class ChangedNbLoopsEvent extends WorkoutEditEvent {
+  final int nbLoops;
+
+  ChangedNbLoopsEvent(this.nbLoops);
+
+  @override
+  List<Object?> get props => [nbLoops];
+}

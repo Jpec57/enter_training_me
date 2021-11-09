@@ -7,6 +7,7 @@ import 'package:enter_training_me/pages/workout_show/bloc/bloc/workout_edit_bloc
 import 'package:enter_training_me/pages/workout_show/views/workout_edit_exercise_card.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/widgets/dialog/change_exercise_set_dialog.dart';
 import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,25 +75,42 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
               ? Container()
               : _renderDeleteTrainingButton(widget.isEditting),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-            child: Wrap(
-              spacing: 24,
-              children: [
-                widget.referenceTraining.estimatedTimeInSeconds != null
-                    ? WorkoutMetric(
-                        metric:
-                            "${widget.referenceTraining.estimatedTimeInSeconds! ~/ 60}",
-                        unit: " min")
-                    : Container(),
-                WorkoutMetric(
-                    metric: "${widget.referenceTraining.numberOfLoops}",
-                    unit: " cycle(s)"),
-                Text(widget.referenceTraining.difficulty ?? "UNKNOWN",
-                    style: GoogleFonts.bebasNeue(fontSize: 25)),
-              ],
-            ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+              child: Wrap(
+                spacing: 24,
+                children: [
+                  widget.referenceTraining.estimatedTimeInSeconds != null
+                      ? WorkoutMetric(
+                          metric:
+                              "${widget.referenceTraining.estimatedTimeInSeconds! ~/ 60}",
+                          unit: " min")
+                      : Container(),
+                  BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
+                    builder: (context, state) {
+                      return InkWell(
+                        onTap: () {
+                          Get.dialog(ChangeExerciseSetDialog<int>(
+                              currentValue: state.training.numberOfLoops,
+                              title: "How many loops do you want to do ?",
+                              setForOneCallback: (value) {
+                                int parseValue = int.parse(value);
+
+                                BlocProvider.of<WorkoutEditBloc>(context)
+                                    .add(ChangedNbLoopsEvent(parseValue));
+                              }));
+                        },
+                        child: WorkoutMetric(
+                            metric: "${state.training.numberOfLoops}",
+                            unit: " cycle(s)"),
+                      );
+                    },
+                  ),
+                  Text(widget.referenceTraining.difficulty ?? "UNKNOWN",
+                      style: GoogleFonts.bebasNeue(fontSize: 25)),
+                ],
+              )),
           const SectionDivider(),
+
           BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
             buildWhen: (prev, next) => prev.training != next.training,
             builder: (context, state) {
