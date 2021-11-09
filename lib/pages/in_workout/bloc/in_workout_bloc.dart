@@ -63,16 +63,25 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       }
     } else if (event is ChangedTrainingNameEvent) {
       Map<String, dynamic> nameData = {"name": event.name};
+      print("ChangedTrainingNameEvent ${state.realisedTrainingId}");
       if (state.realisedTrainingId != null) {
+        print("ChangedTrainingNameEvent IN");
+
         try {
-          await trainingRepository.patch(state.realisedTrainingId!, nameData);
+          Training? training = await trainingRepository.patch(
+              state.realisedTrainingId!, nameData);
+          print("ChangedTrainingNameEvent IN");
+          if (training != null) {
+            yield state.copyWith(
+                realisedTraining:
+                    state.realisedTraining.copyWith(name: event.name));
+          }
         } on DioError catch (e) {
           Get.snackbar("Error", e.toString());
         }
       }
 
-      yield state.copyWith(
-          realisedTraining: state.realisedTraining.copyWith(name: event.name));
+      yield state;
     } else if (event is ChangedViewEvent) {
       yield _mapChangedViewEventToState(event);
     } else if (event is ExerciseDoneEvent) {

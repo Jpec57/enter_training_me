@@ -111,7 +111,7 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   @override
   Future<Training?> patch(int id, Map<String, dynamic> data) async {
     //should be done in api as well
-    if (data['isOfficial']) {
+    if (data.containsKey('isOfficial') && data['isOfficial']) {
       return await postUserTraining(data);
     }
     Response response = await getDio()
