@@ -159,6 +159,8 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
 
   @override
   Widget build(BuildContext context) {
+    var maxSpotPerSizeWidth = 10;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -168,30 +170,40 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
                 Radius.circular(18),
               ),
               color: Color(0xff232d37)),
-          child: Padding(
-            padding: const EdgeInsets.only(
-                right: 18.0, left: 12.0, top: 24, bottom: 12),
-            child: FutureBuilder(
-              future: _setsFuture,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ExerciseSet>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData &&
-                    snapshot.data!.isNotEmpty) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    width: MediaQuery.of(context).size.width * 10,
-                    child: LineChart(
-                      mainData(snapshot.data!),
+          child: FutureBuilder(
+            future: _setsFuture,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ExerciseSet>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData &&
+                  snapshot.data!.isNotEmpty) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: snapshot.data!.length > maxSpotPerSizeWidth
+                          ? (MediaQuery.of(context).size.width /
+                                  maxSpotPerSizeWidth) *
+                              snapshot.data!.length
+                          : MediaQuery.of(context).size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            right: 18.0, left: 12.0, top: 24, bottom: 12),
+                        child: LineChart(
+                          mainData(snapshot.data!),
+                        ),
+                      ),
                     ),
-                  );
-                }
-                return Text("${snapshot.connectionState} ${snapshot.data}");
-              },
-            ),
+                  ),
+                );
+              }
+              return Text("${snapshot.connectionState} ${snapshot.data}");
+            },
           ),
         ),
         InkWell(

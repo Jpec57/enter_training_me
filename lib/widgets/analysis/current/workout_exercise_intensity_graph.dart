@@ -196,26 +196,20 @@ class _WorkoutExerciseIntensityGraphState
                   margin: 10,
                   getTitles: (double value) {
                     return "E${value.toInt()}";
-                    return widget
-                        .realisedTraining
-                        .exercises[value.toInt() %
-                            widget.realisedTraining.exercises.length]
-                        .exerciseReference
-                        .shortName;
+                    // return widget
+                    //     .realisedTraining
+                    //     .exercises[value.toInt() %
+                    //         widget.realisedTraining.exercises.length]
+                    //     .exerciseReference
+                    //     .shortName;
                   },
                 ),
               ),
-              // rangeAnnotations: RangeAnnotations(
-              //     verticalRangeAnnotations: [
-              //       VerticalRangeAnnotation(
-              //           x1: 0, x2: 100, color: Colors.yellow)
-              //     ]),
               borderData: FlBorderData(
                 show: false,
               ),
               barGroups: showingBarGroups,
               barTouchData: barTouchData,
-
               groupsSpace: widget.groupSpace,
               gridData: FlGridData(
                   show: true,

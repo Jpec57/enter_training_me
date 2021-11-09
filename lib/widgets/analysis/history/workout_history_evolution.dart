@@ -31,6 +31,7 @@ class _WorkoutHistoryEvolutionState extends State<WorkoutHistoryEvolution> {
 
   @override
   Widget build(BuildContext context) {
+    var maxSpotPerSizeWidth = 10;
     return Stack(
       children: <Widget>[
         AspectRatio(
@@ -41,11 +42,22 @@ class _WorkoutHistoryEvolutionState extends State<WorkoutHistoryEvolution> {
                   Radius.circular(18),
                 ),
                 color: Color(0xff232d37)),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: LineChart(
-                mainData(),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                // 10 points per mobile width
+                width: (widget.trainings.length > maxSpotPerSizeWidth
+                    ? (MediaQuery.of(context).size.width /
+                            maxSpotPerSizeWidth) *
+                        widget.trainings.length
+                    : MediaQuery.of(context).size.width),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      right: 18.0, left: 12.0, top: 24, bottom: 12),
+                  child: LineChart(
+                    mainData(),
+                  ),
+                ),
               ),
             ),
           ),
@@ -98,10 +110,8 @@ class _WorkoutHistoryEvolutionState extends State<WorkoutHistoryEvolution> {
               fontSize: 12),
           getTitles: (value) {
             int index = value.toInt();
-            final DateFormat formatter = DateFormat('MM-dd');
             return (DateFormat.yMd())
                 .format(widget.trainings[index].createdAt!);
-            return formatter.format(widget.trainings[index].createdAt!);
           },
           margin: 8,
         ),
