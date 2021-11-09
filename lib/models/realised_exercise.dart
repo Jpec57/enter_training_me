@@ -29,12 +29,14 @@ class RealisedExercise extends Equatable {
   final int restBetweenSet;
   @JsonKey(toJson: executionStyleToJson)
   final ExecutionStyle? executionStyle;
+  final bool isIsometric;
 
   const RealisedExercise({
     // this.id,
     required this.exerciseReference,
     required this.sets,
     required this.restBetweenSet,
+    this.isIsometric = false,
     this.executionStyle,
   });
 
@@ -50,6 +52,7 @@ class RealisedExercise extends Equatable {
           exerciseReference: exerciseReference ?? this.exerciseReference,
           executionStyle: executionStyle,
           restBetweenSet: restBetweenSet,
+          isIsometric: isIsometric,
           sets: sets ?? this.sets);
 
   @override
@@ -89,5 +92,5 @@ class RealisedExercise extends Equatable {
 
   @override
   List<Object?> get props =>
-      [sets, executionStyle, exerciseReference, restBetweenSet];
+      [sets, executionStyle, exerciseReference, restBetweenSet, isIsometric];
 }

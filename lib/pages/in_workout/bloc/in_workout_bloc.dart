@@ -135,6 +135,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       yield _mapChangedRefRepsEventToState(event);
     } else if (event is ChangedRefWeightEvent) {
       yield _mapChangedRefWeightEventToState(event);
+    } else if (event is ResetRepEvent) {
+      yield state.copyWith(reallyDoneReps: 0);
     } else if (event is TrainingEndedEvent) {
       Training? training = await saveTraining();
       yield state.copyWith(realisedTrainingId: training?.id);
@@ -175,8 +177,11 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
+    //Considering 3 seconds offset => time to stop the counter
     return state.copyWith(
-        reallyDoneReps: state.currentSet.reps,
+        reallyDoneReps: state.currentExo!.isIsometric
+            ? (state.reallyDoneReps - 3)
+            : state.currentSet.reps,
         currentView: InWorkoutView.inRestView);
   }
 

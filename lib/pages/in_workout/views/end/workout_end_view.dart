@@ -282,7 +282,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                 BlocProvider.of<InWorkoutBloc>(context)
                     .add(TrainingLeftEvent());
               },
-              child: const Text("Back to home"),
+              child: const Text("End training"),
             ),
           ],
         ),

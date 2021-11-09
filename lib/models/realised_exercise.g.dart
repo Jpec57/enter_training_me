@@ -14,6 +14,7 @@ RealisedExercise _$RealisedExerciseFromJson(Map<String, dynamic> json) =>
           .map((e) => ExerciseSet.fromJson(e as Map<String, dynamic>))
           .toList(),
       restBetweenSet: json['restBetweenSet'] as int,
+      isIsometric: json['isIsometric'] as bool? ?? false,
       executionStyle: json['executionStyle'] == null
           ? null
           : ExecutionStyle.fromJson(
@@ -26,4 +27,5 @@ Map<String, dynamic> _$RealisedExerciseToJson(RealisedExercise instance) =>
       'exerciseReference': exerciseRefToJson(instance.exerciseReference),
       'restBetweenSet': instance.restBetweenSet,
       'executionStyle': executionStyleToJson(instance.executionStyle),
+      'isIsometric': instance.isIsometric,
     };

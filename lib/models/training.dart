@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'training.g.dart';
 
 String? trainingRefToJson(Training? ref) {
-  if (ref == null) {
+  if (ref == null || ref.id == null) {
     return null;
   }
   return "api/trainings/${ref.id!}";

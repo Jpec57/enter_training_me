@@ -178,7 +178,6 @@ class _HomePageState extends State<HomePage> {
               const Headline4(title: "Personal Workouts"),
               InkWell(
                   onTap: () async {
-                    // await Get.dialog();
                     bool autoPlay = await Get.dialog(ConfirmDialog(
                       title: "Direct play or save for later",
                       message: "Would you like to create a workout as you go ?",

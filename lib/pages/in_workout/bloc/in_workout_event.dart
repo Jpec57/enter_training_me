@@ -46,7 +46,14 @@ class RemovedRepEvent extends InWorkoutEvent {
   List<Object?> get props => [];
 }
 
+
+class ResetRepEvent extends InWorkoutEvent {
+  
+  @override
+  List<Object?> get props => [];
+}
 class AddedRepEvent extends InWorkoutEvent {
+
   @override
   List<Object?> get props => [];
 }

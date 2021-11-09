@@ -1,5 +1,6 @@
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/views/in_exercise/isometric_exercise_partial.dart';
 import 'package:enter_training_me/widgets/dialog/change_exercise_set_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +67,10 @@ class InWorkoutExerciseView extends StatelessWidget {
 
   Widget _renderExerciseInfo(
       BuildContext context, RealisedExercise exo, InWorkoutState state) {
+    if (exo.isIsometric) {
+      return IsometricExercisePartial(
+          parentContext: context, exo: state.currentExo!);
+    }
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
