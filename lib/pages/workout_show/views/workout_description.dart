@@ -89,15 +89,17 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                     builder: (context, state) {
                       return InkWell(
                         onTap: () {
-                          Get.dialog(ChangeExerciseSetDialog<int>(
-                              currentValue: state.training.numberOfLoops,
-                              title: "How many loops do you want to do ?",
-                              setForOneCallback: (value) {
-                                int parseValue = int.parse(value);
+                          if (state.isEditting) {
+                            Get.dialog(ChangeExerciseSetDialog<int>(
+                                currentValue: state.training.numberOfLoops,
+                                title: "How many loops do you want to do ?",
+                                setForOneCallback: (value) {
+                                  int parseValue = int.parse(value);
 
-                                BlocProvider.of<WorkoutEditBloc>(context)
-                                    .add(ChangedNbLoopsEvent(parseValue));
-                              }));
+                                  BlocProvider.of<WorkoutEditBloc>(context)
+                                      .add(ChangedNbLoopsEvent(parseValue));
+                                }));
+                          }
                         },
                         child: WorkoutMetric(
                             metric: "${state.training.numberOfLoops}",
