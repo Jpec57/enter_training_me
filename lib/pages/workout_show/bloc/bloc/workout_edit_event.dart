@@ -58,3 +58,12 @@ class RenamedWorkoutEvent extends WorkoutEditEvent {
   @override
   List<Object?> get props => [name];
 }
+
+class AddedExerciseEvent extends WorkoutEditEvent {
+  final RealisedExercise exo;
+
+  AddedExerciseEvent({required this.exo});
+
+  @override
+  List<Object?> get props => [exo];
+}

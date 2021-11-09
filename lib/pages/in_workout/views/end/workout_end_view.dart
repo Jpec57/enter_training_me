@@ -291,7 +291,10 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
   }
 
   Widget _renderWorkoutAnalysisSection(Training realisedTraining, bool isEnd) {
-    if (realisedTraining.exercises.isEmpty || !isEnd) {
+    if (realisedTraining.exercises.isEmpty) {
+      return Container();
+    }
+    if (!isEnd) {
       return Container();
     }
     return FutureBuilder(

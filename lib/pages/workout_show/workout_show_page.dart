@@ -16,18 +16,20 @@ part 'views/workout_info_view.dart';
 part 'views/workout_history_view.dart';
 
 class WorkoutShowPage extends StatelessWidget {
-  const WorkoutShowPage({Key? key, required this.referenceTraining})
+  const WorkoutShowPage(
+      {Key? key, required this.referenceTraining, this.isEditing = false})
       : super(key: key);
   static const routeName = "/workout/show";
   final Training referenceTraining;
+  final bool isEditing;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<WorkoutEditBloc>(
       lazy: false,
       create: (context) => WorkoutEditBloc(
-          RepositoryProvider.of<TrainingRepository>(context),
-          referenceTraining),
+          RepositoryProvider.of<TrainingRepository>(context), referenceTraining,
+          isEditingAtStartAlready: isEditing),
       child: WorkoutShowPageContent(referenceTraining: referenceTraining),
     );
   }

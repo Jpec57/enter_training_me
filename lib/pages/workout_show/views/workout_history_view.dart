@@ -12,13 +12,15 @@ class WorkoutHistoryView extends StatefulWidget {
 
 class _WorkoutHistoryViewState extends State<WorkoutHistoryView>
     with AutomaticKeepAliveClientMixin {
-  late Future<List<Training>> _historyTrainings;
+  Future<List<Training>>? _historyTrainings;
 
   @override
   void initState() {
     super.initState();
-    _historyTrainings = RepositoryProvider.of<TrainingRepository>(context)
-        .getByReference(widget.referenceTraining.id!);
+    if (widget.referenceTraining.id != null) {
+      _historyTrainings = RepositoryProvider.of<TrainingRepository>(context)
+          .getByReference(widget.referenceTraining.id!);
+    }
   }
 
   @override
@@ -95,7 +97,7 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView>
           );
         }
 
-        return Text("Error");
+        return  const Center(child: Text("No history"));
       },
     );
   }

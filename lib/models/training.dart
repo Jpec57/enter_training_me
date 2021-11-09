@@ -55,6 +55,9 @@ class Training extends Equatable {
     return cleanForCreation(json);
   }
 
+  factory Training.empty() =>
+      const Training(name: "New Training", exercises: [], intensity: 0);
+
   static Map<String, dynamic> cleanForCreation(Map<String, dynamic> json) {
     //TODO in API
     json.remove('author');

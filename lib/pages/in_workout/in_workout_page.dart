@@ -5,36 +5,36 @@ import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/headers/training_header_bar.dart';
 import 'package:enter_training_me/pages/in_workout/views/in_exercise/current_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/views/in_exercise/in_workout_exercise_view.dart';
-import 'package:enter_training_me/pages/in_workout/views/new_exercise/choose_exercise_dialog.dart';
 import 'package:enter_training_me/pages/in_workout/views/rest/in_workout_rest_view.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/exercise_container.dart';
 import 'package:enter_training_me/pages/in_workout/views/rest/next_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/views/end/workout_end_view.dart';
+import 'package:enter_training_me/pages/in_workout/views/new_exercise/new_exercise_view.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
-import 'package:enter_training_me/widgets/dialog/change_exercise_set_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:wakelock/wakelock.dart';
-
-part 'views/new_exercise/new_exercise_view.dart';
 
 class InWorkoutPage extends StatelessWidget {
   final Training? referenceTraining;
+  final bool autoPlay;
 
   static const routeName = "/workout/in";
 
-  const InWorkoutPage({Key? key, required this.referenceTraining})
+  const InWorkoutPage(
+      {Key? key, required this.referenceTraining, this.autoPlay = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => InWorkoutBloc(
-          RepositoryProvider.of<TrainingRepository>(context),
-          referenceTraining?.id,
-          Training.clone(referenceTraining)),
+        RepositoryProvider.of<TrainingRepository>(context),
+        referenceTraining?.id,
+        Training.clone(referenceTraining),
+        autoPlay: autoPlay,
+      ),
       child: const InWorkoutScreen(),
     );
   }
@@ -80,14 +80,27 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
       builder: (context, state) {
         if (state.currentView == InWorkoutView.newExerciseView) {
           return NewExerciseView(
-            tabController: _tabController,
+            onExerciseChosen: (exercise) {
+              BlocProvider.of<InWorkoutBloc>(context)
+                  .add(AddedExoEvent(_tabController, exercise));
+            },
+            onDismiss: () {
+              if (state.realisedTraining.exercises.isEmpty) {
+                BlocProvider.of<InWorkoutBloc>(context).add(ChangedViewEvent(
+                    _tabController, InWorkoutView.endWorkoutView));
+              } else {
+                BlocProvider.of<InWorkoutBloc>(context).add(
+                    ChangedViewEvent(_tabController, InWorkoutView.inRestView));
+              }
+            },
           );
         }
-        if (state.currentExo == null ||
+        if (state.isAutoPlayOn == false ||
+            state.currentExo == null ||
             state.isEnd ||
             state.currentView == InWorkoutView.endWorkoutView) {
           return WorkoutEndView(
-            parentBuildContext: context,
+              parentBuildContext: context,
               tabController: _tabController,
               referenceId: state.referenceTrainingId);
         }

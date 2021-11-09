@@ -1,16 +1,25 @@
-
 import 'package:flutter/material.dart';
 
 class ConfirmDialog extends StatelessWidget {
+  final String confirmLabel;
+  final String cancelLabel;
   final String title;
   final String message;
-  final Function confirmCallback;
+  final VoidCallback confirmCallback;
+  final VoidCallback? cancelCallback;
 
-  const ConfirmDialog({Key? key, required this.message, required this.confirmCallback, this.title = "Confirm"}) : super(key: key);
+  const ConfirmDialog(
+      {Key? key,
+      required this.message,
+      required this.confirmCallback,
+      this.cancelCallback,
+      this.confirmLabel = "Confirm",
+      this.cancelLabel = "Cancel",
+      this.title = "Confirm"})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
       title: Text(title),
       content: SizedBox(
@@ -18,19 +27,23 @@ class ConfirmDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(message,),
+            Text(
+              message,
+            ),
           ],
         ),
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text("Cancel"),
+          child: Text(cancelLabel),
           onPressed: () {
-            Navigator.of(context).pop();
+            cancelCallback != null
+                ? cancelCallback!()
+                : Navigator.of(context).pop();
           },
         ),
         TextButton(
-          child: const Text("Confirm"),
+          child: Text(confirmLabel),
           onPressed: () {
             confirmCallback();
           },

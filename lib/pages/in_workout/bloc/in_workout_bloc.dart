@@ -27,8 +27,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   final TrainingRepository trainingRepository;
 
   InWorkoutBloc(this.trainingRepository, int? referenceTrainingId,
-      Training realisedTraining)
+      Training realisedTraining, {bool autoPlay = false})
       : super(InWorkoutState(
+            isAutoPlayOn: autoPlay,
             referenceTrainingId: referenceTrainingId,
             realisedTraining: realisedTraining));
 

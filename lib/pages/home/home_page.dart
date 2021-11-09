@@ -5,8 +5,10 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/training_container.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
+import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/clippers/diagonal_corner_clipper.dart';
+import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:enter_training_me/widgets/texts/headline3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,11 +112,6 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 Headline4(title: "Official Workouts"),
-                // InkWell(
-                //     onTap: () {},
-                //     child: const Text(
-                //       "More...",
-                //     )),
               ],
             ),
           ),
@@ -180,10 +177,29 @@ class _HomePageState extends State<HomePage> {
             children: [
               const Headline4(title: "Personal Workouts"),
               InkWell(
-                  onTap: () {
-                    Get.to(const InWorkoutPage(
-                      referenceTraining: null,
+                  onTap: () async {
+                    // await Get.dialog();
+                    bool autoPlay = await Get.dialog(ConfirmDialog(
+                      title: "Direct play or save for later",
+                      message: "Would you like to create a workout as you go ?",
+                      confirmLabel: "Auto play",
+                      cancelLabel: "Create for later",
+                      confirmCallback: () {
+                        Navigator.of(context).pop<bool>(true);
+                      },
+                      cancelCallback: () {
+                        Navigator.of(context).pop<bool>(false);
+                      },
                     ));
+                    if (autoPlay) {
+                      Get.to(InWorkoutPage(
+                          referenceTraining: null, autoPlay: autoPlay));
+                    } else {
+                      Get.to(WorkoutShowPage(
+                        referenceTraining: Training.empty(),
+                        isEditing: true,
+                      ));
+                    }
                   },
                   child: Container(
                       padding: const EdgeInsets.symmetric(

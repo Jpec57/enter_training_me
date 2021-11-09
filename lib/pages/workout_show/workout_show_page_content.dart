@@ -1,5 +1,6 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/in_workout/views/end/rename_training_dialog.dart';
@@ -71,7 +72,7 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () {
-            Navigator.of(context).pop();
+            Get.toNamed(HomePage.routeName);
           },
         ),
         actions: [

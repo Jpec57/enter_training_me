@@ -1,9 +1,20 @@
-part of '../../in_workout_page.dart';
+
+
+import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/in_workout/views/new_exercise/choose_exercise_dialog.dart';
+import 'package:enter_training_me/widgets/dialog/change_exercise_set_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+typedef OnRealisedExerciseCallback = void Function(RealisedExercise exercise);
 
 class NewExerciseView extends StatefulWidget {
-  final TabController tabController;
+  final VoidCallback onDismiss;
+  final OnRealisedExerciseCallback onExerciseChosen;
 
-  const NewExerciseView({Key? key, required this.tabController})
+  const NewExerciseView(
+      {Key? key, required this.onExerciseChosen, required this.onDismiss})
       : super(key: key);
 
   @override
@@ -13,31 +24,10 @@ class NewExerciseView extends StatefulWidget {
 class _NewExerciseViewState extends State<NewExerciseView> {
   ReferenceExercise? _selectedRefExo;
   int _restBtwSet = 120;
-  double _weight = 0;
+
   final ExerciseSet _defaultSet = const ExerciseSet(reps: 5, weight: 100);
   final List<ExerciseSet> _setList = [const ExerciseSet(reps: 5, weight: 100)];
-  late TextEditingController _weightTextController;
   final GlobalKey<FormState> _formKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    _weightTextController = TextEditingController();
-    _weightTextController.addListener(() {
-      if (_weightTextController.text.isNotEmpty) {
-        _weight = double.parse(_weightTextController.text);
-      } else {
-        _weight = 0;
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _weightTextController.removeListener(() {});
-    _weightTextController.dispose();
-    super.dispose();
-  }
 
   Widget _renderRestChoiceRow() {
     return Row(
@@ -207,27 +197,9 @@ class _NewExerciseViewState extends State<NewExerciseView> {
             children: [
               Row(
                 children: [
-                  BlocBuilder<InWorkoutBloc, InWorkoutState>(
-                    buildWhen: (prev, next) =>
-                        prev.realisedTraining.exercises.length !=
-                        next.realisedTraining.exercises.length,
-                    builder: (context, state) {
-                      return IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white),
-                        onPressed: () {
-                          if (state
-                              .realisedTraining.exercises.isEmpty) {
-                            BlocProvider.of<InWorkoutBloc>(context).add(
-                                ChangedViewEvent(widget.tabController,
-                                    InWorkoutView.endWorkoutView));
-                          } else {
-                            BlocProvider.of<InWorkoutBloc>(context).add(
-                                ChangedViewEvent(widget.tabController,
-                                    InWorkoutView.inRestView));
-                          }
-                        },
-                      );
-                    },
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: widget.onDismiss,
                   ),
                   Expanded(
                       child: Center(
@@ -294,9 +266,6 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                           ],
                         ),
                       ),
-
-                      //TODO SHOW BOTTOM 
-                      
                     ],
                   ),
                 ),
@@ -309,9 +278,8 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                             exerciseReference: _selectedRefExo!,
                             sets: _setList,
                             restBetweenSet: _restBtwSet);
-                        BlocProvider.of<InWorkoutBloc>(context).add(
-                            AddedExoEvent(
-                                widget.tabController, _toAddExercise));
+
+                        widget.onExerciseChosen(_toAddExercise);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
