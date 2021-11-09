@@ -28,9 +28,8 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   final TrainingRepository trainingRepository;
 
   InWorkoutBloc(this.trainingRepository, int? referenceTrainingId,
-      Training realisedTraining, {bool autoPlay = false})
+      Training realisedTraining)
       : super(InWorkoutState(
-            isAutoPlayOn: autoPlay,
             referenceTrainingId: referenceTrainingId,
             realisedTraining: realisedTraining));
 
@@ -44,18 +43,15 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   ) async* {
     if (event is AddedExoEvent) {
       yield _mapAddedExoEventToState(event);
-      if (state.isAutoPlayOn) {
-        yield _mapChangedViewEventToState(ChangedViewEvent(
-            event.tabController, InWorkoutView.inExerciseView));
-      } else {
-        if (state.realisedTraining.exercises.isEmpty) {
-          yield _mapChangedViewEventToState(ChangedViewEvent(
-              event.tabController, InWorkoutView.endWorkoutView));
-        } else {
-          yield _mapChangedViewEventToState(
-              ChangedViewEvent(event.tabController, InWorkoutView.inRestView));
-        }
-      }
+      yield _mapChangedViewEventToState(
+          ChangedViewEvent(event.tabController, InWorkoutView.inExerciseView));
+      // if (state.realisedTraining.exercises.isEmpty) {
+      //   yield _mapChangedViewEventToState(ChangedViewEvent(
+      //       event.tabController, InWorkoutView.endWorkoutView));
+      // } else {
+      //   yield _mapChangedViewEventToState(
+      //       ChangedViewEvent(event.tabController, InWorkoutView.inRestView));
+      // }
     } else if (event is ChangedNbLoopsEvent) {
       if (event.nbLoops > 0) {
         yield state.copyWith(

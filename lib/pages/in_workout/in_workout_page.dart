@@ -18,12 +18,10 @@ import 'package:wakelock/wakelock.dart';
 
 class InWorkoutPage extends StatelessWidget {
   final Training? referenceTraining;
-  final bool autoPlay;
 
   static const routeName = "/workout/in";
 
-  const InWorkoutPage(
-      {Key? key, required this.referenceTraining, this.autoPlay = false})
+  const InWorkoutPage({Key? key, required this.referenceTraining})
       : super(key: key);
 
   @override
@@ -33,7 +31,6 @@ class InWorkoutPage extends StatelessWidget {
         RepositoryProvider.of<TrainingRepository>(context),
         referenceTraining?.id,
         Training.clone(referenceTraining),
-        autoPlay: autoPlay,
       ),
       child: const InWorkoutScreen(),
     );
@@ -95,8 +92,7 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
             },
           );
         }
-        if (state.isAutoPlayOn == false ||
-            state.currentExo == null ||
+        if (state.currentExo == null ||
             state.isEnd ||
             state.currentView == InWorkoutView.endWorkoutView) {
           return WorkoutEndView(

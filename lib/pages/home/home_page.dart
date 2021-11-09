@@ -192,8 +192,8 @@ class _HomePageState extends State<HomePage> {
                       },
                     ));
                     if (autoPlay) {
-                      Get.to(InWorkoutPage(
-                          referenceTraining: null, autoPlay: autoPlay));
+                      Get.to(
+                          InWorkoutPage(referenceTraining: Training.empty()));
                     } else {
                       Get.to(WorkoutShowPage(
                         referenceTraining: Training.empty(),

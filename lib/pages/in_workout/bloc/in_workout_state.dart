@@ -10,7 +10,6 @@ class InWorkoutState extends Equatable {
   final int elapsedTime;
   final int? realisedTrainingId;
   final InWorkoutView currentView;
-  final bool isAutoPlayOn;
   final Map<String, dynamic> changes;
 
   final int reallyDoneReps;
@@ -21,7 +20,6 @@ class InWorkoutState extends Equatable {
       this.isEnd = false,
       this.elapsedTime = 0,
       this.changes = const {},
-      this.isAutoPlayOn = true,
       this.realisedTrainingId,
       this.currentCycleIndex = 0,
       this.currentExoIndex = 0,
@@ -151,7 +149,6 @@ class InWorkoutState extends Equatable {
         currentView,
         reallyDoneReps,
         elapsedTime,
-        isAutoPlayOn,
         changes,
       ];
 
@@ -172,7 +169,6 @@ class InWorkoutState extends Equatable {
       InWorkoutState(
           isEnd: isEnd ?? this.isEnd,
           changes: changes ?? this.changes,
-          isAutoPlayOn: isAutoPlayOn ?? this.isAutoPlayOn,
           referenceTrainingId: referenceTrainingId ?? this.referenceTrainingId,
           elapsedTime: elapsedTime ?? this.elapsedTime,
           currentView: currentView ?? this.currentView,
