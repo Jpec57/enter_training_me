@@ -72,6 +72,10 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         } on DioError catch (e) {
           Get.snackbar("Error", e.toString());
         }
+      } else {
+        yield state.copyWith(
+            realisedTraining:
+                state.realisedTraining.copyWith(name: event.name));
       }
 
       yield state;
