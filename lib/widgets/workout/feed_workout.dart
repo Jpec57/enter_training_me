@@ -42,10 +42,6 @@ class FeedWorkout extends StatelessWidget {
         },
         confirmLabel: "Delete",
       ));
-    }, onTap: () {
-      Get.toNamed(WorkoutShowPage.routeName,
-          arguments:
-              WorkoutShowPageArguments(referenceTraining: referenceTraining));
     }, child: Builder(builder: (BuildContext context) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -96,9 +92,17 @@ class FeedWorkout extends StatelessWidget {
               ),
             ),
             Expanded(
+              child: InkWell(
+                onTap: () {
+                  Get.toNamed(WorkoutShowPage.routeName,
+                      arguments: WorkoutShowPageArguments(
+                          referenceTraining: referenceTraining));
+                },
                 child: Container(
                     color: CustomTheme.grey,
-                    child: Image.asset("assets/exercises/pull_up.png"))),
+                    child: Image.asset("assets/exercises/pull_up.png")),
+              ),
+            ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
               decoration: const BoxDecoration(

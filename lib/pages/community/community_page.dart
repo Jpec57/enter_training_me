@@ -35,9 +35,14 @@ class _CommunityPageState extends State<CommunityPage>
 
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
+
     return Scaffold(
-      floatingActionButton: CustomBottomNavigationBar.getCenteredFloatingButton(
-          isSelected: false),
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: showFab
+          ? CustomBottomNavigationBar.getCenteredFloatingButton(
+              isSelected: false)
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(
         selectedRoute: CommunityPage.routeName,
@@ -106,6 +111,8 @@ class CommunityPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var tabElements = getTabElements(context);
+    // final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
     return SafeArea(
       //https://stackoverflow.com/questions/54689594/flutter-tabsview-and-nestedscrollview-scroll-issue
       child: NestedScrollView(

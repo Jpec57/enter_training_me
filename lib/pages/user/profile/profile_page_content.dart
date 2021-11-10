@@ -6,6 +6,8 @@ import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/models/profile_info.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
+import 'package:enter_training_me/pages/user/profile/sections/exercise_progression_section.dart';
+import 'package:enter_training_me/pages/user/profile/sections/muscle_profile_section.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_header.dart';
 import 'package:enter_training_me/pages/user/profile/profile_metric_container.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_last_training_section.dart';
@@ -29,16 +31,12 @@ class ProfilePageContent extends StatefulWidget {
 
 class _ProfilePageContentState extends State<ProfilePageContent> {
   late Future<ProfileInfo?> _getUserProfileInfosFuture;
-  late Future<List<ReferenceExercise>>? _realisedExoReferencesFuture;
 
   @override
   void initState() {
     super.initState();
     _getUserProfileInfosFuture =
         RepositoryProvider.of<UserRepository>(context).getUserProfileInfo(null);
-    _realisedExoReferencesFuture =
-        RepositoryProvider.of<UserRepository>(context)
-            .getRealisedExoForViewer();
   }
 
   @override
@@ -165,37 +163,9 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
             ),
           ),
           ProfileMetricsSection(info: info),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, top: 32, bottom: 16),
-            child: Text(
-              "Exercise Estimated 1RM Progression",
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ),
-          FutureBuilder(
-            future: _realisedExoReferencesFuture,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ReferenceExercise>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData &&
-                  snapshot.data!.isNotEmpty) {
-                List<ReferenceExercise> exos = snapshot.data!;
-                return ExerciseHistoryEvolution(
-                  referenceExercises: exos,
-                );
-              }
-              return const Center(
-                child: Text("No data"),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, top: 32),
-            child: Text("Muscle Profile",
-                style: Theme.of(context).textTheme.headline4),
-          ),
-          ExercisedMuscleRadarRepartitionGraph(
-              muscleExperiences: info.user.fitnessProfile!.muscleExperiences)
+          const ExerciseProgressionSection(),
+          MuscleProfileSection(
+              muscleExperiences: info.user.fitnessProfile?.muscleExperiences)
         ],
       ),
     );
