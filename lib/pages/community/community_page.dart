@@ -5,6 +5,7 @@ import 'package:enter_training_me/pages/community/bloc/community_tab_bloc.dart';
 import 'package:enter_training_me/pages/community/views/coaching_view.dart';
 import 'package:enter_training_me/pages/community/views/feed_view.dart';
 import 'package:enter_training_me/pages/community/views/ranking/ranking_view.dart';
+import 'package:enter_training_me/widgets/sliver/insta_like_sliver_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -106,24 +107,29 @@ class CommunityPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     var tabElements = getTabElements(context);
     return SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: TabBarView(
-                controller: innerTabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: tabElements.map((e) => e.header!).toList()),
-          ),
-          TabBar(
-              controller: innerTabController,
-              tabs: tabElements.map((e) => e.tab).toList()),
-          Expanded(
-            flex: 3,
-            child: TabBarView(
-                controller: innerTabController,
-                children: tabElements.map((e) => e.view).toList()),
-          )
-        ],
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              expandedHeight: MediaQuery.of(context).size.height * 0.25,
+              flexibleSpace: FlexibleSpaceBar(
+                background: TabBarView(
+                    controller: innerTabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: tabElements.map((e) => e.header!).toList()),
+              ),
+            ),
+            SliverPersistentHeader(
+                delegate: InstaLikeSliverDelegate(TabBar(
+                    controller: innerTabController,
+                    tabs: tabElements.map((e) => e.tab).toList())),
+                floating: true,
+                pinned: true)
+          ];
+        },
+        body: TabBarView(
+            controller: innerTabController,
+            children: tabElements.map((e) => e.view).toList()),
       ),
     );
   }
