@@ -134,7 +134,7 @@ class UserRepository extends ApiService
   Future<User?> updateUserProfile(int id, Map<String, dynamic> map) async {
     try {
       print(map);
-      Response response = await getDio().patch(updateUserUrl, data: map);
+      Response response = await getDio().patch(updateUserProfileUrl, data: map);
       dynamic data = response.data;
       return User.fromJson(data);
     } on DioError catch (_) {

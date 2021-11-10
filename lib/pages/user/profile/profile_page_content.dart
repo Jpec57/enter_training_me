@@ -13,6 +13,7 @@ import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:enter_training_me/widgets/analysis/history/exercise_history_evolution.dart';
 import 'package:enter_training_me/widgets/analysis/user/exercised_muscle_radar_repartition_graph.dart';
 import 'package:enter_training_me/widgets/animations/animated_count_text.dart';
+import 'package:enter_training_me/widgets/dialog/double_return_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';

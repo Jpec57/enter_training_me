@@ -107,6 +107,7 @@ class CommunityPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     var tabElements = getTabElements(context);
     return SafeArea(
+      //https://stackoverflow.com/questions/54689594/flutter-tabsview-and-nestedscrollview-scroll-issue
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
