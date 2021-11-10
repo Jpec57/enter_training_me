@@ -148,6 +148,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     items: const [
                       TrainingContainer(
+                        isClickDisabled: true,
                         referenceTraining: Training(
                             name: "Loading",
                             exercises: [],

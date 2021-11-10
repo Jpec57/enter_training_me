@@ -23,7 +23,7 @@ class _CommunityPageState extends State<CommunityPage>
   @override
   void initState() {
     super.initState();
-    _innerTabController = TabController(length: 4, vsync: this);
+    _innerTabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -89,16 +89,16 @@ class CommunityPageContent extends StatelessWidget {
                         AssetImage("assets/workouts/workout_wallpaper3.jpeg"),
                     fit: BoxFit.cover)),
           )),
-      TabElement(
-          tab: const Tab(text: "Map", icon: Icon(Icons.map)),
-          view: Container(color: Colors.green),
-          header: Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image:
-                        AssetImage("assets/workouts/workout_wallpaper4.jpeg"),
-                    fit: BoxFit.cover)),
-          )),
+      // TabElement(
+      //     tab: const Tab(text: "Map", icon: Icon(Icons.map)),
+      //     view: Container(color: Colors.green),
+      //     header: Container(
+      //       decoration: const BoxDecoration(
+      //           image: DecorationImage(
+      //               image:
+      //                   AssetImage("assets/workouts/workout_wallpaper4.jpeg"),
+      //               fit: BoxFit.cover)),
+      //     )),
     ];
   }
 

@@ -46,25 +46,24 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      InkWell(
-        onTap: () async {
-          FilePickerResult? result = await FilePicker.platform.pickFiles(
-            type: FileType.image,
-          );
+      UserAvatar(
+          user: _user,
+          onTap: () async {
+            FilePickerResult? result = await FilePicker.platform.pickFiles(
+              type: FileType.image,
+            );
 
-          if (result != null) {
-            File file = File(result.files.single.path!);
-            User? user = await RepositoryProvider.of<UserRepository>(context)
-                .changeProfilePic(file);
-            if (user != null) {
-              setState(() {
-                _user = user;
-              });
+            if (result != null) {
+              File file = File(result.files.single.path!);
+              User? user = await RepositoryProvider.of<UserRepository>(context)
+                  .changeProfilePic(file);
+              if (user != null) {
+                setState(() {
+                  _user = user;
+                });
+              }
             }
-          }
-        },
-        child: UserAvatar(user: _user),
-      ),
+          }),
       Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 24),
         child: Text(widget.user.username,

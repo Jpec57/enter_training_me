@@ -11,75 +11,84 @@ import 'package:get/get.dart';
 class TrainingContainer extends StatelessWidget {
   final Training referenceTraining;
   final VoidCallback? onTrainingRemove;
+  final bool isClickDisabled;
   final bool otherColor;
   const TrainingContainer(
       {Key? key,
       required this.referenceTraining,
       this.otherColor = false,
+      this.isClickDisabled = false,
       this.onTrainingRemove})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(onLongPress: () {
-      Get.dialog(ConfirmDialog(
-        message: "Would you like to delete this training ?",
-        confirmCallback: () async {
-          bool isSuccess =
-              await RepositoryProvider.of<TrainingRepository>(context)
-                  .delete(referenceTraining.id!);
-          Navigator.of(context).pop();
+    return InkWell(
+        onLongPress: () {
+          Get.dialog(ConfirmDialog(
+            message: "Would you like to delete this training ?",
+            confirmCallback: () async {
+              bool isSuccess =
+                  await RepositoryProvider.of<TrainingRepository>(context)
+                      .delete(referenceTraining.id!);
+              Navigator.of(context).pop();
 
-          if (isSuccess) {
-            Get.snackbar("Success", "This workout has been deleted");
-            if (onTrainingRemove != null) {
-              onTrainingRemove!();
-            }
-          } else {
-            Get.snackbar("Error", "An error occurred");
-          }
+              if (isSuccess) {
+                Get.snackbar("Success", "This workout has been deleted");
+                if (onTrainingRemove != null) {
+                  onTrainingRemove!();
+                }
+              } else {
+                Get.snackbar("Error", "An error occurred");
+              }
+            },
+            confirmLabel: "Delete",
+          ));
         },
-        confirmLabel: "Delete",
-      ));
-    }, onTap: () {
-      Get.toNamed(WorkoutShowPage.routeName,
-          arguments:
-              WorkoutShowPageArguments(referenceTraining: referenceTraining));
-    }, child: Builder(builder: (BuildContext context) {
-      return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 50.0),
-              decoration: BoxDecoration(
-                  color:
-                      otherColor ? CustomTheme.grey : CustomTheme.middleGreen,
-                  borderRadius: BorderRadius.circular(10)),
-            ),
-            Positioned.fill(child: Image.asset("assets/exercises/pull_up.png")),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+        onTap: isClickDisabled
+            ? null
+            : () {
+                Get.toNamed(WorkoutShowPage.routeName,
+                    arguments: WorkoutShowPageArguments(
+                        referenceTraining: referenceTraining));
+              },
+        child: Builder(builder: (BuildContext context) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 50.0),
                   decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(10),
-                          bottomLeft: Radius.circular(10)),
-                      color: CustomTheme.greenSwatch.shade700),
-                  child: Center(
-                    child: Text(
-                      referenceTraining.name,
-                      style: Theme.of(context).textTheme.headline4,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )),
-          ],
-        ),
-      );
-    }));
+                      color: otherColor
+                          ? CustomTheme.grey
+                          : CustomTheme.middleGreen,
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                Positioned.fill(
+                    child: Image.asset("assets/exercises/pull_up.png")),
+                Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                              bottomRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10)),
+                          color: CustomTheme.greenSwatch.shade700),
+                      child: Center(
+                        child: Text(
+                          referenceTraining.name,
+                          style: Theme.of(context).textTheme.headline4,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )),
+              ],
+            ),
+          );
+        }));
   }
 }

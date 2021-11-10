@@ -54,9 +54,11 @@ class FeedWorkout extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: CustomTheme.middleGreen,
-                  borderRadius: BorderRadius.only(
+                  border: Border.all(
+                      width: 1, color: CustomTheme.darkGrey.withOpacity(0.8)),
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(10),
                       topLeft: Radius.circular(10))),
               child: Padding(
@@ -71,21 +73,22 @@ class FeedWorkout extends StatelessWidget {
                       ],
                     ),
                     Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            referenceTraining.name,
-                            style: Theme.of(context).textTheme.headline4,
-                            textAlign: TextAlign.center,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(referenceTraining.author?.username ??
-                                "Creator"),
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 24.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              referenceTraining.name,
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            Text(
+                                referenceTraining.author?.username ?? "Creator",
+                                style: const TextStyle(
+                                    fontStyle: FontStyle.italic))
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -97,9 +100,9 @@ class FeedWorkout extends StatelessWidget {
                     color: CustomTheme.grey,
                     child: Image.asset("assets/exercises/pull_up.png"))),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(10),
                       bottomLeft: Radius.circular(10)),
                   color: CustomTheme.middleGreen),
@@ -116,10 +119,15 @@ class FeedWorkout extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          constraints: const BoxConstraints(),
                           onPressed: () {},
                           icon: const Icon(Icons.bookmark_add)),
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.favorite))
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          constraints: const BoxConstraints(),
+                          onPressed: () {},
+                          icon: const Icon(Icons.favorite))
                     ],
                   ),
                 ],
