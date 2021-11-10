@@ -12,6 +12,7 @@ class User implements IAuthUserInterface {
   @override
   final String email;
   final String? profilePicturePath;
+  final String? description;
   final bool isMale;
   final DateTime createdAt;
   final FitnessProfile? fitnessProfile;
@@ -23,6 +24,7 @@ class User implements IAuthUserInterface {
       required this.email,
       this.fitnessTeam,
       this.isMale = true,
+      this.description,
       required this.createdAt,
       required this.fitnessProfile,
       this.profilePicturePath});

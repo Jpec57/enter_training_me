@@ -146,7 +146,6 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
             },
           ),
 
-          //ADD EXO BUTTON
           BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
             buildWhen: (prev, next) => prev.isEditting != next.isEditting,
             builder: (context, state) {

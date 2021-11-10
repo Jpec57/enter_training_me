@@ -3,7 +3,7 @@ import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/pages/home/training_container.dart';
+import 'package:enter_training_me/widgets/workout/training_container.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';

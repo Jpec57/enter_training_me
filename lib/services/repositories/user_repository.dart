@@ -18,6 +18,9 @@ class UserRepository extends ApiService
   static const getProfileInfoUrl = "/api/users/infos/{id}";
   static const getRealisedExosByUser = "/api/users/realised_exercises";
   static const changeProfilePicUrl = "/api/users/profile_pic";
+  static const updateUserUrl = "/api/users/update-user";
+  // static const updateUserUrl = "/api/users";
+  static const updateUserProfileUrl = "/api/users/update";
 
   @override
   Future<IAuthUserInterface?> getUserWithToken(String? apiToken) async {
@@ -109,6 +112,29 @@ class UserRepository extends ApiService
       });
       Response response =
           await getDio().post(changeProfilePicUrl, data: formData);
+      dynamic data = response.data;
+      return User.fromJson(data);
+    } on DioError catch (_) {
+      return null;
+    }
+  }
+
+  Future<User?> updateUser(int id, Map<String, dynamic> map) async {
+    try {
+      print(map);
+
+      Response response = await getDio().patch(updateUserUrl, data: map);
+      dynamic data = response.data;
+      return User.fromJson(data);
+    } on DioError catch (_) {
+      return null;
+    }
+  }
+
+  Future<User?> updateUserProfile(int id, Map<String, dynamic> map) async {
+    try {
+      print(map);
+      Response response = await getDio().patch(updateUserUrl, data: map);
       dynamic data = response.data;
       return User.fromJson(data);
     } on DioError catch (_) {

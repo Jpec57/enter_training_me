@@ -1,5 +1,5 @@
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/pages/home/training_container.dart';
+import 'package:enter_training_me/widgets/workout/training_container.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

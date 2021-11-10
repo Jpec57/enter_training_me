@@ -3,6 +3,7 @@ import 'package:enter_training_me/models/muscle_activation.dart';
 import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/models/user.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'training.g.dart';
@@ -53,6 +54,14 @@ class Training extends Equatable {
   Map<String, dynamic> toJsonForCreation() {
     Map<String, dynamic> json = _$TrainingToJson(this);
     return cleanForCreation(json);
+  }
+
+  String? get formattedCreationDate {
+    if (createdAt == null) {
+      return null;
+    }
+    final DateFormat formatter = DateFormat('EEEE dd MMM H:m');
+    return formatter.format(createdAt!);
   }
 
   factory Training.empty() =>

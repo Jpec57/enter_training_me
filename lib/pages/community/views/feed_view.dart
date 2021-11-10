@@ -1,5 +1,6 @@
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/pages/home/training_container.dart';
+import 'package:enter_training_me/widgets/workout/feed_workout.dart';
+import 'package:enter_training_me/widgets/workout/training_container.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,9 +45,9 @@ class _FeedViewState extends State<FeedView>
                   shrinkWrap: true,
                   itemCount: trainings.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 200,
-                      child: TrainingContainer(
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: FeedWorkout(
                         onTrainingRemove: () {
                           setState(() {
                             _feedFuture =

@@ -49,18 +49,27 @@ class ProfileMetricsSection extends StatelessWidget {
           ],
         ),
       ),
-      ProfileMetricContainer(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedCountText(
-              count: info.sbdSum,
-              widgetFromStringGenerator: (text) {
-                return Text(text, style: Theme.of(context).textTheme.headline1);
-              },
-            ),
-            const Text("Not defined yet"),
-          ],
+      InkWell(
+        onTap: () async {
+          Map<String, dynamic> map = {"weight": 82};
+          User? updatedUser =
+              await RepositoryProvider.of<UserRepository>(context)
+                  .updateUserProfile(info.user.id, map);
+        },
+        child: ProfileMetricContainer(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedCountText(
+                count: info.user.fitnessProfile?.weight ?? 70,
+                widgetFromStringGenerator: (text) {
+                  return Text(text,
+                      style: Theme.of(context).textTheme.headline1);
+                },
+              ),
+              const Text("BW"),
+            ],
+          ),
         ),
       ),
     ];

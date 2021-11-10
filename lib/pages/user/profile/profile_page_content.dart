@@ -131,17 +131,30 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                       child: Icon(Icons.access_alarm),
                     ),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text("Title",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
-                          Text(
-                              "Fusce fermentum odio nec arcu. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis.",
-                              style: TextStyle(color: Colors.black)),
-                        ],
+                      child: InkWell(
+                        onTap: () async {
+                          Map<String, dynamic> map = {"description": "TOTO"};
+                          User? updatedUser =
+                              await RepositoryProvider.of<UserRepository>(
+                                      context)
+                                  .updateUser(info.user.id, map);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Description",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                  info.user.description ?? "No description",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(color: Colors.black)),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ],

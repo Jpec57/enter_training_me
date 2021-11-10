@@ -5,6 +5,7 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
+import 'package:enter_training_me/widgets/user/user_avatar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,13 +63,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             }
           }
         },
-        child: CircleAvatar(
-          radius: 50,
-          child: widget.user.profilePicturePath != null
-              ? CachedNetworkImage(
-                  imageUrl: ApiService.host + "/" + _user.profilePicturePath!)
-              : const Icon(Icons.image, size: 40),
-        ),
+        child: UserAvatar(user: _user),
       ),
       Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 24),

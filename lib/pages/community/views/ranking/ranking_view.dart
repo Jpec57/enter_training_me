@@ -1,7 +1,7 @@
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/models/user_ranking.dart';
 import 'package:enter_training_me/pages/community/views/ranking/user_ranking_card.dart';
-import 'package:enter_training_me/pages/home/training_container.dart';
+import 'package:enter_training_me/widgets/workout/training_container.dart';
 import 'package:enter_training_me/services/repositories/ranking_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';

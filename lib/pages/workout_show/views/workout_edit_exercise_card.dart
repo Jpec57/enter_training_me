@@ -90,14 +90,16 @@ class WorkoutEditExerciseCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: isEditting ? () {} : null,
-                            child: Text(exo.exerciseReference.name,
-                                style: Theme.of(context).textTheme.headline4),
-                          ),
-                        ],
+                      InkWell(
+                        onTap: isEditting ? () {} : null,
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Text(exo.exerciseReference.name,
+                                  style: Theme.of(context).textTheme.headline4),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
