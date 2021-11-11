@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:enter_training_me/mixins/bip_player_mixin.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_paint.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
@@ -33,7 +34,7 @@ class CountdownTimer extends StatefulWidget {
 }
 
 class _CountdownTimerState extends State<CountdownTimer>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, BipPlayerMixin {
   Timer? _timer;
   int _elapsedTime = 0;
 
@@ -58,14 +59,6 @@ class _CountdownTimerState extends State<CountdownTimer>
     _timer?.cancel();
   }
 
-  Future<AudioPlayer> playLocalAsset({bool isEnd = false}) async {
-    AudioCache cache = AudioCache();
-    if (isEnd) {
-      return await cache.play("sounds/beep_end.mp3");
-    }
-    return await cache.play("sounds/beep_start.mp3");
-  }
-
   void initTimer() {
     resetTimer();
 
@@ -73,16 +66,11 @@ class _CountdownTimerState extends State<CountdownTimer>
       setState(() {
         _elapsedTime += 1;
       });
-      int remainingSeconds = widget.totalDuration - _elapsedTime;
-      if (widget.bipSeconds.contains(remainingSeconds)) {
-        playLocalAsset();
-      }
+      playBipIfShould(_elapsedTime, widget.totalDuration,
+          warningTicks: widget.bipSeconds
+              .map((sec) => widget.totalDuration - sec)
+              .toList());
       if (_elapsedTime >= widget.totalDuration) {
-        playLocalAsset(isEnd: true);
-        bool? hasVibrator = await Vibration.hasVibrator();
-        if (hasVibrator != null && hasVibrator) {
-          Vibration.vibrate();
-        }
         timer.cancel();
         widget.onEndCallback();
       }

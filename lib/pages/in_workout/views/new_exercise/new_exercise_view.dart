@@ -214,6 +214,9 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                     onExerciseChosen: (ReferenceExercise exo) {
                       if (exo.isOnlyIsometric) {
                         isIsometric = true;
+                        // for (var set in _setList) {
+                        //   set.copyWith(weight: 0);
+                        // }
                       }
                       setState(() {
                         _selectedRefExo = exo;

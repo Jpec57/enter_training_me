@@ -69,7 +69,9 @@ class InWorkoutExerciseView extends StatelessWidget {
       BuildContext context, RealisedExercise exo, InWorkoutState state) {
     if (exo.isIsometric) {
       return IsometricExercisePartial(
-          parentContext: context, exo: state.currentExo!);
+          durationGoal: state.currentSet.reps,
+          parentContext: context,
+          exo: state.currentExo!);
     }
     return SingleChildScrollView(
       child: Column(

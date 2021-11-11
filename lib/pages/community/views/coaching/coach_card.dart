@@ -45,7 +45,7 @@ class CoachCard extends StatelessWidget {
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: [
+                            children: const [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5.0),

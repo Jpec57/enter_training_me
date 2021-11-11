@@ -1,16 +1,20 @@
 import 'dart:async';
 
+import 'package:enter_training_me/mixins/bip_player_mixin.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
-import 'package:enter_training_me/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class IsometricExercisePartial extends StatefulWidget {
   final BuildContext parentContext;
   final RealisedExercise exo;
+  final int durationGoal;
   const IsometricExercisePartial(
-      {Key? key, required this.parentContext, required this.exo})
+      {Key? key,
+      required this.parentContext,
+      required this.exo,
+      required this.durationGoal})
       : super(key: key);
 
   @override
@@ -19,8 +23,7 @@ class IsometricExercisePartial extends StatefulWidget {
 }
 
 class _IsometricExercisePartialState extends State<IsometricExercisePartial>
-    with SingleTickerProviderStateMixin {
-  int _elapsedTime = 0;
+    with SingleTickerProviderStateMixin, BipPlayerMixin {
   Timer? _timer;
 
   @override
@@ -30,6 +33,8 @@ class _IsometricExercisePartialState extends State<IsometricExercisePartial>
     BlocProvider.of<InWorkoutBloc>(context).add(ResetRepEvent());
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       BlocProvider.of<InWorkoutBloc>(context).add(AddedRepEvent());
+      playBipIfShould(timer.tick, widget.durationGoal,
+          warningTicks: [widget.durationGoal - 1, widget.durationGoal - 2]);
     });
   }
 
