@@ -29,6 +29,13 @@ class User implements IAuthUserInterface {
       required this.fitnessProfile,
       this.profilePicturePath});
 
+  factory User.dummy() => User(
+      createdAt: DateTime.now(),
+      email: 'coach@jpec.fr',
+      fitnessProfile: null,
+      id: 57,
+      username: 'Jpec');
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

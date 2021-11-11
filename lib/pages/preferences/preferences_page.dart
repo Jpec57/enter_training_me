@@ -1,4 +1,5 @@
 import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
+import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,21 @@ class PreferencesPage extends StatelessWidget {
                     });
               },
             ),
-            Container(),
+            ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(AuthenticationLogoutRequested());
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Icon(Icons.logout, color: Colors.white),
+                    ),
+                    Text("LOG OUT"),
+                  ],
+                )),
           ],
         ),
       ),

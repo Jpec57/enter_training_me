@@ -41,58 +41,54 @@ class _RankingViewState extends State<RankingView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
-        child: Column(
-          children: [
-            // TextField(
-            //   controller: _searchController,
-            //   decoration: const InputDecoration(
-            //       suffixIcon: Icon(Icons.search, color: Colors.white)),
-            // ),
-            Expanded(
-              child: FutureBuilder(
-                  future: _rankingFuture,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<UserRanking>> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.done:
-                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          List<UserRanking> rankedUsers = snapshot.data!;
-                          return ListView.separated(
-                            padding: const EdgeInsets.only(bottom: 50),
-                            shrinkWrap: true,
-                            itemCount: rankedUsers.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
-                                child: UserRankingCard(
-                                    rank: index + 1,
-                                    rankUser: rankedUsers[index]),
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const Divider(
-                                  height: 1, color: Colors.grey);
-                            },
-                          );
-                        }
-                        return const Center(child: Text("Empty"));
-
-                      case ConnectionState.waiting:
-                        return const Center(
-                          child: CircularProgressIndicator(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
+      child: Column(
+        children: [
+          // TextField(
+          //   controller: _searchController,
+          //   decoration: const InputDecoration(
+          //       suffixIcon: Icon(Icons.search, color: Colors.white)),
+          // ),
+          Expanded(
+            child: FutureBuilder(
+                future: _rankingFuture,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<UserRanking>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                        List<UserRanking> rankedUsers = snapshot.data!;
+                        return ListView.separated(
+                          padding: const EdgeInsets.only(bottom: 50),
+                          shrinkWrap: true,
+                          itemCount: rankedUsers.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: UserRankingCard(
+                                  rank: index + 1,
+                                  rankUser: rankedUsers[index]),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Divider(height: 1, color: Colors.grey);
+                          },
                         );
-                      default:
-                        return const Center(child: Text("Error"));
-                    }
-                  }),
-            ),
-          ],
-        ),
+                      }
+                      return const Center(child: Text("Empty"));
+
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      return const Center(child: Text("Error"));
+                  }
+                }),
+          ),
+        ],
       ),
     );
   }

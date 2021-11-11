@@ -1,6 +1,9 @@
 import 'package:enter_training_me/models/models.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
+  static final defaultVerboseDateFormatter = DateFormat('EEEE dd MMM H:m');
+  static final defaultDateFormatter = DateFormat('dd M Y');
   static String convertToTime(int elapsedTime) {
     if (elapsedTime >= 60 * 60) {
       int hour = (elapsedTime / (60 * 60)).floor();

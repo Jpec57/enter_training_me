@@ -1,9 +1,6 @@
 import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:enter_training_me/widgets/user/user_avatar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -12,7 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileHeader extends StatefulWidget {
   final User user;
-  const ProfileHeader({Key? key, required this.user}) : super(key: key);
+  final bool isCurrentUser;
+
+  const ProfileHeader(
+      {Key? key, required this.user, this.isCurrentUser = false})
+      : super(key: key);
 
   @override
   State<ProfileHeader> createState() => _ProfileHeaderState();
@@ -48,22 +49,26 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       UserAvatar(
           user: _user,
-          onTap: () async {
-            FilePickerResult? result = await FilePicker.platform.pickFiles(
-              type: FileType.image,
-            );
+          onTap: widget.isCurrentUser
+              ? () async {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
+                    type: FileType.image,
+                  );
 
-            if (result != null) {
-              File file = File(result.files.single.path!);
-              User? user = await RepositoryProvider.of<UserRepository>(context)
-                  .changeProfilePic(file);
-              if (user != null) {
-                setState(() {
-                  _user = user;
-                });
-              }
-            }
-          }),
+                  if (result != null) {
+                    File file = File(result.files.single.path!);
+                    User? user =
+                        await RepositoryProvider.of<UserRepository>(context)
+                            .changeProfilePic(file);
+                    if (user != null) {
+                      setState(() {
+                        _user = user;
+                      });
+                    }
+                  }
+                }
+              : null),
       Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 24),
         child: Text(widget.user.username,

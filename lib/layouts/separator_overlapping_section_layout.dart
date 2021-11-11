@@ -22,36 +22,42 @@ class SeparatorOverlappingSectionLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          color: topWidgetBackgroundColor,
-          padding: topWidgetPadding,
-          width: MediaQuery.of(context).size.width,
-          child: topWidget,
-        ),
-        Stack(
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          alignment: Alignment.center,
-          children: [
-            Positioned.fill(
-                child: Column(children: [
-              Expanded(child: Container(color: topWidgetBackgroundColor)),
-              Expanded(child: Container(color: bottomWidgetBackgroundColor)),
-            ])),
-            Align(
-                alignment: Alignment.center,
-                child: Center(
-                  child: overlappingWidget,
-                ))
-          ],
-        ),
-        Container(
-            padding: bottomWidgetPadding,
-            color: bottomWidgetBackgroundColor,
-            child: bottomWidget),
-      ],
+    return Container(
+      color: bottomWidgetBackgroundColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: topWidgetBackgroundColor,
+            padding: topWidgetPadding,
+            width: MediaQuery.of(context).size.width,
+            child: topWidget,
+          ),
+          Stack(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            alignment: Alignment.center,
+            children: [
+              Positioned.fill(
+                  child: Column(children: [
+                Expanded(child: Container(color: topWidgetBackgroundColor)),
+                Expanded(child: Container(color: bottomWidgetBackgroundColor)),
+              ])),
+              Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: overlappingWidget,
+                    )),
+              )
+            ],
+          ),
+          Container(
+              padding: bottomWidgetPadding,
+              color: bottomWidgetBackgroundColor,
+              child: bottomWidget),
+        ],
+      ),
     );
   }
 }

@@ -1,4 +1,14 @@
-part of '../profile_page_content.dart';
+
+import 'package:auto_animated/auto_animated.dart';
+import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/models/profile_info.dart';
+import 'package:enter_training_me/pages/user/profile/profile_metric_container.dart';
+import 'package:enter_training_me/services/repositories/user_repository.dart';
+import 'package:enter_training_me/widgets/animations/animated_count_text.dart';
+import 'package:enter_training_me/widgets/dialog/double_return_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class ProfileMetricsSection extends StatelessWidget {
   final ProfileInfo info;

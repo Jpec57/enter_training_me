@@ -1,4 +1,6 @@
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/coaching/coach_page.dart';
+import 'package:enter_training_me/pages/community/views/coaching/coach_card.dart';
 import 'package:enter_training_me/widgets/workout/training_container.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +46,9 @@ class _CoachingViewState extends State<CoachingView>
                   shrinkWrap: true,
                   itemCount: trainings.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 200,
-                      child: TrainingContainer(
-                        otherColor: true,
-                        referenceTraining: trainings[index],
-                      ),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: CoachCard(coach: User.dummy()),
                     );
                   },
                 );

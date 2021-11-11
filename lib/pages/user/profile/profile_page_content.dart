@@ -1,26 +1,18 @@
-import 'package:auto_animated/auto_animated.dart';
-import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/layouts/separator_overlapping_section_layout.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/models/profile_info.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
+import 'package:enter_training_me/pages/user/profile/sections/profile_metrics_section.dart';
 import 'package:enter_training_me/pages/user/profile/sections/exercise_progression_section.dart';
 import 'package:enter_training_me/pages/user/profile/sections/muscle_profile_section.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_header.dart';
-import 'package:enter_training_me/pages/user/profile/profile_metric_container.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_last_training_section.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
-import 'package:enter_training_me/widgets/analysis/history/exercise_history_evolution.dart';
-import 'package:enter_training_me/widgets/analysis/user/exercised_muscle_radar_repartition_graph.dart';
-import 'package:enter_training_me/widgets/animations/animated_count_text.dart';
-import 'package:enter_training_me/widgets/dialog/double_return_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
-part 'sections/profile_metrics_section.dart';
 
 class ProfilePageContent extends StatefulWidget {
   const ProfilePageContent({Key? key}) : super(key: key);
@@ -93,12 +85,6 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
               },
             ),
           ),
-          IconButton(
-              onPressed: () {
-                BlocProvider.of<AuthenticationBloc>(context)
-                    .add(AuthenticationLogoutRequested());
-              },
-              icon: const Icon(Icons.logout, color: Colors.white))
         ],
       ),
     );
@@ -115,6 +101,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
             bottomWidgetBackgroundColor: CustomTheme.middleGreen,
             topWidget: ProfileHeader(
               user: info.user,
+              isCurrentUser: true,
             ),
             overlappingWidget: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
