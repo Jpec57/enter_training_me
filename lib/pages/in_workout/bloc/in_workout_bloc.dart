@@ -181,10 +181,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   }
 
   InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
-    //Considering 3 seconds offset => time to stop the counter
     return state.copyWith(
         reallyDoneReps: state.currentExo!.isIsometric
-            ? (state.reallyDoneReps - 3)
+            ? (state.reallyDoneReps)
             : state.currentSet.reps,
         currentView: InWorkoutView.inRestView);
   }

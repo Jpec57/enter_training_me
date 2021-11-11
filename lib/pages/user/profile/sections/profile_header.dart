@@ -6,6 +6,8 @@ import 'package:enter_training_me/widgets/user/user_avatar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileHeader extends StatefulWidget {
   final User user;
@@ -51,20 +53,20 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           user: _user,
           onTap: widget.isCurrentUser
               ? () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.image,
-                  );
+                  XFile? result = await (ImagePicker().pickImage(
+                      source: ImageSource.gallery,
+                      maxHeight: 480,
+                      maxWidth: 640));
 
                   if (result != null) {
-                    File file = File(result.files.single.path!);
-                    User? user =
+                    File file = File(result.path);
+                    bool isSuccess =
                         await RepositoryProvider.of<UserRepository>(context)
                             .changeProfilePic(file);
-                    if (user != null) {
-                      setState(() {
-                        _user = user;
-                      });
+                    if (isSuccess) {
+                      DefaultCacheManager manager = DefaultCacheManager();
+                      manager.emptyCache(); //clears all data in cache.
+                      setState(() {});
                     }
                   }
                 }

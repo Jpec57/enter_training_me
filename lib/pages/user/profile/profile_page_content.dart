@@ -10,6 +10,8 @@ import 'package:enter_training_me/pages/user/profile/sections/muscle_profile_sec
 import 'package:enter_training_me/pages/user/profile/sections/profile_header.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_last_training_section.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
+import 'package:enter_training_me/widgets/dialog/double_return_dialog.dart';
+import 'package:enter_training_me/widgets/dialog/return_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -120,10 +122,18 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                       child: InkWell(
                         onTap: () async {
                           Map<String, dynamic> map = {"description": "TOTO"};
-                          User? updatedUser =
-                              await RepositoryProvider.of<UserRepository>(
-                                      context)
-                                  .updateUser(info.user.id, map);
+                          await Get.dialog(ReturnDialog<String>(
+                              title: "Give a description",
+                              callback: (String desc) async {
+                                map["description"] = desc;
+                                User? updatedUser =
+                                    await RepositoryProvider.of<UserRepository>(
+                                            context)
+                                        .updateUser(info.user.id, map);
+                                setState(() {
+                                  info.copyWith(user: updatedUser);
+                                });
+                              }));
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

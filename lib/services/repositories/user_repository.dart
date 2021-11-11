@@ -103,7 +103,7 @@ class UserRepository extends ApiService
     }
   }
 
-  Future<User?> changeProfilePic(File image) async {
+  Future<bool> changeProfilePic(File image) async {
     try {
       String fileName = image.path.split('/').last;
 
@@ -113,9 +113,14 @@ class UserRepository extends ApiService
       Response response =
           await getDio().post(changeProfilePicUrl, data: formData);
       dynamic data = response.data;
-      return User.fromJson(data);
-    } on DioError catch (_) {
-      return null;
+      return response.statusCode == 200;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 413) {
+          get_lib.Get.snackbar("Too large", "Try uploading a lighter image");
+        }
+      }
+      return false;
     }
   }
 

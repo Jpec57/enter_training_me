@@ -17,6 +17,11 @@ class ProfileInfo {
       this.globalRank = 1,
       required this.lastTrainings});
 
+  ProfileInfo copyWith({User? user}) => ProfileInfo(
+      user: user ?? this.user,
+      trainingCount: trainingCount,
+      lastTrainings: lastTrainings);
+
   factory ProfileInfo.fromJson(Map<String, dynamic> json) =>
       _$ProfileInfoFromJson(json);
   Map<String, dynamic> toJson() => _$ProfileInfoToJson(this);
