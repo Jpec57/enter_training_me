@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/models/performance_set.dart';
 import 'package:enter_training_me/services/repositories/performance_repository.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class ExerciseHistoryEvolution extends StatefulWidget {
 }
 
 class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
-  late Future<List<ExerciseSet>> _setsFuture;
+  late Future<List<PerformanceSet>> _setsFuture;
   late ReferenceExercise currentReferenceExercise;
   late ScrollController _scrollController;
   final double percentMargin = 0.05;
@@ -188,7 +189,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
           child: FutureBuilder(
             future: _setsFuture,
             builder: (BuildContext context,
-                AsyncSnapshot<List<ExerciseSet>> snapshot) {
+                AsyncSnapshot<List<PerformanceSet>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
@@ -211,7 +212,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
                         padding: const EdgeInsets.only(
                             right: 18.0, left: 12.0, top: 24, bottom: 12),
                         child: LineChart(
-                          mainData(snapshot.data!),
+                          mainData(snapshot.data!.map((e) => e.set).toList()),
                         ),
                       ),
                     ),
