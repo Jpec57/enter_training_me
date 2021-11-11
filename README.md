@@ -26,6 +26,11 @@ The last fitness project, I swear
 
 https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/radar_chart.md
 
+## Cache
+
+DefaultCacheManager manager = new DefaultCacheManager();
+manager.emptyCache(); //clears all data in cache.
+
 # TODO
 
 - change TrainingBar with exo section

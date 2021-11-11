@@ -27,9 +27,18 @@ class UserAvatar extends StatelessWidget {
       //     }
       ,
       child: CircleAvatar(
-        radius: radius,
         child: user != null && user!.profilePicturePath != null
             ? CachedNetworkImage(
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                imageBuilder: (context, imageProvider) => Container(
+                      width: radius * 2,
+                      height: radius * 2,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.cover),
+                      ),
+                    ),
                 imageUrl: ApiService.host + "/" + user!.profilePicturePath!)
             : (defaultWidget ?? const Icon(Icons.image, size: 40)),
       ),
