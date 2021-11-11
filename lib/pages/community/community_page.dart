@@ -5,6 +5,7 @@ import 'package:enter_training_me/pages/community/bloc/community_tab_bloc.dart';
 import 'package:enter_training_me/pages/community/views/coaching_view.dart';
 import 'package:enter_training_me/pages/community/views/feed_view.dart';
 import 'package:enter_training_me/pages/community/views/ranking/ranking_view.dart';
+import 'package:enter_training_me/widgets/animations/boolean_choice_widget.dart';
 import 'package:enter_training_me/widgets/sliver/insta_like_sliver_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,15 +77,30 @@ class CommunityPageContent extends StatelessWidget {
                     fit: BoxFit.cover)),
           )),
       TabElement(
-          tab: const Tab(text: "Ranking", icon: Icon(Icons.computer)),
-          view: const RankingView(),
-          header: Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image:
-                        AssetImage("assets/workouts/workout_wallpaper2.jpeg"),
-                    fit: BoxFit.cover)),
-          )),
+        tab: const Tab(text: "Ranking", icon: Icon(Icons.computer)),
+        view: const RankingView(),
+        header: BooleanChoiceWidget(
+          animationDuration: const Duration(milliseconds: 300),
+          leftWidget: (isSelected) {
+            return Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image:
+                          AssetImage("assets/workouts/workout_wallpaper2.jpeg"),
+                      fit: BoxFit.cover)),
+            );
+          },
+          rightWidget: (isSelected) {
+            return Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image:
+                          AssetImage("assets/workouts/workout_wallpaper3.jpeg"),
+                      fit: BoxFit.cover)),
+            );
+          },
+        ),
+      ),
       TabElement(
           tab: const Tab(text: "Coaching", icon: Icon(Icons.security)),
           view: const CoachingView(),

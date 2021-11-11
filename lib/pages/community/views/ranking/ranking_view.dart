@@ -1,6 +1,7 @@
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/models/user_ranking.dart';
 import 'package:enter_training_me/pages/community/views/ranking/user_ranking_card.dart';
+import 'package:enter_training_me/widgets/animations/boolean_choice_widget.dart';
 import 'package:enter_training_me/widgets/workout/training_container.dart';
 import 'package:enter_training_me/services/repositories/ranking_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
@@ -41,6 +42,7 @@ class _RankingViewState extends State<RankingView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
       child: Column(
@@ -50,6 +52,7 @@ class _RankingViewState extends State<RankingView>
           //   decoration: const InputDecoration(
           //       suffixIcon: Icon(Icons.search, color: Colors.white)),
           // ),
+
           Expanded(
             child: FutureBuilder(
                 future: _rankingFuture,
