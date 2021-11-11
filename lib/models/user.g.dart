@@ -14,6 +14,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           ? null
           : FitnessTeam.fromJson(json['fitnessTeam'] as Map<String, dynamic>),
       isMale: json['isMale'] as bool? ?? true,
+      description: json['description'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       fitnessProfile: json['fitnessProfile'] == null
           ? null
@@ -27,6 +28,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'username': instance.username,
       'email': instance.email,
       'profilePicturePath': instance.profilePicturePath,
+      'description': instance.description,
       'isMale': instance.isMale,
       'createdAt': instance.createdAt.toIso8601String(),
       'fitnessProfile': instance.fitnessProfile,

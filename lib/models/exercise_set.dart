@@ -32,7 +32,7 @@ class ExerciseSet extends Equatable {
   final int reps;
   final double? weightPercent;
   final double? weight;
-  final DateTime? realisedDate;
+  final int? realisedDate;
   final User? user;
 
   const ExerciseSet({

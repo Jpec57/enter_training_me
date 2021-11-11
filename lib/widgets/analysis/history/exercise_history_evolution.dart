@@ -115,7 +115,10 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
           getTitles: (value) {
             int index = value.toInt();
             var date = sets[index].realisedDate;
-            return date != null ? (DateFormat.yMd()).format(date) : "Unknown";
+            return date != null
+                ? (DateFormat.yMd())
+                    .format(DateTime.fromMillisecondsSinceEpoch(date))
+                : "Unknown";
           },
           margin: 8,
         ),
@@ -192,8 +195,6 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData &&
                   snapshot.data!.isNotEmpty) {
-                
-
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: MediaQuery.of(context).size.width,
