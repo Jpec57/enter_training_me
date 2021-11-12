@@ -8,7 +8,7 @@ class MuscleProfileSection extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    if (muscleExperiences == null) {
+    if (muscleExperiences == null || muscleExperiences!.isEmpty) {
       return Container();
     }
     return Column(

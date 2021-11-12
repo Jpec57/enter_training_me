@@ -27,6 +27,16 @@ class _ExercisedMuscleRadarRepartitionGraphState
   @override
   Widget build(BuildContext context) {
     var dataSets = showingDataSets();
+
+    bool isNotEmpty = widget.muscleExperiences
+        .any((muscleExperience) => muscleExperience.experience > 0);
+    if (!isNotEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(child: Text("No data available")),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(

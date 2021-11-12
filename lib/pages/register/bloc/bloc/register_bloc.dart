@@ -31,6 +31,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     } else if (event is RegisterConfirmPasswordChanged) {
       yield _mapConfirmPasswordChangedToState(event, state);
     } else if (event is RegisterSubmitted) {
+      print("RegisterSubmitted");
       yield state.copyWith(status: SubmitStatus.submitting);
       try {
         IAuthUserInterface? user = await _userRepository.register(

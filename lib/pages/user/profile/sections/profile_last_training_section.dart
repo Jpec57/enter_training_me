@@ -56,21 +56,30 @@ class ProfileLastTrainingSection extends StatelessWidget {
           child: Text("Last trainings",
               style: Theme.of(context).textTheme.headline4),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 32),
-          child: SizedBox(
-            height: 150,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: lastTrainings.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, i) {
-                double itemWidth = MediaQuery.of(context).size.width / 2.5;
-                return _renderTrainingContainer(itemWidth, lastTrainings[i]);
-              },
-            ),
-          ),
-        ),
+        (lastTrainings.isEmpty)
+            ? const Padding(
+                padding: EdgeInsets.only(bottom: 32.0),
+                child: Center(
+                  child: Text("No training realised."),
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: SizedBox(
+                  height: 150,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: lastTrainings.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, i) {
+                      double itemWidth =
+                          MediaQuery.of(context).size.width / 2.5;
+                      return _renderTrainingContainer(
+                          itemWidth, lastTrainings[i]);
+                    },
+                  ),
+                ),
+              ),
       ],
     );
   }

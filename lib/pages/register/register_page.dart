@@ -181,6 +181,7 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
                       builder: (context, state) {
                         return ElevatedButton(
                             onPressed: () {
+                              print("clicked");
                               if (_formKey.currentState != null &&
                                   _formKey.currentState!.validate()) {
                                 BlocProvider.of<RegisterBloc>(context)
