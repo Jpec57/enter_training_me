@@ -114,6 +114,15 @@ class ChangedRestBetweenLoopsEvent extends InWorkoutEvent {
   List<Object?> get props => [seconds];
 }
 
+class ChangedRestEvent extends InWorkoutEvent {
+  final int rest;
+
+  const ChangedRestEvent(this.rest);
+
+  @override
+  List<Object?> get props => [rest];
+}
+
 class ChangedNbLoopsEvent extends InWorkoutEvent {
   final int nbLoops;
 

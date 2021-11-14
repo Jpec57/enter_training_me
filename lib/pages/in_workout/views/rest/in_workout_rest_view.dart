@@ -1,8 +1,10 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
+import 'package:enter_training_me/widgets/dialog/return_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class InWorkoutRestView extends StatefulWidget {
   final TabController tabController;
@@ -16,6 +18,8 @@ class InWorkoutRestView extends StatefulWidget {
 }
 
 class _InWorkoutRestViewState extends State<InWorkoutRestView> {
+  int? currentSetRestTime;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,20 +63,52 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.remove_circle, color: Colors.white),
-                    onPressed: () {},
+                    onPressed: () async {
+                      currentSetRestTime = currentSetRestTime ??
+                          state.currentExo!.restBetweenSet;
+
+                      if (currentSetRestTime! - 10 > 0) {
+                        setState(() {
+                          currentSetRestTime = currentSetRestTime! - 10;
+                        });
+                      }
+                    },
                   ),
                   Expanded(
-                    child: CountdownTimer(
-                      totalDuration: state.currentExo!.restBetweenSet,
-                      backgroundColor: CustomTheme.darkGrey,
-                      isIncludingStop: true,
-                      onEndCallback: widget.onTimerEndCallback,
-                      progressStrokeColor: CustomTheme.middleGreen,
+                    child: InkWell(
+                      onTap: () async {
+                        Get.dialog(ReturnDialog<int>(
+                            title: "Change rest time",
+                            currentValue: state.currentExo!.restBetweenSet,
+                            description:
+                                "Change the rest time for this exercise.\nTo change it only temporarily for this set, simply use the '-' and '+' buttons.",
+                            callback: (String rest) async {
+                              int parsedValue = int.parse(rest);
+                              if (parsedValue > 0) {
+                                BlocProvider.of<InWorkoutBloc>(context)
+                                    .add(ChangedRestEvent(parsedValue));
+                              }
+                            }));
+                      },
+                      child: CountdownTimer(
+                        totalDuration: currentSetRestTime ??
+                            state.currentExo!.restBetweenSet,
+                        backgroundColor: CustomTheme.darkGrey,
+                        isIncludingStop: true,
+                        onEndCallback: widget.onTimerEndCallback,
+                        progressStrokeColor: CustomTheme.middleGreen,
+                      ),
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.add_circle, color: Colors.white),
-                    onPressed: () {},
+                    onPressed: () async {
+                      currentSetRestTime = currentSetRestTime ??
+                          state.currentExo!.restBetweenSet;
+                      setState(() {
+                        currentSetRestTime = currentSetRestTime! + 10;
+                      });
+                    },
                   ),
                 ],
               );

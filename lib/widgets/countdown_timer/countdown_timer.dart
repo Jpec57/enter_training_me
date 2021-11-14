@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:enter_training_me/mixins/bip_player_mixin.dart';
 import 'package:enter_training_me/widgets/countdown_timer/countdown_paint.dart';
 import 'package:flutter/material.dart';
-import 'package:vibration/vibration.dart';
 
 class CountdownTimer extends StatefulWidget {
   final double? size;

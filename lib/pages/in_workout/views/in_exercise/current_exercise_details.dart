@@ -34,7 +34,7 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
             children: [
               IconButton(
                 icon: const Icon(Icons.arrow_circle_down_sharp),
-                onPressed: () {},
+                onPressed: () async {},
               ),
               Flexible(
                   child: InkWell(
@@ -50,7 +50,7 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
                   buildWhen: (prev, next) => prev.currentExo != next.currentExo,
                   builder: (context, state) {
                     return Text(
-                      widget.referenceExercise.name,
+                      state.currentExo!.exerciseReference.name,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.permanentMarker(
                           color: Colors.white, fontSize: 30),
@@ -60,7 +60,7 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
               )),
               IconButton(
                 icon: const Icon(Icons.arrow_circle_up_sharp),
-                onPressed: () {},
+                onPressed: () async {},
               ),
             ],
           ),

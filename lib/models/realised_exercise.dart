@@ -47,11 +47,13 @@ class RealisedExercise extends Equatable {
   Map<String, dynamic> toJsonForCreation() => _$RealisedExerciseToJson(this);
 
   RealisedExercise copyWith(
-          {List<ExerciseSet>? sets, ReferenceExercise? exerciseReference}) =>
+          {List<ExerciseSet>? sets,
+          ReferenceExercise? exerciseReference,
+          int? restBetweenSet}) =>
       RealisedExercise(
           exerciseReference: exerciseReference ?? this.exerciseReference,
           executionStyle: executionStyle,
-          restBetweenSet: restBetweenSet,
+          restBetweenSet: restBetweenSet ?? this.restBetweenSet,
           isIsometric: isIsometric,
           sets: sets ?? this.sets);
 
@@ -91,6 +93,11 @@ class RealisedExercise extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [sets, executionStyle, exerciseReference, restBetweenSet, isIsometric];
+  List<Object?> get props => [
+        sets,
+        executionStyle,
+        exerciseReference,
+        restBetweenSet,
+        isIsometric,
+      ];
 }

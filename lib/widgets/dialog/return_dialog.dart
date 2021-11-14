@@ -5,13 +5,17 @@ typedef ValueCallbackMethod<T> = Future<void> Function(T strValue);
 
 class ReturnDialog<T> extends StatefulWidget {
   final String title;
-  final ValueCallbackMethod<T> callback;
+  final String? description;
+  final ValueCallbackMethod<String> callback;
+  final int minLines;
   final T? currentValue;
   final bool showQuickIntIncrease;
   const ReturnDialog(
       {Key? key,
       required this.title,
       this.currentValue,
+      this.minLines = 1,
+      this.description,
       this.showQuickIntIncrease = true,
       required this.callback})
       : super(key: key);
@@ -50,10 +54,16 @@ class _ReturnDialogState extends State<ReturnDialog> {
               Text(widget.title,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline4),
+              widget.description != null
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(widget.description!),
+                    )
+                  : Container(),
               TextField(
                   controller: _textController,
-                  minLines: 4,
-                  maxLines: 4,
+                  minLines: widget.minLines,
+                  maxLines: widget.minLines == 1 ? 1 : widget.minLines + 1,
                   decoration: const InputDecoration(
                       filled: true, fillColor: Colors.white)),
               Column(

@@ -17,7 +17,6 @@ class WorkoutExerciseSetTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
           child: Row(
-            // mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
@@ -66,28 +65,3 @@ class WorkoutExerciseSetTile extends StatelessWidget {
         ));
   }
 }
-/*
-      ListTile(
-        leading: Text(
-          "${set.reps}r",
-          style: const TextStyle(fontSize: 20, color: Colors.black),
-        ),
-        title: Text("${set.weight}kgs", style: const TextStyle(fontSize: 14)),
-        trailing: expectedSet != null
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("$differenceReps",
-                      style: TextStyle(
-                        color: differenceReps >= 0 ? Colors.green : Colors.red,
-                      )),
-                  Icon(
-                      differenceReps >= 0
-                          ? Icons.arrow_drop_up
-                          : Icons.arrow_drop_down,
-                      color: differenceReps >= 0 ? Colors.green : Colors.red),
-                ],
-              )
-            : null,
-      ),
-*/

@@ -45,13 +45,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       yield _mapAddedExoEventToState(event);
       yield _mapChangedViewEventToState(
           ChangedViewEvent(event.tabController, InWorkoutView.inExerciseView));
-      // if (state.realisedTraining.exercises.isEmpty) {
-      //   yield _mapChangedViewEventToState(ChangedViewEvent(
-      //       event.tabController, InWorkoutView.endWorkoutView));
-      // } else {
-      //   yield _mapChangedViewEventToState(
-      //       ChangedViewEvent(event.tabController, InWorkoutView.inRestView));
-      // }
     } else if (event is ChangedNbLoopsEvent) {
       if (event.nbLoops > 0) {
         yield state.copyWith(
@@ -79,6 +72,15 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       }
 
       yield state;
+    } else if (event is ChangedRestEvent) {
+      Training? modifiedTraining = state.realisedTraining;
+      List<RealisedExercise> exercises = [...state.realisedTraining.exercises];
+      RealisedExercise doneExo =
+          state.currentExo!.copyWith(restBetweenSet: event.rest);
+
+      exercises[state.currentExoIndex] = doneExo;
+      yield state.copyWith(
+          realisedTraining: modifiedTraining.copyWith(exercises: exercises));
     } else if (event is ChangedViewEvent) {
       yield _mapChangedViewEventToState(event);
     } else if (event is ExerciseDoneEvent) {
@@ -128,7 +130,33 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
           realisedTraining: state.realisedTraining.copyWith(
               restBetweenCycles: event.seconds > 0 ? event.seconds : 5));
     } else if (event is ChangedExoEvent) {
-      yield _mapChangedExoEventToState(event);
+      RealisedExercise previousExo = state.currentExo!;
+      RealisedExercise newExo =
+          state.currentExo!.copyWith(exerciseReference: event.exo);
+      List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
+      if (state.currentSetIndex == 0) {
+        doneExos[state.currentExoIndex] = newExo;
+        yield state.copyWith(
+            realisedTraining:
+                state.realisedTraining.copyWith(exercises: doneExos));
+      } else {
+        doneExos[state.currentExoIndex] = previousExo.copyWith(
+            sets: previousExo.sets.sublist(0, state.currentSetIndex));
+
+        if (state.currentSetIndex <= newExo.sets.length) {
+          newExo = newExo.copyWith(
+              sets: newExo.sets.sublist(state.currentSetIndex));
+        } else {
+          newExo = newExo.copyWith(sets: [newExo.sets.last]);
+        }
+        doneExos.insert(state.currentExoIndex + 1, newExo);
+        yield state.copyWith(
+            realisedTraining:
+                state.realisedTraining.copyWith(exercises: doneExos));
+        yield state.copyWith(
+            currentExoIndex: state.currentExoIndex + 1, currentSetIndex: 0);
+      }
+      // yield _mapChangedExoEventToState(event);
     } else if (event is TimerTickEvent) {
       yield _mapTimerTickEventToState(event);
     } else if (event is AddedRepEvent) {
@@ -254,7 +282,14 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     RealisedExercise doneExo =
         state.currentExo!.copyWith(exerciseReference: event.exo);
     List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
-    doneExos[state.currentExoIndex] = doneExo;
+    if (state.currentSetIndex == 0) {
+      print("first set");
+      doneExos[state.currentExoIndex] = doneExo;
+    } else {
+      print("NOT first set => INSERTING");
+
+      doneExos.insert(state.currentExoIndex + 1, doneExo);
+    }
 
     return state.copyWith(
         realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));

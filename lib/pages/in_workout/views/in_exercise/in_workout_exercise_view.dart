@@ -17,7 +17,7 @@ class InWorkoutExerciseView extends StatelessWidget {
 
   void showSetsModal(InWorkoutState state) {
     showModal(ChangeExerciseSetDialog<int>(
-      currentValue: state.currentSet.reps,
+      currentValue: state.currentExo?.sets.length ?? 1,
       title: "How many sets do you intent to do ?",
       setForOneCallback: (value) {
         int parseValue = int.parse(value);
