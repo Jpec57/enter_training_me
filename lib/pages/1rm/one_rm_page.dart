@@ -1,9 +1,8 @@
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/calculator/five_three_one.dart';
+import 'package:enter_training_me/pages/calculator/one_rm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 
 class OneRMPage extends StatefulWidget {
   static const routeName = "/1rm";
@@ -13,197 +12,61 @@ class OneRMPage extends StatefulWidget {
   _OneRMPageState createState() => _OneRMPageState();
 }
 
-class _OneRMPageState extends State<OneRMPage> {
-  double givenWeight = 100;
-  int _selectedRepNumber = 1;
-  late FixedExtentScrollController _listWheelScrollController;
-
-  late TextEditingController _textEditingController;
-
+class _OneRMPageState extends State<OneRMPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _innerTabController;
 
   @override
   void initState() {
-    _textEditingController = TextEditingController();
-    _textEditingController.addListener(() {
-      if (_textEditingController.text.isNotEmpty) {
-        setState(() {
-          givenWeight = double.parse(_textEditingController.text);
-        });
-      }
-    });
-
-    _listWheelScrollController = FixedExtentScrollController();
-    _listWheelScrollController.animateToItem((rmPercents.length ~/ 2),
-        duration: const Duration(milliseconds: 500), curve: Curves.linear);
+    _innerTabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
-  double _calculateOneRM() {
-    return givenWeight / rmPercents[_selectedRepNumber - 1];
+  @override
+  void dispose() {
+    _innerTabController.dispose();
+    super.dispose();
   }
 
-  List<Widget> _renderGridChildren() {
-    List<Widget> children = [];
-    for (int i = 0; i < rmPercents.length; i++) {
-      int reps = i + 1;
-      double percent = rmPercents[i];
-
-      double weight = percent * _calculateOneRM();
-      children.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          children: [
-            Expanded(
-                child: Center(
-                    child: Text(reps.toString(), style: const TextStyle()))),
-            Expanded(
-              child: Center(child: Text((percent * 100).toInt().toString())),
-            ),
-            Expanded(
-              child: Center(child: Text(weight.toStringAsFixed(1) + " kg")),
-            ),
-          ],
-        ),
-      ));
-      children.add(const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
-        child: Divider(
-          height: 1,
-          color: Colors.white60,
-        ),
-      ));
-    }
-    return children;
+  Widget _renderFiveThreeOneView() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardDown = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-      floatingActionButton:
-          CustomBottomNavigationBar.getCenteredFloatingButton(),
+      floatingActionButton: isKeyboardDown
+          ? CustomBottomNavigationBar.getCenteredFloatingButton()
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const CustomBottomNavigationBar(selectedRoute: OneRMPage.routeName,),
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          title: TextField(
-            controller: _textEditingController,
-            keyboardType: TextInputType.number,
-            style: const TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white)),
-                hintText: "100",
-                hintStyle: TextStyle(color: Colors.white60)),
-          ),
-          actions: [
-            Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: CustomTheme.darkGrey,
-              ),
-              child: DropdownButton<int>(
-                value: _selectedRepNumber,
-                icon: const Icon(Icons.arrow_downward),
-                elevation: 16,
-                style: const TextStyle(color: Colors.white),
-                underline: Container(
-                  height: 2,
-                  color: Colors.white,
-                ),
-                onChanged: (int? newValue) {
-                  setState(() {
-                    _selectedRepNumber = newValue!;
-                  });
-                },
-                items: <int>[
-                  ...List.generate(
-                      rmPercents.length, (index) => index + 1)
-                ].map<DropdownMenuItem<int>>((int value) {
-                  return DropdownMenuItem<int>(
-                    value: value,
-                    child: Text(
-                      "${value}RM",
-                    ),
-                  );
-                }).toList(),
-              ),
-            )
-          ]),
-      // drawer: const MyDrawer(),
+      bottomNavigationBar: const CustomBottomNavigationBar(
+        selectedRoute: OneRMPage.routeName,
+      ),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 32.0),
-                child: RichText(
-                  text: TextSpan(text: "Your 1RM is probably ", children: [
-                    TextSpan(
-                        text: "${_calculateOneRM().toStringAsFixed(1)} kg",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
-                  ]),
+              TabBar(controller: _innerTabController, tabs: const [
+                Tab(
+                  text: "OneRM",
                 ),
-              ),
+                Tab(
+                  text: "5-3-1",
+                )
+              ]),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        color: Colors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Row(
-                          children: const [
-                            Expanded(
-                              child: Center(
-                                child: Text("Reps",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Text("Percent",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Text("Weight",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                          child: ListWheelScrollView(
-                              controller: _listWheelScrollController,
-                              onSelectedItemChanged: (int index) {
-                              },
-                              physics: const FixedExtentScrollPhysics(),
-                              itemExtent: 75.0,
-                              children: _renderGridChildren()))
-                    ],
-                  ),
-                ),
+                child: TabBarView(
+                    controller: _innerTabController,
+                    children: const [
+                      OneRmCalculator(),
+                      FiveThreeOneCalculator()
+                    ]),
               ),
             ],
           ),
