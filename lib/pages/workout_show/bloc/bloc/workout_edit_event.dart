@@ -14,24 +14,32 @@ class SwitchedExerciseEvent extends WorkoutEditEvent {
   List<Object?> get props => [firstIndex, secondIndex, cycleIndex];
 }
 
+// class ChangedRestEvent extends WorkoutEditEvent {
+//   final int rest;
+//   final int exerciseIndex;
+
+//   ChangedRestEvent({required this.rest, required this.exerciseIndex});
+
+//   @override
+//   List<Object?> get props => [rest, exerciseIndex];
+// }
+
 class ToggledEditModeEvent extends WorkoutEditEvent {
   @override
   List<Object?> get props => [];
 }
 
 class ChangedExerciseEvent extends WorkoutEditEvent {
-  final ReferenceExercise exo;
-  final int cycleIndex;
+  final RealisedExercise exo;
   final int exoIndex;
 
   ChangedExerciseEvent({
     required this.exo,
-    this.cycleIndex = 0,
     required this.exoIndex,
   });
 
   @override
-  List<Object?> get props => [exo, cycleIndex, exoIndex];
+  List<Object?> get props => [exo, exoIndex];
 }
 
 class RemovedExerciseEvent extends WorkoutEditEvent {

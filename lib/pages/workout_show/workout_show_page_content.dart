@@ -72,8 +72,11 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () {
-            // Get.toNamed(HomePage.routeName);
-            Navigator.of(context).pop();
+            if (Navigator.canPop(context)) {
+              Navigator.of(context).pop();
+            } else {
+              Get.toNamed(HomePage.routeName);
+            }
           },
         ),
         actions: [

@@ -112,9 +112,9 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                 ],
               )),
           const SectionDivider(),
-
           BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
-            buildWhen: (prev, next) => prev.training != next.training,
+            buildWhen: (prev, next) =>
+                prev.training.exercises != next.training.exercises,
             builder: (context, state) {
               List<RealisedExercise> exos = state.training.exercises;
               int exoLength = exos.length;
@@ -145,7 +145,6 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                   itemCount: exos.length);
             },
           ),
-
           BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
             buildWhen: (prev, next) => prev.isEditting != next.isEditting,
             builder: (context, state) {

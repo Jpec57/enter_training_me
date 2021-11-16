@@ -24,6 +24,19 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
     WorkoutEditEvent event,
   ) async* {
     if (event is ChangedExerciseEvent) {
+      List<RealisedExercise> newExoList = [...state.training.exercises];
+      newExoList[event.exoIndex] = event.exo;
+      yield state.copyWith(
+          hasMadeChanges: true,
+          training: state.training.copyWith(exercises: newExoList));
+      // } else if (event is ChangedRestEvent) {
+      //   List<RealisedExercise> newExoList = [...state.training.exercises];
+      //   RealisedExercise exo = newExoList[event.exerciseIndex];
+      //   newExoList[event.exerciseIndex] =
+      //       exo.copyWith(restBetweenSet: event.rest);
+      //   yield state.copyWith(
+      //       hasMadeChanges: true,
+      //       training: state.training.copyWith(exercises: newExoList));
     } else if (event is AddedExerciseEvent) {
       yield _mapAddedExoEventToState(event);
     } else if (event is SwitchedExerciseEvent) {

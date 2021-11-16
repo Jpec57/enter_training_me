@@ -9,10 +9,14 @@ typedef OnRealisedExerciseCallback = void Function(RealisedExercise exercise);
 
 class NewExerciseView extends StatefulWidget {
   final VoidCallback onDismiss;
+  final RealisedExercise? editedExercise;
   final OnRealisedExerciseCallback onExerciseChosen;
 
   const NewExerciseView(
-      {Key? key, required this.onExerciseChosen, required this.onDismiss})
+      {Key? key,
+      required this.onExerciseChosen,
+      required this.onDismiss,
+      this.editedExercise})
       : super(key: key);
 
   @override
@@ -21,12 +25,20 @@ class NewExerciseView extends StatefulWidget {
 
 class _NewExerciseViewState extends State<NewExerciseView> {
   ReferenceExercise? _selectedRefExo;
-  int _restBtwSet = 120;
+  int _restBtwSet = 180;
   bool isIsometric = false;
 
-  final ExerciseSet _defaultSet = const ExerciseSet(reps: 5, weight: 100);
-  final List<ExerciseSet> _setList = [const ExerciseSet(reps: 5, weight: 100)];
+  late ExerciseSet _defaultSet;
+  late List<ExerciseSet> _setList;
   final GlobalKey<FormState> _formKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    _defaultSet = const ExerciseSet(reps: 5, weight: 100);
+    _selectedRefExo = widget.editedExercise?.exerciseReference;
+    _setList = widget.editedExercise?.sets ?? [];
+  }
 
   Widget _renderRestChoiceRow() {
     return Row(
@@ -203,7 +215,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                   Expanded(
                       child: Center(
                           child: Text(
-                    "New exo",
+                    widget.editedExercise != null ? "Edit exo" : "New exo",
                     style: Theme.of(context).textTheme.headline4,
                   )))
                 ],
@@ -303,7 +315,10 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text("Add this exercise".toUpperCase()),
+                        child: Text((widget.editedExercise != null
+                                ? "Edit this exercise"
+                                : "Add this exercise")
+                            .toUpperCase()),
                       ))
             ],
           ),

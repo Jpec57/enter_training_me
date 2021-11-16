@@ -59,7 +59,7 @@ class RealisedExercise extends Equatable {
 
   @override
   String toString() {
-    return "$exerciseReference (Execution: $executionStyle, sets $sets)";
+    return "$exerciseReference (Rest: $restBetweenSet Execution: $executionStyle, sets $sets)";
   }
 
   /// Estimate exercise intensity with the following assumptions:
