@@ -5,8 +5,8 @@ enum SubmitStatus { unknown, validated, submitting, submitted, errorSubmission }
 class LoginState extends Equatable {
   const LoginState({
     this.status = SubmitStatus.unknown,
-    this.username = "test@jpec.fr",
-    this.password = "test",
+    this.username = "",
+    this.password = "",
   });
 
   final SubmitStatus status;

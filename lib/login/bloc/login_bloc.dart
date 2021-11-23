@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -23,6 +25,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     if (event is LoginUsernameChanged) {
       yield _mapUsernameChangedToState(event, state);
+    } else if (event is InitLoginEvent) {
+      FlutterSecureStorage storage = const FlutterSecureStorage();
+      String? username = await storage.read(key: StorageConstants.userEmail);
+      print("Saved username ${username}");
+      yield state.copyWith(username: username);
     } else if (event is LoginPasswordChanged) {
       yield _mapPasswordChangedToState(event, state);
     }

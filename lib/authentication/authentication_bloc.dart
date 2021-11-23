@@ -5,7 +5,9 @@ import 'package:enter_training_me/authentication/interfaces/iauthentication_repo
 import 'package:enter_training_me/authentication/interfaces/iauthentication_user.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_user_repository.dart';
 import 'package:enter_training_me/authentication/models/auth_response.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -38,9 +40,14 @@ class AuthenticationBloc
       _authenticationRepository.logOut();
       yield const AuthenticationState.unauthenticated();
     } else if (event is AuthenticationAttemptRequested) {
+      print("${event.email} ${event.password}");
       AuthResponse? authResponse = await _authenticationRepository
           .logInAndGetUser(password: event.password, email: event.email);
       if (authResponse != null) {
+        FlutterSecureStorage storage = const FlutterSecureStorage();
+
+        await storage.write(
+            key: StorageConstants.userEmail, value: event.email);
         yield AuthenticationState.authenticated(authResponse.user);
       }
     }

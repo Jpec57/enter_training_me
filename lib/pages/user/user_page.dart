@@ -6,7 +6,6 @@ import 'package:enter_training_me/pages/user/views/login_form_view.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class UserPage extends StatelessWidget {
   static const routeName = "/login";
@@ -19,7 +18,7 @@ class UserPage extends StatelessWidget {
       create: (context) => LoginBloc(
           onLoginCallback: () {},
           authenticationRepository:
-              RepositoryProvider.of<AuthenticationRepository>(context)),
+              RepositoryProvider.of<AuthenticationRepository>(context))..add(const InitLoginEvent()),
       child: const LoginPageContent(),
     );
   }

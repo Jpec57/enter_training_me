@@ -70,10 +70,12 @@ class LoginFormView extends StatelessWidget {
                             builder: (context, state) {
                               return TextFormField(
                                 initialValue: state.username,
-                                
+                                onChanged: (str) {
+                                  BlocProvider.of<LoginBloc>(context)
+                                      .add(LoginUsernameChanged(str));
+                                },
                                 decoration: const InputDecoration(
                                     hintText: "Username/Email",
-                                    
                                     fillColor: Colors.white,
                                     contentPadding: EdgeInsets.symmetric(),
                                     hintStyle: TextStyle(color: Colors.white)),
@@ -86,6 +88,10 @@ class LoginFormView extends StatelessWidget {
                             builder: (context, state) {
                               return TextFormField(
                                 obscureText: true,
+                                onChanged: (str) {
+                                  BlocProvider.of<LoginBloc>(context)
+                                      .add(LoginPasswordChanged(str));
+                                },
                                 initialValue: state.password,
                                 decoration: const InputDecoration(
                                   hintText: "Password",
@@ -96,14 +102,17 @@ class LoginFormView extends StatelessWidget {
                         ]),
                       ),
                       BlocBuilder<LoginBloc, LoginState>(
-                        buildWhen: (prev, next) => prev.status != next.status,
+                        buildWhen: (prev, next) => prev != next,
                         builder: (context, state) {
                           return ElevatedButton(
                             onPressed: () {
-                              BlocProvider.of<AuthenticationBloc>(context).add(
-                                  AuthenticationAttemptRequested(
-                                      email: state.username,
-                                      password: state.password));
+                              if (state.username.isNotEmpty &&
+                                  state.password.isNotEmpty) {
+                                BlocProvider.of<AuthenticationBloc>(context)
+                                    .add(AuthenticationAttemptRequested(
+                                        email: state.username,
+                                        password: state.password));
+                              }
                             },
                             child: const Icon(Icons.check, color: Colors.white),
                             style: ElevatedButton.styleFrom(
