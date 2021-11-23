@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
               const Headline4(title: "Personal Workouts"),
               InkWell(
                   onTap: () async {
-                    bool autoPlay = await Get.dialog(ConfirmDialog(
+                    bool? autoPlay = await Get.dialog(ConfirmDialog(
                       title: "Direct play or save for later",
                       message: "Would you like to create a workout as you go ?",
                       confirmLabel: "Auto play",
@@ -191,14 +191,16 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).pop<bool>(false);
                       },
                     ));
-                    if (autoPlay) {
-                      Get.to(
-                          InWorkoutPage(referenceTraining: Training.empty()));
-                    } else {
-                      Get.to(WorkoutShowPage(
-                        referenceTraining: Training.empty(),
-                        isEditing: true,
-                      ));
+                    if (autoPlay != null) {
+                      if (autoPlay) {
+                        Get.to(
+                            InWorkoutPage(referenceTraining: Training.empty()));
+                      } else {
+                        Get.to(WorkoutShowPage(
+                          referenceTraining: Training.empty(),
+                          isEditing: true,
+                        ));
+                      }
                     }
                   },
                   child: Container(

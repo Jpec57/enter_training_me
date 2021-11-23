@@ -1,9 +1,11 @@
 import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
+import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class PreferencesPage extends StatelessWidget {
   static const routeName = "/preferences";
@@ -36,6 +38,14 @@ class PreferencesPage extends StatelessWidget {
                                   ? StorageConstants.soundInWorkoutOn
                                   : StorageConstants.soundInWorkoutOff));
                     });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.calculate),
+              title: const Text("Calculate",
+                  style: TextStyle(color: Colors.white)),
+              onTap: () {
+                Get.toNamed(OneRMPage.routeName);
               },
             ),
             ElevatedButton(

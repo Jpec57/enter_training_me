@@ -9,6 +9,7 @@ import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
+import 'package:enter_training_me/pages/log/log_page.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:enter_training_me/pages/register/register_page.dart';
@@ -44,9 +45,9 @@ class MainRouting {
         iconData: Icons.public,
         routeName: CommunityPage.routeName),
     NavigationElement(
-        title: "1RM Calculator",
-        iconData: Icons.calculate,
-        routeName: OneRMPage.routeName),
+        title: "Log",
+        iconData: Icons.history,
+        routeName: LogPage.routeName),
     NavigationElement(
         title: "Quick Countdown",
         iconData: Icons.timer,
@@ -100,6 +101,7 @@ class MainRouting {
         TestPage.routeName: (context) => const TestPage(),
         QuickCountdownPage.routeName: (context) => const QuickCountdownPage(),
         OneRMPage.routeName: (context) => const OneRMPage(),
+        LogPage.routeName: (context) => const LogPage(),
         WorkoutListPage.routeName: (context) => const WorkoutListPage(),
         ExerciseListPage.routeName: (context) => const ExerciseListPage()
       };

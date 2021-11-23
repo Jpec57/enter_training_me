@@ -37,15 +37,7 @@ class _OneRMPageState extends State<OneRMPage>
 
   @override
   Widget build(BuildContext context) {
-    final bool isKeyboardDown = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-      floatingActionButton: isKeyboardDown
-          ? CustomBottomNavigationBar.getCenteredFloatingButton()
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const CustomBottomNavigationBar(
-        selectedRoute: OneRMPage.routeName,
-      ),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Padding(
