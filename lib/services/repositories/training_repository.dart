@@ -2,9 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
-import 'package:enter_training_me/storage_constants.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:get/get.dart' as get_lib;
 
@@ -23,9 +20,40 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   Future<Training> get(int id) async {
     Response response =
         await getDio().get(getUrl.replaceFirst("{id}", id.toString()));
-    dynamic data = response.data;
+    Map<String, dynamic> data = jsonDecode(response.data);
     return Training.fromJson(data);
   }
+
+  Future<List<Training>> getUserTrainings(int userId,
+      {int page = 0, int limit = 10}) async {
+    Map<String, dynamic> queryParams = {
+      "limit": limit,
+      "page": page,
+    };
+    Response response = await getDio()
+        .get("/users/$userId/trainings", queryParameters: queryParams);
+    List<dynamic> data = response.data;
+    return data.map((e) => Training.fromJson(e)).toList();
+  }
+
+  // Future<Training?> getUserPreviousTraining(
+  //     int userId, DateTime dateTime) async {
+  //   Response response = await getDio().get("/users/$userId/trainings/previous");
+  //   Map<String, dynamic> data = response.data;
+  //   return Training.fromJson(data);
+  // }
+
+  // Future<Training?> getUserNextTraining(int userId, DateTime dateTime) async {
+  //   Response response = await getDio().get("/users/$userId/trainings/next");
+  //   Map<String, dynamic> data = response.data;
+  //   return Training.fromJson(data);
+  // }
+
+  // Future<Training?> getUserLastTraining(int userId) async {
+  //   Response response = await getDio().get("/users/$userId/trainings/last");
+  //   Map<String, dynamic> data = response.data;
+  //   return Training.fromJson(data);
+  // }
 
   Future<bool> shareByEmailAction(int id) async {
     Response response =

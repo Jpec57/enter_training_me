@@ -63,7 +63,7 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
                     }));
               },
               child: Text(
-                state.training.name,
+                "${state.training.name} (${state.training.id})",
                 style: Theme.of(context).textTheme.headline3,
               ),
             );

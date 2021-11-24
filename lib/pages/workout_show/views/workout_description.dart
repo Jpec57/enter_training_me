@@ -142,7 +142,7 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                       ),
                     );
                   },
-                  itemCount: exos.length);
+                  itemCount: exoLength);
             },
           ),
           BlocBuilder<WorkoutEditBloc, WorkoutEditState>(
