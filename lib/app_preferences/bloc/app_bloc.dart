@@ -8,38 +8,38 @@ part 'app_event.dart';
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  AppBloc() : super(const AppState());
+  AppBloc() : super(const AppState()) {
+    on<OnInitEvent>(_onInit);
+    on<OnPreferenceChangedEvent>(_onPreferenceChanged);
+  }
 
-  @override
-  Stream<AppState> mapEventToState(
-    AppEvent event,
-  ) async* {
-    if (event is OnInitEvent) {
-      FlutterSecureStorage storage = const FlutterSecureStorage();
-      String? soundState =
-          await storage.read(key: StorageConstants.soundInWorkoutKey);
-      if (soundState == "on") {
-        yield state.copyWith(soundInWorkout: SoundInWorkout.on);
-      }
+  void _onInit(OnInitEvent event, Emitter<AppState> emit) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    String? soundState =
+        await storage.read(key: StorageConstants.soundInWorkoutKey);
+    if (soundState == "on") {
+      emit(state.copyWith(soundInWorkout: SoundInWorkout.on));
     }
-    if (event is OnPreferenceChangedEvent) {
-      FlutterSecureStorage storage = const FlutterSecureStorage();
-      switch (event.preferenceName) {
-        case StorageConstants.soundInWorkoutKey:
-          if (StorageConstants.soundInWorkoutValues.contains(event.value)) {
-            await storage.write(
-                key: StorageConstants.soundInWorkoutKey, value: event.value);
-            if (event.value == StorageConstants.soundInWorkoutOn) {
-              yield state.copyWith(soundInWorkout: SoundInWorkout.on);
-            }
-            if (event.value == StorageConstants.soundInWorkoutOff) {
-              yield state.copyWith(soundInWorkout: SoundInWorkout.off);
-            }
-          } else {
-            debugPrint(
-                "Invalid value for key ${event.preferenceName}: ${event.value}");
+  }
+
+  void _onPreferenceChanged(
+      OnPreferenceChangedEvent event, Emitter<AppState> emit) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    switch (event.preferenceName) {
+      case StorageConstants.soundInWorkoutKey:
+        if (StorageConstants.soundInWorkoutValues.contains(event.value)) {
+          await storage.write(
+              key: StorageConstants.soundInWorkoutKey, value: event.value);
+          if (event.value == StorageConstants.soundInWorkoutOn) {
+            emit(state.copyWith(soundInWorkout: SoundInWorkout.on));
           }
-      }
+          if (event.value == StorageConstants.soundInWorkoutOff) {
+            emit(state.copyWith(soundInWorkout: SoundInWorkout.off));
+          }
+        } else {
+          debugPrint(
+              "Invalid value for key ${event.preferenceName}: ${event.value}");
+        }
     }
   }
 }

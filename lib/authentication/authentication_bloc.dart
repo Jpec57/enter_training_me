@@ -14,6 +14,11 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
+  final IAuthenticationRepositoryInterface _authenticationRepository;
+  final IAuthUserRepositoryInterface _userRepository;
+  late StreamSubscription<AuthenticationStatus>
+      _authenticationStatusSubscription;
+
   AuthenticationBloc({
     required IAuthenticationRepositoryInterface authenticationRepository,
     required IAuthUserRepositoryInterface userRepository,
@@ -23,33 +28,45 @@ class AuthenticationBloc
     _authenticationStatusSubscription = _authenticationRepository.status.listen(
       (status) => add(AuthenticationStatusChanged(status)),
     );
+
+    on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
+    on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
+    on<AuthenticationAttemptRequested>(_onAuthenticationAttemptRequested);
   }
 
-  final IAuthenticationRepositoryInterface _authenticationRepository;
-  final IAuthUserRepositoryInterface _userRepository;
-  late StreamSubscription<AuthenticationStatus>
-      _authenticationStatusSubscription;
+  void _onAuthenticationAttemptRequested(AuthenticationAttemptRequested event,
+      Emitter<AuthenticationState> emit) async {
+    print("${event.email} ${event.password}");
+    AuthResponse? authResponse = await _authenticationRepository
+        .logInAndGetUser(password: event.password, email: event.email);
+    if (authResponse != null) {
+      FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
-  ) async* {
-    if (event is AuthenticationStatusChanged) {
-      yield await _mapAuthenticationStatusChangedToState(event);
-    } else if (event is AuthenticationLogoutRequested) {
-      _authenticationRepository.logOut();
-      yield const AuthenticationState.unauthenticated();
-    } else if (event is AuthenticationAttemptRequested) {
-      print("${event.email} ${event.password}");
-      AuthResponse? authResponse = await _authenticationRepository
-          .logInAndGetUser(password: event.password, email: event.email);
-      if (authResponse != null) {
-        FlutterSecureStorage storage = const FlutterSecureStorage();
+      await storage.write(key: StorageConstants.userEmail, value: event.email);
+      emit(AuthenticationState.authenticated(authResponse.user));
+    }
+  }
 
-        await storage.write(
-            key: StorageConstants.userEmail, value: event.email);
-        yield AuthenticationState.authenticated(authResponse.user);
-      }
+  void _onAuthenticationLogoutRequested(AuthenticationLogoutRequested event,
+      Emitter<AuthenticationState> emit) async {
+    _authenticationRepository.logOut();
+    emit(const AuthenticationState.unauthenticated());
+  }
+
+  void _onAuthenticationStatusChanged(AuthenticationStatusChanged event,
+      Emitter<AuthenticationState> emit) async {
+    switch (event.status) {
+      case AuthenticationStatus.unauthenticated:
+        emit(const AuthenticationState.unauthenticated());
+        break;
+      case AuthenticationStatus.authenticated:
+      default:
+        final user = await _tryGetUserWithToken();
+        emit(user != null
+            ? AuthenticationState.authenticated(user)
+            : const AuthenticationState.unauthenticated());
+
+        break;
     }
   }
 
@@ -58,25 +75,6 @@ class AuthenticationBloc
     _authenticationStatusSubscription.cancel();
     _authenticationRepository.dispose();
     return super.close();
-  }
-
-  Future<AuthenticationState> _mapAuthenticationStatusChangedToState(
-    AuthenticationStatusChanged event,
-  ) async {
-    switch (event.status) {
-      case AuthenticationStatus.unauthenticated:
-        return const AuthenticationState.unauthenticated();
-      case AuthenticationStatus.authenticated:
-        final user = await _tryGetUserWithToken();
-        return user != null
-            ? AuthenticationState.authenticated(user)
-            : const AuthenticationState.unauthenticated();
-      default:
-        final user = await _tryGetUserWithToken();
-        return user != null
-            ? AuthenticationState.authenticated(user)
-            : const AuthenticationState.unauthenticated();
-    }
   }
 
   Future<IAuthUserInterface?> _tryGetUserWithToken() async {

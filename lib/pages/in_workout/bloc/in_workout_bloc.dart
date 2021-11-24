@@ -31,154 +31,226 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       Training realisedTraining)
       : super(InWorkoutState(
             referenceTrainingId: referenceTrainingId,
-            realisedTraining: realisedTraining));
+            realisedTraining: realisedTraining)) {
+    on<AddedExoEvent>(_onAddedExo);
+    on<ChangedNbLoopsEvent>(_onChangedNbLoops);
+    on<ChangedTrainingNameEvent>(_onChangedTrainingName);
+    on<TrainingLeftEvent>(_onTrainingLeftEvent);
+    on<TrainingEndedEvent>(_onTrainingEndedEvent);
+    on<ResetRepEvent>(_onResetRepEvent);
+    on<ChangedRefWeightEvent>(_onChangedRefWeightEvent);
+    on<TimerTickEvent>(_onTimerTickEvent);
+    on<AddedRepEvent>(_onAddedRepEvent);
+    on<RemovedRepEvent>(_onRemovedRepEvent);
+    on<ChangedRestEvent>(_onChangedRestEvent);
+    on<ChangedExoEvent>(_onChangedExoEvent);
+    on<ChangedRestBetweenLoopsEvent>(_onChangedRestBetweenLoopsEvent);
+    on<ChangedViewEvent>(_onChangedViewEvent);
+    on<ChangedNbSetEvent>(_onChangedNbSetEvent);
+    on<RestDoneEvent>(_onRestDoneEvent);
+    on<ExerciseDoneEvent>(_onExerciseDoneEvent);
+  }
+
+  void _onExerciseDoneEvent(
+      ExerciseDoneEvent event, Emitter<InWorkoutState> emit) async {
+    bool isSoundOn = await const FlutterSecureStorage()
+            .read(key: StorageConstants.soundInWorkoutKey) ==
+        StorageConstants.soundInWorkoutOn;
+    if (isSoundOn) {
+      FlutterTts flutterTts = FlutterTts();
+      await flutterTts.setLanguage("en-US");
+      await flutterTts.setSpeechRate(0.5);
+      await flutterTts.setVolume(1.0);
+      await flutterTts.setPitch(1.0);
+      await flutterTts.isLanguageAvailable("en-US");
+      String? nextExoName = state.nextExo?.exerciseReference.name;
+      if (nextExoName != null) {
+        _speak(flutterTts, "Next exercise: " + nextExoName);
+      }
+    }
+    emit(state.copyWith(
+        reallyDoneReps: state.currentExo!.isIsometric
+            ? (state.reallyDoneReps)
+            : state.currentSet.reps,
+        currentView: InWorkoutView.inRestView));
+  }
+
+  void _onRestDoneEvent(
+      RestDoneEvent event, Emitter<InWorkoutState> emit) async {
+    // In loop training, we must additionate all reps
+    int offset = 0;
+    if (state.realisedTraining.numberOfLoops > 1 &&
+        state.currentCycleIndex > 0) {
+      offset = state.currentSet.reps;
+    }
+    List<RealisedExercise> doneExos =
+        updateSet(doneReps: state.reallyDoneReps + offset);
+
+    if (state.isEndOfWorkout) {
+      Training? training = await saveTraining();
+      emit(state.copyWith(isEnd: true, realisedTrainingId: training?.id));
+    }
+    emit(state.copyWith(
+        isEnd: state.isEndOfWorkout,
+        currentCycleIndex: state.nextCycleIndex,
+        currentSetIndex: state.nextSetIndex,
+        currentExoIndex: state.nextExoIndex,
+        currentView: InWorkoutView.inExerciseView,
+        realisedTraining:
+            state.realisedTraining.copyWith(exercises: doneExos)));
+  }
+
+  void _onChangedNbSetEvent(
+      ChangedNbSetEvent event, Emitter<InWorkoutState> emit) async {
+    emit(_mapChangedNbSetEventToState(event));
+  }
+
+  void _onChangedViewEvent(
+      ChangedViewEvent event, Emitter<InWorkoutState> emit) async {
+    emit(_mapChangedViewEventToState(event));
+  }
+
+  void _onChangedRestBetweenLoopsEvent(
+      ChangedRestBetweenLoopsEvent event, Emitter<InWorkoutState> emit) async {
+    emit(state.copyWith(
+        realisedTraining: state.realisedTraining.copyWith(
+            restBetweenCycles: event.seconds > 0 ? event.seconds : 5)));
+  }
+
+  void _onChangedExoEvent(
+      ChangedExoEvent event, Emitter<InWorkoutState> emit) async {
+    RealisedExercise previousExo = state.currentExo!;
+    RealisedExercise newExo =
+        state.currentExo!.copyWith(exerciseReference: event.exo);
+    List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
+    if (state.currentSetIndex == 0) {
+      doneExos[state.currentExoIndex] = newExo;
+      emit(state.copyWith(
+          realisedTraining:
+              state.realisedTraining.copyWith(exercises: doneExos)));
+    } else {
+      doneExos[state.currentExoIndex] = previousExo.copyWith(
+          sets: previousExo.sets.sublist(0, state.currentSetIndex));
+
+      if (state.currentSetIndex <= newExo.sets.length) {
+        newExo =
+            newExo.copyWith(sets: newExo.sets.sublist(state.currentSetIndex));
+      } else {
+        newExo = newExo.copyWith(sets: [newExo.sets.last]);
+      }
+      doneExos.insert(state.currentExoIndex + 1, newExo);
+      emit(state.copyWith(
+          realisedTraining:
+              state.realisedTraining.copyWith(exercises: doneExos)));
+      emit(state.copyWith(
+          currentExoIndex: state.currentExoIndex + 1, currentSetIndex: 0));
+    }
+  }
+
+  void _onChangedRestEvent(
+      ChangedRestEvent event, Emitter<InWorkoutState> emit) async {
+    Training? modifiedTraining = state.realisedTraining;
+    List<RealisedExercise> exercises = [...state.realisedTraining.exercises];
+    RealisedExercise doneExo =
+        state.currentExo!.copyWith(restBetweenSet: event.rest);
+
+    exercises[state.currentExoIndex] = doneExo;
+    emit(state.copyWith(
+        realisedTraining: modifiedTraining.copyWith(exercises: exercises)));
+  }
+
+  void _onTimerTickEvent(
+      TimerTickEvent event, Emitter<InWorkoutState> emit) async {
+    emit(_mapTimerTickEventToState(event));
+  }
+
+  void _onAddedRepEvent(
+      AddedRepEvent event, Emitter<InWorkoutState> emit) async {
+    emit(_mapAddedRepEventToState(event));
+  }
+
+  void _onRemovedRepEvent(
+      RemovedRepEvent event, Emitter<InWorkoutState> emit) async {
+    emit(_mapRemoveRepEventToState(event));
+  }
+
+  void _onChangedRefWeightEvent(
+      ChangedRefWeightEvent event, Emitter<InWorkoutState> emit) async {
+    emit(_mapChangedRefWeightEventToState(event));
+  }
+
+  void _onResetRepEvent(ResetRepEvent event, Emitter<InWorkoutState> emit) {
+    emit(state.copyWith(reallyDoneReps: 0));
+  }
+
+  void _onTrainingEndedEvent(
+      TrainingEndedEvent event, Emitter<InWorkoutState> emit) async {
+    Training? training = await saveTraining();
+    emit(state.copyWith(realisedTrainingId: training?.id));
+    emit(state.copyWith(isEnd: true));
+  }
+
+  void _onTrainingLeftEvent(
+      TrainingLeftEvent event, Emitter<InWorkoutState> emit) async {
+    //Erase all sets above the current one and save training with query
+    Get.offNamedUntil(
+        CommunityPage.routeName, ModalRoute.withName(HomePage.routeName));
+  }
+
+  void _onChangedTrainingName(
+      ChangedTrainingNameEvent event, Emitter<InWorkoutState> emit) async {
+    Map<String, dynamic> nameData = {"name": event.name};
+    if (state.realisedTrainingId != null) {
+      try {
+        Training? training =
+            await trainingRepository.patch(state.realisedTrainingId!, nameData);
+        if (training != null) {
+          emit(state.copyWith(
+              realisedTraining:
+                  state.realisedTraining.copyWith(name: event.name)));
+        }
+      } on DioError catch (e) {
+        Get.snackbar("Error", e.toString());
+      }
+    } else {
+      emit(state.copyWith(
+          realisedTraining: state.realisedTraining.copyWith(name: event.name)));
+    }
+
+    emit(state);
+  }
+
+  void _onChangedNbLoops(
+      ChangedNbLoopsEvent event, Emitter<InWorkoutState> emit) {
+    if (event.nbLoops > 0) {
+      emit(state.copyWith(
+          realisedTraining:
+              state.realisedTraining.copyWith(numberOfLoops: event.nbLoops)));
+    }
+  }
+
+  void _onAddedExo(AddedExoEvent event, Emitter<InWorkoutState> emit) {
+    int nextExoIndex = state.currentExoIndex;
+    Training currentTraining = state.realisedTraining;
+    if (currentTraining.exercises.isNotEmpty) {
+      List<RealisedExercise> exos = [...currentTraining.exercises];
+      exos.insert(state.currentExoIndex + 1, event.exo);
+      currentTraining = currentTraining.copyWith(exercises: exos);
+      nextExoIndex++;
+    } else {
+      currentTraining = currentTraining.copyWith(exercises: [event.exo]);
+    }
+
+    emit(state.copyWith(
+        realisedTraining: currentTraining,
+        currentExoIndex: nextExoIndex,
+        currentSetIndex: 0));
+    emit(_mapChangedViewEventToState(
+        ChangedViewEvent(event.tabController, InWorkoutView.inExerciseView)));
+  }
 
   Future _speak(FlutterTts flutterTts, String text) async {
     await flutterTts.speak(text);
-  }
-
-  @override
-  Stream<InWorkoutState> mapEventToState(
-    InWorkoutEvent event,
-  ) async* {
-    if (event is AddedExoEvent) {
-      yield _mapAddedExoEventToState(event);
-      yield _mapChangedViewEventToState(
-          ChangedViewEvent(event.tabController, InWorkoutView.inExerciseView));
-    } else if (event is ChangedNbLoopsEvent) {
-      if (event.nbLoops > 0) {
-        yield state.copyWith(
-            realisedTraining:
-                state.realisedTraining.copyWith(numberOfLoops: event.nbLoops));
-      }
-    } else if (event is ChangedTrainingNameEvent) {
-      Map<String, dynamic> nameData = {"name": event.name};
-      if (state.realisedTrainingId != null) {
-        try {
-          Training? training = await trainingRepository.patch(
-              state.realisedTrainingId!, nameData);
-          if (training != null) {
-            yield state.copyWith(
-                realisedTraining:
-                    state.realisedTraining.copyWith(name: event.name));
-          }
-        } on DioError catch (e) {
-          Get.snackbar("Error", e.toString());
-        }
-      } else {
-        yield state.copyWith(
-            realisedTraining:
-                state.realisedTraining.copyWith(name: event.name));
-      }
-
-      yield state;
-    } else if (event is ChangedRestEvent) {
-      Training? modifiedTraining = state.realisedTraining;
-      List<RealisedExercise> exercises = [...state.realisedTraining.exercises];
-      RealisedExercise doneExo =
-          state.currentExo!.copyWith(restBetweenSet: event.rest);
-
-      exercises[state.currentExoIndex] = doneExo;
-      yield state.copyWith(
-          realisedTraining: modifiedTraining.copyWith(exercises: exercises));
-    } else if (event is ChangedViewEvent) {
-      yield _mapChangedViewEventToState(event);
-    } else if (event is ExerciseDoneEvent) {
-      bool isSoundOn = await const FlutterSecureStorage()
-              .read(key: StorageConstants.soundInWorkoutKey) ==
-          StorageConstants.soundInWorkoutOn;
-      if (isSoundOn) {
-        FlutterTts flutterTts = FlutterTts();
-        await flutterTts.setLanguage("en-US");
-        await flutterTts.setSpeechRate(0.5);
-        await flutterTts.setVolume(1.0);
-        await flutterTts.setPitch(1.0);
-        await flutterTts.isLanguageAvailable("en-US");
-        String? nextExoName = state.nextExo?.exerciseReference.name;
-        if (nextExoName != null) {
-          _speak(flutterTts, "Next exercise: " + nextExoName);
-        }
-      }
-
-      yield _mapExerciseDoneEventToState(event);
-    } else if (event is RestDoneEvent) {
-      // In loop training, we must additionate all reps
-      int offset = 0;
-      if (state.realisedTraining.numberOfLoops > 1 &&
-          state.currentCycleIndex > 0) {
-        offset = state.currentSet.reps;
-      }
-      List<RealisedExercise> doneExos =
-          updateSet(doneReps: state.reallyDoneReps + offset);
-
-      if (state.isEndOfWorkout) {
-        Training? training = await saveTraining();
-        yield state.copyWith(isEnd: true, realisedTrainingId: training?.id);
-      }
-      yield state.copyWith(
-          isEnd: state.isEndOfWorkout,
-          currentCycleIndex: state.nextCycleIndex,
-          currentSetIndex: state.nextSetIndex,
-          currentExoIndex: state.nextExoIndex,
-          currentView: InWorkoutView.inExerciseView,
-          realisedTraining:
-              state.realisedTraining.copyWith(exercises: doneExos));
-    } else if (event is ChangedNbSetEvent) {
-      yield _mapChangedNbSetEventToState(event);
-    } else if (event is ChangedRestBetweenLoopsEvent) {
-      yield state.copyWith(
-          realisedTraining: state.realisedTraining.copyWith(
-              restBetweenCycles: event.seconds > 0 ? event.seconds : 5));
-    } else if (event is ChangedExoEvent) {
-      RealisedExercise previousExo = state.currentExo!;
-      RealisedExercise newExo =
-          state.currentExo!.copyWith(exerciseReference: event.exo);
-      List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
-      if (state.currentSetIndex == 0) {
-        doneExos[state.currentExoIndex] = newExo;
-        yield state.copyWith(
-            realisedTraining:
-                state.realisedTraining.copyWith(exercises: doneExos));
-      } else {
-        doneExos[state.currentExoIndex] = previousExo.copyWith(
-            sets: previousExo.sets.sublist(0, state.currentSetIndex));
-
-        if (state.currentSetIndex <= newExo.sets.length) {
-          newExo = newExo.copyWith(
-              sets: newExo.sets.sublist(state.currentSetIndex));
-        } else {
-          newExo = newExo.copyWith(sets: [newExo.sets.last]);
-        }
-        doneExos.insert(state.currentExoIndex + 1, newExo);
-        yield state.copyWith(
-            realisedTraining:
-                state.realisedTraining.copyWith(exercises: doneExos));
-        yield state.copyWith(
-            currentExoIndex: state.currentExoIndex + 1, currentSetIndex: 0);
-      }
-      // yield _mapChangedExoEventToState(event);
-    } else if (event is TimerTickEvent) {
-      yield _mapTimerTickEventToState(event);
-    } else if (event is AddedRepEvent) {
-      yield _mapAddedRepEventToState(event);
-    } else if (event is RemovedRepEvent) {
-      yield _mapRemoveRepEventToState(event);
-    } else if (event is ChangedRefRepsEvent) {
-      yield _mapChangedRefRepsEventToState(event);
-    } else if (event is ChangedRefWeightEvent) {
-      yield _mapChangedRefWeightEventToState(event);
-    } else if (event is ResetRepEvent) {
-      yield state.copyWith(reallyDoneReps: 0);
-    } else if (event is TrainingEndedEvent) {
-      Training? training = await saveTraining();
-      yield state.copyWith(realisedTrainingId: training?.id);
-      yield _mapTrainingEndedEventToState(event);
-    } else if (event is TrainingLeftEvent) {
-      //Erase all sets above the current one and save training with query
-      Get.offNamedUntil(
-          CommunityPage.routeName, ModalRoute.withName(HomePage.routeName));
-      yield _mapTrainingLeftEventToState(event);
-    }
   }
 
   Future<Training?> saveTraining() async {
@@ -206,14 +278,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       //TODO Save in local storage to resend later
     }
     return training;
-  }
-
-  InWorkoutState _mapExerciseDoneEventToState(ExerciseDoneEvent event) {
-    return state.copyWith(
-        reallyDoneReps: state.currentExo!.isIsometric
-            ? (state.reallyDoneReps)
-            : state.currentSet.reps,
-        currentView: InWorkoutView.inRestView);
   }
 
   List<RealisedExercise> updateSet(
@@ -249,14 +313,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return doneExos;
   }
 
-  InWorkoutState _mapTrainingLeftEventToState(TrainingLeftEvent event) {
-    return state;
-  }
-
-  InWorkoutState _mapTrainingEndedEventToState(TrainingEndedEvent event) {
-    return state.copyWith(isEnd: true);
-  }
-
   InWorkoutState _mapTimerTickEventToState(TimerTickEvent event) {
     if (state.getNonTickingViews().contains(state.currentView)) {
       return state;
@@ -278,22 +334,22 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return state.copyWith(reallyDoneReps: state.reallyDoneReps - 1);
   }
 
-  InWorkoutState _mapChangedExoEventToState(ChangedExoEvent event) {
-    RealisedExercise doneExo =
-        state.currentExo!.copyWith(exerciseReference: event.exo);
-    List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
-    if (state.currentSetIndex == 0) {
-      print("first set");
-      doneExos[state.currentExoIndex] = doneExo;
-    } else {
-      print("NOT first set => INSERTING");
+  // InWorkoutState _mapChangedExoEventToState(ChangedExoEvent event) {
+  //   RealisedExercise doneExo =
+  //       state.currentExo!.copyWith(exerciseReference: event.exo);
+  //   List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
+  //   if (state.currentSetIndex == 0) {
+  //     print("first set");
+  //     doneExos[state.currentExoIndex] = doneExo;
+  //   } else {
+  //     print("NOT first set => INSERTING");
 
-      doneExos.insert(state.currentExoIndex + 1, doneExo);
-    }
+  //     doneExos.insert(state.currentExoIndex + 1, doneExo);
+  //   }
 
-    return state.copyWith(
-        realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
-  }
+  //   return state.copyWith(
+  //       realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
+  // }
 
   InWorkoutState _mapChangedRefWeightEventToState(ChangedRefWeightEvent event) {
     List<RealisedExercise> doneExos =
@@ -302,13 +358,13 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
   }
 
-  InWorkoutState _mapChangedRefRepsEventToState(ChangedRefRepsEvent event) {
-    List<RealisedExercise> doneExos =
-        updateSet(doneReps: event.reps, updateNextSets: event.isForAll);
+  // InWorkoutState _mapChangedRefRepsEventToState(ChangedRefRepsEvent event) {
+  //   List<RealisedExercise> doneExos =
+  //       updateSet(doneReps: event.reps, updateNextSets: event.isForAll);
 
-    return state.copyWith(
-        realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
-  }
+  //   return state.copyWith(
+  //       realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
+  // }
 
   InWorkoutState _mapChangedViewEventToState(ChangedViewEvent event) {
     switch (event.view) {
@@ -327,23 +383,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return state.copyWith(currentView: event.view);
   }
 
-  InWorkoutState _mapAddedExoEventToState(AddedExoEvent event) {
-    int nextExoIndex = state.currentExoIndex;
-    Training currentTraining = state.realisedTraining;
-    if (currentTraining.exercises.isNotEmpty) {
-      List<RealisedExercise> exos = [...currentTraining.exercises];
-      exos.insert(state.currentExoIndex + 1, event.exo);
-      currentTraining = currentTraining.copyWith(exercises: exos);
-      nextExoIndex++;
-    } else {
-      currentTraining = currentTraining.copyWith(exercises: [event.exo]);
-    }
-
-    return state.copyWith(
-        realisedTraining: currentTraining,
-        currentExoIndex: nextExoIndex,
-        currentSetIndex: 0);
-  }
 
   InWorkoutState _mapChangedNbSetEventToState(ChangedNbSetEvent event) {
     List<RealisedExercise> doneExos = updateSet(nbWantedSets: event.nbSets);
