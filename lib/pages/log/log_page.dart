@@ -65,7 +65,11 @@ class _LogPageState extends State<LogPage> {
         return Scaffold(
           appBar: AppBar(),
           body: const Center(
-            child: Text(Utils.defaultErrorMessage),
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child:
+                  Text(Utils.defaultErrorMessage, textAlign: TextAlign.center),
+            ),
           ),
         );
       },
@@ -125,14 +129,21 @@ class LogPageContent extends StatelessWidget {
                           builder: (context, state) {
                             if (state is LogTrainingLoadedState &&
                                 state.visibleTraining.createdAt != null) {
-                              return Text(
-                                  Utils.defaultVerboseDateFormatter
-                                      .format(state.visibleTraining.createdAt!),
-                                  style: Theme.of(context).textTheme.headline4);
+                              return Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                    Utils.defaultVerboseDateFormatter.format(
+                                        state.visibleTraining.createdAt!),
+                                    style:
+                                        Theme.of(context).textTheme.headline4),
+                              );
                             }
-                            return Text("No date available",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.headline4);
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text("No date available",
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.headline4),
+                            );
                           },
                         ),
                       ),

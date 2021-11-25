@@ -6,6 +6,7 @@ import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' as get_lib;
 part 'register_event.dart';
 part 'register_state.dart';

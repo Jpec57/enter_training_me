@@ -39,12 +39,16 @@ class AuthenticationBloc
     AuthResponse? authResponse = await _authenticationRepository
         .logInAndGetUser(password: event.password, email: event.email);
     if (authResponse != null) {
-      FlutterSecureStorage storage = const FlutterSecureStorage();
-
-      await storage.write(key: StorageConstants.userId, value: authResponse.user.id.toString());
-      await storage.write(key: StorageConstants.userEmail, value: event.email);
+      await saveUserInfos(
+          userId: authResponse.user.id!, userEmail: event.email);
       emit(AuthenticationState.authenticated(authResponse.user));
     }
+  }
+
+  Future saveUserInfos({required int userId, required String userEmail}) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    await storage.write(key: StorageConstants.userId, value: userId.toString());
+    await storage.write(key: StorageConstants.userEmail, value: userEmail);
   }
 
   void _onAuthenticationLogoutRequested(AuthenticationLogoutRequested event,
@@ -62,10 +66,12 @@ class AuthenticationBloc
       case AuthenticationStatus.authenticated:
       default:
         final user = await _tryGetUserWithToken();
-        emit(user != null
-            ? AuthenticationState.authenticated(user)
-            : const AuthenticationState.unauthenticated());
-
+        if (user != null) {
+          await saveUserInfos(userId: user.id!, userEmail: user.email);
+          emit(AuthenticationState.authenticated(user));
+        } else {
+          emit(const AuthenticationState.unauthenticated());
+        }
         break;
     }
   }

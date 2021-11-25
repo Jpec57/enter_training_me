@@ -80,7 +80,6 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
-                // Get.offAll(MainRouting.home);
                 return const HomePage();
               case AuthenticationStatus.unauthenticated:
                 return const HomePage();
