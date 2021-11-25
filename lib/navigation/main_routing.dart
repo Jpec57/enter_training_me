@@ -10,6 +10,7 @@ import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/log/log_page.dart';
+import 'package:enter_training_me/pages/log/log_page_arguments.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:enter_training_me/pages/register/register_page.dart';
@@ -19,7 +20,9 @@ import 'package:enter_training_me/pages/user/other_profile_page_arguments.dart';
 import 'package:enter_training_me/pages/user/user_page.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../pages/workout_show/workout_show_page_arguments.dart';
 
 class MainRouting {
@@ -45,9 +48,7 @@ class MainRouting {
         iconData: Icons.public,
         routeName: CommunityPage.routeName),
     NavigationElement(
-        title: "Log",
-        iconData: Icons.history,
-        routeName: LogPage.routeName),
+        title: "Log", iconData: Icons.history, routeName: LogPage.routeName),
     NavigationElement(
         title: "Quick Countdown",
         iconData: Icons.timer,
@@ -58,6 +59,15 @@ class MainRouting {
     if (settings.name == ExerciseViewPage.routeName) {
       var args = settings.arguments as ExerciseViewPageArguments;
       return MaterialPageRoute(builder: (context) => const ExerciseViewPage());
+    }
+
+    if (settings.name == LogPage.routeName) {
+      var args = settings.arguments as LogPageArguments?;
+
+      return MaterialPageRoute(
+          builder: (context) => LogPage(
+                userId: args?.userId,
+              ));
     }
 
     if (settings.name == InWorkoutPage.routeName) {
@@ -81,7 +91,7 @@ class MainRouting {
                 coach: args.coach,
               ));
     }
-        if (settings.name == OtherProfilePage.routeName) {
+    if (settings.name == OtherProfilePage.routeName) {
       var args = settings.arguments as OtherProfilePageArguments;
       return MaterialPageRoute(
           builder: (context) => OtherProfilePage(
@@ -101,8 +111,11 @@ class MainRouting {
         TestPage.routeName: (context) => const TestPage(),
         QuickCountdownPage.routeName: (context) => const QuickCountdownPage(),
         OneRMPage.routeName: (context) => const OneRMPage(),
-        LogPage.routeName: (context) => const LogPage(),
         WorkoutListPage.routeName: (context) => const WorkoutListPage(),
         ExerciseListPage.routeName: (context) => const ExerciseListPage()
       };
 }
+/*
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    int? userId = int.parse(await storage.read(key: StorageConstants.userId));
+    */

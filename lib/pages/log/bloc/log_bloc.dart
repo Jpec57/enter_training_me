@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/models/paginated_list_response.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 part 'log_event.dart';
 part 'log_state.dart';
@@ -22,20 +24,25 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     String? errorMessage;
     try {
       emit(LogTrainingLoadingState(state));
-      List<Training>? trainings =
-          await trainingRepository.getUserTrainings(47, limit: 1, page: 0);
-
+      PaginatedListResponse<Training> trainingPaginationResponse =
+          await trainingRepository.getUserTrainings(userId, limit: 1, page: 0);
+      List<Training>? trainings = trainingPaginationResponse.entities;
       if (trainings.isEmpty) {
         emit(LogTrainingErrorState(
             baseState: state,
             lastEvent: event,
             errorMessage: "No training available."));
       } else {
+        print(trainingPaginationResponse);
         emit(LogTrainingLoadedState(
-            baseState: const LogState(page: 0), visibleTraining: trainings[0]));
+            baseState: LogState(
+                page: 0,
+                hasNext: trainingPaginationResponse.hasNext,
+                hasPrevious: trainingPaginationResponse.hasPrevious),
+            visibleTraining: trainings[0]));
       }
-    } on DioError catch (e) {
-      errorMessage = e.message;
+    } on Exception catch (e) {
+      errorMessage = (e is DioError) ? e.message : Utils.defaultErrorMessage;
       emit(LogTrainingErrorState(
           baseState: state, lastEvent: event, errorMessage: errorMessage));
     }
@@ -46,9 +53,10 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     String? errorMessage;
     try {
       emit(LogTrainingLoadingState(state));
-      List<Training>? trainings =
-          await trainingRepository.getUserTrainings(47, limit: 1, page: 1);
-      // Training? training = await trainingRepository.getUserLastTraining(userId);
+      PaginatedListResponse<Training> trainingPaginationResponse =
+          await trainingRepository.getUserTrainings(userId,
+              limit: 1, page: state.page + 1);
+      List<Training>? trainings = trainingPaginationResponse.entities;
       if (trainings.isEmpty) {
         emit(LogTrainingErrorState(
             baseState: state,
@@ -56,11 +64,14 @@ class LogBloc extends Bloc<LogEvent, LogState> {
             errorMessage: "An error occured..."));
       } else {
         emit(LogTrainingLoadedState(
-            baseState: LogState(page: state.page - 1),
+            baseState: LogState(
+                page: state.page + 1,
+                hasNext: trainingPaginationResponse.hasNext,
+                hasPrevious: trainingPaginationResponse.hasPrevious),
             visibleTraining: trainings[0]));
       }
-    } on DioError catch (e) {
-      errorMessage = e.message;
+    } on Exception catch (e) {
+      errorMessage = (e is DioError) ? e.message : Utils.defaultErrorMessage;
       emit(LogTrainingErrorState(
           baseState: state, lastEvent: event, errorMessage: errorMessage));
     }
@@ -70,22 +81,30 @@ class LogBloc extends Bloc<LogEvent, LogState> {
       LoadNextTrainingEvent event, Emitter<LogState> emit) async {
     String? errorMessage;
     try {
-      emit(LogTrainingLoadingState(state));
-      List<Training>? trainings =
-          await trainingRepository.getUserTrainings(47, limit: 1, page: 1);
-      // Training? training = await trainingRepository.getUserLastTraining(userId);
-      if (trainings.isEmpty) {
-        emit(LogTrainingErrorState(
-            baseState: state,
-            lastEvent: event,
-            errorMessage: "An error occured..."));
+      if (state.page > 0) {
+        emit(LogTrainingLoadingState(state));
+        PaginatedListResponse<Training> trainingPaginationResponse =
+            await trainingRepository.getUserTrainings(userId,
+                limit: 1, page: state.page - 1);
+        List<Training>? trainings = trainingPaginationResponse.entities;
+        if (trainings.isEmpty) {
+          emit(LogTrainingErrorState(
+              baseState: state,
+              lastEvent: event,
+              errorMessage: "An error occured..."));
+        } else {
+          emit(LogTrainingLoadedState(
+              baseState: LogState(
+                  page: state.page - 1,
+                  hasNext: trainingPaginationResponse.hasNext,
+                  hasPrevious: trainingPaginationResponse.hasPrevious),
+              visibleTraining: trainings[0]));
+        }
       } else {
-        emit(LogTrainingLoadedState(
-            baseState: LogState(page: state.page + 1),
-            visibleTraining: trainings[0]));
+        // emit();
       }
-    } on DioError catch (e) {
-      errorMessage = e.message;
+    } on Exception catch (e) {
+      errorMessage = (e is DioError) ? e.message : Utils.defaultErrorMessage;
       emit(LogTrainingErrorState(
           baseState: state, lastEvent: event, errorMessage: errorMessage));
     }

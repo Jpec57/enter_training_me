@@ -6,24 +6,70 @@ import 'package:enter_training_me/pages/log/bloc/log_bloc.dart';
 import 'package:enter_training_me/pages/log/chronological_arrow.dart';
 import 'package:enter_training_me/pages/workout_show/views/workout_edit_exercise_card.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
+import 'package:enter_training_me/storage_constants.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class LogPage extends StatelessWidget {
+class LogPage extends StatefulWidget {
   static const routeName = "/log";
+  final int? userId;
 
-  const LogPage({Key? key}) : super(key: key);
+  const LogPage({Key? key, required this.userId}) : super(key: key);
+
+  @override
+  State<LogPage> createState() => _LogPageState();
+}
+
+class _LogPageState extends State<LogPage> {
+  late Future<int?> _userIdFuture;
+
+  Future<int?> getCurrentUserId() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    String? str = await storage.read(key: StorageConstants.userId);
+    return str != null ? int.parse(str) : null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _userIdFuture = (widget.userId != null)
+        ? Future.value(widget.userId)
+        : getCurrentUserId();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => LogBloc(
-            userId: 57,
-            trainingRepository:
-                RepositoryProvider.of<TrainingRepository>(context))
-          ..add(LoadLastTrainingEvent()),
-        child: const LogPageContent());
+    return FutureBuilder(
+      future: _userIdFuture,
+      builder: (BuildContext context, AsyncSnapshot<int?> snapshot) {
+        var userId = snapshot.data;
+        if (userId != null) {
+          return BlocProvider(
+              create: (context) => LogBloc(
+                  userId: userId,
+                  trainingRepository:
+                      RepositoryProvider.of<TrainingRepository>(context))
+                ..add(LoadLastTrainingEvent()),
+              child: const LogPageContent());
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        return Scaffold(
+          appBar: AppBar(),
+          body: const Center(
+            child: Text(Utils.defaultErrorMessage),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -56,10 +102,10 @@ class LogPageContent extends StatelessWidget {
                 child: Row(
                   children: [
                     BlocBuilder<LogBloc, LogState>(
-                      buildWhen: (prev, next) => prev != next,
+                      buildWhen: (prev, next) =>
+                          prev.hasPrevious != next.hasPrevious,
                       builder: (context, state) {
-                        if (state is LogTrainingLoadedState &&
-                            state.hasPrevious) {
+                        if (state.hasPrevious) {
                           return IconButton(
                               onPressed: () {
                                 BlocProvider.of<LogBloc>(context).add(
@@ -86,15 +132,15 @@ class LogPageContent extends StatelessWidget {
                             }
                             return Text("No date available",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.headline3);
+                                style: Theme.of(context).textTheme.headline4);
                           },
                         ),
                       ),
                     ),
                     BlocBuilder<LogBloc, LogState>(
-                      buildWhen: (prev, next) => prev != next,
+                      buildWhen: (prev, next) => prev.hasNext != next.hasNext,
                       builder: (context, state) {
-                        if (state is LogTrainingLoadedState && state.hasNext) {
+                        if (state.hasNext) {
                           return IconButton(
                               onPressed: () {
                                 BlocProvider.of<LogBloc>(context).add(

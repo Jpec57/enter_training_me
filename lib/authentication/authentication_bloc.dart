@@ -36,12 +36,12 @@ class AuthenticationBloc
 
   void _onAuthenticationAttemptRequested(AuthenticationAttemptRequested event,
       Emitter<AuthenticationState> emit) async {
-    print("${event.email} ${event.password}");
     AuthResponse? authResponse = await _authenticationRepository
         .logInAndGetUser(password: event.password, email: event.email);
     if (authResponse != null) {
       FlutterSecureStorage storage = const FlutterSecureStorage();
 
+      await storage.write(key: StorageConstants.userId, value: authResponse.user.id.toString());
       await storage.write(key: StorageConstants.userEmail, value: event.email);
       emit(AuthenticationState.authenticated(authResponse.user));
     }

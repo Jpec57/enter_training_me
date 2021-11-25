@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/models/paginated_list_response.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:enter_training_me/services/interfaces/irepository.dart';
 import 'dart:convert';
@@ -24,41 +25,23 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     return Training.fromJson(data);
   }
 
-  Future<List<Training>> getUserTrainings(int userId,
+  Future<PaginatedListResponse<Training>> getUserTrainings(int userId,
       {int page = 0, int limit = 10}) async {
+    assert(page >= 0 && limit > 0);
     Map<String, dynamic> queryParams = {
       "limit": limit,
       "page": page,
     };
     Response response = await getDio()
-        .get("/users/$userId/trainings", queryParameters: queryParams);
-    List<dynamic> data = response.data;
-    return data.map((e) => Training.fromJson(e)).toList();
+        .get("/api/users/$userId/trainings", queryParameters: queryParams);
+    dynamic data = response.data;
+    return PaginatedListResponse<Training>.fromJson(
+        data, (json) => Training.fromJson(json as Map<String, dynamic>));
   }
-
-  // Future<Training?> getUserPreviousTraining(
-  //     int userId, DateTime dateTime) async {
-  //   Response response = await getDio().get("/users/$userId/trainings/previous");
-  //   Map<String, dynamic> data = response.data;
-  //   return Training.fromJson(data);
-  // }
-
-  // Future<Training?> getUserNextTraining(int userId, DateTime dateTime) async {
-  //   Response response = await getDio().get("/users/$userId/trainings/next");
-  //   Map<String, dynamic> data = response.data;
-  //   return Training.fromJson(data);
-  // }
-
-  // Future<Training?> getUserLastTraining(int userId) async {
-  //   Response response = await getDio().get("/users/$userId/trainings/last");
-  //   Map<String, dynamic> data = response.data;
-  //   return Training.fromJson(data);
-  // }
 
   Future<bool> shareByEmailAction(int id) async {
     Response response =
         await getDio().get(shareByEmail.replaceFirst("{id}", id.toString()));
-    dynamic data = response.data;
     return response.statusCode == 200;
   }
 
@@ -66,7 +49,6 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     try {
       Response response =
           await getDio().get(saveTraining.replaceFirst("{id}", id.toString()));
-      dynamic data = response.data;
       return response.statusCode == 200;
     } on DioError catch (e) {
       get_lib.Get.snackbar("Forbidden", "You must be connected to do this :(");
@@ -78,7 +60,6 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
     try {
       Response response = await getDio()
           .get(removeFromSaved.replaceFirst("{id}", id.toString()));
-      dynamic data = response.data;
       return response.statusCode == 200;
     } on DioError catch (e) {
       get_lib.Get.snackbar("Forbidden", "You must be connected to do this :(");

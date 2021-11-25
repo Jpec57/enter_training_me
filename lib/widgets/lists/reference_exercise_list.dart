@@ -1,3 +1,4 @@
+import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list_tile.dart';
@@ -8,11 +9,13 @@ typedef OnExerciseChosen = void Function(ReferenceExercise exercise);
 
 class ReferenceExerciseList extends StatefulWidget {
   final bool withSearch;
+  final bool withCreateNewOption;
   final OnExerciseChosen onExerciseChosen;
   final List<ReferenceExercise> preloadedExos;
   const ReferenceExerciseList(
       {Key? key,
       this.withSearch = true,
+      this.withCreateNewOption = true,
       required this.onExerciseChosen,
       this.preloadedExos = const []})
       : super(key: key);
@@ -98,10 +101,48 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
                     filterBySearch(snapshot.data!);
                 return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: filteredExos.length,
+                    itemCount: filteredExos.length +
+                        (widget.withCreateNewOption ? 1 : 0),
                     itemBuilder: (context, index) {
+                      if (widget.withCreateNewOption && index == 0) {
+                        return InkWell(
+                          onTap: () {
+                            //TODO Create a new exo with popup
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              border: Border.symmetric(
+                                  horizontal: BorderSide(
+                                      width: 1,
+                                      color: CustomTheme.middleGreen)),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 24,
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.add_circle_outline,
+                                      size: 30),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text("Create new",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      int realIndex =
+                          widget.withCreateNewOption ? index - 1 : index;
                       return ReferenceExerciseListTile(
-                        exo: filteredExos[index],
+                        exo: filteredExos[realIndex],
                         onExerciseChosen: (ReferenceExercise exercise) {
                           widget.onExerciseChosen(exercise);
                         },

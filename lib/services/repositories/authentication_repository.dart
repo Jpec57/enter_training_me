@@ -53,6 +53,8 @@ class AuthenticationRepository extends ApiService
   Future<bool> removeUserToken() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.delete(key: StorageConstants.apiKey);
+    await storage.delete(key: StorageConstants.userEmail);
+    await storage.delete(key: StorageConstants.userId);
     return true;
   }
 

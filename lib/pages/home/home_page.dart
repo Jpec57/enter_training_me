@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<AppBloc>(context);
     return Scaffold(
       floatingActionButton:
           CustomBottomNavigationBar.getCenteredFloatingButton(isSelected: true),
