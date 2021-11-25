@@ -207,32 +207,35 @@ class LogPageContent extends StatelessWidget {
                           List<RealisedExercise> exos =
                               state.visibleTraining.exercises;
                           int exoLength = exos.length;
-                          return LiveList.options(
-                              options: const LiveOptions(),
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder:
-                                  (context, i, Animation<double> animation) {
-                                return FadeTransition(
-                                  opacity: Tween<double>(
-                                    begin: 0,
-                                    end: 1,
-                                  ).animate(animation),
-                                  child: SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(0, -0.1),
-                                      end: Offset.zero,
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 50.0),
+                            child: LiveList.options(
+                                options: const LiveOptions(),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder:
+                                    (context, i, Animation<double> animation) {
+                                  return FadeTransition(
+                                    opacity: Tween<double>(
+                                      begin: 0,
+                                      end: 1,
                                     ).animate(animation),
-                                    child: WorkoutEditExerciseCard(
-                                      exo: exos[i],
-                                      isEditting: false,
-                                      currentIndex: i,
-                                      totalExoCount: exoLength,
+                                    child: SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(0, -0.1),
+                                        end: Offset.zero,
+                                      ).animate(animation),
+                                      child: WorkoutEditExerciseCard(
+                                        exo: exos[i],
+                                        isEditting: false,
+                                        currentIndex: i,
+                                        totalExoCount: exoLength,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              itemCount: exoLength);
+                                  );
+                                },
+                                itemCount: exoLength),
+                          );
                         }
                         if (state is LogTrainingErrorState) {
                           return Center(
