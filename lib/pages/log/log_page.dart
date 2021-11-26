@@ -3,7 +3,7 @@ import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/log/bloc/log_bloc.dart';
-import 'package:enter_training_me/pages/log/chronological_arrow.dart';
+import 'package:enter_training_me/widgets/chronological_arrow/chronological_arrow.dart';
 import 'package:enter_training_me/pages/workout_show/views/workout_edit_exercise_card.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/storage_constants.dart';
@@ -94,7 +94,10 @@ class LogPageContent extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const ChronologicalArrow(),
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 30,
+                child: ChronologicalArrow()),
             Container(
               decoration: const BoxDecoration(
                 border: Border(

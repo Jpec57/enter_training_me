@@ -3,7 +3,6 @@ import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/pages/in_workout/views/new_exercise/new_exercise_view.dart';
 import 'package:enter_training_me/pages/workout_show/bloc/bloc/workout_edit_bloc.dart';
 import 'package:enter_training_me/utils/utils.dart';
-import 'package:enter_training_me/widgets/dialog/return_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -82,19 +81,21 @@ class WorkoutEditExerciseCard extends StatelessWidget {
             Expanded(
               flex: 3,
               child: InkWell(
-                onTap: () async {
-                  Get.to(NewExerciseView(
-                      editedExercise: exo,
-                      onExerciseChosen: (exo) {
-                        BlocProvider.of<WorkoutEditBloc>(context).add(
-                            ChangedExerciseEvent(
-                                exo: exo, exoIndex: currentIndex));
-                        Navigator.of(context).pop();
-                      },
-                      onDismiss: () {
-                        Navigator.of(context).pop();
-                      }));
-                },
+                onTap: isEditting
+                    ? () async {
+                        Get.to(NewExerciseView(
+                            editedExercise: exo,
+                            onExerciseChosen: (exo) {
+                              BlocProvider.of<WorkoutEditBloc>(context).add(
+                                  ChangedExerciseEvent(
+                                      exo: exo, exoIndex: currentIndex));
+                              Navigator.of(context).pop();
+                            },
+                            onDismiss: () {
+                              Navigator.of(context).pop();
+                            }));
+                      }
+                    : null,
                 child: Container(
                   decoration: const BoxDecoration(
                     color: CustomTheme.middleGreen,
