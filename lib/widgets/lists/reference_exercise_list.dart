@@ -1,9 +1,11 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
+import 'package:enter_training_me/widgets/dialog/create_exercise_reference_dialog.dart';
 import 'package:enter_training_me/widgets/lists/reference_exercise_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart' as get_lib;
 
 typedef OnExerciseChosen = void Function(ReferenceExercise exercise);
 
@@ -107,7 +109,11 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
                       if (widget.withCreateNewOption && index == 0) {
                         return InkWell(
                           onTap: () {
-                            //TODO Create a new exo with popup
+                            get_lib.Get.dialog(CreateExerciseReferenceDialog(
+                              callback: (ReferenceExercise? refExo) {
+                                print(refExo);
+                              },
+                            ));
                           },
                           child: Container(
                             decoration: const BoxDecoration(
