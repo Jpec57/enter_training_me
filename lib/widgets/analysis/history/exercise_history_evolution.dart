@@ -38,7 +38,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
     currentReferenceExercise = widget.referenceExercises.first;
     setState(() {
       _setsFuture = RepositoryProvider.of<PerformanceRepository>(context)
-          .getPerfForReferenceExercise(currentReferenceExercise.id);
+          .getPerfForReferenceExercise(currentReferenceExercise.id!);
     });
   }
 
@@ -54,7 +54,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
     }
     setState(() {
       _setsFuture = RepositoryProvider.of<PerformanceRepository>(context)
-          .getPerfForReferenceExercise(currentReferenceExercise.id)
+          .getPerfForReferenceExercise(currentReferenceExercise.id!)
           .then((value) {
         // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         return value;

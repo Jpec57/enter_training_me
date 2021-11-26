@@ -75,8 +75,11 @@ class ReferenceExerciseRepository extends ApiService
   }
 
   @override
-  Future<ReferenceExercise> post(Map<String, dynamic> data) {
-    throw UnimplementedError();
+  Future<ReferenceExercise> post(Map<String, dynamic> data) async {
+    Response response =
+        await getDio().post("/exercises/", data: FormData.fromMap(data));
+    Map<String, dynamic> json = response.data;
+    return ReferenceExercise.fromJson(json);
   }
 
   @override

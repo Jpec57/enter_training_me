@@ -94,9 +94,8 @@ class LogPageContent extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 30,
+            Padding(
+                padding: const EdgeInsets.only(right: 16),
                 child: ChronologicalArrow()),
             Container(
               decoration: const BoxDecoration(

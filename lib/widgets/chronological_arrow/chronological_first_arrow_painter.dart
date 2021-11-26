@@ -16,13 +16,18 @@ class ChronologicalFirstArrowPainter extends CustomPainter {
     final paint = Paint()
       ..color = color
       ..strokeWidth = 2;
+
+    final circlePaint = Paint()
+      ..color = isSelected ? selectedCircleColor : color
+      ..strokeWidth = 2;
     const arrowXOffsetFromSegment = 0.15;
     const arrowYOffsetFromSegment = 0.35;
 
     final lastPointOffset = Offset(size.width, size.height * 0.5);
 
     canvas.drawLine(Offset(0, size.height * 0.5), lastPointOffset, paint);
-    canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.5), 5, paint);
+    canvas.drawCircle(
+        Offset(size.width * 0.5, size.height * 0.5), 5, circlePaint);
 
     canvas.drawLine(
         Offset((1 - arrowXOffsetFromSegment) * size.width,

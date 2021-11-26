@@ -5,7 +5,7 @@ part 'reference_exercise.g.dart';
 
 @JsonSerializable()
 class ReferenceExercise {
-  final int id;
+  final int? id;
   final String name;
   final String reference;
   final String? description;
@@ -16,14 +16,14 @@ class ReferenceExercise {
   final List<MuscleActivation>? muscleActivations;
 
   const ReferenceExercise(
-      {required this.id,
+      {this.id,
       required this.name,
-      required this.reference,
+      this.reference = "B1",
       this.material = const [],
       this.isBodyweightExercise = false,
       this.isOnlyIsometric = false,
       this.muscleActivations = const [],
-      required this.strainessFactor,
+      this.strainessFactor = 0.5,
       this.description});
 
   String get shortName {

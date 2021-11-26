@@ -51,6 +51,9 @@ class CustomTheme {
       hintColor: CustomTheme.middleGreen,
       switchTheme: const SwitchThemeData(),
       iconTheme: const IconThemeData(color: Colors.white),
+      inputDecorationTheme: const InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.white),
       textTheme: TextTheme(
         // subtitle1: const TextStyle(color: Colors.white),
         // body1: const TextStyle(color: Colors.white),

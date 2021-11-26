@@ -111,7 +111,10 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
                           onTap: () {
                             get_lib.Get.dialog(CreateExerciseReferenceDialog(
                               callback: (ReferenceExercise? refExo) {
-                                print(refExo);
+                                if (refExo != null) {
+                                  widget.onExerciseChosen(refExo);
+                                  Navigator.of(context).pop();
+                                }
                               },
                             ));
                           },
