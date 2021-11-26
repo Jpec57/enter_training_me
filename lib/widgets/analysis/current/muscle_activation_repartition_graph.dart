@@ -38,34 +38,8 @@ class _MuscleActivationRepartitionGraphState
     );
   }
 
-  // List<MuscleActivationSerie> getMuscleActivationSeriesFromTraining(
-  //     Training training) {
-  //   const List<MuscleActivationSerie> muscleActivations = [
-  //     MuscleActivationSerie(
-  //         muscleName: "Triceps", ratio: 30, color: CustomTheme.middleGreen),
-  //     MuscleActivationSerie(muscleName: "Chest", ratio: 40, color: Colors.grey),
-  //     MuscleActivationSerie(
-  //         muscleName: "Shoulders", ratio: 30, color: CustomTheme.green)
-  //   ];
-
-  //   for (var cycle in training.cycles) {
-  //     for (var exo in cycle.exercises) {
-  //       // List<MuscleActivation> muscleActivations = exo.exerciseReference.muscles;
-
-  //     }
-  //   }
-
-  //   return muscleActivations;
-  // }
 
   List<PieChartSectionData> buildSections() {
-    List<MuscleActivationSerie> muscleActivations = [
-      // MuscleActivationSerie(
-      //     muscleName: "Triceps", ratio: 30, color: CustomTheme.middleGreen),
-      // MuscleActivationSerie(muscleName: "Chest", ratio: 40, color: Colors.grey),
-      // MuscleActivationSerie(
-      //     muscleName: "Shoulders", ratio: 30, color: CustomTheme.green)
-    ];
 
     List<Color> colors = [
       CustomTheme.middleGreen,
@@ -73,8 +47,7 @@ class _MuscleActivationRepartitionGraphState
       CustomTheme.green
     ];
     var i = 0;
-
-    muscleActivations = widget.muscleActivations.map((element) {
+    List<MuscleActivationSerie> muscleActivations = widget.muscleActivations.map((element) {
       i++;
       return MuscleActivationSerie(
           muscleName: element.muscle,
