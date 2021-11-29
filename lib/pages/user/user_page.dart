@@ -3,7 +3,6 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/login/bloc/login_bloc.dart';
 import 'package:enter_training_me/pages/user/profile/profile_page_content.dart';
 import 'package:enter_training_me/pages/user/views/login_form_view.dart';
-import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,9 +15,7 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(
-          onLoginCallback: () {},
-          authenticationRepository:
-              RepositoryProvider.of<AuthenticationRepository>(context))..add(const InitLoginEvent()),
+          onLoginCallback: () {},)..add(const InitLoginEvent()),
       child: const LoginPageContent(),
     );
   }

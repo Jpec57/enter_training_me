@@ -12,8 +12,8 @@ dependencies:
     sdk: flutter
   google_fonts: ^2.1.0
   cupertino_icons: ^1.0.2
-  flutter_bloc: ^7.3.3
-  # flutter_bloc: ^8.0.0
+  # flutter_bloc: ^7.3.3
+  flutter_bloc: ^8.0.0
   json_serializable: ^5.0.2
   json_annotation: ^4.1.0
   build_runner: ^2.1.1

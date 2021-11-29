@@ -9,48 +9,36 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc(
-      {required AuthenticationRepository authenticationRepository,
-      required VoidCallback onLoginCallback})
-      : _authenticationRepository = authenticationRepository,
-        onLoginCallback = onLoginCallback,
-        super(const LoginState());
+  LoginBloc({required VoidCallback onLoginCallback})
+      : onLoginCallback = onLoginCallback,
+        super(const LoginState()) {
+    on<LoginUsernameChanged>(_mapUsernameChangedToState);
+    on<InitLoginEvent>(_onInitLoginEvent);
+    on<LoginPasswordChanged>(_onLoginPasswordChangedEvent);
+  }
 
-  final AuthenticationRepository _authenticationRepository;
   final VoidCallback onLoginCallback;
 
-  @override
-  Stream<LoginState> mapEventToState(
-    LoginEvent event,
-  ) async* {
-    if (event is LoginUsernameChanged) {
-      yield _mapUsernameChangedToState(event, state);
-    } else if (event is InitLoginEvent) {
-      FlutterSecureStorage storage = const FlutterSecureStorage();
-      String? username = await storage.read(key: StorageConstants.userEmail);
-      print("Saved username ${username}");
-      yield state.copyWith(username: username);
-    } else if (event is LoginPasswordChanged) {
-      yield _mapPasswordChangedToState(event, state);
-    }
-  }
-
-  LoginState _mapUsernameChangedToState(
-    LoginUsernameChanged event,
-    LoginState state,
-  ) {
-    return state.copyWith(
+  void _mapUsernameChangedToState(
+      LoginUsernameChanged event, Emitter<LoginState> emit) {
+    emit(state.copyWith(
       username: event.username,
-    );
+    ));
   }
 
-  LoginState _mapPasswordChangedToState(
-    LoginPasswordChanged event,
-    LoginState state,
-  ) {
-    return state.copyWith(
+  void _onInitLoginEvent(InitLoginEvent event, Emitter<LoginState> emit) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    String? username = await storage.read(key: StorageConstants.userEmail);
+    emit(state.copyWith(
+      username: username,
+    ));
+  }
+
+  void _onLoginPasswordChangedEvent(
+      LoginPasswordChanged event, Emitter<LoginState> emit) async {
+    emit(state.copyWith(
       password: event.password,
-    );
+    ));
   }
 
   String? getUsernameError(LoginState state) {
