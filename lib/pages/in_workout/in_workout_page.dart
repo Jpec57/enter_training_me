@@ -60,6 +60,8 @@ class _InWorkoutScreenState extends State<InWorkoutScreen>
     });
   }
 
+  
+
   @override
   void dispose() {
     super.dispose();

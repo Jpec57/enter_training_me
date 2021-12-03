@@ -1,5 +1,6 @@
 # enter_training_me
 
+dart pub outdated
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
 The last fitness project, I swear
