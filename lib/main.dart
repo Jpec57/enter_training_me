@@ -16,10 +16,9 @@ import 'package:enter_training_me/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-Future<void> main() async {
+Future<Widget> createApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
@@ -37,8 +36,7 @@ Future<void> main() async {
       ExecutionStyleRepository();
   final ExerciseFormatRepository _exoFormatRepository =
       ExerciseFormatRepository();
-
-  runApp(MultiRepositoryProvider(
+  return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _trainingRepository),
         RepositoryProvider.value(value: _refExoRepository),
@@ -55,7 +53,11 @@ Future<void> main() async {
             value: AuthenticationBloc(
                 authenticationRepository: _authRepository,
                 userRepository: _userRepository)),
-      ], child: const MyApp())));
+      ], child: const MyApp()));
+}
+
+Future<void> main() async {
+  runApp(await createApp());
 }
 
 class MyApp extends StatelessWidget {
