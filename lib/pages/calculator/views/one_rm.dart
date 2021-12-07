@@ -91,7 +91,6 @@ class _OneRmCalculatorState extends State<OneRmCalculator> {
                 child: TextField(
                   controller: _textEditingController,
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       enabledBorder: OutlineInputBorder(

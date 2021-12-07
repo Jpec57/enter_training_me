@@ -1,7 +1,7 @@
 import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
 import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
+import 'package:enter_training_me/pages/calculator/calculator_page.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

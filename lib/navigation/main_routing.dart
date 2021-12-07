@@ -1,5 +1,5 @@
 import 'package:enter_training_me/navigation/navigation_element.dart';
-import 'package:enter_training_me/pages/1rm/one_rm_page.dart';
+import 'package:enter_training_me/pages/calculator/calculator_page.dart';
 import 'package:enter_training_me/pages/coaching/coach_page.dart';
 import 'package:enter_training_me/pages/coaching/coach_page_arguments.dart';
 import 'package:enter_training_me/pages/community/community_page.dart';

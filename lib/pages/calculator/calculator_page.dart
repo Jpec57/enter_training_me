@@ -1,7 +1,7 @@
 import 'package:enter_training_me/custom_bottom_navigation_bar.dart';
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/pages/calculator/five_three_one.dart';
-import 'package:enter_training_me/pages/calculator/one_rm.dart';
+import 'package:enter_training_me/pages/calculator/views/five_three_one.dart';
+import 'package:enter_training_me/pages/calculator/views/one_rm.dart';
 import 'package:flutter/material.dart';
 
 class OneRMPage extends StatefulWidget {
@@ -28,16 +28,10 @@ class _OneRMPageState extends State<OneRMPage>
     super.dispose();
   }
 
-  Widget _renderFiveThreeOneView() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: CustomTheme.darkGrey,
       body: SafeArea(
         child: Padding(

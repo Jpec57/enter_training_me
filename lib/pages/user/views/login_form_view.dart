@@ -76,9 +76,7 @@ class LoginFormView extends StatelessWidget {
                                 },
                                 decoration: const InputDecoration(
                                     hintText: "Username/Email",
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(),
-                                    hintStyle: TextStyle(color: Colors.white)),
+                                    contentPadding: EdgeInsets.symmetric()),
                               );
                             },
                           ),
