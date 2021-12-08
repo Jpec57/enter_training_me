@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
-import 'package:enter_training_me/pages/workout_show/workout_show_page_arguments.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -107,8 +106,7 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
 
             Get.offNamedUntil(WorkoutShowPage.routeName,
                 ModalRoute.withName(HomePage.routeName),
-                arguments:
-                    WorkoutShowPageArguments(referenceTraining: training));
+                arguments: {"trainingId": training.id});
           }
         } else {
           training = await trainingRepository.patch(

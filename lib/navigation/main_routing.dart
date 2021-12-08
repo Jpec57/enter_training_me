@@ -23,7 +23,6 @@ import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../pages/workout_show/workout_show_page_arguments.dart';
 
 class MainRouting {
   // static const home = OneRMPage();
@@ -78,10 +77,10 @@ class MainRouting {
               ));
     }
     if (settings.name == WorkoutShowPage.routeName) {
-      var args = settings.arguments as WorkoutShowPageArguments;
+      var args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => WorkoutShowPage(
-                referenceTraining: args.referenceTraining,
+                trainingId: args['trainingId'],
               ));
     }
     if (settings.name == CoachPage.routeName) {

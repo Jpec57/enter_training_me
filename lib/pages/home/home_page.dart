@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                     return Text(snapshot.error.toString());
                   }
                   if (snapshot.data == null) {
-                    return const Text("Empty");
+                    return Text("empty".tr);
                   }
                   return CarouselSlider(
                     options: CarouselOptions(
@@ -171,6 +171,31 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _onNewPersonalWorkoutButtonTap() async {
+    bool? autoPlay = await Get.dialog(ConfirmDialog(
+      title: "direct_play_or_save_for_later".tr,
+      message: "create_as_you_go".tr,
+      confirmLabel: "auto_play".tr,
+      cancelLabel: "create_for_later".tr,
+      confirmCallback: () {
+        Navigator.of(context).pop<bool>(true);
+      },
+      cancelCallback: () {
+        Navigator.of(context).pop<bool>(false);
+      },
+    ));
+    if (autoPlay != null) {
+      if (autoPlay) {
+        Get.to(InWorkoutPage(referenceTraining: Training.empty()));
+      } else {
+        Get.to(const WorkoutShowPage(
+          trainingId: null,
+          isEditing: true,
+        ));
+      }
+    }
+  }
+
   Widget _renderSavedWorkoutSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -182,31 +207,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Headline4(title: "personal_workouts".tr),
               InkWell(
-                  onTap: () async {
-                    bool? autoPlay = await Get.dialog(ConfirmDialog(
-                      title: "direct_play_or_save_for_later".tr,
-                      message: "create_as_you_go".tr,
-                      confirmLabel: "auto_play".tr,
-                      cancelLabel: "create_for_later".tr,
-                      confirmCallback: () {
-                        Navigator.of(context).pop<bool>(true);
-                      },
-                      cancelCallback: () {
-                        Navigator.of(context).pop<bool>(false);
-                      },
-                    ));
-                    if (autoPlay != null) {
-                      if (autoPlay) {
-                        Get.to(
-                            InWorkoutPage(referenceTraining: Training.empty()));
-                      } else {
-                        Get.to(WorkoutShowPage(
-                          referenceTraining: Training.empty(),
-                          isEditing: true,
-                        ));
-                      }
-                    }
-                  },
+                  onTap: _onNewPersonalWorkoutButtonTap,
                   child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),

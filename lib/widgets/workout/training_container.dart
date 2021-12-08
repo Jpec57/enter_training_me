@@ -1,7 +1,6 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
-import 'package:enter_training_me/pages/workout_show/workout_show_page_arguments.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
@@ -21,37 +20,41 @@ class TrainingContainer extends StatelessWidget {
       this.onTrainingRemove})
       : super(key: key);
 
+  void _onLongPress(BuildContext context) {
+    Get.dialog(ConfirmDialog(
+      message: "Would you like to delete this training ?",
+      confirmCallback: () async {
+        bool isSuccess =
+            await RepositoryProvider.of<TrainingRepository>(context)
+                .delete(referenceTraining.id!);
+        Navigator.of(context).pop();
+
+        if (isSuccess) {
+          Get.snackbar("Success", "This workout has been deleted");
+          if (onTrainingRemove != null) {
+            onTrainingRemove!();
+          }
+        } else {
+          Get.snackbar("Error", "An error occurred");
+        }
+      },
+      confirmLabel: "Delete",
+    ));
+  }
+
+  void _onTap(BuildContext context) {
+    Navigator.restorablePushNamed(context, WorkoutShowPage.routeName,
+        arguments: {"trainingId": referenceTraining.id});
+    // Get.toNamed(WorkoutShowPage.routeName,
+    //     arguments:
+    //         WorkoutShowPageArguments(referenceTraining: referenceTraining));
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onLongPress: () {
-          Get.dialog(ConfirmDialog(
-            message: "Would you like to delete this training ?",
-            confirmCallback: () async {
-              bool isSuccess =
-                  await RepositoryProvider.of<TrainingRepository>(context)
-                      .delete(referenceTraining.id!);
-              Navigator.of(context).pop();
-
-              if (isSuccess) {
-                Get.snackbar("Success", "This workout has been deleted");
-                if (onTrainingRemove != null) {
-                  onTrainingRemove!();
-                }
-              } else {
-                Get.snackbar("Error", "An error occurred");
-              }
-            },
-            confirmLabel: "Delete",
-          ));
-        },
-        onTap: isClickDisabled
-            ? null
-            : () {
-                Get.toNamed(WorkoutShowPage.routeName,
-                    arguments: WorkoutShowPageArguments(
-                        referenceTraining: referenceTraining));
-              },
+        onLongPress: () => _onLongPress(context),
+        onTap: isClickDisabled ? null : () => _onTap(context),
         child: Builder(builder: (BuildContext context) {
           return SizedBox(
             width: MediaQuery.of(context).size.width,

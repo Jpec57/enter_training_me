@@ -1,5 +1,5 @@
 import 'package:enter_training_me/custom_theme.dart';
-import 'package:enter_training_me/eums/muscle_enum.dart';
+import 'package:enter_training_me/enums/muscle_enum.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,6 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
-import 'package:enter_training_me/pages/workout_show/workout_show_page_arguments.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:enter_training_me/widgets/user/user_avatar.dart';
@@ -95,8 +94,7 @@ class FeedWorkout extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   Get.toNamed(WorkoutShowPage.routeName,
-                      arguments: WorkoutShowPageArguments(
-                          referenceTraining: referenceTraining));
+                      arguments: {"trainingId": referenceTraining.id});
                 },
                 child: Container(
                     color: CustomTheme.grey,
