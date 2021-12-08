@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   buildWhen: (prev, next) => prev.user != next.user,
                   builder: (context, state) {
                     if (state.user == null) {
-                      return Text("Welcome !",
+                      return Text("welcome_anonymous".tr,
                           style: Theme.of(context).textTheme.headline4);
                     }
                     User user = state.user as User;
@@ -114,8 +114,8 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Headline4(title: "Official Workouts"),
+              children: [
+                Headline4(title: "official_workouts".tr),
               ],
             ),
           ),
@@ -150,19 +150,19 @@ class _HomePageState extends State<HomePage> {
                       aspectRatio: 2.0,
                       enlargeCenterPage: true,
                     ),
-                    items: const [
+                    items: [
                       TrainingContainer(
                         isClickDisabled: true,
                         referenceTraining: Training(
-                            name: "Loading",
-                            exercises: [],
+                            name: "loading".tr,
+                            exercises: const [],
                             intensity: 0,
                             numberOfLoops: 1),
                       )
                     ],
                   );
                 default:
-                  return const Center(child: Text("Error"));
+                  return Center(child: Text("error".tr));
               }
             },
           )
@@ -180,14 +180,14 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Headline4(title: "Personal Workouts"),
+              Headline4(title: "personal_workouts".tr),
               InkWell(
                   onTap: () async {
                     bool? autoPlay = await Get.dialog(ConfirmDialog(
-                      title: "Direct play or save for later",
-                      message: "Would you like to create a workout as you go ?",
-                      confirmLabel: "Auto play",
-                      cancelLabel: "Create for later",
+                      title: "direct_play_or_save_for_later".tr,
+                      message: "create_as_you_go".tr,
+                      confirmLabel: "auto_play".tr,
+                      cancelLabel: "create_for_later".tr,
                       confirmCallback: () {
                         Navigator.of(context).pop<bool>(true);
                       },
@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: Colors.white)),
-                      child: const Text("CREATE"))),
+                      child: Text("create".tr.toUpperCase()))),
             ],
           ),
         ),
@@ -227,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                   return Text(snapshot.error.toString());
                 }
                 if (snapshot.data == null) {
-                  return const Text("Empty");
+                  return Text("empty".tr);
                 }
                 return CarouselSlider(
                   options: CarouselOptions(
@@ -246,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                   child: CircularProgressIndicator(),
                 );
               default:
-                return const Center(child: Text("Error"));
+                return Center(child: Text("error".tr));
             }
           },
         )
