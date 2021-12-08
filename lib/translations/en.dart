@@ -12,5 +12,6 @@ class EnglishTranslations {
     'create_for_later': "Create for later",
     'official_workouts': "Official Workouts",
     'welcome_anonymous': 'Welcome anonymous guy',
+    'language': "Language",
   };
 }

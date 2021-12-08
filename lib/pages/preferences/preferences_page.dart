@@ -3,6 +3,9 @@ import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/pages/calculator/calculator_page.dart';
 import 'package:enter_training_me/storage_constants.dart';
+import 'package:enter_training_me/translations/translations.dart';
+import 'package:enter_training_me/widgets/flag_icon.dart';
+import 'package:enter_training_me/widgets/multi_project/dialogs/change_language_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -46,6 +49,20 @@ class PreferencesPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white)),
               onTap: () {
                 Get.toNamed(OneRMPage.routeName);
+              },
+            ),
+            ListTile(
+              leading: FlagIcon(countryCode: Get.locale?.countryCode),
+              title: Text("language".tr,
+                  style: const TextStyle(color: Colors.white)),
+              onTap: () {
+                Get.dialog(ChangeLanguageDialog(
+                    supportedLocales: Messages.supportedLocales
+                        .map((e) => Messages.getLocaleFromFullLocaleString(e))
+                        .toList(),
+                    onLocaleChosen: (Locale locale) {
+                      Get.updateLocale(locale);
+                    }));
               },
             ),
             ElevatedButton(
