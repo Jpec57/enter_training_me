@@ -13,6 +13,7 @@ import 'package:enter_training_me/services/repositories/reference_exercise_repos
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:enter_training_me/splash_screen.dart';
+import 'package:enter_training_me/translations/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -74,7 +75,11 @@ class MyApp extends StatelessWidget {
         }
       },
       child: GetMaterialApp(
-        title: 'enter_training_me',
+        title: 'EnterTrainingMe',
+        restorationScopeId: 'root',
+        translations: Messages(),
+        locale: Get.deviceLocale,
+        fallbackLocale: const Locale('en', 'US'),
         theme: CustomTheme.theme,
         onGenerateRoute: (settings) => MainRouting.onGenerateRoutes(settings),
         routes: MainRouting.routes(context),
@@ -90,8 +95,6 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
-
-        // home: MainRouting.home,
       ),
     );
   }

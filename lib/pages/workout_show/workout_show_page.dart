@@ -15,7 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'views/workout_info_view.dart';
 part 'views/workout_history_view.dart';
 
-class WorkoutShowPage extends StatelessWidget {
+class WorkoutShowPage extends StatefulWidget{
   const WorkoutShowPage(
       {Key? key, required this.referenceTraining, this.isEditing = false})
       : super(key: key);
@@ -24,13 +24,28 @@ class WorkoutShowPage extends StatelessWidget {
   final bool isEditing;
 
   @override
+  State<WorkoutShowPage> createState() => _WorkoutShowPageState();
+}
+
+class _WorkoutShowPageState extends State<WorkoutShowPage> with RestorationMixin{
+    final RestorableInt _index = RestorableInt(0);
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<WorkoutEditBloc>(
       lazy: false,
       create: (context) => WorkoutEditBloc(
-          RepositoryProvider.of<TrainingRepository>(context), referenceTraining,
-          isEditingAtStartAlready: isEditing),
-      child: WorkoutShowPageContent(referenceTraining: referenceTraining),
+          RepositoryProvider.of<TrainingRepository>(context), widget.referenceTraining,
+          isEditingAtStartAlready: widget.isEditing),
+      child: WorkoutShowPageContent(referenceTraining: widget.referenceTraining),
     );
+  }
+
+  @override
+  String get restorationId => 'workout_show_page';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+      // registerForRestoration(_index, 'nav_bar_index');
   }
 }

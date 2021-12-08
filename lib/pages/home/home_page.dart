@@ -65,7 +65,9 @@ class _HomePageState extends State<HomePage> {
                           style: Theme.of(context).textTheme.headline4);
                     }
                     User user = state.user as User;
-                    return Text("Welcome back ${user.username}",
+                    return Text(
+                        'welcome_back_username'
+                            .trParams({'username': user.username}),
                         style: Theme.of(context).textTheme.headline4);
                   },
                 ),
