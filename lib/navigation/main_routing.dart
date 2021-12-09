@@ -4,25 +4,20 @@ import 'package:enter_training_me/pages/coaching/coach_page.dart';
 import 'package:enter_training_me/pages/coaching/coach_page_arguments.dart';
 import 'package:enter_training_me/pages/community/community_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
-import 'package:enter_training_me/pages/exercise_list/exercise_view_page_arguments.dart';
 import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/log/log_page.dart';
-import 'package:enter_training_me/pages/log/log_page_arguments.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
 import 'package:enter_training_me/pages/register/register_page.dart';
 import 'package:enter_training_me/pages/test/test_page.dart';
 import 'package:enter_training_me/pages/user/other_profile_page.dart';
-import 'package:enter_training_me/pages/user/other_profile_page_arguments.dart';
 import 'package:enter_training_me/pages/user/user_page.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
-import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MainRouting {
   // static const home = OneRMPage();
@@ -55,32 +50,11 @@ class MainRouting {
   ];
 
   static onGenerateRoutes(settings) {
-    if (settings.name == ExerciseViewPage.routeName) {
-      var args = settings.arguments as ExerciseViewPageArguments;
-      return MaterialPageRoute(builder: (context) => const ExerciseViewPage());
-    }
-
-    if (settings.name == LogPage.routeName) {
-      var args = settings.arguments as LogPageArguments?;
-
-      return MaterialPageRoute(
-          builder: (context) => LogPage(
-                userId: args?.userId,
-              ));
-    }
-
     if (settings.name == InWorkoutPage.routeName) {
       var args = settings.arguments as InWorkoutPageArguments;
       return MaterialPageRoute(
           builder: (context) => InWorkoutPage(
                 referenceTraining: args.referenceTraining,
-              ));
-    }
-    if (settings.name == WorkoutShowPage.routeName) {
-      var args = settings.arguments;
-      return MaterialPageRoute(
-          builder: (context) => WorkoutShowPage(
-                trainingId: args['trainingId'],
               ));
     }
     if (settings.name == CoachPage.routeName) {
@@ -90,11 +64,29 @@ class MainRouting {
                 coach: args.coach,
               ));
     }
+
+    //END
+    if (settings.name == LogPage.routeName) {
+      var args = settings.arguments;
+      return MaterialPageRoute(
+          builder: (context) => LogPage(
+                userId: args['userId'],
+              ));
+    }
+
+    if (settings.name == WorkoutShowPage.routeName) {
+      var args = settings.arguments;
+      return MaterialPageRoute(
+          builder: (context) => WorkoutShowPage(
+                trainingId: args['trainingId'],
+              ));
+    }
+
     if (settings.name == OtherProfilePage.routeName) {
-      var args = settings.arguments as OtherProfilePageArguments;
+      var args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => OtherProfilePage(
-                user: args.user,
+                userId: args['userId'],
               ));
     }
     assert(false, 'Need to implement ${settings.name}');
@@ -103,6 +95,7 @@ class MainRouting {
 
   static routes(BuildContext context) => {
         HomePage.routeName: (context) => const HomePage(),
+        ExerciseViewPage.routeName: (context) => const ExerciseViewPage(),
         CommunityPage.routeName: (context) => const CommunityPage(),
         PreferencesPage.routeName: (context) => const PreferencesPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),

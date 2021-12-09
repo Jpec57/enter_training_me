@@ -5,12 +5,13 @@ import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/models/profile_info.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
+import 'package:enter_training_me/services/interfaces/irepository.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' as get_lib;
 
 class UserRepository extends ApiService
-    implements IAuthUserRepositoryInterface {
+    implements IAuthUserRepositoryInterface, IRepository<User> {
   static const getUserFeed = "/api/users/feed";
   static const loginUrl = "/api/login";
   static const registerUrl = "/api/register";
@@ -19,7 +20,7 @@ class UserRepository extends ApiService
   static const getRealisedExosByUser = "/api/users/realised_exercises";
   static const changeProfilePicUrl = "/api/users/profile_pic";
   static const updateUserUrl = "/api/users/update-user";
-  // static const updateUserUrl = "/api/users";
+  static const getUserUrl = "/api/users";
   static const updateUserProfileUrl = "/api/users/update";
 
   @override
@@ -145,5 +146,37 @@ class UserRepository extends ApiService
     } on DioError catch (_) {
       return null;
     }
+  }
+
+  @override
+  Future<bool> delete(int id) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> get(int id) async {
+    Response response = await getDio().get(getUserUrl);
+    dynamic data = response.data;
+    return User.fromJson(data);
+  }
+
+  @override
+  Future<List<User>> getAll() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> patch(int id, Map<String, dynamic> data) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> post(Map<String, dynamic> data) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> put(int id, data) {
+    throw UnimplementedError();
   }
 }

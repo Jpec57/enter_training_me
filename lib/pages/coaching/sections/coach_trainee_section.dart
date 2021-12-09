@@ -1,6 +1,5 @@
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/user/other_profile_page.dart';
-import 'package:enter_training_me/pages/user/other_profile_page_arguments.dart';
 import 'package:enter_training_me/widgets/cards/default_section_card.dart';
 import 'package:enter_training_me/widgets/user/user_avatar.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +31,7 @@ class CoachTraineeSection extends StatelessWidget {
                             user: trainee,
                             onTap: () {
                               Get.toNamed(OtherProfilePage.routeName,
-                                  arguments:
-                                      OtherProfilePageArguments(user: trainee));
+                                  arguments: {'userId': trainee.id});
                             },
                           ),
                           Text(trainee.username)

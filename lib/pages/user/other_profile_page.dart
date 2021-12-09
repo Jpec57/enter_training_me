@@ -1,23 +1,33 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/layouts/separator_overlapping_section_layout.dart';
 import 'package:enter_training_me/models/models.dart';
-import 'package:enter_training_me/models/profile_info.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 
 import 'package:enter_training_me/pages/user/profile/sections/profile_header.dart';
-import 'package:enter_training_me/pages/user/profile/sections/profile_last_training_section.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-class OtherProfilePage extends StatelessWidget {
+class OtherProfilePage extends StatefulWidget {
   static const routeName = "profile/other";
-  final User user;
+  final int userId;
 
-  const OtherProfilePage({Key? key, required this.user}) : super(key: key);
+  const OtherProfilePage({Key? key, required this.userId}) : super(key: key);
+
+  @override
+  State<OtherProfilePage> createState() => _OtherProfilePageState();
+}
+
+class _OtherProfilePageState extends State<OtherProfilePage> {
+  late Future<User> _userFuture;
+  @override
+  void initState() {
+    super.initState();
+    _userFuture = RepositoryProvider.of<UserRepository>(context)
+        .get(widget.userId);
+  }
 
   Widget _renderProfile(BuildContext context, User user) {
     return SingleChildScrollView(
@@ -104,8 +114,20 @@ class OtherProfilePage extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: _renderProfile(context, user),
+          FutureBuilder(
+            future: _userFuture,
+            builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+              if (snapshot.data != null &&
+                  snapshot.connectionState == ConnectionState.done) {
+                return Expanded(
+                  child: _renderProfile(context, snapshot.data!),
+                );
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
           ),
         ],
       ),
