@@ -6,12 +6,9 @@ on:
     - master # Default will running for every branch.    
 
 jobs:
-  set_up: 
-    uses: Jpec57/enter_training_me/.github/workflows/build_flutter.yml@master
-
   linter:
-    runs-on: ubuntu-latest
-    needs: set_up
+    uses: Jpec57/enter_training_me/.github/workflows/build_flutter.yml@v1
+
     steps:
     # Statically analyze the Dart code for any errors.
     - run: flutter analyze .
