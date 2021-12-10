@@ -1,7 +1,3 @@
-name: App Deployment
-description: "Build Flutter env for testing purposes"
-
-
 runs:
   using: "composite"
   steps:
