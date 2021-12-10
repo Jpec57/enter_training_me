@@ -6,5 +6,7 @@ class ExerciseComparisionDTO {
   final RealisedExercise? referenceExercise;
 
   const ExerciseComparisionDTO(
-      {required this.index,  required this.realisedExercise, this.referenceExercise});
+      {required this.index,
+      required this.realisedExercise,
+      this.referenceExercise});
 }

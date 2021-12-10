@@ -383,7 +383,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return state.copyWith(currentView: event.view);
   }
 
-
   InWorkoutState _mapChangedNbSetEventToState(ChangedNbSetEvent event) {
     List<RealisedExercise> doneExos = updateSet(nbWantedSets: event.nbSets);
     return state.copyWith(

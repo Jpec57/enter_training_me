@@ -7,10 +7,7 @@ class MuscleActivation {
   final String muscle;
   final double activationRatio;
 
-  const MuscleActivation(
-      {
-      required this.muscle,
-      required this.activationRatio});
+  const MuscleActivation({required this.muscle, required this.activationRatio});
 
   factory MuscleActivation.fromJson(Map<String, dynamic> json) =>
       _$MuscleActivationFromJson(json);

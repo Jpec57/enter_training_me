@@ -38,8 +38,7 @@ class _TrainingTypeRepartitionGraphState
   }
 
   List<MuscleActivationSerie> getMuscleActivationSeriesFromTraining() {
-    List<MuscleActivationSerie> muscleActivations = [
-    ];
+    List<MuscleActivationSerie> muscleActivations = [];
     var i = 0;
     List<Color> colors = [
       CustomTheme.middleGreen,

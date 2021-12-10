@@ -28,25 +28,29 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 200,
                 child: ListView.builder(
-                  shrinkWrap: true,
+                    shrinkWrap: true,
                     itemCount: 10,
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, i){
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: InkWell(
-                      onTap: (){
-                        Get.toNamed(InWorkoutPage.routeName);
-                      },
-                      child: Container(
-                        height: 200, width: 200,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                        child: Text("Toto $i", style: TextStyle(color: Colors.black)),
-                      ),
-                    ),
-                  );
-                }),
+                    itemBuilder: (context, i) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: InkWell(
+                          onTap: () {
+                            Get.toNamed(InWorkoutPage.routeName);
+                          },
+                          child: Container(
+                            height: 200,
+                            width: 200,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text("Toto $i",
+                                style: TextStyle(color: Colors.black)),
+                          ),
+                        ),
+                      );
+                    }),
               ),
             ],
           ),

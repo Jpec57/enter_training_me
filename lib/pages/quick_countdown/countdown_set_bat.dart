@@ -51,7 +51,6 @@ class _CountdownSetBarState extends State<CountdownSetBar> {
     return setItems;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Row(

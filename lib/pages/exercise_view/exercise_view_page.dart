@@ -12,16 +12,16 @@ class ExerciseViewPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: InkWell(
-          onTap: (){
+          onTap: () {
             Navigator.of(context).pop();
           },
           child: Container(
             height: 20,
             decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.black
+                shape: BoxShape.circle, color: Colors.black),
+            child: const Icon(
+              Icons.close,
             ),
-            child: const Icon(Icons.close,),
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -34,24 +34,21 @@ class ExerciseViewPage extends StatelessWidget {
               flex: 4,
               child: CachedNetworkImage(
                 imageUrl:
-                "https://www.muscleandfitness.com/wp-content/uploads/2018/06/pullup-1-1109.jpg?quality=86&strip=all",
-                progressIndicatorBuilder:
-                    (context, url, downloadProgress) =>
-                    CircularProgressIndicator(
-                        value: downloadProgress.progress),
-                errorWidget: (context, url, error) =>
-                const Icon(Icons.error),
-              )
-          ),
+                    "https://www.muscleandfitness.com/wp-content/uploads/2018/06/pullup-1-1109.jpg?quality=86&strip=all",
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              )),
           const Expanded(
               flex: 5,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16),
                 child: SingleChildScrollView(
-                  child: const Text("Saisissez la barre de tractions avec vos avant-bras tournés vers l'extérieur et les paumes vers l'intérieur. Engagez vos épaules en rapprochant vos omoplates et cherchez à vous hisser en gardant une direction la plus droite possible."),
+                  child: const Text(
+                      "Saisissez la barre de tractions avec vos avant-bras tournés vers l'extérieur et les paumes vers l'intérieur. Engagez vos épaules en rapprochant vos omoplates et cherchez à vous hisser en gardant une direction la plus droite possible."),
                 ),
-              )
-          ),
+              )),
         ],
       ),
     );

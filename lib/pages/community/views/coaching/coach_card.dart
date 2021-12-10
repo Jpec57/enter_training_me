@@ -29,8 +29,8 @@ class CoachCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -47,11 +47,11 @@ class CoachCard extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: const [
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: Text("3",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold)),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               Icon(Icons.person)
                             ],
@@ -62,16 +62,14 @@ class CoachCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Text("#strength, #bodybuilding, #lifestyle",
-                          style:
-                              const TextStyle(fontStyle: FontStyle.italic)),
+                          style: const TextStyle(fontStyle: FontStyle.italic)),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: RichText(
                         text: TextSpan(
                             text: "Next availability: ",
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
                                   text: Utils.defaultDateFormatter

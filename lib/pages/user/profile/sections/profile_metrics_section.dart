@@ -1,4 +1,3 @@
-
 import 'package:auto_animated/auto_animated.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/models/profile_info.dart';

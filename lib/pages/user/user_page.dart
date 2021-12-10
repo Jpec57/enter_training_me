@@ -15,7 +15,8 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(
-          onLoginCallback: () {},)..add(const InitLoginEvent()),
+        onLoginCallback: () {},
+      )..add(const InitLoginEvent()),
       child: const LoginPageContent(),
     );
   }

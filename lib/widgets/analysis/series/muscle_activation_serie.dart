@@ -5,5 +5,8 @@ class MuscleActivationSerie {
   final double ratio;
   final Color color;
 
-  const MuscleActivationSerie({required this.muscleName, required this.ratio, this.color = Colors.orange});
+  const MuscleActivationSerie(
+      {required this.muscleName,
+      required this.ratio,
+      this.color = Colors.orange});
 }

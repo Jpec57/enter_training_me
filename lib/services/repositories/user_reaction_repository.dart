@@ -7,7 +7,6 @@ import 'package:enter_training_me/services/interfaces/api_service.dart';
 class UserReactionRepository extends ApiService {
   static const reactToObjectUrl = "/user_reactions";
 
-
   Future<List<TeamRanking>> getTeamRanking() async {
     Response response = await getDio().get(reactToObjectUrl);
     List<dynamic> data = response.data;

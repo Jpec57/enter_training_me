@@ -97,7 +97,7 @@ class _WorkoutHistoryViewState extends State<WorkoutHistoryView>
           );
         }
 
-        return  const Center(child: Text("No history"));
+        return const Center(child: Text("No history"));
       },
     );
   }

@@ -12,8 +12,6 @@ class ReviewSection extends StatelessWidget {
         assert(score <= maxScore),
         super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
     return DefaultSectionCard(
@@ -22,7 +20,10 @@ class ReviewSection extends StatelessWidget {
         children: [
           Text("Reviews ($reviewCount)",
               style: Theme.of(context).textTheme.headline3),
-          ReviewStars(score: score, maxScore: maxScore,),
+          ReviewStars(
+            score: score,
+            maxScore: maxScore,
+          ),
         ],
       ),
     );

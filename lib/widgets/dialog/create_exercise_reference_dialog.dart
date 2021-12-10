@@ -71,10 +71,13 @@ class _CreateExerciseReferenceDialogState
                 Text("Create a new exercise",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline4),
-                    formError != null ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Text("Error: $formError", style: const TextStyle(color: Colors.red)),
-                    ) : Container(),
+                formError != null
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text("Error: $formError",
+                            style: const TextStyle(color: Colors.red)),
+                      )
+                    : Container(),
                 TextFormField(
                   controller: _exoNameController,
                   validator: (str) {

@@ -13,12 +13,16 @@ class _DoneButtonState extends State<DoneButton> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(onTap: (){
-
-    }, child: Container(
-      width: MediaQuery.of(context).size.width,
-        color: CustomTheme.darkGrey,
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(child: Text("Done".toUpperCase(), style: TextStyle(fontSize: 30),))));
+    return InkWell(
+        onTap: () {},
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            color: CustomTheme.darkGrey,
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Center(
+                child: Text(
+              "Done".toUpperCase(),
+              style: TextStyle(fontSize: 30),
+            ))));
   }
 }

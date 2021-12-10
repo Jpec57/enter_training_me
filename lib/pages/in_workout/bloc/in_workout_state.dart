@@ -144,7 +144,6 @@ class InWorkoutState extends Equatable {
         currentCycleIndex,
         currentExoIndex,
         currentExo,
-      
         currentSetIndex,
         isEnd,
         realisedTrainingId,

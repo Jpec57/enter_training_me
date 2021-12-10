@@ -38,16 +38,15 @@ class _MuscleActivationRepartitionGraphState
     );
   }
 
-
   List<PieChartSectionData> buildSections() {
-
     List<Color> colors = [
       CustomTheme.middleGreen,
       Colors.grey,
       CustomTheme.green
     ];
     var i = 0;
-    List<MuscleActivationSerie> muscleActivations = widget.muscleActivations.map((element) {
+    List<MuscleActivationSerie> muscleActivations =
+        widget.muscleActivations.map((element) {
       i++;
       return MuscleActivationSerie(
           muscleName: element.muscle,

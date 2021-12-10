@@ -25,8 +25,8 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   @override
   void initState() {
     super.initState();
-    _userFuture = RepositoryProvider.of<UserRepository>(context)
-        .get(widget.userId);
+    _userFuture =
+        RepositoryProvider.of<UserRepository>(context).get(widget.userId);
   }
 
   Widget _renderProfile(BuildContext context, User user) {
