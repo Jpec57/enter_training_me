@@ -61,7 +61,8 @@ class TrainingHeaderBar extends StatelessWidget {
             buildWhen: (prev, next) =>
                 prev.soundInWorkout != next.soundInWorkout,
             builder: (context, state) {
-              bool isSoundOn = state.soundInWorkout == SoundInWorkout.on;
+              bool isSoundOn =
+                  state.soundInWorkout == StorageConstants.soundInWorkoutOn;
               return IconButton(
                   onPressed: () {
                     BlocProvider.of<AppBloc>(context).add(

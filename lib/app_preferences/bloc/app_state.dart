@@ -1,12 +1,10 @@
 part of 'app_bloc.dart';
 
-enum SoundInWorkout { off, on }
-
 class AppState extends Equatable {
-  final SoundInWorkout soundInWorkout;
-  const AppState({this.soundInWorkout = SoundInWorkout.off});
+  final String soundInWorkout;
+  const AppState({this.soundInWorkout = StorageConstants.soundInWorkoutOff});
 
-  AppState copyWith({SoundInWorkout? soundInWorkout}) =>
+  AppState copyWith({String? soundInWorkout}) =>
       AppState(soundInWorkout: soundInWorkout ?? this.soundInWorkout);
 
   @override

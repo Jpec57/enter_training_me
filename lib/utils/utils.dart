@@ -1,9 +1,6 @@
-import 'package:enter_training_me/models/models.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
-  static const defaultErrorMessage =
-      "An error occured. Please try again later or contact us.";
   static final defaultVerboseDateFormatter = DateFormat('EEEE dd MMM H:m');
   static final defaultDateFormatter = DateFormat('dd/M/y');
   static String convertToTime(int elapsedTime) {
@@ -34,9 +31,5 @@ class Utils {
     }
     int seconds = elapsedTime;
     return "${seconds.toString().padLeft(2, '0')}s";
-  }
-
-  static int estimateWorkoutTime(Training training) {
-    return 60 * 60;
   }
 }

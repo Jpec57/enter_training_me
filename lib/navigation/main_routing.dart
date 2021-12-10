@@ -20,11 +20,7 @@ import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
 
 class MainRouting {
-  // static const home = OneRMPage();
   static const home = HomePage();
-  // static const home = InWorkoutPage(
-  // referenceTraining: Training(name: "Tmp Training", cycles: []),
-  // );
 
   static const homeNavigationElement = NavigationElement(
     title: "Home",
@@ -107,7 +103,3 @@ class MainRouting {
         ExerciseListPage.routeName: (context) => const ExerciseListPage()
       };
 }
-/*
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    int? userId = int.parse(await storage.read(key: StorageConstants.userId));
-    */

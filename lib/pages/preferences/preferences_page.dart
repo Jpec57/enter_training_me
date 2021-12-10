@@ -27,11 +27,12 @@ class PreferencesPage extends StatelessWidget {
                   prev.soundInWorkout != next.soundInWorkout,
               builder: (context, state) {
                 return SwitchListTile(
-                    title: const Text(
-                      "Sound during workout",
-                      style: TextStyle(color: Colors.white),
+                    title: Text(
+                      'sound_during_workout'.tr,
+                      style: const TextStyle(color: Colors.white),
                     ),
-                    value: state.soundInWorkout == SoundInWorkout.on,
+                    value: state.soundInWorkout ==
+                        StorageConstants.soundInWorkoutOn,
                     onChanged: (value) {
                       BlocProvider.of<AppBloc>(context).add(
                           OnPreferenceChangedEvent(
@@ -72,12 +73,12 @@ class PreferencesPage extends StatelessWidget {
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Padding(
+                  children: [
+                    const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Icon(Icons.logout, color: Colors.white),
                     ),
-                    Text("LOG OUT"),
+                    Text("log_out".tr),
                   ],
                 )),
           ],

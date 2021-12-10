@@ -5,6 +5,8 @@ import 'package:enter_training_me/models/paginated_list_response.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
+
 part 'log_event.dart';
 part 'log_state.dart';
 
@@ -42,7 +44,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
             visibleTraining: trainings[0]));
       }
     } on Exception catch (e) {
-      errorMessage = (e is DioError) ? e.message : Utils.defaultErrorMessage;
+      errorMessage = (e is DioError) ? e.message : 'default_error_message'.tr;
       emit(LogTrainingErrorState(
           baseState: state, lastEvent: event, errorMessage: errorMessage));
     }
@@ -71,7 +73,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
             visibleTraining: trainings[0]));
       }
     } on Exception catch (e) {
-      errorMessage = (e is DioError) ? e.message : Utils.defaultErrorMessage;
+      errorMessage = (e is DioError) ? e.message : 'default_error_message'.tr;
       emit(LogTrainingErrorState(
           baseState: state, lastEvent: event, errorMessage: errorMessage));
     }
@@ -104,7 +106,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
         // emit();
       }
     } on Exception catch (e) {
-      errorMessage = (e is DioError) ? e.message : Utils.defaultErrorMessage;
+      errorMessage = (e is DioError) ? e.message : 'default_error_message'.tr;
       emit(LogTrainingErrorState(
           baseState: state, lastEvent: event, errorMessage: errorMessage));
     }

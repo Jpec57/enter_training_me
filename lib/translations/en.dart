@@ -13,5 +13,9 @@ class EnglishTranslations {
     'official_workouts': "Official Workouts",
     'welcome_anonymous': 'Welcome anonymous guy',
     'language': "Language",
+    'log_out': "Log out",
+    'sound_during_workout': 'Sound during workout',
+    'default_error_message':
+        "An error occured. Please try again later or contact us.",
   };
 }

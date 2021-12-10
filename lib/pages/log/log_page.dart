@@ -11,6 +11,7 @@ import 'package:enter_training_me/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 
 class LogPage extends StatefulWidget {
   static const routeName = "/log";
@@ -64,11 +65,11 @@ class _LogPageState extends State<LogPage> {
         }
         return Scaffold(
           appBar: AppBar(),
-          body: const Center(
+          body: Center(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child:
-                  Text(Utils.defaultErrorMessage, textAlign: TextAlign.center),
+                  Text('default_error_message'.tr, textAlign: TextAlign.center),
             ),
           ),
         );

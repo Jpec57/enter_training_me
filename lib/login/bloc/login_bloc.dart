@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,7 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({required VoidCallback onLoginCallback})
-      : onLoginCallback = onLoginCallback,
-        super(const LoginState()) {
+  LoginBloc({required this.onLoginCallback}) : super(const LoginState()) {
     on<LoginUsernameChanged>(_mapUsernameChangedToState);
     on<InitLoginEvent>(_onInitLoginEvent);
     on<LoginPasswordChanged>(_onLoginPasswordChangedEvent);

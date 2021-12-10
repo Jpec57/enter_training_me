@@ -3,7 +3,7 @@ name: Flutter CI
 on:
   push:
     branches:
-    - master # Default will running for every branch.    
+    - master # Default: will run for every branch.    
 
 jobs:
   linter:

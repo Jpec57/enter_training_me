@@ -1,4 +1,3 @@
-import 'package:enter_training_me/models/exercise_set.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:json_annotation/json_annotation.dart';
 

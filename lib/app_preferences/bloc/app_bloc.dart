@@ -1,5 +1,4 @@
 import 'package:enter_training_me/storage_constants.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,29 +16,31 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? soundState =
         await storage.read(key: StorageConstants.soundInWorkoutKey);
-    if (soundState == "on") {
-      emit(state.copyWith(soundInWorkout: SoundInWorkout.on));
-    }
+    emitSoundPreferences(emit, soundState);
   }
 
   void _onPreferenceChanged(
       OnPreferenceChangedEvent event, Emitter<AppState> emit) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    switch (event.preferenceName) {
+    String key = event.preferenceName;
+    String value = event.value;
+    bool isKnownKey = true;
+    switch (key) {
       case StorageConstants.soundInWorkoutKey:
-        if (StorageConstants.soundInWorkoutValues.contains(event.value)) {
-          await storage.write(
-              key: StorageConstants.soundInWorkoutKey, value: event.value);
-          if (event.value == StorageConstants.soundInWorkoutOn) {
-            emit(state.copyWith(soundInWorkout: SoundInWorkout.on));
-          }
-          if (event.value == StorageConstants.soundInWorkoutOff) {
-            emit(state.copyWith(soundInWorkout: SoundInWorkout.off));
-          }
-        } else {
-          debugPrint(
-              "Invalid value for key ${event.preferenceName}: ${event.value}");
-        }
+        emitSoundPreferences(emit, value);
+        break;
+      default:
+        isKnownKey = false;
+    }
+    if (isKnownKey) {
+      await storage.write(key: key, value: value);
+    }
+  }
+
+  void emitSoundPreferences(Emitter<AppState> emit, String? value) async {
+    if (value != null &&
+        StorageConstants.soundInWorkoutValues.contains(value)) {
+      emit(state.copyWith(soundInWorkout: value));
     }
   }
 }
