@@ -6,15 +6,13 @@ on:
     - master # Default will running for every branch.    
 
 jobs:
-  call-workflow:
+  set_up: 
     uses: ./.github/workflows/build_flutter.yml@v1
+
   linter:
     runs-on: ubuntu-latest
-    needs: build
+    needs: set_up
     steps:
-    # Check for any formatting issues in the code.
-    - run: flutter format --set-exit-if-changed .
-    
     # Statically analyze the Dart code for any errors.
     - run: flutter analyze .
     
