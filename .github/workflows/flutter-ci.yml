@@ -7,11 +7,12 @@ on:
 
 jobs:
   linter:
-    uses: Jpec57/enter_training_me/.github/workflows/build_flutter.yml@v1
-
+    runs-on: ubuntu-latest
     steps:
-    # Statically analyze the Dart code for any errors.
-    - run: flutter analyze .
+      - uses: actions/checkout@v2
+      - uses: Jpec57/enter_training_me/.github/workflows/build_flutter.yml@v1
+      # Statically analyze the Dart code for any errors.
+      - run: flutter analyze .
     
     # - run: flutter test
     
