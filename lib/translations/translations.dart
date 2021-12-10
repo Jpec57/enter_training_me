@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Messages extends Translations {
+  static const defaultLocale = Locale('en', 'US');
   static const supportedLocales = ['en_US', 'fr_FR', 'de_DE'];
 
   static Locale getLocaleFromFullLocaleString(String locale) {

@@ -44,6 +44,7 @@ dependencies:
   image_picker: ^0.8.4+4
   multi_select_flutter: ^4.0.0
   flag: ^5.0.0-nullsafety
+  freezed_annotation: ^0.15.0
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,7 @@ dev_dependencies:
   copy_with_extension_gen: ^2.0.3
   flutter_lints: ^1.0.0
   hive_generator: ^1.1.1
+  freezed: ^0.15.1+1
 
 
 flutter:

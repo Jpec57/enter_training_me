@@ -1,4 +1,3 @@
-import 'package:enter_training_me/widgets/cards/default_section_card.dart';
 import 'package:flutter/material.dart';
 
 class ReviewStars extends StatelessWidget {
@@ -22,7 +21,7 @@ class ReviewStars extends StatelessWidget {
     List<Widget> starWidgets = [];
     int filledStarCount = rescaledScore.round();
 
-    for (var i = 0; i < maxScore; i++) {
+    for (var i = 0; i < 5; i++) {
       if (i < filledStarCount) {
         starWidgets.add(Icon(
           Icons.star,

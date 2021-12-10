@@ -37,6 +37,7 @@ Future<Widget> createApp() async {
       ExecutionStyleRepository();
   final ExerciseFormatRepository _exoFormatRepository =
       ExerciseFormatRepository();
+
   return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _trainingRepository),
@@ -78,8 +79,8 @@ class MyApp extends StatelessWidget {
         title: 'EnterTrainingMe',
         restorationScopeId: 'root',
         translations: Messages(),
-        locale: Get.deviceLocale,
-        fallbackLocale: const Locale('en', 'US'),
+        locale: Get.deviceLocale ?? Messages.defaultLocale,
+        fallbackLocale: Messages.defaultLocale,
         theme: CustomTheme.theme,
         onGenerateRoute: (settings) => MainRouting.onGenerateRoutes(settings),
         routes: MainRouting.routes(context),

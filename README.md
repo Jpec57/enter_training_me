@@ -1,5 +1,6 @@
 # enter_training_me
 
+flutter run -t test/widget/review_stars_test.dart
 git config core.hooksPath hooks/
 dart pub outdated
 flutter packages pub run build_runner build --delete-conflicting-outputs
