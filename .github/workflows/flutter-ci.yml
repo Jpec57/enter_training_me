@@ -7,7 +7,7 @@ on:
 
 jobs:
   set_up: 
-    uses: Jpec57/enter_training_me/.github/workflows/build_flutter.yml@v1
+    uses: Jpec57/enter_training_me/.github/workflows/build_flutter.yml@master
 
   linter:
     runs-on: ubuntu-latest
