@@ -7,9 +7,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps: 
-      - uses: actions/checkout@v1
-      - uses: ./.github/actions/build_flutter
-        id: flutter_env
+      - uses: actions/checkout@v2
+      - name: Flutter Env 
+        uses: ./.github/actions/build_flutter
       # Build apk.
       - run: flutter build apk
     
