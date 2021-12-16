@@ -28,12 +28,16 @@ class _LogPageState extends State<LogPage> {
   Future<int?> getCurrentUserId() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String? str = await storage.read(key: StorageConstants.userId);
+    print('getCurrentUserId');
+    print(str);
     return str != null ? int.parse(str) : null;
   }
 
   @override
   void initState() {
     super.initState();
+    print('widget.userId');
+    print(widget.userId);
     _userIdFuture = (widget.userId != null)
         ? Future.value(widget.userId)
         : getCurrentUserId();

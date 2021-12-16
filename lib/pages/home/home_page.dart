@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
     ));
     if (autoPlay != null) {
       if (autoPlay) {
-        Get.to(InWorkoutPage(referenceTraining: Training.empty()));
+        Get.to(const InWorkoutPage(referenceTrainingId: null));
       } else {
         Get.to(const WorkoutShowPage(
           trainingId: null,

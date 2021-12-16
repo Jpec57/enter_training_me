@@ -11,28 +11,61 @@ import 'package:enter_training_me/pages/in_workout/views/rest/next_exercise_deta
 import 'package:enter_training_me/pages/in_workout/views/end/workout_end_view.dart';
 import 'package:enter_training_me/pages/in_workout/views/new_exercise/new_exercise_view.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:wakelock/wakelock.dart';
 
-class InWorkoutPage extends StatelessWidget {
-  final Training? referenceTraining;
+class InWorkoutPage extends StatefulWidget {
+  final int? referenceTrainingId;
 
   static const routeName = "/workout/in";
 
-  const InWorkoutPage({Key? key, required this.referenceTraining})
+  const InWorkoutPage({Key? key, required this.referenceTrainingId})
       : super(key: key);
 
   @override
+  State<InWorkoutPage> createState() => _InWorkoutPageState();
+}
+
+class _InWorkoutPageState extends State<InWorkoutPage> {
+  late Future<Training?> _trainingFuture;
+
+  @override
+  void initState() {
+    if (widget.referenceTrainingId != null) {
+      _trainingFuture = RepositoryProvider.of<TrainingRepository>(context)
+          .get(widget.referenceTrainingId!);
+    } else {
+      _trainingFuture = Future.value(Training.empty());
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => InWorkoutBloc(
-        RepositoryProvider.of<TrainingRepository>(context),
-        referenceTraining?.id,
-        Training.clone(referenceTraining),
-      ),
-      child: const InWorkoutScreen(),
+    return FutureBuilder(
+      future: _trainingFuture,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('error'.tr),
+          );
+        }
+        return BlocProvider(
+          create: (BuildContext context) => InWorkoutBloc(
+            RepositoryProvider.of<TrainingRepository>(context),
+            snapshot.data?.id,
+            Training.clone(snapshot.data),
+          ),
+          child: const InWorkoutScreen(),
+        );
+      },
     );
   }
 }

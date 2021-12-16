@@ -13,5 +13,6 @@ class EnglishTranslations {
     'official_workouts': "Official Workouts",
     'welcome_anonymous': 'Welcome anonymous guy',
     'language': "Language",
+    'empty_set_error': "You must at least have one set for this exercise"
   };
 }

@@ -2,7 +2,6 @@ import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/in_workout/views/end/rename_training_dialog.dart';
 import 'package:enter_training_me/pages/workout_show/bloc/bloc/workout_edit_bloc.dart';
 import 'package:enter_training_me/pages/workout_show/views/workout_description.dart';
@@ -141,9 +140,9 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
             ),
             TextButton(
               onPressed: () {
-                Get.toNamed(InWorkoutPage.routeName,
-                    arguments: InWorkoutPageArguments(
-                        referenceTraining: widget.referenceTraining));
+                Get.toNamed(InWorkoutPage.routeName, arguments: {
+                  "referenceTrainingId": widget.referenceTraining.id
+                });
               },
               child: const Text("Start workout"),
             ),

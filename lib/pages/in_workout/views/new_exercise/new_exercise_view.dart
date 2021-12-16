@@ -305,6 +305,10 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                   ? Container()
                   : ElevatedButton(
                       onPressed: () {
+                        if (_setList.isEmpty) {
+                          Get.snackbar('error'.tr, "empty_set_error".tr);
+                          return;
+                        }
                         RealisedExercise? _toAddExercise = RealisedExercise(
                             exerciseReference: _selectedRefExo!,
                             sets: _setList,

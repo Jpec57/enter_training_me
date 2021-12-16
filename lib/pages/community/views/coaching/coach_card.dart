@@ -1,7 +1,6 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/coaching/coach_page.dart';
-import 'package:enter_training_me/pages/coaching/coach_page_arguments.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/review_stars.dart';
 import 'package:enter_training_me/widgets/user/user_avatar.dart';
@@ -16,7 +15,9 @@ class CoachCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(CoachPage.routeName, arguments: CoachPageArguments(coach));
+        Get.toNamed(CoachPage.routeName, arguments: {
+          "coachUserId": coach.id
+        });
       },
       child: Card(
         color: CustomTheme.greenGrey,
@@ -48,7 +49,7 @@ class CoachCard extends StatelessWidget {
                             children: const [
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                   EdgeInsets.symmetric(horizontal: 5.0),
                                 child: Text("3",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
@@ -59,10 +60,10 @@ class CoachCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    const Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 12.0),
                       child: Text("#strength, #bodybuilding, #lifestyle",
-                          style: const TextStyle(fontStyle: FontStyle.italic)),
+                          style: TextStyle(fontStyle: FontStyle.italic)),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -79,7 +80,7 @@ class CoachCard extends StatelessWidget {
                             ]),
                       ),
                     ),
-                    ReviewStars(score: 3.8, size: 14),
+                    const ReviewStars(score: 3.8, size: 14),
                   ],
                 ),
               ),

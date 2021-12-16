@@ -1,13 +1,11 @@
 import 'package:enter_training_me/navigation/navigation_element.dart';
 import 'package:enter_training_me/pages/calculator/calculator_page.dart';
 import 'package:enter_training_me/pages/coaching/coach_page.dart';
-import 'package:enter_training_me/pages/coaching/coach_page_arguments.dart';
 import 'package:enter_training_me/pages/community/community_page.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_list_page.dart';
 import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
 import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
-import 'package:enter_training_me/pages/in_workout/in_workout_page_arguments.dart';
 import 'package:enter_training_me/pages/log/log_page.dart';
 import 'package:enter_training_me/pages/preferences/preferences_page.dart';
 import 'package:enter_training_me/pages/quick_countdown/quick_countdown_page.dart';
@@ -51,26 +49,24 @@ class MainRouting {
 
   static onGenerateRoutes(settings) {
     if (settings.name == InWorkoutPage.routeName) {
-      var args = settings.arguments as InWorkoutPageArguments;
+      var args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => InWorkoutPage(
-                referenceTraining: args.referenceTraining,
+                referenceTrainingId: args["referenceTrainingId"],
               ));
     }
     if (settings.name == CoachPage.routeName) {
-      var args = settings.arguments as CoachPageArguments;
+      var args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => CoachPage(
-                coach: args.coach,
+                coachUserId: args['coachUserId'],
               ));
     }
-
-    //END
     if (settings.name == LogPage.routeName) {
       var args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => LogPage(
-                userId: args['userId'],
+                userId: args != null ? args['userId'] : null,
               ));
     }
 

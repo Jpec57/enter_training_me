@@ -45,6 +45,7 @@ dependencies:
   multi_select_flutter: ^4.0.0
   flag: ^5.0.0-nullsafety
   freezed_annotation: ^0.15.0
+  go_router: ^2.5.2
 
 dev_dependencies:
   flutter_test:
