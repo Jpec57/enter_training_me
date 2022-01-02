@@ -60,20 +60,22 @@ class ProfileMetricsSection extends StatelessWidget {
       ),
       InkWell(
         onTap: () async {
-          await Get.dialog(DoubleReturnDialog(
-              title: "Your weight:",
-              currentValue: info.user.fitnessProfile?.weight ?? 70,
-              callback: (value) async {
-                var parsedValue = double.parse(value);
-                if (parsedValue > 0) {
-                  Map<String, dynamic> map = {"weight": parsedValue};
+          await showDialog(
+              context: context,
+              builder: (context) => DoubleReturnDialog(
+                  title: "Your weight:",
+                  currentValue: info.user.fitnessProfile?.weight ?? 70,
+                  callback: (value) async {
+                    var parsedValue = double.parse(value);
+                    if (parsedValue > 0) {
+                      Map<String, dynamic> map = {"weight": parsedValue};
 
-                  User? updatedUser =
-                      await RepositoryProvider.of<UserRepository>(context)
-                          .updateUserProfile(info.user.id, map);
-                  if (updatedUser != null) {}
-                }
-              }));
+                      User? updatedUser =
+                          await RepositoryProvider.of<UserRepository>(context)
+                              .updateUserProfile(info.user.id, map);
+                      if (updatedUser != null) {}
+                    }
+                  }));
         },
         child: ProfileMetricContainer(
           child: Column(

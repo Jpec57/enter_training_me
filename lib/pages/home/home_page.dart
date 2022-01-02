@@ -176,24 +176,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onNewPersonalWorkoutButtonTap() async {
-    bool? autoPlay = await Get.dialog(ConfirmDialog(
-      title: "direct_play_or_save_for_later".tr,
-      message: "create_as_you_go".tr,
-      confirmLabel: "auto_play".tr,
-      cancelLabel: "create_for_later".tr,
-      confirmCallback: () {
-        Navigator.of(context).pop<bool>(true);
-      },
-      cancelCallback: () {
-        Navigator.of(context).pop<bool>(false);
-      },
-    ));
+    bool? autoPlay = await showDialog(
+        context: context,
+        builder: (context) {
+          return ConfirmDialog(
+            title: "direct_play_or_save_for_later".tr,
+            message: "create_as_you_go".tr,
+            confirmLabel: "auto_play".tr,
+            cancelLabel: "create_for_later".tr,
+            confirmCallback: () {
+              Navigator.of(context).pop<bool>(true);
+            },
+            cancelCallback: () {
+              Navigator.of(context).pop<bool>(false);
+            },
+          );
+        });
     if (autoPlay != null) {
       if (autoPlay) {
-        context.go(InWorkoutPage.routeName.replaceFirst(':id', ''));
+        context.pushNamed(
+          InWorkoutPage.name,
+        );
       } else {
-        // isEditing: true,
-        context.go(WorkoutShowPage.routeName.replaceFirst(':id', ''));
+        context.pushNamed(WorkoutShowPage.name,
+            params: {"id": 0.toString()}, queryParams: {"isEditing": "1"});
       }
     }
   }

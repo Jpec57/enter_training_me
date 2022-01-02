@@ -20,7 +20,8 @@ import 'package:wakelock/wakelock.dart';
 class InWorkoutPage extends StatefulWidget {
   final int? referenceTrainingId;
 
-  static const routeName = "/workout/in/:id";
+  static const name = "InWorkoutPage";
+  static const routeName = "/in/workout";
 
   const InWorkoutPage({Key? key, required this.referenceTrainingId})
       : super(key: key);

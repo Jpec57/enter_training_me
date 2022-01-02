@@ -11,58 +11,64 @@ class InWorkoutExerciseView extends StatelessWidget {
   const InWorkoutExerciseView({Key? key, required this.parentBuildContext})
       : super(key: key);
 
-  void showModal(Widget dialog) async {
-    await Get.dialog(dialog);
+  void showModal(BuildContext context, Widget dialog) async {
+    await showDialog(context: context, builder: (context) => dialog);
   }
 
-  void showSetsModal(InWorkoutState state) {
-    showModal(ChangeExerciseSetDialog<int>(
-      currentValue: state.currentExo?.sets.length ?? 1,
-      title: "How many sets do you intent to do ?",
-      setForOneCallback: (value) {
-        int parseValue = int.parse(value);
+  void showSetsModal(BuildContext context, InWorkoutState state) {
+    showModal(
+        context,
+        ChangeExerciseSetDialog<int>(
+          currentValue: state.currentExo?.sets.length ?? 1,
+          title: "How many sets do you intent to do ?",
+          setForOneCallback: (value) {
+            int parseValue = int.parse(value);
 
-        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
-            .add(ChangedNbSetEvent(parseValue));
-      },
-    ));
+            BlocProvider.of<InWorkoutBloc>(parentBuildContext)
+                .add(ChangedNbSetEvent(parseValue));
+          },
+        ));
   }
 
-  void showRepsModal(InWorkoutState state) {
-    showModal(ChangeExerciseSetDialog<int>(
-      currentValue: state.currentSet.reps,
-      title: "How many reps do you intent to do ?",
-      setForAllCallback: (value) {
-        int parseValue = int.parse(value);
+  void showRepsModal(BuildContext context, InWorkoutState state) {
+    showModal(
+        context,
+        ChangeExerciseSetDialog<int>(
+          currentValue: state.currentSet.reps,
+          title: "How many reps do you intent to do ?",
+          setForAllCallback: (value) {
+            int parseValue = int.parse(value);
 
-        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
-            .add(ChangedRefRepsEvent(parseValue, isForAll: true));
-      },
-      setForOneCallback: (value) {
-        int parseValue = int.parse(value);
+            BlocProvider.of<InWorkoutBloc>(parentBuildContext)
+                .add(ChangedRefRepsEvent(parseValue, isForAll: true));
+          },
+          setForOneCallback: (value) {
+            int parseValue = int.parse(value);
 
-        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
-            .add(ChangedRefRepsEvent(parseValue));
-      },
-    ));
+            BlocProvider.of<InWorkoutBloc>(parentBuildContext)
+                .add(ChangedRefRepsEvent(parseValue));
+          },
+        ));
   }
 
-  void showWeightModal(InWorkoutState state) {
-    showModal(ChangeExerciseSetDialog<double>(
-      title: "How heavy do you intent to lift ?",
-      currentValue: state.currentSet.weight,
-      showQuickIntIncrease: false,
-      setForAllCallback: (value) {
-        double parseValue = double.parse(value);
-        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
-            .add(ChangedRefWeightEvent(parseValue, isForAll: true));
-      },
-      setForOneCallback: (value) {
-        double parseValue = double.parse(value);
-        BlocProvider.of<InWorkoutBloc>(parentBuildContext)
-            .add(ChangedRefWeightEvent(parseValue));
-      },
-    ));
+  void showWeightModal(BuildContext context, InWorkoutState state) {
+    showModal(
+        context,
+        ChangeExerciseSetDialog<double>(
+          title: "How heavy do you intent to lift ?",
+          currentValue: state.currentSet.weight,
+          showQuickIntIncrease: false,
+          setForAllCallback: (value) {
+            double parseValue = double.parse(value);
+            BlocProvider.of<InWorkoutBloc>(parentBuildContext)
+                .add(ChangedRefWeightEvent(parseValue, isForAll: true));
+          },
+          setForOneCallback: (value) {
+            double parseValue = double.parse(value);
+            BlocProvider.of<InWorkoutBloc>(parentBuildContext)
+                .add(ChangedRefWeightEvent(parseValue));
+          },
+        ));
   }
 
   Widget _renderExerciseInfo(
@@ -81,7 +87,7 @@ class InWorkoutExerciseView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: InkWell(
               onTap: () {
-                showSetsModal(state);
+                showSetsModal(context, state);
               },
               child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
                 buildWhen: (prev, next) => prev.currentExo != next.currentExo,
@@ -107,7 +113,7 @@ class InWorkoutExerciseView extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        showRepsModal(state);
+                        showRepsModal(context, state);
                       },
                       child: Text(state.currentSet.reps.toString(),
                           style: Theme.of(context).textTheme.headline1),
@@ -124,7 +130,7 @@ class InWorkoutExerciseView extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          showWeightModal(state);
+                          showWeightModal(context, state);
                         },
                         child: state.currentSet.weight != null
                             ? Padding(

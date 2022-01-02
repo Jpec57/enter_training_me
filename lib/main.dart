@@ -85,18 +85,7 @@ class MyApp extends StatelessWidget {
         routerDelegate: routing.goRouter.routerDelegate,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        // localizationsDelegates:  [
-        //   AppLocalizations.delegate, // Add this line
-        //   GlobalMaterialLocalizations.delegate,
-        //   GlobalWidgetsLocalizations.delegate,
-        //   GlobalCupertinoLocalizations.delegate,
-        // ],
-        // supportedLocales: Messages.supportedLocales
-        //     .map((e) => Messages.getLocaleFromFullLocaleString(e))
-        //     .toList(),
         locale: Get.deviceLocale ?? Messages.defaultLocale,
-        // translations: Messages(),
-        // fallbackLocale: Messages.defaultLocale,
         theme: CustomTheme.theme,
         // onGenerateRoute: (settings) => MainRouting.onGenerateRoutes(settings),
         // routes: MainRouting.routes(context),

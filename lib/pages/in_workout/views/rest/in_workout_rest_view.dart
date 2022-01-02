@@ -77,18 +77,20 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                   Expanded(
                     child: InkWell(
                       onTap: () async {
-                        Get.dialog(ReturnDialog<int>(
-                            title: "Change rest time",
-                            currentValue: state.currentExo!.restBetweenSet,
-                            description:
-                                "Change the rest time for this exercise.\nTo change it only temporarily for this set, simply use the '-' and '+' buttons.",
-                            callback: (String rest) async {
-                              int parsedValue = int.parse(rest);
-                              if (parsedValue > 0) {
-                                BlocProvider.of<InWorkoutBloc>(context)
-                                    .add(ChangedRestEvent(parsedValue));
-                              }
-                            }));
+                        showDialog(
+                            context: context,
+                            builder: (context) => ReturnDialog<int>(
+                                title: "Change rest time",
+                                currentValue: state.currentExo!.restBetweenSet,
+                                description:
+                                    "Change the rest time for this exercise.\nTo change it only temporarily for this set, simply use the '-' and '+' buttons.",
+                                callback: (String rest) async {
+                                  int parsedValue = int.parse(rest);
+                                  if (parsedValue > 0) {
+                                    BlocProvider.of<InWorkoutBloc>(context)
+                                        .add(ChangedRestEvent(parsedValue));
+                                  }
+                                }));
                       },
                       child: CountdownTimer(
                         totalDuration: currentSetRestTime ??

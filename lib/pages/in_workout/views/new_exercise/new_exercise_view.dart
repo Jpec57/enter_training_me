@@ -84,31 +84,37 @@ class _NewExerciseViewState extends State<NewExerciseView> {
   }
 
   void showRepsModal(BuildContext context, int setIndex) {
-    Get.dialog(ChangeExerciseSetDialog<int>(
-      currentValue: _setList[setIndex].reps,
-      title: "How many reps do you intent to do ?",
-      setForOneCallback: (value) {
-        int parseValue = int.parse(value);
-        setState(() {
-          _setList[setIndex] = _setList[setIndex].copyWith(reps: parseValue);
-        });
-      },
-    ));
+    showDialog(
+        context: context,
+        builder: (context) => ChangeExerciseSetDialog<int>(
+              currentValue: _setList[setIndex].reps,
+              title: "How many reps do you intent to do ?",
+              setForOneCallback: (value) {
+                int parseValue = int.parse(value);
+                setState(() {
+                  _setList[setIndex] =
+                      _setList[setIndex].copyWith(reps: parseValue);
+                });
+              },
+            ));
   }
 
   void showWeightModal(BuildContext context, int setIndex) {
-    Get.dialog(ChangeExerciseSetDialog<double>(
-      title: "How heavy do you intent to lift ?",
-      currentValue: _setList[setIndex].weight,
-      showQuickIntIncrease: false,
-      setForOneCallback: (String value) {
-        int parsedValue = int.parse(value.substring(0, value.indexOf('.')));
-        setState(() {
-          _setList[setIndex] =
-              _setList[setIndex].copyWith(weight: parsedValue.toDouble());
-        });
-      },
-    ));
+    showDialog(
+        context: context,
+        builder: (context) => ChangeExerciseSetDialog<double>(
+              title: "How heavy do you intent to lift ?",
+              currentValue: _setList[setIndex].weight,
+              showQuickIntIncrease: false,
+              setForOneCallback: (String value) {
+                int parsedValue =
+                    int.parse(value.substring(0, value.indexOf('.')));
+                setState(() {
+                  _setList[setIndex] = _setList[setIndex]
+                      .copyWith(weight: parsedValue.toDouble());
+                });
+              },
+            ));
   }
 
   Widget _renderExoSetWidget(ExerciseSet set, int index) {
@@ -222,19 +228,21 @@ class _NewExerciseViewState extends State<NewExerciseView> {
               ),
               InkWell(
                 onTap: () {
-                  Get.dialog(ChooseExerciseDialog(
-                    onExerciseChosen: (ReferenceExercise exo) {
-                      if (exo.isOnlyIsometric) {
-                        isIsometric = true;
-                        // for (var set in _setList) {
-                        //   set.copyWith(weight: 0);
-                        // }
-                      }
-                      setState(() {
-                        _selectedRefExo = exo;
-                      });
-                    },
-                  ));
+                  showDialog(
+                      context: context,
+                      builder: (context) => ChooseExerciseDialog(
+                            onExerciseChosen: (ReferenceExercise exo) {
+                              if (exo.isOnlyIsometric) {
+                                isIsometric = true;
+                                // for (var set in _setList) {
+                                //   set.copyWith(weight: 0);
+                                // }
+                              }
+                              setState(() {
+                                _selectedRefExo = exo;
+                              });
+                            },
+                          ));
                 },
                 child: Container(
                     decoration: const BoxDecoration(color: Colors.amber),

@@ -19,15 +19,20 @@ class TrainingHeaderBar extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () {
-                Get.dialog(ConfirmDialog(
-                  title: "Quit training",
-                  message: "Would you like to quit the current training ?",
-                  confirmCallback: () {
-                    Navigator.of(context).pop();
-                    BlocProvider.of<InWorkoutBloc>(context)
-                        .add(TrainingEndedEvent());
-                  },
-                ));
+                showDialog(
+                    context: context,
+                    builder: (dialogContext) {
+                      return ConfirmDialog(
+                        title: "Quit training",
+                        message:
+                            "Would you like to quit the current training ?",
+                        confirmCallback: () {
+                          Navigator.of(context).pop();
+                          BlocProvider.of<InWorkoutBloc>(context)
+                              .add(TrainingEndedEvent());
+                        },
+                      );
+                    });
               },
               icon: const Icon(
                 Icons.exit_to_app,

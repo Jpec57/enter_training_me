@@ -22,25 +22,27 @@ class TrainingContainer extends StatelessWidget {
       : super(key: key);
 
   void _onLongPress(BuildContext context) {
-    Get.dialog(ConfirmDialog(
-      message: "Would you like to delete this training ?",
-      confirmCallback: () async {
-        bool isSuccess =
-            await RepositoryProvider.of<TrainingRepository>(context)
-                .delete(referenceTraining.id!);
-        Navigator.of(context).pop();
+    showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(
+              message: "Would you like to delete this training ?",
+              confirmCallback: () async {
+                bool isSuccess =
+                    await RepositoryProvider.of<TrainingRepository>(context)
+                        .delete(referenceTraining.id!);
+                Navigator.of(context).pop();
 
-        if (isSuccess) {
-          Get.snackbar("Success", "This workout has been deleted");
-          if (onTrainingRemove != null) {
-            onTrainingRemove!();
-          }
-        } else {
-          Get.snackbar("Error", "An error occurred");
-        }
-      },
-      confirmLabel: "Delete",
-    ));
+                if (isSuccess) {
+                  Get.snackbar("Success", "This workout has been deleted");
+                  if (onTrainingRemove != null) {
+                    onTrainingRemove!();
+                  }
+                } else {
+                  Get.snackbar("Error", "An error occurred");
+                }
+              },
+              confirmLabel: "Delete",
+            ));
   }
 
   void _onTap(BuildContext context) {

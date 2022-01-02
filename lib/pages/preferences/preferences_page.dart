@@ -59,14 +59,16 @@ class PreferencesPage extends StatelessWidget {
               title: Text("language".tr,
                   style: const TextStyle(color: Colors.white)),
               onTap: () {
-                Get.dialog(ChangeLanguageDialog(
-                    supportedLocales: trans.Messages.supportedLocales
-                        .map((e) =>
-                            trans.Messages.getLocaleFromFullLocaleString(e))
-                        .toList(),
-                    onLocaleChosen: (Locale locale) {
-                      Get.updateLocale(locale);
-                    }));
+                showDialog(
+                    context: context,
+                    builder: (context) => ChangeLanguageDialog(
+                        supportedLocales: trans.Messages.supportedLocales
+                            .map((e) =>
+                                trans.Messages.getLocaleFromFullLocaleString(e))
+                            .toList(),
+                        onLocaleChosen: (Locale locale) {
+                          Get.updateLocale(locale);
+                        }));
               },
             ),
             ElevatedButton(

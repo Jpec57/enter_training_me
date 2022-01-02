@@ -122,18 +122,19 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                       child: InkWell(
                         onTap: () async {
                           Map<String, dynamic> map = {"description": "TOTO"};
-                          await Get.dialog(ReturnDialog<String>(
-                              title: "Give a description",
-                              callback: (String desc) async {
-                                map["description"] = desc;
-                                User? updatedUser =
-                                    await RepositoryProvider.of<UserRepository>(
-                                            context)
+                          await showDialog(
+                              context: context,
+                              builder: (context) => ReturnDialog<String>(
+                                  title: "Give a description",
+                                  callback: (String desc) async {
+                                    map["description"] = desc;
+                                    User? updatedUser = await RepositoryProvider
+                                            .of<UserRepository>(context)
                                         .updateUser(info.user.id, map);
-                                setState(() {
-                                  info.copyWith(user: updatedUser);
-                                });
-                              }));
+                                    setState(() {
+                                      info.copyWith(user: updatedUser);
+                                    });
+                                  }));
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

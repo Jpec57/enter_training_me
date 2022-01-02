@@ -55,12 +55,14 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
           builder: (context, state) {
             return InkWell(
               onTap: () {
-                Get.dialog(RenameTrainingDialog(
-                    initialValue: state.training.name,
-                    callback: (name) {
-                      BlocProvider.of<WorkoutEditBloc>(context)
-                          .add(RenamedWorkoutEvent(name));
-                    }));
+                showDialog(
+                    context: context,
+                    builder: (context) => RenameTrainingDialog(
+                        initialValue: state.training.name,
+                        callback: (name) {
+                          BlocProvider.of<WorkoutEditBloc>(context)
+                              .add(RenamedWorkoutEvent(name));
+                        }));
               },
               child: Text(
                 "${state.training.name} (${state.training.id})",

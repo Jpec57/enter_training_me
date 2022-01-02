@@ -91,15 +91,18 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                       return InkWell(
                         onTap: () {
                           if (state.isEditting) {
-                            Get.dialog(ChangeExerciseSetDialog<int>(
-                                currentValue: state.training.numberOfLoops,
-                                title: "How many loops do you want to do ?",
-                                setForOneCallback: (value) {
-                                  int parseValue = int.parse(value);
+                            showDialog(
+                                context: context,
+                                builder: (context) => ChangeExerciseSetDialog<
+                                        int>(
+                                    currentValue: state.training.numberOfLoops,
+                                    title: "How many loops do you want to do ?",
+                                    setForOneCallback: (value) {
+                                      int parseValue = int.parse(value);
 
-                                  BlocProvider.of<WorkoutEditBloc>(context)
-                                      .add(ChangedNbLoopsEvent(parseValue));
-                                }));
+                                      BlocProvider.of<WorkoutEditBloc>(context)
+                                          .add(ChangedNbLoopsEvent(parseValue));
+                                    }));
                           }
                         },
                         child: WorkoutMetric(
@@ -154,14 +157,16 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
               }
               return InkWell(
                 onTap: () {
-                  Get.dialog(
-                      NewExerciseView(onExerciseChosen: (RealisedExercise exo) {
-                    BlocProvider.of<WorkoutEditBloc>(context)
-                        .add(AddedExerciseEvent(exo: exo));
-                    Navigator.of(context).pop();
-                  }, onDismiss: () {
-                    Navigator.of(context).pop();
-                  }));
+                  showDialog(
+                      context: context,
+                      builder: (context) => NewExerciseView(
+                              onExerciseChosen: (RealisedExercise exo) {
+                            BlocProvider.of<WorkoutEditBloc>(context)
+                                .add(AddedExerciseEvent(exo: exo));
+                            Navigator.of(context).pop();
+                          }, onDismiss: () {
+                            Navigator.of(context).pop();
+                          }));
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

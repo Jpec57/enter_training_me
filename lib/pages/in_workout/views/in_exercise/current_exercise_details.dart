@@ -39,12 +39,14 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
               Flexible(
                   child: InkWell(
                 onTap: () {
-                  Get.dialog(ChooseExerciseDialog(
-                    onExerciseChosen: (ReferenceExercise exo) {
-                      BlocProvider.of<InWorkoutBloc>(context)
-                          .add(ChangedExoEvent(exo));
-                    },
-                  ));
+                  showDialog(
+                      context: context,
+                      builder: (context) => ChooseExerciseDialog(
+                            onExerciseChosen: (ReferenceExercise exo) {
+                              BlocProvider.of<InWorkoutBloc>(context)
+                                  .add(ChangedExoEvent(exo));
+                            },
+                          ));
                 },
                 child: BlocBuilder<InWorkoutBloc, InWorkoutState>(
                   buildWhen: (prev, next) => prev.currentExo != next.currentExo,

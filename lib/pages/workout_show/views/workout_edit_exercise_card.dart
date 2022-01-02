@@ -83,17 +83,19 @@ class WorkoutEditExerciseCard extends StatelessWidget {
               child: InkWell(
                 onTap: isEditting
                     ? () async {
-                        Get.dialog(NewExerciseView(
-                            editedExercise: exo,
-                            onExerciseChosen: (exo) {
-                              BlocProvider.of<WorkoutEditBloc>(context).add(
-                                  ChangedExerciseEvent(
-                                      exo: exo, exoIndex: currentIndex));
-                              Navigator.of(context).pop();
-                            },
-                            onDismiss: () {
-                              Navigator.of(context).pop();
-                            }));
+                        showDialog(
+                            context: context,
+                            builder: (context) => NewExerciseView(
+                                editedExercise: exo,
+                                onExerciseChosen: (exo) {
+                                  BlocProvider.of<WorkoutEditBloc>(context).add(
+                                      ChangedExerciseEvent(
+                                          exo: exo, exoIndex: currentIndex));
+                                  Navigator.of(context).pop();
+                                },
+                                onDismiss: () {
+                                  Navigator.of(context).pop();
+                                }));
                       }
                     : null,
                 child: Container(
@@ -143,27 +145,7 @@ class WorkoutEditExerciseCard extends StatelessWidget {
                             Expanded(
                                 child: Center(
                               child: InkWell(
-                                onTap:
-                                    // isEditting
-                                    // ? () async {
-                                    //     await Get.dialog(ReturnDialog(
-                                    //         title: "How much rest per set?",
-                                    //         currentValue: exo.restBetweenSet,
-                                    //         callback: (str) async {
-                                    //           int rest = int.parse(str);
-                                    //           if (rest > 0) {
-                                    //             BlocProvider.of<
-                                    //                         WorkoutEditBloc>(
-                                    //                     context)
-                                    //                 .add(ChangedRestEvent(
-                                    //                     rest: rest,
-                                    //                     exerciseIndex:
-                                    //                         currentIndex));
-                                    //           }
-                                    //         }));
-                                    //   }
-                                    // :
-                                    null,
+                                onTap: null,
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),

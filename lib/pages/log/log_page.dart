@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LogPage extends StatefulWidget {
-  static const routeName = "/log/:id";
+  static const routeName = "/log";
   final int? userId;
 
   const LogPage({Key? key, required this.userId}) : super(key: key);
@@ -38,7 +38,7 @@ class _LogPageState extends State<LogPage> {
     super.initState();
     print('widget.userId');
     print(widget.userId);
-    _userIdFuture = (widget.userId != null)
+    _userIdFuture = (widget.userId != null && widget.userId != 0)
         ? Future.value(widget.userId)
         : getCurrentUserId();
   }
@@ -63,6 +63,20 @@ class _LogPageState extends State<LogPage> {
             appBar: AppBar(),
             body: const Center(
               child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (userId == null) {
+          return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+            ),
+            body: const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text("You have to be connected to access this page.",
+                    textAlign: TextAlign.center),
+              ),
             ),
           );
         }

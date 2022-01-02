@@ -20,6 +20,7 @@ class WorkoutShowPage extends StatefulWidget {
   const WorkoutShowPage(
       {Key? key, required this.trainingId, this.isEditing = false})
       : super(key: key);
+  static const name = "WorkoutShow";
   static const routeName = "/workout/:id";
   final int? trainingId;
   final bool isEditing;
@@ -37,7 +38,7 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
   @override
   void initState() {
     super.initState();
-    if (widget.trainingId != null) {
+    if (widget.trainingId != null && widget.trainingId != 0) {
       _trainingFuture = RepositoryProvider.of<TrainingRepository>(context)
           .get(widget.trainingId!);
     } else {

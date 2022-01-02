@@ -36,7 +36,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             ? _bottomNavigationBarSelectedColor
             : _bottomNavigationBarColor,
         onPressed: () {
-          context.go(element.routeName);
+          context.push(element.routeName);
         });
   }
 

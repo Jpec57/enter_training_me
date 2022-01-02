@@ -109,14 +109,17 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
                       if (widget.withCreateNewOption && index == 0) {
                         return InkWell(
                           onTap: () {
-                            get_lib.Get.dialog(CreateExerciseReferenceDialog(
-                              callback: (ReferenceExercise? refExo) {
-                                if (refExo != null) {
-                                  widget.onExerciseChosen(refExo);
-                                  Navigator.of(context).pop();
-                                }
-                              },
-                            ));
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    CreateExerciseReferenceDialog(
+                                      callback: (ReferenceExercise? refExo) {
+                                        if (refExo != null) {
+                                          widget.onExerciseChosen(refExo);
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                    ));
                           },
                           child: Container(
                             decoration: const BoxDecoration(

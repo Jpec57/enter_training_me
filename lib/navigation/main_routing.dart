@@ -44,18 +44,6 @@ class MainRouting {
         routeName: QuickCountdownPage.routeName),
   ];
 
-  static onGenerateRoutes(settings) {
-    if (settings.name == CoachPage.routeName) {
-      var args = settings.arguments;
-      return MaterialPageRoute(
-          builder: (context) => CoachPage(
-                coachUserId: args['coachUserId'],
-              ));
-    }
-    assert(false, 'Need to implement ${settings.name}');
-    return null;
-  }
-
   final goRouter = GoRouter(
     routes: [
       GoRoute(
@@ -70,20 +58,28 @@ class MainRouting {
       GoRoute(
         path: LogPage.routeName,
         builder: (context, state) {
-          var userId = (state.params['id'] != null)
-              ? int.parse(state.params['id']!)
-              : null;
+          int? userId;
+          // try {
+          //   userId = (state.params['id'] != null)
+          //       ? int.parse(state.params['id']!)
+          //       : 0;
+          // } on Exception catch (_) {
+          //   userId = null;
+          // }
           return LogPage(
             userId: userId,
           );
         },
       ),
       GoRoute(
+        name: WorkoutShowPage.name,
         path: WorkoutShowPage.routeName,
         builder: (context, state) {
+          final isEditing = state.queryParams['isEditing'] == "1";
           var trainingId = int.parse(state.params['id']!);
           return WorkoutShowPage(
             trainingId: trainingId,
+            isEditing: isEditing,
           );
         },
       ),
@@ -97,13 +93,13 @@ class MainRouting {
         },
       ),
       GoRoute(
+        name: 'InWorkoutPage',
         path: InWorkoutPage.routeName,
         builder: (context, state) {
-          var refId = (state.params['id'] != null)
-              ? int.parse(state.params['id']!)
-              : null;
+          final queryRefId = state.queryParams['id'];
           return InWorkoutPage(
-            referenceTrainingId: refId,
+            referenceTrainingId:
+                queryRefId != null ? int.parse(queryRefId) : null,
           );
         },
       ),

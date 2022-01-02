@@ -23,25 +23,27 @@ class FeedWorkout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(onLongPress: () {
-      Get.dialog(ConfirmDialog(
-        message: "Would you like to delete this training ?",
-        confirmCallback: () async {
-          bool isSuccess =
-              await RepositoryProvider.of<TrainingRepository>(context)
-                  .delete(referenceTraining.id!);
-          Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (context) => ConfirmDialog(
+                message: "Would you like to delete this training ?",
+                confirmCallback: () async {
+                  bool isSuccess =
+                      await RepositoryProvider.of<TrainingRepository>(context)
+                          .delete(referenceTraining.id!);
+                  Navigator.of(context).pop();
 
-          if (isSuccess) {
-            Get.snackbar("Success", "This workout has been deleted");
-            if (onTrainingRemove != null) {
-              onTrainingRemove!();
-            }
-          } else {
-            Get.snackbar("Error", "An error occurred");
-          }
-        },
-        confirmLabel: "Delete",
-      ));
+                  if (isSuccess) {
+                    Get.snackbar("Success", "This workout has been deleted");
+                    if (onTrainingRemove != null) {
+                      onTrainingRemove!();
+                    }
+                  } else {
+                    Get.snackbar("Error", "An error occurred");
+                  }
+                },
+                confirmLabel: "Delete",
+              ));
     }, child: Builder(builder: (BuildContext context) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,

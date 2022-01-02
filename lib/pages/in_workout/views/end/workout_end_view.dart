@@ -43,10 +43,14 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
   }
 
   void saveTrainingInPersonal(InWorkoutState state) async {
-    Get.dialog(Dialog(
-      backgroundColor: CustomTheme.darkGrey.withAlpha(150),
-      child: const Center(child: CircularProgressIndicator()),
-    ));
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: CustomTheme.darkGrey.withAlpha(150),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        });
     bool isSuccess = false;
     if (_isTrainingSaved) {
       isSuccess = await RepositoryProvider.of<TrainingRepository>(context)
@@ -122,17 +126,21 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                   state.isNewWorkout
                                       ? IconButton(
                                           onPressed: () {
-                                            Get.dialog(RenameTrainingDialog(
-                                                initialValue:
-                                                    state.realisedTraining.name,
-                                                callback: (str) {
-                                                  BlocProvider.of<
-                                                              InWorkoutBloc>(
-                                                          context)
-                                                      .add(
-                                                          ChangedTrainingNameEvent(
-                                                              str));
-                                                }));
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    RenameTrainingDialog(
+                                                        initialValue: state
+                                                            .realisedTraining
+                                                            .name,
+                                                        callback: (str) {
+                                                          BlocProvider.of<
+                                                                      InWorkoutBloc>(
+                                                                  context)
+                                                              .add(
+                                                                  ChangedTrainingNameEvent(
+                                                                      str));
+                                                        }));
                                           },
                                           icon: const Icon(Icons.edit,
                                               color: Colors.white))
@@ -156,20 +164,27 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                       unit: " points"),
                                   InkWell(
                                     onTap: () {
-                                      Get.dialog(ChangeExerciseSetDialog<int>(
-                                        currentValue: state
-                                            .realisedTraining.numberOfLoops,
-                                        title:
-                                            "How many loops do you want to do ?",
-                                        setForOneCallback: (value) {
-                                          int parseValue = int.parse(value);
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              ChangeExerciseSetDialog<int>(
+                                                currentValue: state
+                                                    .realisedTraining
+                                                    .numberOfLoops,
+                                                title:
+                                                    "How many loops do you want to do ?",
+                                                setForOneCallback: (value) {
+                                                  int parseValue =
+                                                      int.parse(value);
 
-                                          BlocProvider.of<InWorkoutBloc>(
-                                                  widget.parentBuildContext)
-                                              .add(ChangedNbLoopsEvent(
-                                                  parseValue));
-                                        },
-                                      ));
+                                                  BlocProvider.of<
+                                                              InWorkoutBloc>(
+                                                          widget
+                                                              .parentBuildContext)
+                                                      .add(ChangedNbLoopsEvent(
+                                                          parseValue));
+                                                },
+                                              ));
                                     },
                                     child: WorkoutMetric(
                                         metric: state
@@ -180,25 +195,29 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                   state.realisedTraining.numberOfLoops > 1
                                       ? InkWell(
                                           onTap: () {
-                                            Get.dialog(
-                                                ChangeExerciseSetDialog<int>(
-                                              currentValue: state
-                                                  .realisedTraining
-                                                  .restBetweenCycles,
-                                              title:
-                                                  "How many seconds of rest between each loop ?",
-                                              setForOneCallback: (value) {
-                                                int parseValue =
-                                                    int.parse(value);
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    ChangeExerciseSetDialog<
+                                                        int>(
+                                                      currentValue: state
+                                                          .realisedTraining
+                                                          .restBetweenCycles,
+                                                      title:
+                                                          "How many seconds of rest between each loop ?",
+                                                      setForOneCallback:
+                                                          (value) {
+                                                        int parseValue =
+                                                            int.parse(value);
 
-                                                BlocProvider.of<InWorkoutBloc>(
-                                                        widget
-                                                            .parentBuildContext)
-                                                    .add(
-                                                        ChangedRestBetweenLoopsEvent(
-                                                            parseValue));
-                                              },
-                                            ));
+                                                        BlocProvider.of<
+                                                                    InWorkoutBloc>(
+                                                                widget
+                                                                    .parentBuildContext)
+                                                            .add(ChangedRestBetweenLoopsEvent(
+                                                                parseValue));
+                                                      },
+                                                    ));
                                           },
                                           child: WorkoutMetric(
                                               metric: Utils.convertToDuration(
