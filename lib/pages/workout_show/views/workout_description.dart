@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 class WorkoutShowDescription extends StatefulWidget {
   final bool isEditting;
@@ -41,7 +42,7 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                     context)
                 .removeFromSavedTrainingAction(widget.referenceTraining.id!);
             if (isSuccess) {
-              Get.offNamedUntil(HomePage.routeName, (route) => false);
+              context.go(HomePage.routeName);
             }
           },
           child: const Text("REMOVE FROM SAVED")),
@@ -55,7 +56,7 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
                 await RepositoryProvider.of<TrainingRepository>(context)
                     .delete(widget.referenceTraining.id!);
             if (isSuccess) {
-              Get.offNamedUntil(HomePage.routeName, (route) => false);
+              context.go(HomePage.routeName);
             }
           },
           child: const Text("DELETE",
@@ -153,7 +154,7 @@ class _WorkoutShowDescriptionState extends State<WorkoutShowDescription> {
               }
               return InkWell(
                 onTap: () {
-                  Get.to(
+                  Get.dialog(
                       NewExerciseView(onExerciseChosen: (RealisedExercise exo) {
                     BlocProvider.of<WorkoutEditBloc>(context)
                         .add(AddedExerciseEvent(exo: exo));

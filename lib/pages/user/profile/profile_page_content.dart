@@ -10,11 +10,11 @@ import 'package:enter_training_me/pages/user/profile/sections/muscle_profile_sec
 import 'package:enter_training_me/pages/user/profile/sections/profile_header.dart';
 import 'package:enter_training_me/pages/user/profile/sections/profile_last_training_section.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
-import 'package:enter_training_me/widgets/dialog/double_return_dialog.dart';
 import 'package:enter_training_me/widgets/dialog/return_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePageContent extends StatefulWidget {
   const ProfilePageContent({Key? key}) : super(key: key);
@@ -48,7 +48,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                   IconButton(
                       alignment: Alignment.centerLeft,
                       onPressed: () {
-                        Get.toNamed(HomePage.routeName);
+                        context.go(HomePage.routeName);
                       },
                       icon: const Icon(Icons.chevron_left,
                           color: Colors.white, size: 40)),
@@ -60,7 +60,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                   ))),
                   IconButton(
                       onPressed: () {
-                        Get.toNamed(PreferencesPage.routeName);
+                        context.go(PreferencesPage.routeName);
                       },
                       icon: const Icon(Icons.settings, color: Colors.white)),
                 ],

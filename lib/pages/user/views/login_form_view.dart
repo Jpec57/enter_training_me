@@ -7,6 +7,7 @@ import 'package:enter_training_me/widgets/clippers/clippers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginFormView extends StatelessWidget {
   const LoginFormView({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class LoginFormView extends StatelessWidget {
                       top: 0,
                       child: IconButton(
                           onPressed: () {
-                            Get.offNamed(HomePage.routeName);
+                            context.go(HomePage.routeName);
                           },
                           icon: const Icon(Icons.chevron_left,
                               color: Colors.white, size: 40))),
@@ -130,7 +131,7 @@ class LoginFormView extends StatelessWidget {
                     "Not a member yet ? Join us!",
                   ),
                   onPressed: () {
-                    Get.toNamed(RegisterPage.routeName);
+                    context.go(RegisterPage.routeName);
                   },
                 ),
               ],

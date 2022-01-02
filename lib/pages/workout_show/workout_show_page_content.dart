@@ -9,6 +9,7 @@ import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class WorkoutShowPageContent extends StatefulWidget {
   final Training referenceTraining;
@@ -74,7 +75,7 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
             if (Navigator.canPop(context)) {
               Navigator.of(context).pop();
             } else {
-              Get.toNamed(HomePage.routeName);
+              context.go(HomePage.routeName);
             }
           },
         ),
@@ -140,9 +141,8 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
             ),
             TextButton(
               onPressed: () {
-                Get.toNamed(InWorkoutPage.routeName, arguments: {
-                  "referenceTrainingId": widget.referenceTraining.id
-                });
+                context.go(InWorkoutPage.routeName.replaceFirst(
+                    ':id', widget.referenceTraining.id.toString()));
               },
               child: const Text("Start workout"),
             ),

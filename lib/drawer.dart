@@ -1,8 +1,8 @@
+import 'package:go_router/go_router.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/navigation/main_routing.dart';
 import 'package:enter_training_me/navigation/navigation_element.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -10,7 +10,8 @@ class MyDrawer extends StatelessWidget {
   static const listItemStyle =
       TextStyle(color: Colors.black87, fontStyle: FontStyle.italic);
 
-  Widget _renderNavigatorElement(NavigationElement element) {
+  Widget _renderNavigatorElement(
+      BuildContext context, NavigationElement element) {
     return ListTile(
       leading: Icon(element.iconData),
       title: Text(
@@ -18,7 +19,7 @@ class MyDrawer extends StatelessWidget {
         style: listItemStyle,
       ),
       onTap: () {
-        Get.toNamed(element.routeName);
+        context.go(element.routeName);
       },
     );
   }
@@ -43,9 +44,9 @@ class MyDrawer extends StatelessWidget {
                 color: CustomTheme.middleGreen,
               ),
             ),
-            _renderNavigatorElement(MainRouting.homeNavigationElement),
+            _renderNavigatorElement(context, MainRouting.homeNavigationElement),
             ...MainRouting.mainNavigationElements
-                .map((element) => _renderNavigatorElement(element))
+                .map((element) => _renderNavigatorElement(context, element))
                 .toList(),
           ],
         ),

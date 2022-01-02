@@ -41,7 +41,7 @@ class _CommunityPageState extends State<CommunityPage>
     return Scaffold(
       resizeToAvoidBottomInset: true,
       floatingActionButton: showFab
-          ? CustomBottomNavigationBar.getCenteredFloatingButton(
+          ? CustomBottomNavigationBar.getCenteredFloatingButton(context, 
               isSelected: false)
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -3,7 +3,7 @@ import 'package:enter_training_me/authentication/authentication.dart';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/cached_request.dart';
 import 'package:enter_training_me/navigation/main_routing.dart';
-import 'package:enter_training_me/pages/home/home_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:enter_training_me/services/repositories/execution_style_repository.dart';
 import 'package:enter_training_me/services/repositories/exercise_format_repository.dart';
@@ -12,12 +12,12 @@ import 'package:enter_training_me/services/repositories/ranking_repository.dart'
 import 'package:enter_training_me/services/repositories/reference_exercise_repository.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
-import 'package:enter_training_me/splash_screen.dart';
 import 'package:enter_training_me/translations/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<Widget> createApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var routing = MainRouting();
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -75,27 +76,42 @@ class MyApp extends StatelessWidget {
           currentFocus.focusedChild?.unfocus();
         }
       },
-      child: GetMaterialApp(
+      child: MaterialApp.router(
         title: 'EnterTrainingMe',
         restorationScopeId: 'root',
-        translations: Messages(),
+        key: Get.key,
+        debugShowCheckedModeBanner: false,
+        routeInformationParser: routing.goRouter.routeInformationParser,
+        routerDelegate: routing.goRouter.routerDelegate,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        // localizationsDelegates:  [
+        //   AppLocalizations.delegate, // Add this line
+        //   GlobalMaterialLocalizations.delegate,
+        //   GlobalWidgetsLocalizations.delegate,
+        //   GlobalCupertinoLocalizations.delegate,
+        // ],
+        // supportedLocales: Messages.supportedLocales
+        //     .map((e) => Messages.getLocaleFromFullLocaleString(e))
+        //     .toList(),
         locale: Get.deviceLocale ?? Messages.defaultLocale,
-        fallbackLocale: Messages.defaultLocale,
+        // translations: Messages(),
+        // fallbackLocale: Messages.defaultLocale,
         theme: CustomTheme.theme,
-        onGenerateRoute: (settings) => MainRouting.onGenerateRoutes(settings),
-        routes: MainRouting.routes(context),
-        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            switch (state.status) {
-              case AuthenticationStatus.authenticated:
-                return const HomePage();
-              case AuthenticationStatus.unauthenticated:
-                return const HomePage();
-              default:
-                return const SplashPage();
-            }
-          },
-        ),
+        // onGenerateRoute: (settings) => MainRouting.onGenerateRoutes(settings),
+        // routes: MainRouting.routes(context),
+        // home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        //   builder: (context, state) {
+        //     switch (state.status) {
+        //       case AuthenticationStatus.authenticated:
+        //         return const HomePage();
+        //       case AuthenticationStatus.unauthenticated:
+        //         return const HomePage();
+        //       default:
+        //         return const SplashPage();
+        //     }
+        //   },
+        // ),
       ),
     );
   }

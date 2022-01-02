@@ -43,7 +43,7 @@ class _QuickCountdownPageState extends State<QuickCountdownPage>
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton:
-          CustomBottomNavigationBar.getCenteredFloatingButton(),
+          CustomBottomNavigationBar.getCenteredFloatingButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(
           selectedRoute: QuickCountdownPage.routeName),

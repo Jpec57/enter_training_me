@@ -7,6 +7,7 @@ import 'package:enter_training_me/widgets/user/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class FeedWorkout extends StatelessWidget {
   final Training referenceTraining;
@@ -93,8 +94,8 @@ class FeedWorkout extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  Get.toNamed(WorkoutShowPage.routeName,
-                      arguments: {"trainingId": referenceTraining.id});
+                  context.go(WorkoutShowPage.routeName
+                      .replaceFirst(':id', referenceTraining.id.toString()));
                 },
                 child: Container(
                     color: CustomTheme.grey,

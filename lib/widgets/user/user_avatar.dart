@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/services/interfaces/api_service.dart';
 import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
 
 class UserAvatar extends StatelessWidget {
   final User? user;
@@ -20,12 +19,7 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap
-      // ??
-      //     () {
-      //       // Get.toNamed(Profile)
-      //     }
-      ,
+      onTap: onTap,
       child: CircleAvatar(
         radius: radius,
         child: user != null && user!.profilePicturePath != null

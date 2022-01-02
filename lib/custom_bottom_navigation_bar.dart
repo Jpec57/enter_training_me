@@ -1,9 +1,8 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/navigation/main_routing.dart';
 import 'package:enter_training_me/navigation/navigation_element.dart';
-import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final String selectedRoute;
@@ -13,12 +12,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({Key? key, required this.selectedRoute})
       : super(key: key);
 
-  static Widget getCenteredFloatingButton({bool isSelected = false}) {
+  static Widget getCenteredFloatingButton(BuildContext context,
+      {bool isSelected = false}) {
     return FloatingActionButton(
         backgroundColor: CustomTheme.greenGrey,
         onPressed: () {
-          Get.offNamedUntil(MainRouting.homeNavigationElement.routeName,
-              ModalRoute.withName(HomePage.routeName));
+          context.go(MainRouting.homeNavigationElement.routeName);
         },
         tooltip: MainRouting.homeNavigationElement.title,
         child: Icon(
@@ -30,22 +29,21 @@ class CustomBottomNavigationBar extends StatelessWidget {
   }
 
   Widget _renderBottomNavigationItem(
-      NavigationElement element, bool isSelected) {
+      BuildContext context, NavigationElement element, bool isSelected) {
     return IconButton(
         icon: Icon(element.iconData),
         color: isSelected
             ? _bottomNavigationBarSelectedColor
             : _bottomNavigationBarColor,
         onPressed: () {
-          Get.offNamedUntil(
-              element.routeName, ModalRoute.withName(HomePage.routeName));
+          context.go(element.routeName);
         });
   }
 
-  List<Widget> _renderElements(String selectedRoute) {
+  List<Widget> _renderElements(String selectedRoute, BuildContext context) {
     List<Widget> elements = MainRouting.mainNavigationElements
         .map((element) => _renderBottomNavigationItem(
-            element, element.routeName == selectedRoute))
+            context, element, element.routeName == selectedRoute))
         .toList();
     int len = elements.length;
     if (len % 2 == 0) {
@@ -68,6 +66,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
         child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _renderElements(selectedRoute)));
+            children: _renderElements(selectedRoute, context)));
   }
 }

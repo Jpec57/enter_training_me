@@ -34,6 +34,10 @@ https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/r
 DefaultCacheManager manager = new DefaultCacheManager();
 manager.emptyCache(); //clears all data in cache.
 
+# Translation
+
+flutter gen-l10n
+
 # TODO
 
 - change TrainingBar with exo section

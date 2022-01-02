@@ -5,8 +5,7 @@ import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/review_stars.dart';
 import 'package:enter_training_me/widgets/user/user_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:go_router/go_router.dart';
 class CoachCard extends StatelessWidget {
   final User coach;
   const CoachCard({Key? key, required this.coach}) : super(key: key);
@@ -15,9 +14,7 @@ class CoachCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(CoachPage.routeName, arguments: {
-          "coachUserId": coach.id
-        });
+        context.go(CoachPage.routeName, extra: {"coachUserId": coach.id});
       },
       child: Card(
         color: CustomTheme.greenGrey,
@@ -48,8 +45,7 @@ class CoachCard extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: const [
                               Padding(
-                                padding:
-                                   EdgeInsets.symmetric(horizontal: 5.0),
+                                padding: EdgeInsets.symmetric(horizontal: 5.0),
                                 child: Text("3",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
@@ -61,7 +57,7 @@ class CoachCard extends StatelessWidget {
                       ),
                     ),
                     const Padding(
-                      padding:  EdgeInsets.symmetric(vertical: 12.0),
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
                       child: Text("#strength, #bodybuilding, #lifestyle",
                           style: TextStyle(fontStyle: FontStyle.italic)),
                     ),

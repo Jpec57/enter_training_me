@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LogPage extends StatefulWidget {
-  static const routeName = "/log";
+  static const routeName = "/log/:id";
   final int? userId;
 
   const LogPage({Key? key, required this.userId}) : super(key: key);
@@ -89,7 +89,7 @@ class LogPageContent extends StatelessWidget {
     final bool isKeyboardDown = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
       floatingActionButton: isKeyboardDown
-          ? CustomBottomNavigationBar.getCenteredFloatingButton()
+          ? CustomBottomNavigationBar.getCenteredFloatingButton(context)
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(

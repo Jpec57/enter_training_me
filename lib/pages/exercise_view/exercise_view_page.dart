@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ExerciseViewPage extends StatelessWidget {
-  static const routeName = "/exercise/view";
+  static const routeName = "/exercise/:id";
 
   const ExerciseViewPage({Key? key}) : super(key: key);
 

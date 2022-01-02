@@ -5,7 +5,7 @@ import 'package:enter_training_me/pages/user/user_page.dart';
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterPage extends StatelessWidget {
   static const routeName = "/register";
@@ -51,7 +51,7 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
                         IconButton(
                             alignment: Alignment.centerLeft,
                             onPressed: () {
-                              Get.toNamed(HomePage.routeName);
+                              context.go(HomePage.routeName);
                             },
                             icon: const Icon(Icons.chevron_left,
                                 color: Colors.white, size: 40)),
@@ -197,7 +197,7 @@ class _RegisterPageContentState extends State<RegisterPageContent> {
                       "Already a member yet ? Log in",
                     ),
                     onPressed: () {
-                      Get.toNamed(UserPage.routeName);
+                      context.go(UserPage.routeName);
                     },
                   )
                 ],

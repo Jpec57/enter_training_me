@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class CoachPage extends StatefulWidget {
-  static const routeName = "/coaching/show";
+  static const routeName = "/coach/:id";
   final int coachUserId;
 
   const CoachPage({Key? key, required this.coachUserId}) : super(key: key);

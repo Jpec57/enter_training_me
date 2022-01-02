@@ -1,10 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/exercise_list/exercise_hero.dart';
-import 'package:enter_training_me/pages/exercise_list/exercise_view_page_arguments.dart';
 import 'package:enter_training_me/pages/exercise_view/exercise_view_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class ExerciseListPage extends StatefulWidget {
   static const routeName = "/exercises";
@@ -55,14 +52,8 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
                     return ExerciseHero(
                       index: index,
                       onTap: () {
-                        Get.toNamed(ExerciseViewPage.routeName,
-                            arguments: ExerciseViewPageArguments(
-                                exercise: const ReferenceExercise(
-                                    id: 1,
-                                    reference: "C1",
-                                    name: "Pull ups",
-                                    description: "",
-                                    strainessFactor: 0.5)));
+                        context.go(ExerciseViewPage.routeName
+                            .replaceFirst(':id', 1.toString()));
                       },
                     );
                   }),

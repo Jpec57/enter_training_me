@@ -14,9 +14,11 @@ import 'package:enter_training_me/widgets/texts/headline3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = "/home";
+  static const routeName = "/";
 
   const HomePage({Key? key}) : super(key: key);
 
@@ -42,8 +44,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     BlocProvider.of<AppBloc>(context);
     return Scaffold(
-      floatingActionButton:
-          CustomBottomNavigationBar.getCenteredFloatingButton(isSelected: true),
+      floatingActionButton: CustomBottomNavigationBar.getCenteredFloatingButton(
+          context,
+          isSelected: true),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(
         selectedRoute: HomePage.routeName,
@@ -61,7 +64,8 @@ class _HomePageState extends State<HomePage> {
                   buildWhen: (prev, next) => prev.user != next.user,
                   builder: (context, state) {
                     if (state.user == null) {
-                      return Text("welcome_anonymous".tr,
+                      return Text(
+                          AppLocalizations.of(context).welcome_anonymous,
                           style: Theme.of(context).textTheme.headline4);
                     }
                     User user = state.user as User;
@@ -186,12 +190,10 @@ class _HomePageState extends State<HomePage> {
     ));
     if (autoPlay != null) {
       if (autoPlay) {
-        Get.to(const InWorkoutPage(referenceTrainingId: null));
+        context.go(InWorkoutPage.routeName.replaceFirst(':id', ''));
       } else {
-        Get.to(const WorkoutShowPage(
-          trainingId: null,
-          isEditing: true,
-        ));
+        // isEditing: true,
+        context.go(WorkoutShowPage.routeName.replaceFirst(':id', ''));
       }
     }
   }

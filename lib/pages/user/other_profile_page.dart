@@ -8,10 +8,10 @@ import 'package:enter_training_me/pages/user/profile/sections/profile_header.dar
 import 'package:enter_training_me/services/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class OtherProfilePage extends StatefulWidget {
-  static const routeName = "profile/other";
+  static const routeName = "/profile/other/:id";
   final int userId;
 
   const OtherProfilePage({Key? key, required this.userId}) : super(key: key);
@@ -95,7 +95,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                   IconButton(
                       alignment: Alignment.centerLeft,
                       onPressed: () {
-                        Get.toNamed(HomePage.routeName);
+                        context.go(HomePage.routeName);
                       },
                       icon: const Icon(Icons.chevron_left,
                           color: Colors.white, size: 40)),
@@ -107,7 +107,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                   ))),
                   IconButton(
                       onPressed: () {
-                        Get.toNamed(PreferencesPage.routeName);
+                        context.go(PreferencesPage.routeName);
                       },
                       icon: const Icon(Icons.settings, color: Colors.white)),
                 ],

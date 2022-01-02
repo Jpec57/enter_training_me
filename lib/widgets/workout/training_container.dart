@@ -6,6 +6,7 @@ import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class TrainingContainer extends StatelessWidget {
   final Training referenceTraining;
@@ -43,11 +44,8 @@ class TrainingContainer extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    Navigator.restorablePushNamed(context, WorkoutShowPage.routeName,
-        arguments: {"trainingId": referenceTraining.id});
-    // Get.toNamed(WorkoutShowPage.routeName,
-    //     arguments:
-    //         WorkoutShowPageArguments(referenceTraining: referenceTraining));
+    context.go(WorkoutShowPage.routeName
+        .replaceFirst(':id', referenceTraining.id.toString()));
   }
 
   @override

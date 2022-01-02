@@ -7,13 +7,16 @@ import 'package:enter_training_me/services/repositories/training_repository.dart
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 part 'workout_edit_event.dart';
 part 'workout_edit_state.dart';
 
 class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
   final TrainingRepository trainingRepository;
-  WorkoutEditBloc(this.trainingRepository, Training training,
+  final GoRouter router;
+
+  WorkoutEditBloc(this.router, this.trainingRepository, Training training,
       {bool isEditingAtStartAlready = false})
       : super(WorkoutEditState(
             training: training, isEditting: isEditingAtStartAlready)) {
@@ -103,10 +106,8 @@ class WorkoutEditBloc extends Bloc<WorkoutEditEvent, WorkoutEditState> {
             if (training.id != null) {
               await trainingRepository.saveTrainingAction(training.id!);
             }
-
-            Get.offNamedUntil(WorkoutShowPage.routeName,
-                ModalRoute.withName(HomePage.routeName),
-                arguments: {"trainingId": training.id});
+            router.go(WorkoutShowPage.routeName
+                .replaceFirst(':id', training.id.toString()));
           }
         } else {
           training = await trainingRepository.patch(

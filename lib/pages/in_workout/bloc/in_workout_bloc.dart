@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 part 'in_workout_event.dart';
 part 'in_workout_state.dart';
@@ -26,8 +27,9 @@ enum InWorkoutView {
 
 class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   final TrainingRepository trainingRepository;
+  final GoRouter router;
 
-  InWorkoutBloc(this.trainingRepository, int? referenceTrainingId,
+  InWorkoutBloc(this.router, this.trainingRepository, int? referenceTrainingId,
       Training realisedTraining)
       : super(InWorkoutState(
             referenceTrainingId: referenceTrainingId,
@@ -193,8 +195,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   void _onTrainingLeftEvent(
       TrainingLeftEvent event, Emitter<InWorkoutState> emit) async {
     //Erase all sets above the current one and save training with query
-    Get.offNamedUntil(
-        CommunityPage.routeName, ModalRoute.withName(HomePage.routeName));
+    router.go(CommunityPage.routeName);
   }
 
   void _onChangedTrainingName(

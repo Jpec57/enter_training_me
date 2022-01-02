@@ -14,12 +14,13 @@ import 'package:enter_training_me/services/repositories/training_repository.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wakelock/wakelock.dart';
 
 class InWorkoutPage extends StatefulWidget {
   final int? referenceTrainingId;
 
-  static const routeName = "/workout/in";
+  static const routeName = "/workout/in/:id";
 
   const InWorkoutPage({Key? key, required this.referenceTrainingId})
       : super(key: key);
@@ -57,8 +58,10 @@ class _InWorkoutPageState extends State<InWorkoutPage> {
             child: Text('error'.tr),
           );
         }
+        final router = GoRouter.of(context);
         return BlocProvider(
           create: (BuildContext context) => InWorkoutBloc(
+            router,
             RepositoryProvider.of<TrainingRepository>(context),
             snapshot.data?.id,
             Training.clone(snapshot.data),

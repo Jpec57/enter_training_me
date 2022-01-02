@@ -11,6 +11,7 @@ import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 part 'views/workout_info_view.dart';
 part 'views/workout_history_view.dart';
@@ -19,7 +20,7 @@ class WorkoutShowPage extends StatefulWidget {
   const WorkoutShowPage(
       {Key? key, required this.trainingId, this.isEditing = false})
       : super(key: key);
-  static const routeName = "/workout/show";
+  static const routeName = "/workout/:id";
   final int? trainingId;
   final bool isEditing;
 
@@ -46,6 +47,8 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
 
   @override
   Widget build(BuildContext context) {
+    final router = GoRouter.of(context);
+
     return FutureBuilder(
       future: _trainingFuture,
       builder: (BuildContext context, AsyncSnapshot<Training> snapshot) {
@@ -55,6 +58,7 @@ class _WorkoutShowPageState extends State<WorkoutShowPage>
           return BlocProvider<WorkoutEditBloc>(
             lazy: false,
             create: (context) => WorkoutEditBloc(
+                router,
                 RepositoryProvider.of<TrainingRepository>(context),
                 referenceTraining,
                 isEditingAtStartAlready: widget.isEditing),

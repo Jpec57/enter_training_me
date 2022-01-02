@@ -83,7 +83,7 @@ class WorkoutEditExerciseCard extends StatelessWidget {
               child: InkWell(
                 onTap: isEditting
                     ? () async {
-                        Get.to(NewExerciseView(
+                        Get.dialog(NewExerciseView(
                             editedExercise: exo,
                             onExerciseChosen: (exo) {
                               BlocProvider.of<WorkoutEditBloc>(context).add(

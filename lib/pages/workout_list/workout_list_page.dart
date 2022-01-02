@@ -1,7 +1,6 @@
 import 'package:enter_training_me/pages/in_workout/in_workout_page.dart';
-import 'package:enter_training_me/widgets/countdown_timer/countdown_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class WorkoutListPage extends StatefulWidget {
   static const routeName = "/workouts";
@@ -23,7 +22,7 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text("Workout list", style: TextStyle(color: Colors.white)),
+              const Text("Workout list", style: TextStyle(color: Colors.white)),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 200,
@@ -36,7 +35,7 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: InkWell(
                           onTap: () {
-                            Get.toNamed(InWorkoutPage.routeName);
+                            context.go(InWorkoutPage.routeName);
                           },
                           child: Container(
                             height: 200,
@@ -46,7 +45,7 @@ class _WorkoutListPageState extends State<WorkoutListPage> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20)),
                             child: Text("Toto $i",
-                                style: TextStyle(color: Colors.black)),
+                                style: const TextStyle(color: Colors.black)),
                           ),
                         ),
                       );

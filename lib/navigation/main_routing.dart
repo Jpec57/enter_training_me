@@ -16,13 +16,10 @@ import 'package:enter_training_me/pages/user/user_page.dart';
 import 'package:enter_training_me/pages/workout_list/workout_list_page.dart';
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MainRouting {
-  // static const home = OneRMPage();
   static const home = HomePage();
-  // static const home = InWorkoutPage(
-  // referenceTraining: Training(name: "Tmp Training", cycles: []),
-  // );
 
   static const homeNavigationElement = NavigationElement(
     title: "Home",
@@ -48,13 +45,6 @@ class MainRouting {
   ];
 
   static onGenerateRoutes(settings) {
-    if (settings.name == InWorkoutPage.routeName) {
-      var args = settings.arguments;
-      return MaterialPageRoute(
-          builder: (context) => InWorkoutPage(
-                referenceTrainingId: args["referenceTrainingId"],
-              ));
-    }
     if (settings.name == CoachPage.routeName) {
       var args = settings.arguments;
       return MaterialPageRoute(
@@ -62,48 +52,105 @@ class MainRouting {
                 coachUserId: args['coachUserId'],
               ));
     }
-    if (settings.name == LogPage.routeName) {
-      var args = settings.arguments;
-      return MaterialPageRoute(
-          builder: (context) => LogPage(
-                userId: args != null ? args['userId'] : null,
-              ));
-    }
-
-    if (settings.name == WorkoutShowPage.routeName) {
-      var args = settings.arguments;
-      return MaterialPageRoute(
-          builder: (context) => WorkoutShowPage(
-                trainingId: args['trainingId'],
-              ));
-    }
-
-    if (settings.name == OtherProfilePage.routeName) {
-      var args = settings.arguments;
-      return MaterialPageRoute(
-          builder: (context) => OtherProfilePage(
-                userId: args['userId'],
-              ));
-    }
     assert(false, 'Need to implement ${settings.name}');
     return null;
   }
 
-  static routes(BuildContext context) => {
-        HomePage.routeName: (context) => const HomePage(),
-        ExerciseViewPage.routeName: (context) => const ExerciseViewPage(),
-        CommunityPage.routeName: (context) => const CommunityPage(),
-        PreferencesPage.routeName: (context) => const PreferencesPage(),
-        RegisterPage.routeName: (context) => const RegisterPage(),
-        UserPage.routeName: (context) => const UserPage(),
-        TestPage.routeName: (context) => const TestPage(),
-        QuickCountdownPage.routeName: (context) => const QuickCountdownPage(),
-        OneRMPage.routeName: (context) => const OneRMPage(),
-        WorkoutListPage.routeName: (context) => const WorkoutListPage(),
-        ExerciseListPage.routeName: (context) => const ExerciseListPage()
-      };
+  final goRouter = GoRouter(
+    routes: [
+      GoRoute(
+        path: CoachPage.routeName,
+        builder: (context, state) {
+          var coachUserId = int.parse(state.params['id']!);
+          return CoachPage(
+            coachUserId: coachUserId,
+          );
+        },
+      ),
+      GoRoute(
+        path: LogPage.routeName,
+        builder: (context, state) {
+          var userId = (state.params['id'] != null)
+              ? int.parse(state.params['id']!)
+              : null;
+          return LogPage(
+            userId: userId,
+          );
+        },
+      ),
+      GoRoute(
+        path: WorkoutShowPage.routeName,
+        builder: (context, state) {
+          var trainingId = int.parse(state.params['id']!);
+          return WorkoutShowPage(
+            trainingId: trainingId,
+          );
+        },
+      ),
+      GoRoute(
+        path: OtherProfilePage.routeName,
+        builder: (context, state) {
+          var userId = int.parse(state.params['id']!);
+          return OtherProfilePage(
+            userId: userId,
+          );
+        },
+      ),
+      GoRoute(
+        path: InWorkoutPage.routeName,
+        builder: (context, state) {
+          var refId = (state.params['id'] != null)
+              ? int.parse(state.params['id']!)
+              : null;
+          return InWorkoutPage(
+            referenceTrainingId: refId,
+          );
+        },
+      ),
+      GoRoute(
+        path: HomePage.routeName,
+        builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: ExerciseViewPage.routeName,
+        builder: (context, state) => const ExerciseViewPage(),
+      ),
+      GoRoute(
+        path: CommunityPage.routeName,
+        builder: (context, state) => const CommunityPage(),
+      ),
+      GoRoute(
+        path: PreferencesPage.routeName,
+        builder: (context, state) => const PreferencesPage(),
+      ),
+      GoRoute(
+        path: WorkoutListPage.routeName,
+        builder: (context, state) => const WorkoutListPage(),
+      ),
+      GoRoute(
+        path: ExerciseListPage.routeName,
+        builder: (context, state) => const ExerciseListPage(),
+      ),
+      GoRoute(
+        path: OneRMPage.routeName,
+        builder: (context, state) => const OneRMPage(),
+      ),
+      GoRoute(
+        path: QuickCountdownPage.routeName,
+        builder: (context, state) => const QuickCountdownPage(),
+      ),
+      GoRoute(
+        path: TestPage.routeName,
+        builder: (context, state) => const TestPage(),
+      ),
+      GoRoute(
+        path: UserPage.routeName,
+        builder: (context, state) => const UserPage(),
+      ),
+      GoRoute(
+        path: RegisterPage.routeName,
+        builder: (context, state) => const RegisterPage(),
+      ),
+    ],
+  );
 }
-/*
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    int? userId = int.parse(await storage.read(key: StorageConstants.userId));
-    */
