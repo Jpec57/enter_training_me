@@ -1,5 +1,6 @@
 import 'package:enter_training_me/models/realised_exercise.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_state.dart';
 import 'package:enter_training_me/pages/in_workout/views/new_exercise/add_new_exercise_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/community/community_page.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_view_enum.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -13,19 +13,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'in_workout_state.dart';
 
 part 'in_workout_event.dart';
-part 'in_workout_state.dart';
 
-enum InWorkoutView {
-  inExerciseView,
-  inRestView,
-  endWorkoutView,
-  newExerciseView
-}
-
-class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
+class InWorkoutBloc extends HydratedBloc<InWorkoutEvent, InWorkoutState> {
   final TrainingRepository trainingRepository;
   final GoRouter router;
 
@@ -54,6 +47,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     on<ExerciseDoneEvent>(_onExerciseDoneEvent);
   }
 
+  @override
+  InWorkoutState? fromJson(Map<String, dynamic> json) {
+    return InWorkoutState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(InWorkoutState state) {
+    return state.toJson();
+  }
+
   void _onExerciseDoneEvent(
       ExerciseDoneEvent event, Emitter<InWorkoutState> emit) async {
     bool isSoundOn = await const FlutterSecureStorage()
@@ -78,16 +81,16 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         currentView: InWorkoutView.inRestView));
   }
 
-  Future<void> savingTrainingContext() async {
-    debugPrint("Saving context");
-    //Current Exo, Set, isResting or not
-    // var box = await Hive.openBox('trainingBox');
-    var box = await Hive.openBox('tBox');
-    print(state.realisedTraining);
-    box.put('currentExoIndex', state.currentExoIndex);
-    box.put('currentSetIndex', state.currentSetIndex);
-    
-  }
+  // Future<void> savingTrainingContext() async {
+  //   debugPrint("Saving context");
+  //   //Current Exo, Set, isResting or not
+  //   // var box = await Hive.openBox('trainingBox');
+  //   var box = await Hive.openBox('tBox');
+  //   print(state.realisedTraining);
+  //   box.put('currentExoIndex', state.currentExoIndex);
+  //   box.put('currentSetIndex', state.currentSetIndex);
+
+  // }
 
   void _onRestDoneEvent(
       RestDoneEvent event, Emitter<InWorkoutState> emit) async {
@@ -105,7 +108,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
       emit(state.copyWith(isEnd: true, realisedTrainingId: training?.id));
     } else {
       //Saving state in case we lose the context
-      savingTrainingContext();
+      // savingTrainingContext();
     }
     emit(state.copyWith(
         isEnd: state.isEndOfWorkout,

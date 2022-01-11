@@ -8,9 +8,9 @@ part of 'reference_exercise.dart';
 
 ReferenceExercise _$ReferenceExerciseFromJson(Map<String, dynamic> json) =>
     ReferenceExercise(
-      id: json['id'] as int,
+      id: json['id'] as int?,
       name: json['name'] as String,
-      reference: json['reference'] as String,
+      reference: json['reference'] as String? ?? "B1",
       material: (json['material'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -21,7 +21,7 @@ ReferenceExercise _$ReferenceExerciseFromJson(Map<String, dynamic> json) =>
               ?.map((e) => MuscleActivation.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      strainessFactor: (json['strainessFactor'] as num).toDouble(),
+      strainessFactor: (json['strainessFactor'] as num?)?.toDouble() ?? 0.5,
       description: json['description'] as String?,
     );
 

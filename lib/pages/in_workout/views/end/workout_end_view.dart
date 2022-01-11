@@ -1,6 +1,8 @@
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_state.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_view_enum.dart';
 import 'package:enter_training_me/pages/in_workout/views/end/rename_training_dialog.dart';
 import 'package:enter_training_me/pages/workout_show/workout_metric.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
@@ -11,7 +13,6 @@ import 'package:enter_training_me/widgets/section_divider.dart';
 import 'package:enter_training_me/widgets/workout/workout_training_summary_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 part 'end_workout_analysis.dart';
 
 class WorkoutEndView extends StatefulWidget {

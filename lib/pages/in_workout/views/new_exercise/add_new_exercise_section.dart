@@ -1,4 +1,5 @@
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_view_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

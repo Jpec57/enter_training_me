@@ -18,6 +18,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<Widget> createApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,7 +61,16 @@ Future<Widget> createApp() async {
 }
 
 Future<void> main() async {
-  runApp(await createApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
+  );
+  Widget app = await createApp();
+  HydratedBlocOverrides.runZoned(
+    () => runApp(app),
+    storage: storage,
+  );
+  // runApp(await createApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -13,6 +13,7 @@ dependencies:
   google_fonts: ^2.1.0
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.0.1
+  hydrated_bloc: ^8.0.0
   json_serializable: ^5.0.2
   json_annotation: ^4.1.0
   build_runner: ^2.1.1
@@ -48,6 +49,7 @@ dependencies:
   freezed_annotation: ^0.15.0
   go_router: ^2.5.2
   intl_utils: ^2.6.0
+  path_provider: ^2.0.8
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:enter_training_me/mixins/bip_player_mixin.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

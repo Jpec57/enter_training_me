@@ -1,18 +1,23 @@
-part of 'in_workout_bloc.dart';
+import 'package:enter_training_me/models/models.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_view_enum.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'in_workout_state.g.dart';
+
+@JsonSerializable()
 class InWorkoutState extends Equatable {
   final int? referenceTrainingId;
   final Training realisedTraining;
   final int currentCycleIndex;
   final int currentExoIndex;
   final int currentSetIndex;
-  final bool isEnd;
   final int elapsedTime;
+  final int reallyDoneReps;
   final int? realisedTrainingId;
+  final bool isEnd;
   final InWorkoutView currentView;
   final Map<String, dynamic> changes;
-
-  final int reallyDoneReps;
 
   const InWorkoutState(
       {this.referenceTrainingId,
@@ -26,6 +31,10 @@ class InWorkoutState extends Equatable {
       this.currentView = InWorkoutView.inExerciseView,
       this.currentSetIndex = 0,
       this.reallyDoneReps = 0});
+
+  factory InWorkoutState.fromJson(Map<String, dynamic> json) =>
+      _$InWorkoutStateFromJson(json);
+  Map<String, dynamic> toJson() => _$InWorkoutStateToJson(this);
 
   double get progress {
     int totalDoneSets = 0;

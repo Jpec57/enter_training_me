@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:enter_training_me/custom_theme.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_state.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_view_enum.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/headers/training_header_bar.dart';
 import 'package:enter_training_me/pages/in_workout/views/in_exercise/current_exercise_details.dart';
 import 'package:enter_training_me/pages/in_workout/views/in_exercise/in_workout_exercise_view.dart';

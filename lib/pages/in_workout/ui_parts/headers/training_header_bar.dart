@@ -1,12 +1,12 @@
 import 'package:enter_training_me/app_preferences/bloc/app_bloc.dart';
 import 'package:enter_training_me/pages/in_workout/bloc/in_workout_bloc.dart';
+import 'package:enter_training_me/pages/in_workout/bloc/in_workout_state.dart';
 import 'package:enter_training_me/pages/in_workout/ui_parts/headers/training_progress_bar.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:enter_training_me/utils/utils.dart';
 import 'package:enter_training_me/widgets/dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class TrainingHeaderBar extends StatelessWidget {
   const TrainingHeaderBar({Key? key}) : super(key: key);
