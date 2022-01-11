@@ -86,7 +86,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
   void showRepsModal(BuildContext context, int setIndex) {
     showDialog(
         context: context,
-        builder: (context) => ChangeExerciseSetDialog<int>(
+        builder: (dialogContext) => ChangeExerciseSetDialog<int>(
               currentValue: _setList[setIndex].reps,
               title: "How many reps do you intent to do ?",
               setForOneCallback: (value) {
@@ -102,7 +102,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
   void showWeightModal(BuildContext context, int setIndex) {
     showDialog(
         context: context,
-        builder: (context) => ChangeExerciseSetDialog<double>(
+        builder: (dialogContext) => ChangeExerciseSetDialog<double>(
               title: "How heavy do you intent to lift ?",
               currentValue: _setList[setIndex].weight,
               showQuickIntIncrease: false,
@@ -230,7 +230,7 @@ class _NewExerciseViewState extends State<NewExerciseView> {
                 onTap: () {
                   showDialog(
                       context: context,
-                      builder: (context) => ChooseExerciseDialog(
+                      builder: (dialogContext) => ChooseExerciseDialog(
                             onExerciseChosen: (ReferenceExercise exo) {
                               if (exo.isOnlyIsometric) {
                                 isIsometric = true;

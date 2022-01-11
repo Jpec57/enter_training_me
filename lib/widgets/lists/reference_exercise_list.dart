@@ -111,7 +111,7 @@ class _ReferenceExerciseListState extends State<ReferenceExerciseList> {
                           onTap: () {
                             showDialog(
                                 context: context,
-                                builder: (context) =>
+                                builder: (dialogContext) =>
                                     CreateExerciseReferenceDialog(
                                       callback: (ReferenceExercise? refExo) {
                                         if (refExo != null) {

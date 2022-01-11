@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
   void _onNewPersonalWorkoutButtonTap() async {
     bool? autoPlay = await showDialog(
         context: context,
-        builder: (context) {
+        builder: (dialogContext) {
           return ConfirmDialog(
             title: "direct_play_or_save_for_later".tr,
             message: "create_as_you_go".tr,

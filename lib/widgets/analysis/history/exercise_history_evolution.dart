@@ -227,7 +227,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
             onTap: () {
               showBottomSheet(
                   context: context,
-                  builder: (context) => Container(
+                  builder: (dialogContext) => Container(
                         color: Colors.grey[900],
                         height: MediaQuery.of(context).size.height * 0.6,
                         child: SafeArea(
@@ -249,7 +249,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
                                     onExerciseChosen:
                                         (ReferenceExercise exercise) {
                                       reloadSpots(exercise);
-                                      Navigator.of(context).pop();
+                                      Navigator.of(dialogContext).pop();
                                     }),
                               )
                             ],

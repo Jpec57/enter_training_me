@@ -4,7 +4,6 @@ import 'package:enter_training_me/pages/in_workout/views/in_exercise/isometric_e
 import 'package:enter_training_me/widgets/dialog/change_exercise_set_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class InWorkoutExerciseView extends StatelessWidget {
   final BuildContext parentBuildContext;
@@ -12,7 +11,7 @@ class InWorkoutExerciseView extends StatelessWidget {
       : super(key: key);
 
   void showModal(BuildContext context, Widget dialog) async {
-    await showDialog(context: context, builder: (context) => dialog);
+    await showDialog(context: context, builder: (dialogContext) => dialog);
   }
 
   void showSetsModal(BuildContext context, InWorkoutState state) {

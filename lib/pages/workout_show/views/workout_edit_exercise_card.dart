@@ -85,7 +85,7 @@ class WorkoutEditExerciseCard extends StatelessWidget {
                     ? () async {
                         showDialog(
                             context: context,
-                            builder: (context) => NewExerciseView(
+                            builder: (dialogContext) => NewExerciseView(
                                 editedExercise: exo,
                                 onExerciseChosen: (exo) {
                                   BlocProvider.of<WorkoutEditBloc>(context).add(

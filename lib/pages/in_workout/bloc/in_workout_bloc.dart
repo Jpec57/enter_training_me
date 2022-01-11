@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:enter_training_me/models/models.dart';
 import 'package:enter_training_me/pages/community/community_page.dart';
-import 'package:enter_training_me/pages/home/home_page.dart';
 import 'package:enter_training_me/services/repositories/training_repository.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
@@ -35,6 +34,7 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
             referenceTrainingId: referenceTrainingId,
             realisedTraining: realisedTraining)) {
     on<AddedExoEvent>(_onAddedExo);
+    on<ChangedRefRepsEvent>(_onChangedRefRepsEvent);
     on<ChangedNbLoopsEvent>(_onChangedNbLoops);
     on<ChangedTrainingNameEvent>(_onChangedTrainingName);
     on<TrainingLeftEvent>(_onTrainingLeftEvent);
@@ -179,6 +179,11 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
   void _onChangedRefWeightEvent(
       ChangedRefWeightEvent event, Emitter<InWorkoutState> emit) async {
     emit(_mapChangedRefWeightEventToState(event));
+  }
+
+  void _onChangedRefRepsEvent(
+      ChangedRefRepsEvent event, Emitter<InWorkoutState> emit) async {
+    emit(_mapChangedRefRepsEventToState(event));
   }
 
   void _onResetRepEvent(ResetRepEvent event, Emitter<InWorkoutState> emit) {
@@ -335,23 +340,6 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     return state.copyWith(reallyDoneReps: state.reallyDoneReps - 1);
   }
 
-  // InWorkoutState _mapChangedExoEventToState(ChangedExoEvent event) {
-  //   RealisedExercise doneExo =
-  //       state.currentExo!.copyWith(exerciseReference: event.exo);
-  //   List<RealisedExercise> doneExos = [...state.realisedTraining.exercises];
-  //   if (state.currentSetIndex == 0) {
-  //     print("first set");
-  //     doneExos[state.currentExoIndex] = doneExo;
-  //   } else {
-  //     print("NOT first set => INSERTING");
-
-  //     doneExos.insert(state.currentExoIndex + 1, doneExo);
-  //   }
-
-  //   return state.copyWith(
-  //       realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
-  // }
-
   InWorkoutState _mapChangedRefWeightEventToState(ChangedRefWeightEvent event) {
     List<RealisedExercise> doneExos =
         updateSet(weight: event.weight, updateNextSets: event.isForAll);
@@ -359,13 +347,13 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
   }
 
-  // InWorkoutState _mapChangedRefRepsEventToState(ChangedRefRepsEvent event) {
-  //   List<RealisedExercise> doneExos =
-  //       updateSet(doneReps: event.reps, updateNextSets: event.isForAll);
+  InWorkoutState _mapChangedRefRepsEventToState(ChangedRefRepsEvent event) {
+    List<RealisedExercise> doneExos =
+        updateSet(doneReps: event.reps, updateNextSets: event.isForAll);
 
-  //   return state.copyWith(
-  //       realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
-  // }
+    return state.copyWith(
+        realisedTraining: state.realisedTraining.copyWith(exercises: doneExos));
+  }
 
   InWorkoutState _mapChangedViewEventToState(ChangedViewEvent event) {
     switch (event.view) {

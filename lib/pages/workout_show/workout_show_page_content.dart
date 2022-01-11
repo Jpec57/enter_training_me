@@ -57,7 +57,7 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
               onTap: () {
                 showDialog(
                     context: context,
-                    builder: (context) => RenameTrainingDialog(
+                    builder: (dialogContext) => RenameTrainingDialog(
                         initialValue: state.training.name,
                         callback: (name) {
                           BlocProvider.of<WorkoutEditBloc>(context)
@@ -143,8 +143,9 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
             ),
             TextButton(
               onPressed: () {
-                context.go(InWorkoutPage.routeName.replaceFirst(
-                    ':id', widget.referenceTraining.id.toString()));
+                context.goNamed(InWorkoutPage.name, queryParams: {
+                  'id': widget.referenceTraining.id.toString()
+                });
               },
               child: const Text("Start workout"),
             ),

@@ -61,7 +61,7 @@ class PreferencesPage extends StatelessWidget {
               onTap: () {
                 showDialog(
                     context: context,
-                    builder: (context) => ChangeLanguageDialog(
+                    builder: (dialogContext) => ChangeLanguageDialog(
                         supportedLocales: trans.Messages.supportedLocales
                             .map((e) =>
                                 trans.Messages.getLocaleFromFullLocaleString(e))

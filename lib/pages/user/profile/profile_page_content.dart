@@ -124,7 +124,7 @@ class _ProfilePageContentState extends State<ProfilePageContent> {
                           Map<String, dynamic> map = {"description": "TOTO"};
                           await showDialog(
                               context: context,
-                              builder: (context) => ReturnDialog<String>(
+                              builder: (dialogContext) => ReturnDialog<String>(
                                   title: "Give a description",
                                   callback: (String desc) async {
                                     map["description"] = desc;

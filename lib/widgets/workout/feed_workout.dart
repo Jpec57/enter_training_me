@@ -25,13 +25,13 @@ class FeedWorkout extends StatelessWidget {
     return InkWell(onLongPress: () {
       showDialog(
           context: context,
-          builder: (context) => ConfirmDialog(
+          builder: (dialogContext) => ConfirmDialog(
                 message: "Would you like to delete this training ?",
                 confirmCallback: () async {
                   bool isSuccess =
                       await RepositoryProvider.of<TrainingRepository>(context)
                           .delete(referenceTraining.id!);
-                  Navigator.of(context).pop();
+                  Navigator.of(dialogContext).pop();
 
                   if (isSuccess) {
                     Get.snackbar("Success", "This workout has been deleted");

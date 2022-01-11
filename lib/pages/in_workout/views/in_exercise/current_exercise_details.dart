@@ -41,7 +41,7 @@ class _CurrentExerciseDetailState extends State<CurrentExerciseDetail> {
                 onTap: () {
                   showDialog(
                       context: context,
-                      builder: (context) => ChooseExerciseDialog(
+                      builder: (dialogContext) => ChooseExerciseDialog(
                             onExerciseChosen: (ReferenceExercise exo) {
                               BlocProvider.of<InWorkoutBloc>(context)
                                   .add(ChangedExoEvent(exo));

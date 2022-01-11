@@ -62,7 +62,7 @@ class ProfileMetricsSection extends StatelessWidget {
         onTap: () async {
           await showDialog(
               context: context,
-              builder: (context) => DoubleReturnDialog(
+              builder: (dialogContext) => DoubleReturnDialog(
                   title: "Your weight:",
                   currentValue: info.user.fitnessProfile?.weight ?? 70,
                   callback: (value) async {

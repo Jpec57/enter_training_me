@@ -79,7 +79,7 @@ class _InWorkoutRestViewState extends State<InWorkoutRestView> {
                       onTap: () async {
                         showDialog(
                             context: context,
-                            builder: (context) => ReturnDialog<int>(
+                            builder: (dialogContext) => ReturnDialog<int>(
                                 title: "Change rest time",
                                 currentValue: state.currentExo!.restBetweenSet,
                                 description:

@@ -45,7 +45,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
   void saveTrainingInPersonal(InWorkoutState state) async {
     showDialog(
         context: context,
-        builder: (context) {
+        builder: (dialogContext) {
           return Dialog(
             backgroundColor: CustomTheme.darkGrey.withAlpha(150),
             child: const Center(child: CircularProgressIndicator()),
@@ -128,7 +128,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                           onPressed: () {
                                             showDialog(
                                                 context: context,
-                                                builder: (context) =>
+                                                builder: (dialogContext) =>
                                                     RenameTrainingDialog(
                                                         initialValue: state
                                                             .realisedTraining
@@ -166,7 +166,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                     onTap: () {
                                       showDialog(
                                           context: context,
-                                          builder: (context) =>
+                                          builder: (dialogContext) =>
                                               ChangeExerciseSetDialog<int>(
                                                 currentValue: state
                                                     .realisedTraining
@@ -197,7 +197,7 @@ class _WorkoutEndViewState extends State<WorkoutEndView> {
                                           onTap: () {
                                             showDialog(
                                                 context: context,
-                                                builder: (context) =>
+                                                builder: (dialogContext) =>
                                                     ChangeExerciseSetDialog<
                                                         int>(
                                                       currentValue: state
