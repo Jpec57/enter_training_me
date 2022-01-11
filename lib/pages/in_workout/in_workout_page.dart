@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 import 'package:wakelock/wakelock.dart';
 
 class InWorkoutPage extends StatefulWidget {
@@ -30,8 +31,12 @@ class InWorkoutPage extends StatefulWidget {
   State<InWorkoutPage> createState() => _InWorkoutPageState();
 }
 
-class _InWorkoutPageState extends State<InWorkoutPage> {
+class _InWorkoutPageState extends State<InWorkoutPage>
+    with RestorationMixin, WidgetsBindingObserver {
   late Future<Training?> _trainingFuture;
+  RestorableInt   = RestorableInt(0);
+  RestorableInt _currentSetIndex = RestorableInt(0);
+
 
   @override
   void initState() {
@@ -42,6 +47,34 @@ class _InWorkoutPageState extends State<InWorkoutPage> {
       _trainingFuture = Future.value(Training.empty());
     }
     super.initState();
+    print("initstate");
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didHaveMemoryPressure() {
+    print("didHaveMemoryPressure");
+    //TODO SAVE TRAINING PROGRESS HERE
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("didChangeAppLifecycleState");
+    print(state);
+    //TODO SAVE TRAINING PROGRESS HERE
+  }
+
+  @override
+  Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
+    print("didPushRouteInformation");
+    print(didPushRouteInformation);
+    return didPushRoute(routeInformation.location!);
   }
 
   @override
@@ -72,6 +105,31 @@ class _InWorkoutPageState extends State<InWorkoutPage> {
       },
     );
   }
+
+  @override
+  String? get restorationId => InWorkoutPage.routeName;
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    print("Trying to restore state...");
+    print('oldBucket');
+    print(oldBucket);
+    print('initialRestore');
+    print(initialRestore);
+  }
+}
+
+Future<void> restoreTrainingContext() async {
+  debugPrint("Restoring training context");
+  //Current Exo, Set, isResting or not
+  // var box = await Hive.openBox('trainingBox');
+  var box = await Hive.openBox('tBox');
+  var currentExoIndex = box.get('currentExoIndex');
+  var currentSetIndex = box.get('currentSetIndex');
+  print('currentExoIndex');
+  print(currentExoIndex);
+  print('currentSetIndex');
+  print(currentSetIndex);
 }
 
 class InWorkoutScreen extends StatefulWidget {

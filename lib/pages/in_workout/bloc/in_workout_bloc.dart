@@ -13,6 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 
 part 'in_workout_event.dart';
 part 'in_workout_state.dart';
@@ -77,6 +78,17 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
         currentView: InWorkoutView.inRestView));
   }
 
+  Future<void> savingTrainingContext() async {
+    debugPrint("Saving context");
+    //Current Exo, Set, isResting or not
+    // var box = await Hive.openBox('trainingBox');
+    var box = await Hive.openBox('tBox');
+    print(state.realisedTraining);
+    box.put('currentExoIndex', state.currentExoIndex);
+    box.put('currentSetIndex', state.currentSetIndex);
+    
+  }
+
   void _onRestDoneEvent(
       RestDoneEvent event, Emitter<InWorkoutState> emit) async {
     // In loop training, we must additionate all reps
@@ -91,6 +103,9 @@ class InWorkoutBloc extends Bloc<InWorkoutEvent, InWorkoutState> {
     if (state.isEndOfWorkout) {
       Training? training = await saveTraining();
       emit(state.copyWith(isEnd: true, realisedTrainingId: training?.id));
+    } else {
+      //Saving state in case we lose the context
+      savingTrainingContext();
     }
     emit(state.copyWith(
         isEnd: state.isEndOfWorkout,
