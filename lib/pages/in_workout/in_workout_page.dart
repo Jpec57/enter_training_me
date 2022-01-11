@@ -34,9 +34,8 @@ class InWorkoutPage extends StatefulWidget {
 class _InWorkoutPageState extends State<InWorkoutPage>
     with RestorationMixin, WidgetsBindingObserver {
   late Future<Training?> _trainingFuture;
-  RestorableInt   = RestorableInt(0);
+  RestorableInt _currentExoIndex = RestorableInt(0);
   RestorableInt _currentSetIndex = RestorableInt(0);
-
 
   @override
   void initState() {
