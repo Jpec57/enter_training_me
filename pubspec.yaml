@@ -10,51 +10,54 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^2.1.0
-  cupertino_icons: ^1.0.2
-  flutter_bloc: ^8.0.1
-  json_serializable: ^5.0.2
-  json_annotation: ^4.1.0
-  build_runner: ^2.1.1
+  google_fonts: ^4.0.4
+  cupertino_icons: ^1.0.5
+  flutter_bloc: ^8.1.2
+  json_serializable: ^6.6.2
+  json_annotation: ^4.8.1
+  build_runner: ^2.3.3
   flutter_localizations: 
     sdk: flutter   
+  #get: ^4.6.5
   get:
     git:
       url: https://github.com/Jpec57/getx.git
       ref: master
-  cached_network_image: ^3.1.0
-  wakelock: ^0.5.6
-  equatable: ^2.0.3
-  dio: ^4.0.0
-  flutter_secure_storage: ^4.2.1
-  carousel_slider: ^4.0.0
-  audioplayers: ^0.20.1
-  vibration: ^1.7.4-nullsafety.0
-  flutter_tts: ^3.2.2
-  fl_chart: ^0.40.0
-  video_player: ^2.2.5
-  hive: ^2.0.4
+  cached_network_image: ^3.2.3
+  wakelock: ^0.6.2
+  equatable: ^2.0.5
+  dio: ^5.1.2
+  flutter_secure_storage: ^8.0.0
+  carousel_slider: ^4.2.1
+  audioplayers: ^4.0.1
+  vibration: ^1.7.7
+  flutter_tts: ^3.6.3
+  fl_chart: ^0.62.0
+  video_player: ^2.6.1
+  hive: ^2.2.3
   hive_flutter: ^1.1.0
-  chewie: ^1.1.0
-  intl: ^0.17.0
-  feature_discovery: ^0.5.0
-  auto_animated: ^3.0.1
-  visibility_detector: ^0.2.2
-  file_picker: ^4.2.1
-  flutter_cache_manager: ^3.1.3
-  image_picker: ^0.8.4+4
-  multi_select_flutter: ^4.0.0
-  flag: ^5.0.0-nullsafety
-  freezed_annotation: ^0.15.0
-  go_router: ^2.5.2
-  intl_utils: ^2.6.0
+  chewie: ^1.4.0
+  intl: ^0.18.1
+  #feature_discovery: ^0.5.0
+  auto_animated: ^3.1.0
+  visibility_detector: ^0.3.3
+  # visibility_detector: ^0.4.0+2
+  file_picker: ^4.2.7
+  # file_picker: ^5.3.0
+  flutter_cache_manager: ^3.3.0
+  image_picker: ^0.8.7+4
+  multi_select_flutter: ^4.1.3
+  flag: ^6.0.0
+  freezed_annotation: ^2.2.0
+  go_router: ^7.0.0
+  intl_utils: ^2.8.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  copy_with_extension_gen: ^2.0.3
-  flutter_lints: ^1.0.0
-  hive_generator: ^1.1.1
-  freezed: ^0.15.1+1
+  #copy_with_extension_gen: ^2.0.3
+  flutter_lints: ^2.0.1
+  hive_generator: ^2.0.0
+  #freezed: ^0.15.1+1
 
 
 flutter:

@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
-import 'package:enter_training_me/services/repositories/authentication_repository.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'login_event.dart';
