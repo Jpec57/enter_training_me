@@ -83,12 +83,12 @@ class UserRepository extends ApiService
 
   Future<List<Training>> getPersonalFeed({int page = 0, int limit = 10}) async {
     //Currently not taking user id and returning only trainings
-    Map<String, dynamic> queryParams = {
+    Map<String, dynamic> queryParameters = {
       "limit": limit,
       "page": page,
     };
     Response response =
-        await getDio().get(getUserFeed, queryParameters: queryParams);
+        await getDio().get(getUserFeed, queryParameters: queryParameters);
     List<dynamic> data = response.data;
     return data.map((e) => Training.fromJson(e)).toList();
   }

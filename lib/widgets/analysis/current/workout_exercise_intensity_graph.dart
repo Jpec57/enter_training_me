@@ -39,27 +39,27 @@ class _WorkoutExerciseIntensityGraphState
   BarChartGroupData makeGroupData(
       {required int x, required double y1, double? y2}) {
     List<BarChartRodData> rods = [
-      BarChartRodData(
-          y: y1,
-          colors: [leftBarColor],
-          width: widget.barWidth,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          )),
+      // BarChartRodData(
+      //     y: y1,
+      //     colors: [leftBarColor],
+      //     width: widget.barWidth,
+      //     borderRadius: const BorderRadius.only(
+      //       topLeft: Radius.circular(10),
+      //       topRight: Radius.circular(10),
+      //     )),
     ];
 
     if (y2 != null) {
-      rods.add(
-        BarChartRodData(
-            y: y2,
-            colors: [rightBarColor],
-            width: widget.barWidth,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            )),
-      );
+      // rods.add(
+      //   BarChartRodData(
+      //       y: y2,
+      //       colors: [rightBarColor],
+      //       width: widget.barWidth,
+      //       borderRadius: const BorderRadius.only(
+      //         topLeft: Radius.circular(10),
+      //         topRight: Radius.circular(10),
+      //       )),
+      // );
     }
 
     return BarChartGroupData(
@@ -112,7 +112,8 @@ class _WorkoutExerciseIntensityGraphState
             int rodIndex,
           ) {
             return BarTooltipItem(
-                rod.y.round().toString(),
+              'test',
+                // rod.y.round().toString(),
                 const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -136,7 +137,8 @@ class _WorkoutExerciseIntensityGraphState
     double max = 0;
     for (var group in rawBarGroups) {
       for (var rod in group.barRods) {
-        var y = rod.y;
+        var y = 57.0;
+        // var y = rod.y;
         if (max < y) {
           max = y;
         }
@@ -164,47 +166,47 @@ class _WorkoutExerciseIntensityGraphState
           child: BarChart(
             BarChartData(
               maxY: maxY,
-              titlesData: FlTitlesData(
-                show: true,
-                leftTitles: SideTitles(
-                  showTitles: true,
-                  getTextStyles: (context, value) => const TextStyle(
-                      color: Color(0xff7589a2),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14),
-                  reservedSize: 50,
-                  interval: (maxY > 0 ? maxY : 10) / 5,
-                  getTitles: (value) {
-                    if (value >= 1000) {
-                      var units = (value % 1000).toInt();
-                      return "${value ~/ 1000}K${units > 0 ? units.toString() : ""}";
-                    }
-                    return value.toInt().toString();
-                  },
-                ),
-                rightTitles: SideTitles(showTitles: false),
-                topTitles: SideTitles(showTitles: false),
-                bottomTitles: SideTitles(
-                  showTitles: true,
-                  // rotateAngle: 90,
-                  reservedSize: widget.graphHeight * 0.3,
-                  getTextStyles: (context, value) => const TextStyle(
-                      color: Color(0xff7589a2),
-                      fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 14),
-                  margin: 10,
-                  getTitles: (double value) {
-                    return "E${value.toInt()}";
-                    // return widget
-                    //     .realisedTraining
-                    //     .exercises[value.toInt() %
-                    //         widget.realisedTraining.exercises.length]
-                    //     .exerciseReference
-                    //     .shortName;
-                  },
-                ),
-              ),
+              // titlesData: FlTitlesData(
+              //   show: true,
+              //   leftTitles: SideTitles(
+              //     showTitles: true,
+              //     getTextStyles: (context, value) => const TextStyle(
+              //         color: Color(0xff7589a2),
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 14),
+              //     reservedSize: 50,
+              //     interval: (maxY > 0 ? maxY : 10) / 5,
+              //     getTitles: (value) {
+              //       if (value >= 1000) {
+              //         var units = (value % 1000).toInt();
+              //         return "${value ~/ 1000}K${units > 0 ? units.toString() : ""}";
+              //       }
+              //       return value.toInt().toString();
+              //     },
+              //   ),
+              //   rightTitles: SideTitles(showTitles: false),
+              //   topTitles: SideTitles(showTitles: false),
+              //   bottomTitles: SideTitles(
+              //     showTitles: true,
+              //     // rotateAngle: 90,
+              //     reservedSize: widget.graphHeight * 0.3,
+              //     getTextStyles: (context, value) => const TextStyle(
+              //         color: Color(0xff7589a2),
+              //         fontWeight: FontWeight.bold,
+              //         overflow: TextOverflow.ellipsis,
+              //         fontSize: 14),
+              //     margin: 10,
+              //     getTitles: (double value) {
+              //       return "E${value.toInt()}";
+              //       // return widget
+              //       //     .realisedTraining
+              //       //     .exercises[value.toInt() %
+              //       //         widget.realisedTraining.exercises.length]
+              //       //     .exerciseReference
+              //       //     .shortName;
+              //     },
+              //   ),
+              // ),
               borderData: FlBorderData(
                 show: false,
               ),

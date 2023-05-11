@@ -9,7 +9,7 @@ class ExercisedMuscleRadarRepartitionGraph extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ExercisedMuscleRadarRepartitionGraphState createState() =>
+  State<ExercisedMuscleRadarRepartitionGraph> createState() =>
       _ExercisedMuscleRadarRepartitionGraphState();
 }
 
@@ -122,13 +122,13 @@ class _ExercisedMuscleRadarRepartitionGraphState
                 radarBorderData: const BorderSide(color: Colors.transparent),
                 titlePositionPercentageOffset: 0.2,
                 titleTextStyle: TextStyle(color: titleColor, fontSize: 14),
-                getTitle: (index) {
-                  var muscle = widget.muscleExperiences[index].muscle;
-                  muscle = muscle[0].toUpperCase() + muscle.substring(1);
-                  return muscle.length > 5
-                      ? muscle.substring(0, 5) + "."
-                      : muscle;
-                },
+                // getTitle: (index) {
+                //   var muscle = widget.muscleExperiences[index].muscle;
+                //   muscle = muscle[0].toUpperCase() + muscle.substring(1);
+                //   return muscle.length > 5
+                //       ? muscle.substring(0, 5) + "."
+                //       : muscle;
+                // },
                 tickCount: 1,
                 ticksTextStyle:
                     const TextStyle(color: Colors.transparent, fontSize: 10),

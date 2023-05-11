@@ -95,41 +95,41 @@ class _WorkoutHistoryEvolutionState extends State<WorkoutHistoryEvolution> {
           );
         },
       ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: SideTitles(showTitles: false),
-        topTitles: SideTitles(showTitles: false),
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 50,
-          interval: 1,
-          rotateAngle: 90,
-          getTextStyles: (context, value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 12),
-          getTitles: (value) {
-            int index = value.toInt();
-            return (DateFormat.yMd())
-                .format(widget.trainings[index].createdAt!);
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          interval: (maxY - minY) / 4,
-          getTextStyles: (context, value) => const TextStyle(
-            color: Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
-            return "${value.toInt()}";
-          },
-          reservedSize: 50,
-          margin: 12,
-        ),
-      ),
+      // titlesData: FlTitlesData(
+      //   show: true,
+      //   rightTitles: SideTitles(showTitles: false),
+      //   topTitles: SideTitles(showTitles: false),
+      //   bottomTitles: SideTitles(
+      //     showTitles: true,
+      //     reservedSize: 50,
+      //     interval: 1,
+      //     rotateAngle: 90,
+      //     getTextStyles: (context, value) => const TextStyle(
+      //         color: Color(0xff68737d),
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 12),
+      //     getTitles: (value) {
+      //       int index = value.toInt();
+      //       return (DateFormat.yMd())
+      //           .format(widget.trainings[index].createdAt!);
+      //     },
+      //     margin: 8,
+      //   ),
+      //   leftTitles: SideTitles(
+      //     showTitles: true,
+      //     interval: (maxY - minY) / 4,
+      //     getTextStyles: (context, value) => const TextStyle(
+      //       color: Color(0xff67727d),
+      //       fontWeight: FontWeight.bold,
+      //       fontSize: 15,
+      //     ),
+      //     getTitles: (value) {
+      //       return "${value.toInt()}";
+      //     },
+      //     reservedSize: 50,
+      //     margin: 12,
+      //   ),
+      // ),
       borderData: FlBorderData(
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
@@ -149,7 +149,7 @@ class _WorkoutHistoryEvolutionState extends State<WorkoutHistoryEvolution> {
         LineChartBarData(
           spots: generateSpotFromTrainings(),
           isCurved: true,
-          colors: gradientColors,
+          // colors: gradientColors,
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -157,8 +157,8 @@ class _WorkoutHistoryEvolutionState extends State<WorkoutHistoryEvolution> {
           ),
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            // colors:
+            //     gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],

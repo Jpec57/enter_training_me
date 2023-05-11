@@ -49,7 +49,7 @@ class MainRouting {
       GoRoute(
         path: CoachPage.routeName,
         builder: (context, state) {
-          var coachUserId = int.parse(state.params['id']!);
+          var coachUserId = int.parse(state.queryParameters['id']!);
           return CoachPage(
             coachUserId: coachUserId,
           );
@@ -75,8 +75,8 @@ class MainRouting {
         name: WorkoutShowPage.name,
         path: WorkoutShowPage.routeName,
         builder: (context, state) {
-          final isEditing = state.queryParams['isEditing'] == "1";
-          var trainingId = int.parse(state.params['id']!);
+          final isEditing = state.queryParameters['isEditing'] == "1";
+          var trainingId = int.parse(state.queryParameters['id']!);
           return WorkoutShowPage(
             trainingId: trainingId,
             isEditing: isEditing,
@@ -86,7 +86,7 @@ class MainRouting {
       GoRoute(
         path: OtherProfilePage.routeName,
         builder: (context, state) {
-          var userId = int.parse(state.params['id']!);
+          var userId = int.parse(state.queryParameters['id']!);
           return OtherProfilePage(
             userId: userId,
           );
@@ -96,7 +96,7 @@ class MainRouting {
         name: 'InWorkoutPage',
         path: InWorkoutPage.routeName,
         builder: (context, state) {
-          final queryRefId = state.queryParams['id'];
+          final queryRefId = state.queryParameters['id'];
           return InWorkoutPage(
             referenceTrainingId:
                 queryRefId != null ? int.parse(queryRefId) : null,

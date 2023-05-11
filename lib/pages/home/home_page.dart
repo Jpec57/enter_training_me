@@ -65,7 +65,8 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, state) {
                     if (state.user == null) {
                       return Text(
-                          AppLocalizations.of(context).welcome_anonymous,
+                          // AppLocalizations.of(context).welcome_anonymous,
+                          'AppLocalizations.of(context).welcome_anonymous',
                           style: Theme.of(context).textTheme.headline4);
                     }
                     User user = state.user as User;
@@ -198,8 +199,9 @@ class _HomePageState extends State<HomePage> {
           InWorkoutPage.name,
         );
       } else {
-        context.pushNamed(WorkoutShowPage.name,
-            params: {"id": 0.toString()}, queryParams: {"isEditing": "1"});
+        // context.pushNamed(WorkoutShowPage.name,
+        //     queryParametersparams: {"id": 0.toString()}, queryParameters: {"isEditing": "1"});
+        context.pushNamed(WorkoutShowPage.name, queryParameters: {"isEditing": "1"});
       }
     }
   }

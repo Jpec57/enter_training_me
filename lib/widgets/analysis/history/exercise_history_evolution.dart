@@ -100,44 +100,44 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
           );
         },
       ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: SideTitles(showTitles: false),
-        topTitles: SideTitles(showTitles: false),
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 50,
-          interval: 1,
-          rotateAngle: 90,
-          getTextStyles: (context, value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 12),
-          getTitles: (value) {
-            int index = value.toInt();
-            var date = sets[index].realisedDate;
-            return date != null
-                ? (DateFormat.yMd())
-                    .format(DateTime.fromMillisecondsSinceEpoch(date))
-                : "Unknown";
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          interval: (maxY - minY) / 4,
-          getTextStyles: (context, value) => const TextStyle(
-            color: Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
-            return "${value.toInt()}";
-          },
-          reservedSize: 50,
-          margin: 12,
-        ),
-      ),
+      // titlesData: FlTitlesData(
+      //   show: true,
+      //   rightTitles: SideTitles(showTitles: false),
+      //   topTitles: SideTitles(showTitles: false),
+      //   bottomTitles: SideTitles(
+      //     showTitles: true,
+      //     reservedSize: 50,
+      //     interval: 1,
+      //     rotateAngle: 90,
+      //     getTextStyles: (context, value) => const TextStyle(
+      //         color: Color(0xff68737d),
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 12),
+      //     getTitles: (value) {
+      //       int index = value.toInt();
+      //       var date = sets[index].realisedDate;
+      //       return date != null
+      //           ? (DateFormat.yMd())
+      //               .format(DateTime.fromMillisecondsSinceEpoch(date))
+      //           : "Unknown";
+      //     },
+      //     margin: 8,
+      //   ),
+      //   leftTitles: SideTitles(
+      //     showTitles: true,
+      //     interval: (maxY - minY) / 4,
+      //     getTextStyles: (context, value) => const TextStyle(
+      //       color: Color(0xff67727d),
+      //       fontWeight: FontWeight.bold,
+      //       fontSize: 15,
+      //     ),
+      //     getTitles: (value) {
+      //       return "${value.toInt()}";
+      //     },
+      //     reservedSize: 50,
+      //     margin: 12,
+      //   ),
+      // ),
       borderData: FlBorderData(
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
@@ -157,7 +157,7 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
         LineChartBarData(
           spots: spots,
           isCurved: true,
-          colors: gradientColors,
+          // colors: gradientColors,
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -165,8 +165,8 @@ class _ExerciseHistoryEvolutionState extends State<ExerciseHistoryEvolution> {
           ),
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            // colors:
+            //     gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],

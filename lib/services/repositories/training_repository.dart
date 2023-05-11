@@ -28,12 +28,12 @@ class TrainingRepository extends ApiService implements IRepository<Training> {
   Future<PaginatedListResponse<Training>> getUserTrainings(int userId,
       {int page = 0, int limit = 10}) async {
     assert(page >= 0 && limit > 0);
-    Map<String, dynamic> queryParams = {
+    Map<String, dynamic> queryParameters = {
       "limit": limit,
       "page": page,
     };
     Response response = await getDio()
-        .get("/api/users/$userId/trainings", queryParameters: queryParams);
+        .get("/api/users/$userId/trainings", queryParameters: queryParameters);
     dynamic data = response.data;
     return PaginatedListResponse<Training>.fromJson(
         data, (json) => Training.fromJson(json as Map<String, dynamic>));

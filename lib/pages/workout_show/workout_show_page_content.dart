@@ -8,7 +8,6 @@ import 'package:enter_training_me/pages/workout_show/views/workout_description.d
 import 'package:enter_training_me/pages/workout_show/workout_show_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class WorkoutShowPageContent extends StatefulWidget {
@@ -143,7 +142,7 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
             ),
             TextButton(
               onPressed: () {
-                context.goNamed(InWorkoutPage.name, queryParams: {
+                context.goNamed(InWorkoutPage.name, queryParameters: {
                   'id': widget.referenceTraining.id.toString()
                 });
               },
