@@ -39,6 +39,7 @@ class AuthenticationRepository extends ApiService
     } on DioError catch (e) {
       get_lib.Get.snackbar(
           "Error", "An error occurred. Please try again later.");
+      //TODO log e
       return false;
     }
   }
@@ -91,8 +92,11 @@ class AuthenticationRepository extends ApiService
       }
       String token = res["token"];
       await saveUserToken(token);
-      return AuthResponse(token: token, user: User.fromJson(res["user"]));
+      return AuthResponse(
+          token: res["token"], user: User.fromJson(res["user"]));
     } on DioError catch (e) {
+      print(e);
+      //TODO log e
       get_lib.Get.snackbar(
           "Error", "An error occurred. Please try again later.");
     }

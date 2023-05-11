@@ -199,9 +199,9 @@ class _HomePageState extends State<HomePage> {
           InWorkoutPage.name,
         );
       } else {
-        // context.pushNamed(WorkoutShowPage.name,
-        //     queryParametersparams: {"id": 0.toString()}, queryParameters: {"isEditing": "1"});
-        context.pushNamed(WorkoutShowPage.name, queryParameters: {"isEditing": "1"});
+        context.pushNamed(WorkoutShowPage.name,
+            pathParameters: {"id": 0.toString()},
+            queryParameters: {"id": 0.toString(), "isEditing": "1"});
       }
     }
   }

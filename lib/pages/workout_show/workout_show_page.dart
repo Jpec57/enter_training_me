@@ -20,6 +20,7 @@ class WorkoutShowPage extends StatefulWidget {
   const WorkoutShowPage(
       {Key? key, required this.trainingId, this.isEditing = false})
       : super(key: key);
+      
   static const name = "WorkoutShow";
   static const routeName = "/workout/:id";
   final int? trainingId;

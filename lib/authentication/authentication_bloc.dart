@@ -1,12 +1,11 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_repository.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_user.dart';
 import 'package:enter_training_me/authentication/interfaces/iauthentication_user_repository.dart';
 import 'package:enter_training_me/authentication/models/auth_response.dart';
 import 'package:enter_training_me/storage_constants.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 part 'authentication_event.dart';

@@ -64,6 +64,8 @@ class ReferenceExerciseRepository extends ApiService
     // });
     Response response = await getDio().get(getAllUrl);
     String stringData = response.data;
+    print('stringData');
+    print(stringData);
     Map<String, dynamic> hydraCollection = jsonDecode(stringData);
     List<dynamic> data = hydraCollection['hydra:member'];
     return data.map((e) => ReferenceExercise.fromJson(e)).toList();

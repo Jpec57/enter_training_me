@@ -26,36 +26,40 @@ Future<Widget> createApp() async {
   Hive.registerAdapter(CachedRequestAdapter());
   await Hive.openBox<CachedRequest>('request');
 
-  final AuthenticationRepository _authRepository = AuthenticationRepository();
-  final UserRepository _userRepository = UserRepository();
-  final RankingRepository _rankingRepository = RankingRepository();
-  final TrainingRepository _trainingRepository = TrainingRepository();
-  final PerformanceRepository _perfRepository = PerformanceRepository();
-  final ReferenceExerciseRepository _refExoRepository =
+  final AuthenticationRepository authRepository = AuthenticationRepository();
+  final UserRepository userRepository = UserRepository();
+  final RankingRepository rankingRepository = RankingRepository();
+  final TrainingRepository trainingRepository = TrainingRepository();
+  final PerformanceRepository perfRepository = PerformanceRepository();
+  final ReferenceExerciseRepository refExoRepository =
       ReferenceExerciseRepository();
-  final ExecutionStyleRepository _execStyleRepository =
+  final ExecutionStyleRepository execStyleRepository =
       ExecutionStyleRepository();
-  final ExerciseFormatRepository _exoFormatRepository =
+  final ExerciseFormatRepository exoFormatRepository =
       ExerciseFormatRepository();
 
   return MultiRepositoryProvider(
+    providers: [
+      RepositoryProvider.value(value: trainingRepository),
+      RepositoryProvider.value(value: refExoRepository),
+      RepositoryProvider.value(value: userRepository),
+      RepositoryProvider.value(value: authRepository),
+      RepositoryProvider.value(value: execStyleRepository),
+      RepositoryProvider.value(value: exoFormatRepository),
+      RepositoryProvider.value(value: perfRepository),
+      RepositoryProvider.value(value: rankingRepository),
+    ],
+    child: MultiBlocProvider(
       providers: [
-        RepositoryProvider.value(value: _trainingRepository),
-        RepositoryProvider.value(value: _refExoRepository),
-        RepositoryProvider.value(value: _userRepository),
-        RepositoryProvider.value(value: _authRepository),
-        RepositoryProvider.value(value: _execStyleRepository),
-        RepositoryProvider.value(value: _exoFormatRepository),
-        RepositoryProvider.value(value: _perfRepository),
-        RepositoryProvider.value(value: _rankingRepository),
-      ],
-      child: MultiBlocProvider(providers: [
         BlocProvider.value(value: AppBloc()..add(OnInitEvent())),
         BlocProvider.value(
             value: AuthenticationBloc(
-                authenticationRepository: _authRepository,
-                userRepository: _userRepository)),
-      ], child: const MyApp()));
+                authenticationRepository: authRepository,
+                userRepository: userRepository)),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 Future<void> main() async {

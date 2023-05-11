@@ -144,7 +144,9 @@ class _WorkoutShowPageContentState extends State<WorkoutShowPageContent>
               onPressed: () {
                 context.goNamed(InWorkoutPage.name, queryParameters: {
                   'id': widget.referenceTraining.id.toString()
-                });
+                }, pathParameters: {
+                  'id': widget.referenceTraining.id.toString()
+                },);
               },
               child: const Text("Start workout"),
             ),
